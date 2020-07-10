@@ -5,16 +5,15 @@
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  # Trigger analysis when pushing in master or pull requests, and when creating
-  # a pull request. 
+  push:
+     branches:
+       - 'master'  
   pull_request:
-      types: [opened, reopened]
-      branches: 
-        - master
-      
-name: Main Workflow
+ 
+name: CI
 jobs:
   add-reviews:
+    if: ${{ github.event_name == 'pull_request'}}
     runs-on: ubuntu-latest
     steps:
       - uses: kentaro-m/auto-assign-action@v1.1.1
@@ -26,6 +25,7 @@ jobs:
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
+      
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
       env:
