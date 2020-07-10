@@ -1,0 +1,306 @@
+.App {
+  text-align: center;
+}
+
+.App-intro {
+  font-size: large;
+}
+.App-header {
+  background-color: #282c34;
+  height: 80px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(3px + 2vmin);
+  color: white;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.spinner {
+  height: 80px;
+  margin: auto;
+}
+
+/* New css for movie component*/
+
+* {
+  box-sizing: border-box;
+}
+
+.movies {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.App-header h2 {
+  margin: 0;
+}
+
+.add-movies {
+  text-align: center;
+}
+
+.add-movies button {
+  font-size: 16px;
+  padding: 8px;
+  margin: 0px 10px 30px 10px;
+}
+
+.movie {
+  padding: 5px 25px 10px 25px;
+  max-width: 25%;
+}
+
+.errorMessage {
+  margin: auto;
+  font-weight: bold;
+  color: rgb(161, 15, 15);
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+input[type="submit"] {
+  padding: 5px;
+  background-color: transparent;
+  color: black;
+  border: 1px solid black;
+  width: 80px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #282c34;
+  color: antiquewhite;
+}
+
+.search > input[type="text"] {
+  width: 40%;
+  min-width: 170px;
+}
+
+@media screen and (min-width: 694px) and (max-width: 915px) {
+  .movie {
+    max-width: 33%;
+  }
+}
+
+@media screen and (min-width: 652px) and (max-width: 693px) {
+  .movie {
+    max-width: 50%;
+  }
+}
+
+@media screen and (max-width: 651px) {
+  .movie {
+    max-width: 100%;
+    margin: auto;
+  }
+}
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: black;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+
+* {
+  margin: 20;
+  padding: 2;
+  box-sizing: border-box;
+  font-size: 40px;
+}
+
+.grid-item {
+  background: linear-gradient(
+    18deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(129, 129, 144, 0.09287464985994398) 0%,
+    rgba(194, 245, 255, 0.2861519607843137) 100%
+  );
+  border: 2px solid rgb(100, 100, 100);
+}
+
+.login-form-view {
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 69%;
+  justify-items: end;
+  align-items: start;
+}
+
+.welcome-view {
+  height: 100vh;
+  border: 5px solid green;
+  display: grid;
+}
+
+.uoct {
+  font-family: sans-serif;
+  font-size: 200%;
+  text-align: center;
+  font-weight: bold;
+}
+.dacot {
+  font-family: Helvetica;
+  font-size: 40%;
+  letter-spacing: 5vh;
+  font-weight: 200;
+  line-height: 200%;
+}
+
+.initial-logo {
+  align-self: center;
+  justify-self: center;
+  animation: 2s animation1 ease;
+  padding: 35px;
+}
+
+.initial-logo:hover {
+  transition: transform 200ms linear;
+  transition: background-color 300ms linear;
+  transform: scale(1.005, 1);
+  background-color: rgb(255, 240, 199);
+}
+
+@keyframes animation1 {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.login-container {
+  width: 400px;
+  padding: 6vh;
+}
+
+.form {
+  display: flex;
+  border: 1px solid grey;
+  flex-direction: column;
+  padding: 30px;
+}
+
+p {
+  margin-top: 0;
+}
+
+input {
+  margin: 15px 0;
+  padding: 10px;
+}
+
+.submit {
+  padding: 10px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+.nav-principal {
+  display: flex;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  justify-content: space-evenly;
+  align-items: center;
+  /* min-height: 5vh; */
+  /* max-height: 7vh; */
+  background: lightsalmon;
+  color: white;
+  grid-area: header;
+}
+
+.nav-links {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+}
+
+.app-container {
+  height: 100vh;
+  border: 10px red;
+  display: grid;
+  grid-template:
+    "header header" 10vh
+    ". ." 8vh
+    "nuevo-s . " 85vh
+    /70% auto;
+}
+
+.nuevo-semaforo {
+  grid-area: nuevo-s;
+}
+
+.consulta-semaforo {
+  grid-area: consulta-s;
+}
