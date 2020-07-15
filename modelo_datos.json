@@ -1,0 +1,93 @@
+{
+  "X001010": [
+    {
+      "metadata": {
+        "vigente": false,
+        "datos_version": {
+          "version": "2.6",
+          "fecha": "03/03/2020",
+          "evento": "nueva instalacion | aprobacion | rechazo | correccion de observacioens | ingreso al SC(cambia version 2.2 -> 3.0) pasa a estar vigente | nueva actualizacion",
+          "artifice": {
+            "nombre": "Juan Perez | Auter | asies",
+            "rol": "empresa | ingeniero | SC"
+          },
+          "ingresado_a_SC": false,
+          "nueva_instalacion": true,
+          "actualizando_instalacion": {
+            "descripcion": "descripcion de la actualizacion",
+            "cambio programacion o periodizaciones": false
+          },
+          "aprobado_para_ingresar": false,
+          "rechazado": "comentario con observaciones, en otro caso, null"
+        },
+
+        "junctions": ["J001011", "J001012", "J001013"],
+        "empresa": "Auter",
+        "fecha_de_instalacion": "fecha",
+        "comuna": "Renca la lleva",
+        "cruce": "??????????????????",
+        "codigo del cruce": "??????????????",
+        "tipo de controlador": "???????????????",
+        "interseccion": "???????????",
+        "codigo del sistema": "lo mismo que junction? ",
+        "Marca-Modelo": "",
+        "N etapas": "CALCULADO A PARTIR DE LAS ETAPAS ENTREGADAS",
+        "Mod Potencia": "???????????????",
+        "Detectores": "????????????",
+        "Marca y tipo de OTU": "",
+        "Dirección IP OTU": "",
+        "N serie tarjeta": "",
+        "N empalme": "",
+        "Capacidad empalme": "",
+        "Direccion IP equipamiento": "???????????",
+        "Marca UPS": "",
+        "Modelo UPS": "",
+        "N serie UPS": "",
+        "N capacidad UPS": "",
+        "Duracion Carga UPS": "",
+        "GPS": "?????????????????????????????????????",
+        "Empresa que prove servicio de comunicacion": "",
+        "Postes ganchos": "??????????????",
+        "Postes vehiculares": "?????????????",
+        "Cabezales": {
+          "que es esto": "asies"
+        },
+        "Botoneras": "?????????",
+        "Espira local": "????????",
+        "Espira Scoot": "?????????",
+        "Senal hito": "????????",
+        "Enlace": "(digital | analogo) + (propio | compartido)",
+        "Nodo concentrador": "???????????????",
+        "descripción": "Comentario opcional de la empresa"
+      },
+
+      "junctions": [
+        { "objeto que almacena info de los juntion": "asies" },
+        { "objeto que almacena info de los juntion": "asies" }
+      ],
+
+      "etapas": [
+        { "letra": "A", "tipo": "v", "junction": "J001011" },
+        { "letra": "A", "tipo": "v", "junction": "J001011" }
+      ],
+
+      "fases": [
+        { "etapas": ["A", "B"], "imagen": "direccion de la imagen" },
+        { "etapas": ["A", "B"], "imagen": "direccion de la imagen" }
+      ],
+
+      "secuencias": [
+        [1, 2, 3],
+        [1, 2, 3]
+      ],
+
+      "entreverdes": [
+        [0, 4, 0, 4],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ],
+      "PDF_respaldo": "direccion",
+      "PDF_OTU": "direccion"
+    }
+  ]
+}
