@@ -61,33 +61,7 @@
         "descripción": "Comentario opcional de la empresa"
       },
 
-      "junctions": [
-        { "objeto que almacena info de los juntion": "asies" },
-        { "objeto que almacena info de los juntion": "asies" }
-      ],
-
-      "etapas": [
-        { "letra": "A", "tipo": "v", "junction": "J001011" },
-        { "letra": "A", "tipo": "v", "junction": "J001011" }
-      ],
-
-      "fases": [
-        { "etapas": ["A", "B"], "imagen": "direccion de la imagen" },
-        { "etapas": ["A", "B"], "imagen": "direccion de la imagen" }
-      ],
-
-      "secuencias": [
-        [1, 2, 3],
-        [1, 2, 3]
-      ],
-
-      "entreverdes": [
-        [0, 4, 0, 4],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
-      ],
-      "PDF_respaldo": "direccion",
-      "PDF_OTU": "direccion"
+      "imagen_instalacion": "imagen"
     }
   ]
 }

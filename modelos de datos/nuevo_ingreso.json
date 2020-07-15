@@ -1,0 +1,83 @@
+{
+  "X001010": {
+    "metadata": {
+      "vigente": false,
+      "datos_version": {
+        "version": "0.0",
+        "fecha": "03/03/2020",
+        "evento": "nueva instalacion",
+        "artifice": {
+          "nombre": "asies",
+          "rol": "empresa"
+        },
+        "ingresado_a_SC": false,
+        "nueva_instalacion": true,
+        "actualizando_instalacion": null,
+        "aprobado_para_ingresar": false,
+        "rechazado": null
+      },
+
+      "junctions": ["J001011", "J001012"],
+      "empresa": "Auter",
+      "fecha_de_instalacion": "fecha",
+      "comuna": "Renca la lleva",
+      "cruce": "??????????????????",
+      "codigo del cruce": "??????????????",
+      "tipo de controlador": "???????????????",
+      "interseccion": "???????????",
+      "codigo del sistema": "lo mismo que junction? ",
+      "Marca-Modelo": "",
+      "N etapas": "CALCULADO A PARTIR DE LAS ETAPAS ENTREGADAS",
+      "Mod Potencia": "???????????????",
+      "Detectores": "????????????",
+      "Marca y tipo de OTU": "",
+      "Dirección IP OTU": "",
+      "N serie tarjeta": "",
+      "N empalme": "",
+      "Capacidad empalme": "",
+      "Direccion IP equipamiento": "???????????",
+      "Marca UPS": "",
+      "Modelo UPS": "",
+      "N serie UPS": "",
+      "N capacidad UPS": "",
+      "Duracion Carga UPS": "",
+      "GPS": "?????????????????????????????????????",
+      "Empresa que prove servicio de comunicacion": "",
+      "Postes ganchos": "??????????????",
+      "Postes vehiculares": "?????????????",
+      "Cabezales": {
+        "que es esto": "asies"
+      },
+      "Botoneras": "?????????",
+      "Espira local": "????????",
+      "Espira Scoot": "?????????",
+      "Senal hito": "????????",
+      "Enlace": "(digital | analogo) + (propio | compartido)",
+      "Nodo concentrador": "???????????????",
+      "descripción": "Comentario opcional de la empresa"
+    },
+
+    "etapas": [
+      { "letra": "A", "tipo": "v", "junction": "J001011" },
+      { "letra": "A", "tipo": "v", "junction": "J001011" }
+    ],
+
+    "fases": [
+      { "etapas": ["A", "B"], "imagen": "direccion de la imagen" },
+      { "etapas": ["A", "B"], "imagen": "direccion de la imagen" }
+    ],
+
+    "secuencias": [
+      [1, 2, 3],
+      [1, 2, 3]
+    ],
+
+    "entreverdes": [
+      [0, 4, 0, 4],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0]
+    ],
+    "PDF_respaldo": "direccion",
+    "imagen_instalacion": "direccion"
+  }
+}
