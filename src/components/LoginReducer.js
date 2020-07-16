@@ -3,11 +3,11 @@ export const initialState = {
   password: "",
   isLoading: false,
   error: "",
-  isLoggedIn: false,
+  isLoggedIn: true,
   first_click_login: false,
 };
 
-export function loginReducer(draft, action) {
+export function reducer(draft, action) {
   switch (action.type) {
     case "field": {
       draft[action.fieldName] = action.payload;

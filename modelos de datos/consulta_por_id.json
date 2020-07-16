@@ -1,6 +1,9 @@
 {
-  "X001010": [
-    {
+  "consulta front": {
+    "busqueda": "J001014"
+  },
+  "respuesta back": {
+    "X001010": {
       "metadata": {
         "vigente": false,
         "datos_version": {
@@ -63,5 +66,5 @@
 
       "imagen_instalacion": "imagen"
     }
-  ]
+  }
 }

@@ -4,13 +4,12 @@ import "../App.css";
 import Header from "./Header";
 import Movie from "./Movie";
 import Search from "./Search";
-import NuevoSemaforo from "./NuevoSemaforo";
-import ConsultaSemaforo from "./ConsultaSemaforo";
+import NuevaInstalacion from "./NuevaInstalacion";
+import ConsultaSemaforo from "./ConsultaInstalacion";
 import Login from "./Login";
-import { initialState, loginReducer } from "./Reducer";
+import { initialState, reducer } from "./LoginReducer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -54,7 +53,7 @@ const App = () => {
 
   //   //const { movies, errorMessage, loading } = state;
 
-  const [state, dispatch] = useImmerReducer(loginReducer, initialState);
+  const [state, dispatch] = useImmerReducer(reducer, initialState);
   const { username, password, isLoading, error, isLoggedIn } = state;
   return (
     <DispatchContext.Provider value={dispatch}>
@@ -67,7 +66,7 @@ const App = () => {
               <div className="app-container">
                 <Header />
                 <Route path="/consulta" component={ConsultaSemaforo} />
-                <Route path="/nuevo/formulario" component={NuevoSemaforo} />
+                <Route path="/nuevo/formulario" component={NuevaInstalacion} />
               </div>
               <p>Loged</p>
               <Link to="/">

@@ -177,7 +177,7 @@ input[type="submit"]:hover {
     rgba(129, 129, 144, 0.09287464985994398) 0%,
     rgba(194, 245, 255, 0.2861519607843137) 100%
   );
-  border: 2px solid rgb(100, 100, 100);
+  border: 3px solid rgb(100, 100, 100);
 }
 
 .login-form-view {
@@ -293,14 +293,40 @@ input {
   grid-template:
     "header header" 10vh
     ". ." 8vh
-    "nuevo-s . " 85vh
+    "caja . " 85vh
     /70% auto;
 }
 
 .nuevo-semaforo {
-  grid-area: nuevo-s;
+  grid-area: caja;
 }
 
 .consulta-semaforo {
-  grid-area: consulta-s;
+  grid-area: caja;
+  display: grid;
+  grid-template:
+    "buscador" 10vh
+    "." auto
+    / auto;
+}
+
+.search-container {
+  overflow: hidden;
+  background-color: #e9e9e9;
+  grid-area: buscador;
+}
+.search-container input[type="text"] {
+  padding: 10px;
+  margin-top: 8px;
+  font-size: 24px;
+}
+
+.search-container button {
+  align-self: center;
+  padding: 20px 20px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: rgb(202, 81, 81);
+  font-size: 17px;
+  cursor: pointer;
 }

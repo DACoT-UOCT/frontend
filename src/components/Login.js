@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "../App.css";
 import { DispatchContext, StateContext } from "./App";
 
-const first_click = true;
+// const first_click = true;
 
 const LoginForm = () => {
   const state = useContext(StateContext);
@@ -20,8 +20,8 @@ const LoginForm = () => {
     //aqui se redirige a google y se compara la respuesta con la lista de correos válidos
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve();
-        //reject();
+        if (username == "1") resolve();
+        else reject();
       }, 1000);
     });
   }
@@ -36,7 +36,7 @@ const LoginForm = () => {
       await submitAction();
       dispatch({ type: "success" });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       dispatch({ type: "error" });
     }
   };
