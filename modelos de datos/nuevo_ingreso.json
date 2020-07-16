@@ -21,10 +21,10 @@
       "empresa": "Auter",
       "fecha_de_instalacion": "fecha",
       "comuna": "Renca la lleva",
-      "cruce": "??????????????????",
-      "codigo del cruce": "??????????????",
+      "cruce": "callecallecallecalle",
+      "codigo del cruce": "Cod",
       "tipo de controlador": "???????????????",
-      "interseccion": "???????????",
+      "interseccion": "callecallecalle",
       "codigo del sistema": "lo mismo que junction? ",
       "Marca-Modelo": "",
       "N etapas": "CALCULADO A PARTIR DE LAS ETAPAS ENTREGADAS",
@@ -46,7 +46,12 @@
       "Postes ganchos": "??????????????",
       "Postes vehiculares": "?????????????",
       "Cabezales": {
-        "que es esto": "asies"
+        "l1": ["cant hal, cant led"],
+        "l2": ["cant hal, cant led"],
+        "l3-l4": ["cant hal, cant led"],
+        "l5": ["cant hal, cant led"],
+        "l6": ["cant hal, cant led"],
+        "peatonal": ["cant hal, cant led"] 
       },
       "Botoneras": "?????????",
       "Espira local": "????????",
@@ -54,7 +59,7 @@
       "Senal hito": "????????",
       "Enlace": "(digital | analogo) + (propio | compartido)",
       "Nodo concentrador": "???????????????",
-      "descripción": "Comentario opcional de la empresa"
+      "observación": "Comentario opcional de la empresa"
     },
 
     "etapas": [

@@ -53,7 +53,12 @@
         "Postes ganchos": "??????????????",
         "Postes vehiculares": "?????????????",
         "Cabezales": {
-          "que es esto": "asies"
+          "l1": ["cant hal, cant led"],
+          "l2": ["cant hal, cant led"],
+          "l3-l4": ["cant hal, cant led"],
+          "l5": ["cant hal, cant led"],
+          "l6": ["cant hal, cant led"],
+          "peatonal": ["cant hal, cant led"] 
         },
         "Botoneras": "?????????",
         "Espira local": "????????",
