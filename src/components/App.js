@@ -68,6 +68,7 @@ const App = () => {
                 <Route path="/consulta" component={ConsultaSemaforo} />
                 <Route path="/nuevo/formulario" component={NuevaInstalacion} />
               </div>
+              <p></p>
               <p>Loged</p>
               <Link to="/">
                 <button onClick={() => dispatch({ type: "logOut" })}>
