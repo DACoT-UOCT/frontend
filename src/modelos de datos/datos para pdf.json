@@ -1,0 +1,228 @@
+{
+  "X001010": [
+    {
+      "metadata": {
+        "vigencia": "",
+        "junctions": ["J001011", "J001012", "J001013"],
+        "empresa": "Auter",
+        "fecha_de_instalacion": "fecha",
+        "comuna": "Renca la lleva",
+        "cruce": "??????????????????",
+        "codigo_del_cruce": "??????????????",
+        "tipo_de_controlador": "???????????????",
+        "interseccion": "???????????",
+        "codigo_del_sistema": "lo mismo que junction? ",
+        "marca_modelo": "",
+        "n_etapas": "CALCULADO A PARTIR DE LAS ETAPAS ENTREGADAS",
+        "mod_potencia": "???????????????",
+        "detectores": "????????????",
+        "otu": {
+          "numero": "",
+          "marca": "",
+          "tipo": "",
+          "direccion_ip": ""
+        },
+        "n_serie_tarjeta": "",
+        "n_empalme": "",
+        "capacidad_empalme": "",
+        "direccion_ip_equipamiento": "???????????",
+        "ups": {
+          "marca": "",
+          "modelo": "",
+          "n_serie": "",
+          "capacidad": "",
+          "duracion_carga": ""
+        },
+        "gps": "?????????????????????????????????????",
+        "empresa_servicio_de_comunicacion": "",
+        "postes_ganchos": "??????????????",
+        "postes_vehiculares": "?????????????",
+        "cabezales": {
+          "l1": ["cant hal, cant led"],
+          "l2": ["cant hal, cant led"],
+          "l3_l4": ["cant hal, cant led"],
+          "l5": ["cant hal, cant led"],
+          "l6": ["cant hal, cant led"],
+          "peatonal": ["cant hal, cant led"]
+        },
+        "botoneras": "?????????",
+        "espira_local": "????????",
+        "espira_scoot": "?????????",
+        "senal_hito": "????????",
+        "enlace": "(digital | analogo) + (propio | compartido)",
+        "nodo_concentrador": "???????????????",
+        "descripción": "Comentario opcional de la empresa",
+        "controlador": ""
+      },
+
+      "program": {
+        "L": [
+          ["00:01", "S"],
+          ["00:01", "6"],
+          ["07:00", "XS"],
+          ["00:00", "28"],
+          ["07:30", "28"],
+          ["10:00", "S"],
+          ["10:00", "3"],
+          ["12:00", "8"],
+          ["14:30", "3"],
+          ["17:00", "XS"],
+          ["17:00", "4"],
+          ["20:30", "S"],
+          ["21:00", "5"],
+          ["22:00", "6"]
+        ],
+        "V": [
+          ["00:01", "S"],
+          ["00:01", "6"],
+          ["07:00", "XS"],
+          ["00:00", "28"],
+          ["07:30", "28"],
+          ["10:00", "S"],
+          ["10:00", "3"],
+          ["12:00", "8"],
+          ["14:30", "3"],
+          ["17:00", "XS"],
+          ["17:00", "4"],
+          ["20:30", "S"],
+          ["21:00", "5"],
+          ["22:00", "6"]
+        ],
+        "S": [
+          ["00:01", "S"],
+          ["00:01", "6"],
+          ["10:00", "5"],
+          ["14:00", "6"]
+        ],
+        "D": [
+          ["00:01", "S"],
+          ["00:01", "6"],
+          ["10:00", "5"],
+          ["14:00", "6"]
+        ]
+      },
+
+      "junctions": [
+        {
+          "id": "J0010001",
+          "addr": "LUIS THAYER OJEDA - PROVIDENCIA -  NVA PROVIDENCIA",
+
+          "plans": {
+            "3": {
+              "cycle": 110,
+              "phase_start": { "1": 82, "2": 6, "3": 30 },
+              "system_start": { "1": 72, "2": 6, "3": 25 },
+              "green_start": { "1": 86, "2": 10, "3": 34 },
+              "vehicle_green": { "1": 30, "2": 20, "3": 48 },
+              "pedestrian_green": { "1": 30, "2": 15, "3": 38 },
+              "vehicle_intergreen": { "3": [1, 4], "1": [2, 4], "2": [3, 4] },
+              "pedestrian_intergreen": {
+                "3": [1, 14],
+                "1": [2, 4],
+                "2": [3, 9]
+              }
+            },
+            "4": {
+              "cycle": 120,
+              "phase_start": { "1": 59, "2": 94, "3": 118 },
+              "system_start": { "1": 49, "2": 94, "3": 113 },
+              "green_start": { "1": 63, "2": 98, "3": 2 },
+              "vehicle_green": { "1": 31, "2": 20, "3": 57 },
+              "pedestrian_green": { "1": 31, "2": 15, "3": 47 },
+              "vehicle_intergreen": { "3": [1, 4], "1": [2, 4], "2": [3, 4] },
+              "pedestrian_intergreen": {
+                "3": [1, 14],
+                "1": [2, 4],
+                "2": [3, 9]
+              }
+            },
+            "5": {
+              "cycle": 90,
+              "phase_start": { "1": 83, "2": 21, "3": 41 },
+              "system_start": { "1": 73, "2": 21, "3": 36 },
+              "green_start": { "1": 87, "2": 25, "3": 45 },
+              "vehicle_green": { "1": 24, "2": 16, "3": 38 },
+              "pedestrian_green": { "1": 24, "2": 11, "3": 28 },
+              "vehicle_intergreen": { "3": [1, 4], "1": [2, 4], "2": [3, 4] },
+              "pedestrian_intergreen": {
+                "3": [1, 14],
+                "1": [2, 4],
+                "2": [3, 9]
+              }
+            },
+            "6": {
+              "cycle": 72,
+              "phase_start": { "1": 11, "2": 21, "3": 59 },
+              "system_start": { "1": 1, "2": 21, "3": 54 },
+              "green_start": { "1": 15, "2": 25, "3": 63 },
+              "vehicle_green": { "1": 6, "2": 34, "3": 20 },
+              "pedestrian_green": { "1": 6, "2": 29, "3": 10 },
+              "vehicle_intergreen": { "3": [1, 4], "1": [2, 4], "2": [3, 4] },
+              "pedestrian_intergreen": {
+                "3": [1, 14],
+                "1": [2, 4],
+                "2": [3, 9]
+              }
+            },
+            "8": {
+              "cycle": 120,
+              "phase_start": { "1": 23, "2": 66, "3": 90 },
+              "system_start": { "1": 13, "2": 66, "3": 85 },
+              "green_start": { "1": 27, "2": 70, "3": 94 },
+              "vehicle_green": { "1": 39, "2": 20, "3": 49 },
+              "pedestrian_green": { "1": 39, "2": 15, "3": 39 },
+              "vehicle_intergreen": { "3": [1, 4], "1": [2, 4], "2": [3, 4] },
+              "pedestrian_intergreen": {
+                "3": [1, 14],
+                "1": [2, 4],
+                "2": [3, 9]
+              }
+            },
+            "28": {
+              "cycle": 120,
+              "phase_start": { "1": 23, "2": 66, "3": 90 },
+              "system_start": { "1": 13, "2": 66, "3": 85 },
+              "green_start": { "1": 27, "2": 70, "3": 94 },
+              "vehicle_green": { "1": 39, "2": 20, "3": 49 },
+              "pedestrian_green": { "1": 39, "2": 15, "3": 39 },
+              "vehicle_intergreen": { "3": [1, 4], "1": [2, 4], "2": [3, 4] },
+              "pedestrian_intergreen": {
+                "3": [1, 14],
+                "1": [2, 4],
+                "2": [3, 9]
+              }
+            }
+          }
+        }
+      ],
+
+      "stages": {
+        "A": "VEH",
+        "B": "PEAT",
+        "C": "VEH",
+        "D": "PEAT",
+        "E": "VEH",
+        "F": "PEAT"
+      },
+      "fases": [
+        { "etapas": ["A", "B"], "imagen": "direccion de la imagen" },
+        { "etapas": ["A", "B"], "imagen": "direccion de la imagen" }
+      ],
+
+      "secuencias": {
+        "1": { "fases": [1, 2, 3], "junction": "J0010001" },
+        "2": { "fases": [1, 2, 3], "junction": "J0010001" }
+      },
+
+      "intergreens": {
+        "A": [["E", "F"], 4],
+        "B": [["C", "E"], 9],
+        "C": [["B", "E", "F"], 4],
+        "D": [["E"], 9],
+        "E": [["A", "B", "C", "D"], 4],
+        "F": [["A", "C"], 14]
+      },
+      "imagen_instalacion": "direccion"
+    }
+  ]
+}

@@ -1,15 +1,20 @@
 import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./BusquedaReducer";
+import PreviewInstalacion from "./PreviewInstalacion";
+
+export const StateContext = React.createContext();
+export const DispatchContext = React.createContext();
 
 const ConsultaSemaforo = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
+
   const {
     busqueda,
     isLoading,
     id_consultado,
     no_encontrado,
-    metadata,
+    data,
     imagen_cruce,
   } = state;
 
@@ -17,8 +22,10 @@ const ConsultaSemaforo = () => {
     //aqui se redirige a google y se compara la respuesta con la lista de correos válidos
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (busqueda === "1") resolve();
-        else reject();
+        if (busqueda === "1") {
+          dispatch({ type: "loadData" });
+          resolve();
+        } else reject();
       }, 1000);
     });
   }
@@ -38,37 +45,35 @@ const ConsultaSemaforo = () => {
   };
 
   useEffect(() => {
-    console.log(state);
-  }, [state]);
+    if (isLoading) console.log("Solicitando datos del cruce " + busqueda);
+  }, [isLoading]);
 
   return (
-    //     <div class="topnav">
-    //   <a class="active" href="#home">Home</a>
-    //   <a href="#about">About</a>
-    //   <a href="#contact">Contact</a>
-    //   <input type="text" placeholder="Search..">
-    // </div>
-    <div className="grid-item consulta-semaforo">
-      <div className="search-container">
-        <form onSubmit={submitClick}>
-          <input
-            type="text"
-            placeholder="Buscar"
-            value={busqueda}
-            onChange={(e) => {
-              dispatch({
-                type: "field",
-                fieldName: "busqueda",
-                payload: e.currentTarget.value,
-              });
-            }}></input>
-          <button type="submit"></button>
-        </form>
-      </div>
-      {isLoading && <p>Buscando</p>}
-      {no_encontrado && <p>Entrada no encontrada</p>}
-      {id_consultado != null && <p>Item buscado {id_consultado} </p>}
-    </div>
+    <DispatchContext.Provider value={dispatch}>
+      <StateContext.Provider value={state}>
+        <div className="grid-item consulta-semaforo">
+          <div className="search-container">
+            <form onSubmit={submitClick}>
+              <input
+                type="text"
+                placeholder="Buscar"
+                value={busqueda}
+                onChange={(e) => {
+                  dispatch({
+                    type: "field",
+                    fieldName: "busqueda",
+                    payload: e.currentTarget.value,
+                  });
+                }}></input>
+              <button type="submit"></button>
+            </form>
+          </div>
+          {isLoading && <p>Buscando</p>}
+          {no_encontrado && <p>Entrada no encontrada</p>}
+          {id_consultado != null && <PreviewInstalacion />}
+        </div>
+      </StateContext.Provider>
+    </DispatchContext.Provider>
   );
 };
 
