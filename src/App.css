@@ -177,7 +177,8 @@ input[type="submit"]:hover {
     rgba(129, 129, 144, 0.09287464985994398) 0%,
     rgba(194, 245, 255, 0.2861519607843137) 100%
   );
-  border: 3px solid rgb(100, 100, 100);
+  border: 1px solid rgb(100, 100, 100);
+  padding-left: 15px;
 }
 
 .login-form-view {
@@ -287,8 +288,7 @@ input {
 }
 
 .app-container {
-  height: 100vh;
-  border: 10px red;
+  height: 105vh;
   display: grid;
   grid-template:
     "header header" 10vh
@@ -299,6 +299,15 @@ input {
 
 .nuevo-semaforo {
   grid-area: caja;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.separador{
+  border: none;
+  border-top: 2px solid #999999;
+  text-align: center;
+  width: 75%;
 }
 
 .consulta-semaforo {

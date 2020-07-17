@@ -2,8 +2,6 @@ import React, { useReducer, useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import "../App.css";
 import Header from "./Header";
-import Movie from "./Movie";
-import Search from "./Search";
 import NuevaInstalacion from "./NuevaInstalacion";
 import ConsultaSemaforo from "./ConsultaInstalacion";
 import Login from "./Login";
@@ -68,8 +66,6 @@ const App = () => {
                 <Route path="/consulta" component={ConsultaSemaforo} />
                 <Route path="/nuevo/formulario" component={NuevaInstalacion} />
               </div>
-              <p></p>
-              <p>Loged</p>
               <Link to="/">
                 <button onClick={() => dispatch({ type: "logOut" })}>
                   Log Out
