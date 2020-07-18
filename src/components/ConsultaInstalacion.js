@@ -65,7 +65,7 @@ const ConsultaSemaforo = () => {
                     payload: e.currentTarget.value,
                   });
                 }}></input>
-              <button type="submit"></button>
+              <button type="submit">buscar</button>
             </form>
           </div>
           {isLoading && <p>Buscando</p>}

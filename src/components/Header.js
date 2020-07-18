@@ -5,7 +5,7 @@ import "../App.css";
 const Header = () => {
   return (
     <nav className="nav-principal grid-item">
-      <h4>UOCT DACoT</h4>
+      <h4>LOGO</h4>
       <ul className="nav-links">
         <Link style={{ color: "white" }} to="/consulta">
           <li>Consultas</li>
