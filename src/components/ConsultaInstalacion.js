@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./BusquedaReducer";
 import PreviewInstalacion from "./PreviewInstalacion";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import PdfConsulta from "./PdfConsulta";
+import datosConsulta from "../modelos de datos/datos_para_pdf.json";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -69,8 +72,28 @@ const ConsultaSemaforo = () => {
             </form>
           </div>
           {isLoading && <p>Buscando</p>}
-          {no_encontrado && <p>Entrada no encontrada</p>}
-          {id_consultado != null && <PreviewInstalacion />}
+          {no_encontrado && 
+            <div>
+              <PDFDownloadLink
+                document={<PdfConsulta data={datosConsulta} />}
+                fileName="interseccion.pdf"
+                style={{
+                  textDecoration: "none",
+                  padding: "10px",
+                  color: "#4a4a4a",
+                  backgroundColor: "#f2f2f2",
+                  border: "1px solid #4a4a4a"
+                }}
+              >
+                {({ blob, url, loading, error }) =>
+                  loading ? "Generando Pdf..." : "Descargar Pdf"
+                }
+              </PDFDownloadLink>
+              <p>Entrada no encontrada</p> 
+            </div>}
+          {id_consultado != null && 
+            <PreviewInstalacion />
+          }
         </div>
       </StateContext.Provider>
     </DispatchContext.Provider>
