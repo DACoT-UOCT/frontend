@@ -32,9 +32,9 @@ const dummyData = {
 export const initialState = {
   busqueda: "",
   isLoading: false,
-  id_consultado: 1,
+  id_consultado: null,
   no_encontrado: false,
-  data: dummyData,
+  data: null,
   imagen_cruce: null,
 };
 
