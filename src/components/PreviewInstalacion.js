@@ -7,6 +7,8 @@ const PreviewInstalacion = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
   const data = state.data;
+  const version = data.datos_version;
+
   const descargar_programaciones = () => {
     //consultar informacion
     //generar PDF
@@ -21,12 +23,8 @@ const PreviewInstalacion = () => {
     <div className="preview">
       <div className="data grid-item">
         <ul>
-          <li>Codigo en el sistema:</li>
-          <ul>
-            {data.junctions.map((junction) => (
-              <li key={junction}>{junction}</li>
-            ))}
-          </ul>
+          Informacion del cruce
+          <li>{"Codigo en el sistema: " + data.junctions.join(" - ")}</li>
           <li>
             Ubicacion:{" "}
             {data.cruce.toUpperCase() + "   " + data.comuna.toUpperCase()}
@@ -34,7 +32,33 @@ const PreviewInstalacion = () => {
           <li>Empresa instaladora: {data.empresa}</li>
           <li>Empresa encargada actualmente: {data.empresa}</li>
           <li>Fecha de instalacion: {data.fecha_de_instalacion}</li>
-          <li></li>
+        </ul>
+
+        <ul>
+          Estado actual
+          <ul>
+            Vigencia:
+            {data.vigente ? (
+              <li>Desde {data.vigente.desde}</li>
+            ) : (
+              <li>No vigente</li>
+            )}
+          </ul>
+          {version.nueva_instalacion && (
+            <ul>
+              Nueva instalación en proceso
+              {version.aprobado_para_ingresar ? (
+                <li>Datos validados, en espera de ser ingresados al SC</li>
+              ) : version.rechazado ? (
+                <ul>
+                  Rechazado
+                  <li>{version.rechazado}</li>
+                </ul>
+              ) : (
+                <li>En espera de validación.</li>
+              )}
+            </ul>
+          )}
         </ul>
       </div>
       <div className="imagen grid-item">Imagen del cruce</div>

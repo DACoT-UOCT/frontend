@@ -17,7 +17,7 @@ const dummyData = {
       cambio_programacion_o_periodizaciones: false,
     },
     aprobado_para_ingresar: false,
-    rechazado: "comentario con observaciones, en otro caso, null",
+    rechazado: "Error matriz entreverdes.",
   },
 
   junctions: ["J001011", "J001012", "J001013"],

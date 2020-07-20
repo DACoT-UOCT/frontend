@@ -70,7 +70,10 @@
         "espira_local": "????????",
         "espira_scoot": "?????????",
         "senal_hito": "????????",
-        "enlace": "(digital | analogo) + (propio | compartido)",
+        "enlace": {
+          "digital": true,
+          "compartido": true
+        },
         "nodo_concentrador": "???????????????",
         "descripción": "Comentario opcional de la empresa",
         "controlador": ""
@@ -241,10 +244,7 @@
         "F": [["A", "C"], 14]
       },
       "pdf_respaldo": "direccion",
-      "imagen_instalacion": "direccion",
-
-      "fver": "0.1",
-      "junction": "J001331"
+      "imagen_instalacion": "direccion"
     }
   ]
 }
