@@ -100,8 +100,8 @@ export const initialState = {
   ],
   fases: [{ etapas: [], imagen: null }],
 
-  secuencias: [],
-  entreverdes: [["-"]],
+  secuencias: [[]],
+  entreverdes: [[""]],
   pdf_respaldo: "",
   imagen_instalacion: "",
   observaciones: "",
@@ -200,6 +200,13 @@ export function reducer(draft, action) {
 
     case "eliminar_stage": {
       draft.stages.pop();
+
+      //eliminar columna de matriz entreverdes
+      draft.entreverdes.map((fila) => {
+        fila.pop();
+      });
+      //eliminar ultima fila matriz entreverdes
+      draft.entreverdes.pop();
       return;
     }
 
@@ -209,11 +216,11 @@ export function reducer(draft, action) {
 
       //agregar columna a matriz de entreverdes
       draft.entreverdes.map((fila) => {
-        fila.push("-");
+        fila.push("");
       });
       //agregar fila al final de la matriz de entreverdes
-      const largo = draft.stages.lenght;
-      const array = Array(largo).fill("-");
+      const largo = draft.stages.length;
+      const array = Array(largo).fill("");
       draft.entreverdes.push(array);
 
       return;
@@ -268,6 +275,10 @@ export function reducer(draft, action) {
     case "eliminar_secuencia": {
       draft.secuencias.pop();
       return;
+    }
+
+    case "entreverde": {
+      draft.entreverdes[action.index_fila][action.index_col] = action.payLoad;
     }
 
     default:
