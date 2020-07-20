@@ -1,5 +1,5 @@
 export const initialState = {
-  component: 1,
+  component: 2,
   metadata: {
     datos_version: {
       vigente: false,

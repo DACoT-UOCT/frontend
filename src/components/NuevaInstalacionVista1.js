@@ -10,6 +10,7 @@ const NuevaInstalacionVista1 = () => {
 
   const siguiente = () => {
     console.log(state);
+
     dispatch({ type: "siguiente" });
   };
   return (
