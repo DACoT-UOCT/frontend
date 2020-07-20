@@ -42,23 +42,41 @@ export const initialState = {
     empresa_servicio_de_comunicacion: "",
     postes_ganchos: "",
     postes_vehiculares: "",
+    postes_peatonales: "",
     cabezales: {
-      l1: ["cant hal, cant led"],
-      l2: ["cant hal, cant led"],
-      l3_l4: ["cant hal, cant led"],
-      l5: ["cant hal, cant led"],
-      l6: ["cant hal, cant led"],
-      peatonal: ["cant hal, cant led"],
+      l1: {
+        hal: "",
+        led: "",
+      },
+      l2: {
+        hal: "",
+        led: "",
+      },
+      l3_l4: {
+        hal: "",
+        led: "",
+      },
+      l5: {
+        hal: "",
+        led: "",
+      },
+      l6: {
+        hal: "",
+        led: "",
+      },
+      peatonal: {
+        hal: "",
+        led: "",
+      },
     },
     botoneras: "",
     espira_local: "",
     espira_scoot: "",
     senal_hito: "",
-    enlace: {
-      digital: null,
-      compartido: null,
-    },
-    nodo_concentrador: null,
+    enlace_pc: "",
+    nodo_concentrador: "",
+    enlace_da: "",
+
     controlador: {
       modelo: "",
       marca: "",
@@ -144,6 +162,36 @@ export function reducer(draft, action) {
 
     case "ups": {
       draft.metadata.ups[action.fieldName] = action.payLoad;
+      return;
+    }
+
+    case "cabezales.l1": {
+      draft.metadata.cabezales.l1[action.fieldName] = action.payLoad;
+      return;
+    }
+
+    case "cabezales.l2": {
+      draft.metadata.cabezales.l2[action.fieldName] = action.payLoad;
+      return;
+    }
+
+    case "cabezales.l3_l4": {
+      draft.metadata.cabezales.l3_l4[action.fieldName] = action.payLoad;
+      return;
+    }
+
+    case "cabezales.l5": {
+      draft.metadata.cabezales.l5[action.fieldName] = action.payLoad;
+      return;
+    }
+
+    case "cabezales.l6": {
+      draft.metadata.cabezales.l6[action.fieldName] = action.payLoad;
+      return;
+    }
+
+    case "cabezales.peatonal": {
+      draft.metadata.cabezales.peatonal[action.fieldName] = action.payLoad;
       return;
     }
 

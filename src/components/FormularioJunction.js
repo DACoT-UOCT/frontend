@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
-import { Col, Row, Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Col, Row, Button, FormGroup, Label, Input } from "reactstrap";
 
 const FormularioJunction = () => {
   const state = useContext(StateContext);
