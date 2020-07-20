@@ -412,6 +412,453 @@ const NuevaInstalacionVista1 = () => {
               </FormGroup>
             </Row> */}
 
+          <legend>Postes</legend>
+          <Row form>
+            <Col sm={2}>
+              <FormGroup>
+                <Label>Ganchos</Label>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="ganchos"
+                  placeholder="0"
+                  value={state.metadata.postes_ganchos}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "postes_ganchos",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+              </FormGroup>
+            </Col>
+            <Col sm={1}></Col>
+            <Col sm={2}>
+              <FormGroup>
+                <Label>Vehiculares</Label>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="vehiculares"
+                  placeholder="0"
+                  value={state.metadata.postes_vehiculares}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "postes_vehiculares",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+              </FormGroup>
+            </Col>
+            <Col sm={1}></Col>
+            <Col sm={2}>
+              <FormGroup>
+                <Label>Peatonales</Label>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="peatonales"
+                  placeholder="0"
+                  value={state.metadata.postes_peatonales}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "postes_peatonales",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+
+          <hr className="separador"></hr>
+
+          <legend>Cabezales</legend>
+          <Label sm={{ offset: 4 }}>Halogeno Led</Label>
+          <Row form>
+              <FormGroup row>
+                <Label sm={4}>Vehiculo L1</Label>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-l1-hal"
+                  placeholder="0"
+                  value={state.metadata.cabezales.l1.hal}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.l1",
+                      fieldName: "hal",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-l1-led"
+                  placeholder="0"
+                  value={state.metadata.cabezales.l1.led}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.l1",
+                      fieldName: "led",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+              </FormGroup>
+          </Row>
+
+          <Row form>
+              <FormGroup row>
+                <Label sm={4}>Vehiculo L2</Label>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-l2-hal"
+                  placeholder="0"
+                  value={state.metadata.cabezales.l2.hal}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.l2",
+                      fieldName: "hal",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-l2-led"
+                  placeholder="0"
+                  value={state.metadata.cabezales.l2.led}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.l2",
+                      fieldName: "led",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+              </FormGroup>
+          </Row>
+
+          <Row form>
+              <FormGroup row>
+                <Label sm={4}>Vehiculo L3-L4</Label>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-l3_l4-hal"
+                  placeholder="0"
+                  value={state.metadata.cabezales.l3_l4.hal}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.l3_l4",
+                      fieldName: "hal",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-l3_l4-led"
+                  placeholder="0"
+                  value={state.metadata.cabezales.l3_l4.led}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.l3_l4",
+                      fieldName: "led",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+              </FormGroup>
+          </Row>
+
+          <Row form>
+              <FormGroup row>
+                <Label sm={4}>Vehiculo L5</Label>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-l5-hal"
+                  placeholder="0"
+                  value={state.metadata.cabezales.l5.hal}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.l5",
+                      fieldName: "hal",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-l5-led"
+                  placeholder="0"
+                  value={state.metadata.cabezales.l5.led}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.l5",
+                      fieldName: "led",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+              </FormGroup>
+          </Row>
+
+          <Row form>
+              <FormGroup row>
+                <Label sm={4}>Vehiculo L6</Label>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-l6-hal"
+                  placeholder="0"
+                  value={state.metadata.cabezales.l6.hal}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.l6",
+                      fieldName: "hal",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-l6-led"
+                  placeholder="0"
+                  value={state.metadata.cabezales.l6.led}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.l6",
+                      fieldName: "led",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+              </FormGroup>
+          </Row>
+
+          <Row form>
+              <FormGroup row>
+                <Label sm={4}>Peatonal</Label>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-peatonal-hal"
+                  placeholder="0"
+                  value={state.metadata.cabezales.peatonal.hal}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.peatonal",
+                      fieldName: "hal",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+                <Col sm={2}>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="cabezales-peatonal-led"
+                  placeholder="0"
+                  value={state.metadata.cabezales.peatonal.led}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "cabezales.peatonal",
+                      fieldName: "led",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+                </Col>
+              </FormGroup>
+          </Row>
+
+          <hr className="separador"></hr>
+
+          <Row form>
+            <Col sm={3}>
+              <FormGroup>
+                <Label>Botoneras</Label>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="botoneras"
+                  placeholder="0"
+                  value={state.metadata.botoneras}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "botoneras",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+              </FormGroup>
+            </Col>
+            <Col sm={1}></Col>
+            <Col sm={4}>
+              <FormGroup>
+                <Label>Señal Hito</Label>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="senal_hito"
+                  placeholder="0"
+                  value={state.metadata.senal_hito}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "senal_hito",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+
+          <Row form>
+            <Col sm={3}>
+              <FormGroup>
+                <Label>Espira Local</Label>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="espira_local"
+                  placeholder="0"
+                  value={state.metadata.espira_local}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "espira_local",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+              </FormGroup>
+            </Col>
+            <Col sm={1}></Col>
+            <Col sm={4}>
+              <FormGroup>
+                <Label>Espira Scoot</Label>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="espira_scoot"
+                  placeholder=""
+                  value={state.metadata.espira_scoot}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "espira_scoot",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+
+          <Row form>
+            <Col sm={4}>
+              <FormGroup>
+                <Label>Tipo de Enlace</Label>
+                <Input
+                  bsSize="sm"
+                  type="select"
+                  name="enlace_da"
+                  value={state.metadata.enlace_da}            // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
+                  onChange={(e) => {
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "enlace_da",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}>
+                <option value="Digital">Digital</option>
+                <option value="Análogo">Análogo</option>
+                </Input>
+              </FormGroup>
+            </Col>
+          </Row>
+
+          <Row form>
+            <Col sm={4}>
+              <FormGroup>
+              <Label>Tipo de Enlace</Label>
+                <Input
+                  bsSize="sm"
+                  type="select"
+                  name="enlace_pc"
+                  value={state.metadata.enlace_pc}           // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
+                  onChange={(e) => {
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "enlace_pc",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}>
+                <option value="Propio">Propio</option>
+                <option value="Compartido">Compartido</option>
+                </Input>
+              </FormGroup>
+            </Col>
+            <Col sm={1}></Col>
+            <Col sm={5}>
+              <FormGroup>
+                <Label>Nodo Concentrador</Label>
+                <Input
+                  bsSize="sm"
+                  type="text"
+                  name="nodo_concentrador"
+                  placeholder=""
+                  value={state.metadata.nodo_concentrador}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "nodo_concentrador",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+
           <FormGroup>
             <Col sm={{ offset: 9 }}>
               <Button size="sm" onClick={siguiente}>
@@ -419,6 +866,7 @@ const NuevaInstalacionVista1 = () => {
               </Button>
             </Col>
           </FormGroup>
+
         </Form>
       </div>
     </>
