@@ -91,9 +91,13 @@ export const initialState = {
     },
   ],
 
-  stages: {
+  stages: [
+    {
+      id: "",
+      tipo: "",
+    },
     // A: "VEH",
-  },
+  ],
   fases: [
     // { etapas: ["A", "B"], imagen: "" },
   ],
