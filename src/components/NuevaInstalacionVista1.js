@@ -800,9 +800,9 @@ const NuevaInstalacionVista1 = () => {
                 <Label>Tipo de Enlace</Label>
                 <Input
                   bsSize="sm"
-                  type="select"
+                  type="select"            // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
                   name="enlace_da"
-                  value={state.metadata.enlace_da}            // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
+                  value={state.metadata.enlace_da}
                   onChange={(e) => {
                     dispatch({
                       type: "metadata",
@@ -810,6 +810,7 @@ const NuevaInstalacionVista1 = () => {
                       payLoad: e.currentTarget.value,
                     });
                   }}>
+                <option value="" hidden></option>
                 <option value="Digital">Digital</option>
                 <option value="Análogo">Análogo</option>
                 </Input>
@@ -833,6 +834,7 @@ const NuevaInstalacionVista1 = () => {
                       payLoad: e.currentTarget.value,
                     });
                   }}>
+                    <option value="" hidden></option>
                 <option value="Propio">Propio</option>
                 <option value="Compartido">Compartido</option>
                 </Input>
