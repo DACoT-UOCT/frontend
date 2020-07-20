@@ -1,5 +1,5 @@
 export const initialState = {
-  component: 1,
+  component: 2,
   metadata: {
     datos_version: {
       vigente: false,
@@ -98,16 +98,10 @@ export const initialState = {
     },
     // A: "VEH",
   ],
-  fases: [
-    // { etapas: ["A", "B"], imagen: "" },
-  ],
+  fases: [{ etapas: [], imagen: null }],
 
-  secuencias: [
-    // [1, 2, 3],
-  ],
-  intergreens: {
-    // A: [["E", "F"], 4],
-  },
+  secuencias: [],
+  entreverdes: [["-"]],
   pdf_respaldo: "",
   imagen_instalacion: "",
   observaciones: "",
@@ -139,7 +133,7 @@ export function reducer(draft, action) {
     }
 
     case "agregar_junction": {
-      const nuevo = { id: "", addr: "" };
+      const nuevo = { id: "", addr: "", codigo_cruce: "" };
       draft.junctions.push(nuevo);
       return;
     }
@@ -199,7 +193,81 @@ export function reducer(draft, action) {
       return;
     }
 
-    case "stages": {
+    case "stage": {
+      draft.stages[action.index][action.fieldName] = action.payLoad;
+      return;
+    }
+
+    case "eliminar_stage": {
+      draft.stages.pop();
+      return;
+    }
+
+    case "agregar_stage": {
+      const nuevo = { id: "", tipo: "" };
+      draft.stages.push(nuevo);
+
+      //agregar columna a matriz de entreverdes
+      draft.entreverdes.map((fila) => {
+        fila.push("-");
+      });
+      //agregar fila al final de la matriz de entreverdes
+      const largo = draft.stages.lenght;
+      const array = Array(largo).fill("-");
+      draft.entreverdes.push(array);
+
+      return;
+    }
+
+    case "uploadPDF": {
+      draft.pdf_respaldo = action.payLoad;
+      return;
+    }
+
+    case "fase": {
+      if (action.fieldName === "etapas") {
+        const lista = action.payLoad.replace(/\s/g, "").split("-");
+        lista.map((valor) => {
+          //if valor not in stages id
+          //return error
+        });
+        draft.fases[action.index].etapas = lista;
+      } else if (action.fieldName === "imagen") {
+      }
+      return;
+    }
+
+    case "uploadImagenFase": {
+      draft.fases[action.index].imagen = action.payLoad;
+      return;
+    }
+
+    case "agregar_fase": {
+      const nuevo = { etapas: [], imagen: null };
+      draft.fases.push(nuevo);
+      return;
+    }
+
+    case "eliminar_fase": {
+      draft.fases.pop();
+      return;
+    }
+
+    case "secuencia": {
+      const lista = action.payLoad.replace(/\s/g, "").split("-");
+      draft.secuencias[action.index] = lista;
+      return;
+    }
+
+    case "agregar_secuencia": {
+      const nuevo = [];
+      draft.secuencias.push(nuevo);
+      return;
+    }
+
+    case "eliminar_secuencia": {
+      draft.secuencias.pop();
+      return;
     }
 
     default:

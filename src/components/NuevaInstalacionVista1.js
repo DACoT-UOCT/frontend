@@ -481,9 +481,9 @@ const NuevaInstalacionVista1 = () => {
           <legend>Cabezales</legend>
           <Label sm={{ offset: 4 }}>Halogeno Led</Label>
           <Row form>
-              <FormGroup row>
-                <Label sm={4}>Vehiculo L1</Label>
-                <Col sm={2}>
+            <FormGroup row>
+              <Label sm={4}>Vehiculo L1</Label>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -498,8 +498,8 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-                <Col sm={2}>
+              </Col>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -514,14 +514,14 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-              </FormGroup>
+              </Col>
+            </FormGroup>
           </Row>
 
           <Row form>
-              <FormGroup row>
-                <Label sm={4}>Vehiculo L2</Label>
-                <Col sm={2}>
+            <FormGroup row>
+              <Label sm={4}>Vehiculo L2</Label>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -536,8 +536,8 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-                <Col sm={2}>
+              </Col>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -552,14 +552,14 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-              </FormGroup>
+              </Col>
+            </FormGroup>
           </Row>
 
           <Row form>
-              <FormGroup row>
-                <Label sm={4}>Vehiculo L3-L4</Label>
-                <Col sm={2}>
+            <FormGroup row>
+              <Label sm={4}>Vehiculo L3-L4</Label>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -574,8 +574,8 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-                <Col sm={2}>
+              </Col>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -590,14 +590,14 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-              </FormGroup>
+              </Col>
+            </FormGroup>
           </Row>
 
           <Row form>
-              <FormGroup row>
-                <Label sm={4}>Vehiculo L5</Label>
-                <Col sm={2}>
+            <FormGroup row>
+              <Label sm={4}>Vehiculo L5</Label>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -612,8 +612,8 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-                <Col sm={2}>
+              </Col>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -628,14 +628,14 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-              </FormGroup>
+              </Col>
+            </FormGroup>
           </Row>
 
           <Row form>
-              <FormGroup row>
-                <Label sm={4}>Vehiculo L6</Label>
-                <Col sm={2}>
+            <FormGroup row>
+              <Label sm={4}>Vehiculo L6</Label>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -650,8 +650,8 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-                <Col sm={2}>
+              </Col>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -666,14 +666,14 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-              </FormGroup>
+              </Col>
+            </FormGroup>
           </Row>
 
           <Row form>
-              <FormGroup row>
-                <Label sm={4}>Peatonal</Label>
-                <Col sm={2}>
+            <FormGroup row>
+              <Label sm={4}>Peatonal</Label>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -688,8 +688,8 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-                <Col sm={2}>
+              </Col>
+              <Col sm={2}>
                 <Input
                   bsSize="sm"
                   type="text"
@@ -704,8 +704,8 @@ const NuevaInstalacionVista1 = () => {
                     });
                   }}
                 />
-                </Col>
-              </FormGroup>
+              </Col>
+            </FormGroup>
           </Row>
 
           <hr className="separador"></hr>
@@ -800,7 +800,7 @@ const NuevaInstalacionVista1 = () => {
                 <Label>Tipo de Enlace</Label>
                 <Input
                   bsSize="sm"
-                  type="select"            // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
+                  type="select" // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
                   name="enlace_da"
                   value={state.metadata.enlace_da}
                   onChange={(e) => {
@@ -810,9 +810,9 @@ const NuevaInstalacionVista1 = () => {
                       payLoad: e.currentTarget.value,
                     });
                   }}>
-                <option value="" hidden></option>
-                <option value="Digital">Digital</option>
-                <option value="Análogo">Análogo</option>
+                  <option value="" hidden></option>
+                  <option value="Digital">Digital</option>
+                  <option value="Análogo">Análogo</option>
                 </Input>
               </FormGroup>
             </Col>
@@ -821,12 +821,12 @@ const NuevaInstalacionVista1 = () => {
           <Row form>
             <Col sm={4}>
               <FormGroup>
-              <Label>Tipo de Enlace</Label>
+                <Label>Tipo de Enlace</Label>
                 <Input
                   bsSize="sm"
                   type="select"
                   name="enlace_pc"
-                  value={state.metadata.enlace_pc}           // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
+                  value={state.metadata.enlace_pc} // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
                   onChange={(e) => {
                     dispatch({
                       type: "metadata",
@@ -834,32 +834,34 @@ const NuevaInstalacionVista1 = () => {
                       payLoad: e.currentTarget.value,
                     });
                   }}>
-                    <option value="" hidden></option>
-                <option value="Propio">Propio</option>
-                <option value="Compartido">Compartido</option>
+                  <option value="" hidden></option>
+                  <option value="Propio">Propio</option>
+                  <option value="Compartido">Compartido</option>
                 </Input>
               </FormGroup>
             </Col>
             <Col sm={1}></Col>
-            <Col sm={5}>
-              <FormGroup>
-                <Label>Nodo Concentrador</Label>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="nodo_concentrador"
-                  placeholder=""
-                  value={state.metadata.nodo_concentrador}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "metadata",
-                      fieldName: "nodo_concentrador",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </FormGroup>
-            </Col>
+            {state.metadata.enlace_pc === "Compartido" && (
+              <Col sm={5}>
+                <FormGroup>
+                  <Label>Nodo Concentrador</Label>
+                  <Input
+                    bsSize="sm"
+                    type="text"
+                    name="nodo_concentrador"
+                    placeholder=""
+                    value={state.metadata.nodo_concentrador}
+                    onChange={(e) => {
+                      dispatch({
+                        type: "metadata",
+                        fieldName: "nodo_concentrador",
+                        payLoad: e.currentTarget.value,
+                      });
+                    }}
+                  />
+                </FormGroup>
+              </Col>
+            )}
           </Row>
 
           <FormGroup>
@@ -869,7 +871,6 @@ const NuevaInstalacionVista1 = () => {
               </Button>
             </Col>
           </FormGroup>
-
         </Form>
       </div>
     </>

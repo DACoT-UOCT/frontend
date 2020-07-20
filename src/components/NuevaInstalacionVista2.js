@@ -12,8 +12,10 @@ const NuevaInstalacionVista2 = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
-  const uploadPDF = (e) => {
-    dispatch({ type: "uploadPDF", payLoad: e.target.files[0] });
+  const submit = () => {
+    console.log(state);
+    //verificar entradas
+    //enviar
   };
 
   return (
@@ -22,8 +24,19 @@ const NuevaInstalacionVista2 = () => {
 
       <Form>
         <legend>Informacion de respaldo</legend>
-        <input type="file" onChange={uploadPDF} />
+        <Label>
+          Adjuntar el PDF de la instalación para respaldar y verificar los datos
+          ingresados. El documento debe contener además la programacion y
+          periodización inicial, además de los bits de control para la OTU.
+        </Label>
+        <input
+          type="file"
+          onChange={(e) => {
+            dispatch({ type: "uploadPDF", payLoad: e.target.files[0] });
+          }}
+        />
 
+        <hr className="separador"></hr>
         <>
           <legend>Etapas</legend>
           {state.stages.map((etapa, index) => {
@@ -48,56 +61,38 @@ const NuevaInstalacionVista2 = () => {
                     />
                   </FormGroup>
                 </Col>
-
-                <Col sm={6}>
+                <Col sm={1}></Col>
+                <Col sm={4}>
                   <FormGroup>
-                    {index === 0 && <Label>Cruce</Label>}
+                    {index === 0 && <Label>Tipo</Label>}
                     <Input
                       bsSize="sm"
-                      type="text"
-                      name="cruce"
-                      placeholder="Calle - Calle"
-                      value={junction.addr}
+                      type="select"
+                      name="enlace_pc"
+                      value={etapa.tipo} // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
                       onChange={(e) =>
                         dispatch({
-                          type: "junctions",
+                          type: "stage",
                           index: index,
-                          fieldName: "addr",
+                          fieldName: "tipo",
                           payLoad: e.currentTarget.value,
                         })
-                      }
-                    />
-                  </FormGroup>
-                </Col>
-                <Col sm={3}>
-                  <FormGroup>
-                    {index === 0 && <Label>Código cruce</Label>}
-                    <Input
-                      bsSize="sm"
-                      type="text"
-                      name="cruce"
-                      placeholder="0000"
-                      value={junction.codigo_cruce}
-                      onChange={(e) =>
-                        dispatch({
-                          type: "junctions",
-                          index: index,
-                          fieldName: "codigo_cruce",
-                          payLoad: e.currentTarget.value,
-                        })
-                      }
-                    />
+                      }>
+                      <option value="" hidden></option>
+                      <option value="vehicular">Vehicular</option>
+                      <option value="peatonal">Peatonal</option>
+                    </Input>
                   </FormGroup>
                 </Col>
               </Row>
             );
           })}
-          {state.junctions.length > 1 && (
+          {state.stages.length > 1 && (
             <FormGroup>
               <Col sm={1}>
                 <Button
                   size="sm"
-                  onClick={() => dispatch({ type: "eliminar_junction" })}>
+                  onClick={() => dispatch({ type: "eliminar_stage" })}>
                   Eliminar
                 </Button>
               </Col>
@@ -108,13 +103,169 @@ const NuevaInstalacionVista2 = () => {
               <Button
                 size="sm"
                 onClick={() => {
-                  dispatch({ type: "agregar_junction" });
+                  dispatch({ type: "agregar_stage" });
                 }}>
-                Agregar junction
+                Agregar etapa
               </Button>
             </Col>
           </FormGroup>
         </>
+
+        <hr className="separador"></hr>
+
+        <>
+          <legend>Fases</legend>
+          {state.fases.map((fase, index) => {
+            return (
+              <Row form>
+                <Col sm={1}>
+                  <FormGroup>
+                    {index === 0 && <Label>N°</Label>}
+                    <Label>{index}</Label>
+                  </FormGroup>
+                </Col>
+
+                <Col sm={1}></Col>
+
+                <Col sm={3}>
+                  <FormGroup>
+                    {index === 0 && <Label>Etapas</Label>}
+                    <Input
+                      bsSize="sm"
+                      type="text"
+                      placeholder="A - B - C"
+                      value={fase.etapas.join(" - ").toUpperCase()}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "fase",
+                          index: index,
+                          fieldName: "etapas",
+                          payLoad: e.currentTarget.value,
+                        })
+                      }
+                    />
+                  </FormGroup>
+                </Col>
+
+                <Col sm={4}>
+                  <FormGroup>
+                    {index === 0 && <Label>Imagen</Label>}
+                    <input
+                      type="file"
+                      onChange={(e) => {
+                        dispatch({
+                          type: "uploadImagenFase",
+                          index: index,
+                          payLoad: e.target.files[0],
+                        });
+                      }}
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+            );
+          })}
+          {state.fases.length > 1 && (
+            <FormGroup>
+              <Col sm={1}>
+                <Button
+                  size="sm"
+                  onClick={() => dispatch({ type: "eliminar_fase" })}>
+                  Eliminar
+                </Button>
+              </Col>
+            </FormGroup>
+          )}
+          <FormGroup>
+            <Col sm={10}>
+              <Button
+                size="sm"
+                onClick={() => {
+                  dispatch({ type: "agregar_fase" });
+                }}>
+                Agregar fase
+              </Button>
+            </Col>
+          </FormGroup>
+        </>
+
+        <hr className="separador"></hr>
+
+        <>
+          <legend>Secuencias</legend>
+          {state.secuencias.map((secuencia, index) => {
+            return (
+              <Row form>
+                <Col sm={1}>
+                  <FormGroup>
+                    {index === 0 && <Label>N°</Label>}
+                    <Label>{index}</Label>
+                  </FormGroup>
+                </Col>
+
+                <Col sm={1}></Col>
+
+                <Col sm={3}>
+                  <FormGroup>
+                    {index === 0 && <Label>Fases</Label>}
+                    <Input
+                      bsSize="sm"
+                      type="text"
+                      placeholder="1 - 2 - 3"
+                      value={secuencia.join(" - ").toUpperCase()}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "secuencia",
+                          index: index,
+                          payLoad: e.currentTarget.value,
+                        })
+                      }
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+            );
+          })}
+          {state.secuencias.length > 1 && (
+            <FormGroup>
+              <Col sm={1}>
+                <Button
+                  size="sm"
+                  onClick={() => dispatch({ type: "eliminar_secuencia" })}>
+                  Eliminar
+                </Button>
+              </Col>
+            </FormGroup>
+          )}
+          <FormGroup>
+            <Col sm={10}>
+              <Button
+                size="sm"
+                onClick={() => {
+                  dispatch({ type: "agregar_secuencia" });
+                }}>
+                Agregar secuencia
+              </Button>
+            </Col>
+          </FormGroup>
+        </>
+
+        <>
+          <legend>Matriz de entreverdes</legend>
+          <FormGroup>
+            <Col sm={10}></Col>
+          </FormGroup>
+        </>
+
+        <hr className="separador"></hr>
+
+        <FormGroup>
+          <Col sm={{ offset: 9 }}>
+            <Button size="sm" onClick={submit}>
+              Enviar
+            </Button>
+          </Col>
+        </FormGroup>
       </Form>
     </div>
   );
