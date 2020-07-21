@@ -1,6 +1,9 @@
 import React, { useContext } from "react";
 import "../App.css";
 import { DispatchContext, StateContext } from "./ConsultaInstalacion";
+import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
+import PdfConsulta from "./PdfConsulta";
+import datosConsulta from "../modelos de datos/datos_para_pdf.json";
 
 const PreviewInstalacion = () => {
   //contexto del componente Consulta
@@ -63,9 +66,15 @@ const PreviewInstalacion = () => {
       </div>
       <div className="imagen grid-item">Imagen del cruce</div>
 
-      <button onClick={descargar_programaciones} className="descargar">
+      {/* <button onClick={descargar_programaciones} className="descargar">
         Descargar programaciones
-      </button>
+      </button> */}
+      <BlobProvider document={<PdfConsulta data={datosConsulta}/>}>
+        {({ url }) => (
+          <a className="descargar" 
+          href={url} target="_blank">Abrir pdf</a>
+          )}
+      </BlobProvider>
     </div>
   );
 };
