@@ -2,13 +2,6 @@ import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./BusquedaReducer";
 import PreviewInstalacion from "./PreviewInstalacion";
-<<<<<<< HEAD
-import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
-import PdfConsulta from "./PdfConsulta";
-import datosConsulta from "../modelos de datos/datos_para_pdf.json";
-import axios from "axios";
-=======
->>>>>>> d40d91d4b6d3562b4b2d82c3273894a5aba9cd17
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -27,14 +20,14 @@ const ConsultaSemaforo = () => {
 
   async function getData() {
     //consulta por id al backend
-    // return new Promise((resolve, reject) => {
-    //   setTimeout(() => {
-    //     if (busqueda === "1") {
-    //       dispatch({ type: "loadData" });
-    //       resolve();
-    //     } else reject();
-    //   }, 1000);
-    // });
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (busqueda === "1") {
+          dispatch({ type: "loadData" });
+          resolve();
+        } else reject();
+      }, 1000);
+    });
   }
   const submitClick = async (e) => {
     e.preventDefault();
@@ -42,6 +35,12 @@ const ConsultaSemaforo = () => {
       type: "buscar",
     });
 
+    try {
+      await getData();
+      dispatch({ type: "success" });
+    } catch {
+      dispatch({ type: "error" });
+    }
     // const id = state.busqueda;
     // const link = "";
     // axios
@@ -86,25 +85,6 @@ const ConsultaSemaforo = () => {
           {isLoading && <p>Buscando</p>}
           {no_encontrado && (
             <div>
-<<<<<<< HEAD
-              <BlobProvider document={<PdfConsulta data={datosConsulta} />}>
-                {({ url }) => (
-                  <a
-                    style={{
-                      textDecoration: "none",
-                      padding: "10px",
-                      color: "#4a4a4a",
-                      backgroundColor: "#f2f2f2",
-                      border: "1px solid #4a4a4a",
-                    }}
-                    href={url}
-                    target="_blank">
-                    Abrir pdf
-                  </a>
-                )}
-              </BlobProvider>
-=======
->>>>>>> d40d91d4b6d3562b4b2d82c3273894a5aba9cd17
               {/* <PDFDownloadLink
                 document={<PdfConsulta data={datosConsulta} />}
                 fileName="interseccion.pdf"
