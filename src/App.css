@@ -2,143 +2,102 @@
   text-align: center;
 }
 
-.App-intro {
-  font-size: large;
+* {
+  font-size: 20px;
 }
-.App-header {
-  background-color: #282c34;
-  height: 80px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(3px + 2vmin);
-  color: white;
-  padding: 20px;
-  cursor: pointer;
-}
-
-.spinner {
-  height: 80px;
-  margin: auto;
-}
-
-/* New css for movie component*/
 
 * {
   box-sizing: border-box;
 }
 
-.movies {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-}
+/*---------------------------------------------------*/
+/*-----------------------LOGIN-----------------------*/
+/*---------------------------------------------------*/
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-.App-header h2 {
-  margin: 0;
-}
-
-.add-movies {
-  text-align: center;
-}
-
-.add-movies button {
-  font-size: 16px;
-  padding: 8px;
-  margin: 0px 10px 30px 10px;
-}
-
-.movie {
-  padding: 5px 25px 10px 25px;
-  max-width: 25%;
-}
-
-.errorMessage {
+.login-page {
+  width: 360px;
+  padding: 40% 0 ;
   margin: auto;
-  font-weight: bold;
-  color: rgb(161, 15, 15);
 }
-
-.search {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 10px;
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
-
-input[type="submit"] {
-  padding: 5px;
-  background-color: transparent;
-  color: black;
-  border: 1px solid black;
-  width: 80px;
-  margin-left: 5px;
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #006cb8;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
   cursor: pointer;
+  margin-bottom: 10px;
+}
+.form button:hover,.form button:active,.form button:focus {
+  background: #005ea1;
 }
 
-input[type="submit"]:hover {
-  background-color: #282c34;
-  color: antiquewhite;
+.log-error-message {
+  color: red;
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.search > input[type="text"] {
-  width: 40%;
-  min-width: 170px;
-}
-
-@media screen and (min-width: 694px) and (max-width: 915px) {
-  .movie {
-    max-width: 33%;
-  }
-}
-
-@media screen and (min-width: 652px) and (max-width: 693px) {
-  .movie {
-    max-width: 50%;
-  }
-}
-
-@media screen and (max-width: 651px) {
-  .movie {
-    max-width: 100%;
-    margin: auto;
-  }
-}
-.lds-ellipsis {
+.ldg-ellipsis-log {
   display: inline-block;
   position: relative;
   width: 80px;
-  height: 80px;
+  height: 15px;
 }
-.lds-ellipsis div {
+.ldg-ellipsis-log div {
   position: absolute;
-  top: 33px;
+  top: 5px;
   width: 13px;
   height: 13px;
   border-radius: 50%;
   background: black;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
-.lds-ellipsis div:nth-child(1) {
-  left: 8px;
-  animation: lds-ellipsis1 0.6s infinite;
+.ldg-ellipsis-log div:nth-child(1) {
+  left: 10px;
+  animation: ldg-ellipsis1 0.6s infinite;
 }
-.lds-ellipsis div:nth-child(2) {
-  left: 8px;
-  animation: lds-ellipsis2 0.6s infinite;
+.ldg-ellipsis-log div:nth-child(2) {
+  left: 10px;
+  animation: ldg-ellipsis2 0.6s infinite;
 }
-.lds-ellipsis div:nth-child(3) {
-  left: 32px;
-  animation: lds-ellipsis2 0.6s infinite;
+.ldg-ellipsis-log div:nth-child(3) {
+  left: 35px;
+  animation: ldg-ellipsis2 0.6s infinite;
 }
-.lds-ellipsis div:nth-child(4) {
-  left: 56px;
-  animation: lds-ellipsis3 0.6s infinite;
+.ldg-ellipsis-log div:nth-child(4) {
+  left: 60px;
+  animation: ldg-ellipsis3 0.6s infinite;
 }
-@keyframes lds-ellipsis1 {
+@keyframes ldg-ellipsis1 {
   0% {
     transform: scale(0);
   }
@@ -146,15 +105,7 @@ input[type="submit"]:hover {
     transform: scale(1);
   }
 }
-@keyframes lds-ellipsis3 {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0);
-  }
-}
-@keyframes lds-ellipsis2 {
+@keyframes ldg-ellipsis2 {
   0% {
     transform: translate(0, 0);
   }
@@ -162,13 +113,18 @@ input[type="submit"]:hover {
     transform: translate(24px, 0);
   }
 }
-
-* {
-  margin: 20;
-  padding: 2;
-  box-sizing: border-box;
-  font-size: 40px;
+@keyframes ldg-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
 }
+
+/*---------------------------------------------------*/
+/*------------------------CSS------------------------*/
+/*---------------------------------------------------*/
 
 .grid-item {
   background: linear-gradient(
@@ -204,6 +160,7 @@ input[type="submit"]:hover {
   text-align: center;
   font-weight: bold;
 }
+
 .dacot {
   font-family: Helvetica;
   font-size: 40%;
@@ -241,11 +198,9 @@ input[type="submit"]:hover {
   padding: 6vh;
 }
 
-.form {
+.login-form {
   display: flex;
-  border: 1px solid grey;
   flex-direction: column;
-  padding: 30px;
 }
 
 p {
@@ -255,15 +210,6 @@ p {
 input {
   margin: 15px 0;
   padding: 10px;
-}
-
-.submit {
-  padding: 10px;
-}
-
-.error {
-  color: red;
-  font-weight: bold;
 }
 
 .nav-principal {
@@ -408,3 +354,4 @@ input {
   padding: 10px;
   font-size: 24px;
 }
+

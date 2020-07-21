@@ -26,7 +26,7 @@ export function reducer(draft, action) {
       return;
     }
     case "error": {
-      draft.error = "Incorrect username or password!";
+      draft.error = "usuario o contraseña incorrecto";
       draft.isLoggedIn = false;
       draft.isLoading = false;
       draft.username = "";
