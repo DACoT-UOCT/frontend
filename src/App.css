@@ -20,12 +20,29 @@
   padding: 40% 0 ;
   margin: auto;
 }
+
+.logo-uoct{
+  position: absolute;
+  margin-top: 15px;
+}
+
+.login-form-view {
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 69%;
+  justify-items: center;
+  align-items: start;
+}
+
 .form {
-  position: relative;
+  position: absolute;
   z-index: 1;
   background: #FFFFFF;
-  max-width: 360px;
-  margin: 0 auto 100px;
+  width: 360px;
+  margin-left: 32.5%;
   padding: 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
@@ -137,20 +154,8 @@
   padding-left: 15px;
 }
 
-.login-form-view {
-  width: 100vw;
-  height: 100vh;
-  text-align: center;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 69%;
-  justify-items: end;
-  align-items: start;
-}
-
 .welcome-view {
   height: 100vh;
-  border: 5px solid green;
   display: grid;
 }
 
@@ -176,13 +181,6 @@
   padding: 35px;
 }
 
-.initial-logo:hover {
-  transition: transform 200ms linear;
-  transition: background-color 300ms linear;
-  transform: scale(1.005, 1);
-  background-color: rgb(255, 240, 199);
-}
-
 @keyframes animation1 {
   0% {
     opacity: 0;
@@ -193,52 +191,60 @@
   }
 }
 
-.login-container {
-  width: 400px;
-  padding: 6vh;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-}
-
-p {
-  margin-top: 0;
-}
-
-input {
-  margin: 15px 0;
-  padding: 10px;
+.initial-logo:hover {
+  transition: transform 200ms linear;
+  transition: background-color 300ms linear;
+  transform: scale(1.005, 1);
+  background-color: rgb(255, 240, 199);
 }
 
 .nav-principal {
   display: flex;
   position: -webkit-sticky; /* Safari */
   position: sticky;
-  justify-content: space-evenly;
+  
   align-items: center;
   /* min-height: 5vh; */
   /* max-height: 7vh; */
-  background: lightsalmon;
+  background: #006cb8;
   color: white;
   grid-area: header;
 }
 
-.nav-links {
-  width: 50%;
-  display: flex;
+.nav-brand{
+  padding: 0px;
+  margin-top: -5px;
+  font-size: 30px;
+}
+
+.logo-dacot{
+  height: 50px;
+  width: auto;
+}
+
+.nav-links-section {
+  margin: 0px;
+  padding: 0;
+  width: 40%;
   justify-content: space-around;
   align-items: center;
-  list-style: none;
+}
+
+.nav-link{
+  color: white;
+}
+
+.nav-link:hover {
+  color: #eee3e3;
+  text-decoration: underline;
 }
 
 .app-container {
-  height: 100vh;
+  height: 95vh;
   display: grid;
   grid-template:
-    "header header" 8vh
-    ". ." 8vh
+    "header header" 9vh
+    ". ." 1vh
     "caja . " 84vh
     /75% auto;
 }
@@ -273,21 +279,30 @@ input {
   grid-area: buscador;
   height: 75px;
   display: grid;
-  justify-content: end;
+  justify-content: end; 
 }
+
 .search-container input[type="text"] {
   padding: 6px 20px;
   margin-top: 10px;
-  margin-left: 0;
   margin-right: 20px;
   font-size: 24px;
   text-align: start;
-  width: 50%;
-  transition: width 0.4s ease-in-out;
+  width: 40%;
+  /*transition: width 0.4s ease-in-out;*/
 }
 
-.search-container input[type="text"]:focus {
-  width: 70%;
+.search-container button[type="submit"] {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.search-container button[type="reset"] {
+  margin-top: 10px;
+}
+/*
+search-container input[type="text"]:focus {
+  width: 50%;
 }
 
 .search-container button {
@@ -301,7 +316,7 @@ input {
   cursor: pointer;
   border: none;
   color: black;
-}
+}*/
 
 .preview {
   display: grid;

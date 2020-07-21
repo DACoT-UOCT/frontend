@@ -44,7 +44,7 @@ const NuevaInstalacionVista2 = () => {
           ingresados. El documento debe contener además la programacion y
           periodización inicial, además de los bits de control para la OTU.
         </Label>
-        <input
+        <Input
           type="file"
           onChange={(e) => {
             dispatch({ type: "uploadPDF", payLoad: e.target.files[0] });
@@ -165,7 +165,7 @@ const NuevaInstalacionVista2 = () => {
                 <Col sm={4}>
                   <FormGroup>
                     {index === 0 && <Label>Imagen</Label>}
-                    <input
+                    <Input
                       type="file"
                       onChange={(e) => {
                         dispatch({

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./BusquedaReducer";
+import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
 import PreviewInstalacion from "./PreviewInstalacion";
 
 export const StateContext = React.createContext();
@@ -67,20 +68,23 @@ const ConsultaSemaforo = () => {
       <StateContext.Provider value={state}>
         <div className="grid-item consulta-semaforo">
           <div className="search-container">
-            <form onSubmit={submitClick}>
-              <input
-                type="text"
-                placeholder="Buscar"
-                value={busqueda}
-                onChange={(e) => {
-                  dispatch({
-                    type: "field",
-                    fieldName: "busqueda",
-                    payload: e.currentTarget.value,
-                  });
-                }}></input>
-              <button type="submit">buscar</button>
-            </form>
+            <Form onSubmit={submitClick}>
+              <Row className="buscar">
+                  <Input
+                  type="text"
+                  placeholder="J000000"
+                  value={busqueda}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "field",
+                      fieldName: "busqueda",
+                      payload: e.currentTarget.value,
+                    });
+                  }}/>
+                  <Button type="submit">Buscar</Button>
+                  <Button type="reset">Limpiar</Button>
+              </Row>
+            </Form>
           </div>
           {isLoading && <p>Buscando</p>}
           {no_encontrado && (

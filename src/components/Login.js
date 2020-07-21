@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "../App.css";
-import { Col, Row, Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, Form, Input } from "reactstrap";
 import { DispatchContext, StateContext } from "./App";
 
 // const first_click = true;
@@ -131,7 +131,7 @@ const Login = () => {
       onClick={() => dispatch({ type: "FIRST CLICK" })}>
       {first_click ? (
         <>
-          <div className="logo-transporte grid-item">
+          <div className="logo-uoct">
             <img
               src="/logo_transportes.png"
               width="150rem"
