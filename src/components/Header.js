@@ -1,20 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Nav, Navbar, NavbarBrand, NavLink } from "reactstrap";
 import "../App.css";
 
 const Header = () => {
   return (
-    <nav className="nav-principal grid-item">
-      <h4>LOGO</h4>
-      <ul className="nav-links">
-        <Link style={{ color: "white" }} to="/consulta">
-          <li>Consultas</li>
-        </Link>
-        <Link style={{ color: "white" }} to="/nuevo/formulario/1">
-          <li>Ingresar formulario</li>
-        </Link>
-      </ul>
-    </nav>
+    <Navbar className="nav-principal grid-item">
+      <NavbarBrand className="nav-brand">
+        <img
+        className="logo-dacot"
+        height="50"
+        width="50"
+        src="/logo_dacot.png"
+        alt="Logo"
+        />{' '}
+        DACoT
+      </NavbarBrand>
+
+      <Nav className="nav-links-section">
+          <Link className="nav-link" to="/consulta" >Consultas</Link>
+          <Link className="nav-link" to="/nuevo/formulario/1">Nuevo Formulario</Link>     
+      </Nav>
+    </Navbar>
   );
 };
 

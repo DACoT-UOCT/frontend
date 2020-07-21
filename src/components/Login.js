@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import "../App.css";
+import { Button, Form, Input } from "reactstrap";
 import { DispatchContext, StateContext } from "./App";
 
 // const first_click = true;
@@ -42,11 +43,48 @@ const LoginForm = () => {
   };
   return (
     //logo ministerio + formulario de ingreso con google
-    <div className="grid-item login-form">
-      <div className="App useContext">
-        <div className="login-container">
-          <form className="form" onSubmit={submitClick}>
-            {error && <p className="error">{error}</p>}
+    <div class="login-page">
+      <div class="form">
+        <Form onSubmit={submitClick}>
+          {isLoading ? (
+            <div className="ldg-ellipsis-log">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            ) :
+            <div>
+              <Input 
+                type="text"
+                placeholder="usuario"
+                value={username}
+                onChange={(e) =>
+                  dispatch({
+                    type: "field",
+                    fieldName: "username",
+                    payload: e.currentTarget.value,
+                  })}
+              />
+              <Input
+                type="password"
+                placeholder="contraseña"
+
+              />
+              <Button type="submit"> Ingresar </Button>
+              <Button type="submit"> Ingresar con Google </Button>
+              {error && <p className="log-error-message">{error}</p>}
+            </div>
+          }
+        </Form>
+      </div>
+    </div>
+    
+    /*<div>
+      <div>
+        <div>
+          <Form className="login-form" onSubmit={submitClick}>
+            {error && <p className="log-error-message">{error}</p>}
             <p>Please Login!</p>
             <input
               type="text"
@@ -60,10 +98,11 @@ const LoginForm = () => {
                 })
               }
             />
-            {/* <button className="submit" type="submit" disabled={isLoading}>
+            <button type="submit" disabled={isLoading}>
               {isLoading ? "Logging in..." : "Log In"}
-            </button> */}
-            <button className="google-in" type="submit" disabled={isLoading}>
+            </button>
+            <p></p>
+            <button type="submit" disabled={isLoading}>
               {isLoading ? (
                 <div className="lds-ellipsis">
                   <div></div>
@@ -75,10 +114,10 @@ const LoginForm = () => {
                 "Entrar con google"
               )}
             </button>
-          </form>
+          </Form>
         </div>
       </div>
-    </div>
+    </div>*/
   );
 };
 const Login = () => {
@@ -92,7 +131,7 @@ const Login = () => {
       onClick={() => dispatch({ type: "FIRST CLICK" })}>
       {first_click ? (
         <>
-          <div className="logo-transporte grid-item">
+          <div className="logo-uoct">
             <img
               src="/logo_transportes.png"
               width="150rem"
