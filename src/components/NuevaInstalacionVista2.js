@@ -15,23 +15,18 @@ const NuevaInstalacionVista2 = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
-  const toBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-
-  const submit = () => {
-    console.log(state);
+  const submit = async () => {
     //verificar entradas
 
     //pasar archivos a formato base64
 
+    //temp.imagen_instalacion = "";
+
     //guardar JSON
+
+    console.log(state);
     const str = JSON.stringify(state, null, 2);
-    console.log(str);
+    //console.log(str);
 
     //enviar
     // const link = ""; //link de la api
@@ -63,7 +58,18 @@ const NuevaInstalacionVista2 = () => {
         <Input
           type="file"
           onChange={(e) => {
-            dispatch({ type: "uploadPDF", payLoad: e.target.files[0] });
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+              // cuando ya se paso a base64 ...
+              const b64 = reader.result.replace(/^data:.+;base64,/, "");
+              //console.log(b64); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
+              dispatch({
+                type: "upload_PDF",
+                payLoad: b64,
+              });
+            };
           }}
         />
 
@@ -74,10 +80,18 @@ const NuevaInstalacionVista2 = () => {
           <input
             type="file"
             onChange={(e) => {
-              dispatch({
-                type: "upload_imagen_cruce",
-                payLoad: e.target.files[0],
-              });
+              const file = e.target.files[0];
+              const reader = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onloadend = function () {
+                // cuando ya se paso a base64 ...
+                const b64 = reader.result.replace(/^data:.+;base64,/, "");
+                //console.log(b64); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
+                dispatch({
+                  type: "upload_imagen_cruce",
+                  payLoad: b64,
+                });
+              };
             }}
           />
         </Row>
@@ -200,11 +214,22 @@ const NuevaInstalacionVista2 = () => {
                     <Input
                       type="file"
                       onChange={(e) => {
-                        dispatch({
-                          type: "uploadImagenFase",
-                          index: index,
-                          payLoad: e.target.files[0],
-                        });
+                        const file = e.target.files[0];
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onloadend = function () {
+                          // cuando ya se paso a base64 ...
+                          const b64 = reader.result.replace(
+                            /^data:.+;base64,/,
+                            ""
+                          );
+                          //console.log(b64); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
+                          dispatch({
+                            type: "upload_imagen_fase",
+                            index: index,
+                            payLoad: b64,
+                          });
+                        };
                       }}
                     />
                   </FormGroup>

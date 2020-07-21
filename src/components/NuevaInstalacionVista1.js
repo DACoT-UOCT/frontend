@@ -11,7 +11,6 @@ const NuevaInstalacionVista1 = () => {
 
   const siguiente = () => {
     console.log(state);
-
     dispatch({ type: "siguiente" });
   };
   return (
@@ -26,6 +25,7 @@ const NuevaInstalacionVista1 = () => {
               <FormGroup>
                 <Label>Comuna</Label>
                 <Input
+                  required
                   bsSize="sm"
                   type="text"
                   name="comuna"

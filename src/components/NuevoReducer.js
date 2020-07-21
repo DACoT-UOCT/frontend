@@ -106,6 +106,14 @@ export const initialState = {
   observaciones: "",
 };
 
+const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+
 export function reducer(draft, action) {
   switch (action.type) {
     case "metadata": {
@@ -225,7 +233,7 @@ export function reducer(draft, action) {
       return;
     }
 
-    case "uploadPDF": {
+    case "upload_PDF": {
       draft.pdf_respaldo = action.payLoad;
       return;
     }
@@ -248,7 +256,7 @@ export function reducer(draft, action) {
       return;
     }
 
-    case "uploadImagenFase": {
+    case "upload_imagen_fase": {
       draft.fases[action.index].imagen = action.payLoad;
       return;
     }
