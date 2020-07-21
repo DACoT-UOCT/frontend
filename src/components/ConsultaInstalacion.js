@@ -2,10 +2,13 @@ import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./BusquedaReducer";
 import PreviewInstalacion from "./PreviewInstalacion";
+<<<<<<< HEAD
 import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 import PdfConsulta from "./PdfConsulta";
 import datosConsulta from "../modelos de datos/datos_para_pdf.json";
 import axios from "axios";
+=======
+>>>>>>> d40d91d4b6d3562b4b2d82c3273894a5aba9cd17
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -83,6 +86,7 @@ const ConsultaSemaforo = () => {
           {isLoading && <p>Buscando</p>}
           {no_encontrado && (
             <div>
+<<<<<<< HEAD
               <BlobProvider document={<PdfConsulta data={datosConsulta} />}>
                 {({ url }) => (
                   <a
@@ -99,6 +103,8 @@ const ConsultaSemaforo = () => {
                   </a>
                 )}
               </BlobProvider>
+=======
+>>>>>>> d40d91d4b6d3562b4b2d82c3273894a5aba9cd17
               {/* <PDFDownloadLink
                 document={<PdfConsulta data={datosConsulta} />}
                 fileName="interseccion.pdf"

@@ -6,53 +6,8 @@
         "junctions": ["J001011", "J001012", "J001013"],
         "empresa": "Auter",
         "fecha_de_instalacion": "fecha",
-        "comuna": "Renca la lleva",
-        "cruce": "??????????????????",
-        "codigo_del_cruce": "??????????????",
-        "tipo_de_controlador": "???????????????",
-        "interseccion": "???????????",
-        "codigo_del_sistema": "lo mismo que junction? ",
-        "marca_modelo": "",
-        "n_etapas": "CALCULADO A PARTIR DE LAS ETAPAS ENTREGADAS",
-        "mod_potencia": "???????????????",
-        "detectores": "????????????",
-        "otu": {
-          "numero": "",
-          "marca": "",
-          "tipo": "",
-          "direccion_ip": ""
-        },
-        "n_serie_tarjeta": "",
-        "n_empalme": "",
-        "capacidad_empalme": "",
-        "direccion_ip_equipamiento": "???????????",
-        "ups": {
-          "marca": "",
-          "modelo": "",
-          "n_serie": "",
-          "capacidad": "",
-          "duracion_carga": ""
-        },
-        "gps": "?????????????????????????????????????",
-        "empresa_servicio_de_comunicacion": "",
-        "postes_ganchos": "??????????????",
-        "postes_vehiculares": "?????????????",
-        "cabezales": {
-          "l1": ["cant hal, cant led"],
-          "l2": ["cant hal, cant led"],
-          "l3_l4": ["cant hal, cant led"],
-          "l5": ["cant hal, cant led"],
-          "l6": ["cant hal, cant led"],
-          "peatonal": ["cant hal, cant led"]
-        },
-        "botoneras": "?????????",
-        "espira_local": "????????",
-        "espira_scoot": "?????????",
-        "senal_hito": "????????",
-        "enlace": "(digital | analogo) + (propio | compartido)",
-        "nodo_concentrador": "???????????????",
-        "descripción": "Comentario opcional de la empresa",
-        "controlador": ""
+        "comuna": "Renca",
+        "cruce": "CALLE 1 - CALLE 2 RENCA LA LLEVA"
       },
 
       "program": {
@@ -206,7 +161,7 @@
       },
       "fases": [
         { "etapas": ["A", "B"], "imagen": "direccion de la imagen" },
-        { "etapas": ["A", "B"], "imagen": "direccion de la imagen" }
+        { "etapas": ["C", "D", "E"], "imagen": "direccion de la imagen" }
       ],
 
       "secuencias": {
