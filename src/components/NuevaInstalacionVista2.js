@@ -253,7 +253,48 @@ const NuevaInstalacionVista2 = () => {
         <>
           <legend>Matriz de entreverdes</legend>
           <FormGroup>
-            <Col sm={10}></Col>
+            <Row>
+              <Col sm={1}> </Col>
+              {state.entreverdes.map((fila, indice_fila) => {
+                return (
+                  <Col sm={1}>
+                    <Label>{state.stages[indice_fila].id}</Label>
+                  </Col>
+                );
+              })}
+            </Row>
+            {state.entreverdes.map((fila, indice_fila) => {
+              return (
+                <Row>
+                  <Col sm={1}>
+                    <Label>{state.stages[indice_fila].id}</Label>
+                  </Col>
+
+                  {fila.map((col, indice_col) => {
+                    return (
+                      <Col sm={1}>
+                        {/* <Label>{state.stages[indice_col].id}</Label> */}
+                        <Input
+                          bsSize="sm"
+                          type="text"
+                          placeholder="-"
+                          disabled={indice_col === indice_fila}
+                          value={col}
+                          onChange={(e) =>
+                            dispatch({
+                              type: "entreverde",
+                              index_fila: indice_fila,
+                              index_col: indice_col,
+                              payLoad: e.currentTarget.value,
+                            })
+                          }
+                        />
+                      </Col>
+                    );
+                  })}
+                </Row>
+              );
+            })}
           </FormGroup>
         </>
 
