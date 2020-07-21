@@ -66,11 +66,11 @@ const App = () => {
                 <Route path="/consulta" component={ConsultaSemaforo} />
                 <Route path="/nuevo/formulario" component={NuevaInstalacion} />
               </div>
-              <Link to="/">
+              {/* <Link to="/">
                 <button onClick={() => dispatch({ type: "logOut" })}>
                   Log Out
                 </button>
-              </Link>
+              </Link> */}
             </>
           )}
         </Router>

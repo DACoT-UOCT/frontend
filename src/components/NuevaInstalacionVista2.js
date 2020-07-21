@@ -3,6 +3,8 @@ import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
 import { Col, Row, Button, Form, FormGroup, Label, Input } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const NuevaInstalacionVista2 = () => {
   //consultar imagenes
@@ -16,6 +18,19 @@ const NuevaInstalacionVista2 = () => {
     console.log(state);
     //verificar entradas
     //enviar
+    // const link = ""; //link de la api
+    // axios
+    //   .post(link, state)
+    //   .then((response) => {
+    //     console.log(response);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  };
+
+  const volver = () => {
+    dispatch({ type: "volver" });
   };
 
   return (
@@ -299,13 +314,40 @@ const NuevaInstalacionVista2 = () => {
         </>
 
         <hr className="separador"></hr>
+        <>
+          <legend>Observaciones de la instalación</legend>
+          <FormGroup>
+            <Col sm={10}>
+              <Input
+                bsSize="sm"
+                type="textarea"
+                placeholder=""
+                value={state.observaciones}
+                onChange={(e) =>
+                  dispatch({
+                    type: "observaciones",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </Col>
+          </FormGroup>
+        </>
+        <hr className="separador"></hr>
 
         <FormGroup>
-          <Col sm={{ offset: 9 }}>
-            <Button size="sm" onClick={submit}>
-              Enviar
-            </Button>
-          </Col>
+          <Row>
+            <Col>
+              <Button size="sm">
+                <Link to="/nuevo/formulario/1">Atras</Link>
+              </Button>
+            </Col>
+            <Col sm={{ offset: 7 }}>
+              <Button size="sm" onClick={submit}>
+                Enviar
+              </Button>
+            </Col>
+          </Row>
         </FormGroup>
       </Form>
     </div>

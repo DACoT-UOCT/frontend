@@ -1,5 +1,4 @@
 export const initialState = {
-  component: 2,
   metadata: {
     datos_version: {
       vigente: false,
@@ -279,6 +278,12 @@ export function reducer(draft, action) {
 
     case "entreverde": {
       draft.entreverdes[action.index_fila][action.index_col] = action.payLoad;
+      return;
+    }
+
+    case "observaciones": {
+      draft.observaciones = action.payLoad;
+      return;
     }
 
     default:

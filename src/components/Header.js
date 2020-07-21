@@ -10,7 +10,7 @@ const Header = () => {
         <Link style={{ color: "white" }} to="/consulta">
           <li>Consultas</li>
         </Link>
-        <Link style={{ color: "white" }} to="/nuevo/formulario">
+        <Link style={{ color: "white" }} to="/nuevo/formulario/1">
           <li>Ingresar formulario</li>
         </Link>
       </ul>

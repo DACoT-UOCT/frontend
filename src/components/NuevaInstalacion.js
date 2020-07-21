@@ -1,6 +1,7 @@
 import React from "react";
 import { useImmerReducer } from "use-immer";
 import { reducer, initialState } from "./NuevoReducer";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import NuevaInstalacionVista1 from "./NuevaInstalacionVista1";
 import NuevaInstalacionVista2 from "./NuevaInstalacionVista2";
@@ -23,11 +24,8 @@ const NuevoSemaforo = () => {
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
-        {state.component === 1 ? (
-          <NuevaInstalacionVista1 />
-        ) : (
-          <NuevaInstalacionVista2 />
-        )}
+        <Route path="/nuevo/formulario/1" component={NuevaInstalacionVista1} />
+        <Route path="/nuevo/formulario/2" component={NuevaInstalacionVista2} />
       </StateContext.Provider>
     </DispatchContext.Provider>
   );

@@ -5,6 +5,7 @@ import PreviewInstalacion from "./PreviewInstalacion";
 import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 import PdfConsulta from "./PdfConsulta";
 import datosConsulta from "../modelos de datos/datos_para_pdf.json";
+import axios from "axios";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -21,16 +22,16 @@ const ConsultaSemaforo = () => {
     imagen_cruce,
   } = state;
 
-  async function submitAction() {
-    //aqui se redirige a google y se compara la respuesta con la lista de correos válidos
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (busqueda === "1") {
-          dispatch({ type: "loadData" });
-          resolve();
-        } else reject();
-      }, 1000);
-    });
+  async function getData() {
+    //consulta por id al backend
+    // return new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     if (busqueda === "1") {
+    //       dispatch({ type: "loadData" });
+    //       resolve();
+    //     } else reject();
+    //   }, 1000);
+    // });
   }
   const submitClick = async (e) => {
     e.preventDefault();
@@ -38,13 +39,21 @@ const ConsultaSemaforo = () => {
       type: "buscar",
     });
 
-    try {
-      await submitAction();
-      dispatch({ type: "success" });
-    } catch (error) {
-      // console.log(error);
-      dispatch({ type: "error" });
-    }
+    // const id = state.busqueda;
+    // const link = "";
+    // axios
+    //   .get(link)
+    //   .then((response) => {
+    //     //solicitud exitosa
+    //     console.log(response);
+    //     dispatch({ type: "loadData", payLoad: response });
+    //     dispatch({ type: "success" });
+    //   })
+    //   .catch((err) => {
+    //     //error
+    //     console.log(err);
+    //     dispatch({ type: "error" });
+    //   });
   };
 
   useEffect(() => {
@@ -72,18 +81,22 @@ const ConsultaSemaforo = () => {
             </form>
           </div>
           {isLoading && <p>Buscando</p>}
-          {no_encontrado && 
+          {no_encontrado && (
             <div>
-              <BlobProvider document={<PdfConsulta data={datosConsulta}/>}>
+              <BlobProvider document={<PdfConsulta data={datosConsulta} />}>
                 {({ url }) => (
-                  <a style = {{
-                    textDecoration: "none",
-                    padding: "10px",
-                    color: "#4a4a4a",
-                    backgroundColor: "#f2f2f2",
-                    border: "1px solid #4a4a4a"
-                  }} 
-                  href={url} target="_blank">Abrir pdf</a>
+                  <a
+                    style={{
+                      textDecoration: "none",
+                      padding: "10px",
+                      color: "#4a4a4a",
+                      backgroundColor: "#f2f2f2",
+                      border: "1px solid #4a4a4a",
+                    }}
+                    href={url}
+                    target="_blank">
+                    Abrir pdf
+                  </a>
                 )}
               </BlobProvider>
               {/* <PDFDownloadLink
@@ -101,11 +114,10 @@ const ConsultaSemaforo = () => {
                   loading ? "Generando Pdf..." : "Descargar Pdf"
                 }
               </PDFDownloadLink> */}
-              <p>Entrada no encontrada</p> 
-            </div>}
-          {id_consultado != null && 
-            <PreviewInstalacion />
-          }
+              <p>Entrada no encontrada</p>
+            </div>
+          )}
+          {id_consultado != null && <PreviewInstalacion />}
         </div>
       </StateContext.Provider>
     </DispatchContext.Provider>

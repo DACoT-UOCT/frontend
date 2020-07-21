@@ -3,6 +3,7 @@ import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
 import { Col, Row, Button, Form, FormGroup, Label, Input } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
+import { Link } from "react-router-dom";
 
 const NuevaInstalacionVista1 = () => {
   const state = useContext(StateContext);
@@ -866,8 +867,8 @@ const NuevaInstalacionVista1 = () => {
 
           <FormGroup>
             <Col sm={{ offset: 9 }}>
-              <Button size="sm" onClick={siguiente}>
-                Siguiente
+              <Button size="sm">
+                <Link to="/nuevo/formulario/2">Siguiente</Link>
               </Button>
             </Col>
           </FormGroup>

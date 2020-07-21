@@ -288,13 +288,13 @@ input {
 }
 
 .app-container {
-  height: 105vh;
+  height: 100vh;
   display: grid;
   grid-template:
-    "header header" 10vh
+    "header header" 8vh
     ". ." 8vh
-    "caja . " 85vh
-    /70% auto;
+    "caja . " 84vh
+    /75% auto;
 }
 
 .nuevo-semaforo {
