@@ -5,6 +5,7 @@ import { Col, Row, Button, Form, FormGroup, Label, Input } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
 import { Link } from "react-router-dom";
 import axios from "axios";
+var fs = require("fs");
 
 const NuevaInstalacionVista2 = () => {
   //consultar imagenes
@@ -14,9 +15,24 @@ const NuevaInstalacionVista2 = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
   const submit = () => {
     console.log(state);
     //verificar entradas
+
+    //pasar archivos a formato base64
+
+    //guardar JSON
+    const str = JSON.stringify(state, null, 2);
+    console.log(str);
+
     //enviar
     // const link = ""; //link de la api
     // axios
@@ -52,6 +68,22 @@ const NuevaInstalacionVista2 = () => {
         />
 
         <hr className="separador"></hr>
+
+        <Label>Adjuntar imagen de la instalación</Label>
+        <Row>
+          <input
+            type="file"
+            onChange={(e) => {
+              dispatch({
+                type: "upload_imagen_cruce",
+                payLoad: e.target.files[0],
+              });
+            }}
+          />
+        </Row>
+
+        <hr className="separador"></hr>
+
         <>
           <legend>Etapas</legend>
           {state.stages.map((etapa, index) => {

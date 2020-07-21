@@ -230,6 +230,11 @@ export function reducer(draft, action) {
       return;
     }
 
+    case "upload_imagen_cruce": {
+      draft.imagen_instalacion = action.payLoad;
+      return;
+    }
+
     case "fase": {
       if (action.fieldName === "etapas") {
         const lista = action.payLoad.replace(/\s/g, "").split("-");

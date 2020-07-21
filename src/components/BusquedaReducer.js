@@ -1,10 +1,8 @@
 const dummyData = {
-  vigente: {
-    desde: "03/03/2020",
-  },
+  vigente: false,
   datos_version: {
-    version: "2.6",
-    fecha: "03/03/2020",
+    version: "0.0",
+    fecha: "date",
     evento: "nueva instalacion",
     artifice: {
       nombre: "Auter",
@@ -12,21 +10,18 @@ const dummyData = {
     },
     ingresado_a_SC: false,
     nueva_instalacion: true,
-    actualizando_instalacion: {
-      descripcion: "descripcion de la actualizacion",
-      cambio_programacion_o_periodizaciones: false,
-    },
+    actualizando_instalacion: false,
     aprobado_para_ingresar: false,
-    rechazado: "Error matriz entreverdes.",
+    rechazado: false,
   },
 
   junctions: ["J001011", "J001012", "J001013"],
   empresa: "Auter",
-  fecha_de_instalacion: "03/03/2020",
+  fecha_de_instalacion: "date",
   comuna: "Renca la lleva",
-  cruce: "Calle 1 - Calle 2",
+  cruce: "Calle 1 - Calle 2 (cruce del J consultado ?)",
   enlace: "Digital Compartido",
-  imagen_instalacion: "null",
+  imagen_instalacion: "str",
 };
 
 export const initialState = {
@@ -55,6 +50,7 @@ export function reducer(draft, action) {
       draft.isLoading = false;
       draft.id_consultado = draft.busqueda;
       draft.busqueda = "";
+      console.log(JSON.stringify(dummyData, null, 2));
       return;
     }
 
