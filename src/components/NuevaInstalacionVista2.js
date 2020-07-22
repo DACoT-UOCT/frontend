@@ -158,6 +158,7 @@ const NuevaInstalacionVista2 = () => {
                   <Input
                     bsSize="sm"
                     type="select"
+                    className="input-select"
                     name="enlace_pc"
                     value={etapa.tipo} // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
                     onChange={(e) =>

@@ -881,7 +881,8 @@ const NuevaInstalacionVista1 = () => {
                 <Label>Tipo de Enlace</Label>
                 <Input
                   bsSize="sm"
-                  type="select" // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
+                  type="select"
+                  className="input-select"
                   name="enlace_da"
                   value={state.metadata.enlace_da}
                   onChange={(e) => {
@@ -906,8 +907,9 @@ const NuevaInstalacionVista1 = () => {
                 <Input
                   bsSize="sm"
                   type="select"
+                  className="input-select"
                   name="enlace_pc"
-                  value={state.metadata.enlace_pc} // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
+                  value={state.metadata.enlace_pc}
                   onChange={(e) => {
                     dispatch({
                       type: "metadata",

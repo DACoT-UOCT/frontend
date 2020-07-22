@@ -14,7 +14,7 @@ import fontBdSrc from "../Aller/Aller_Bd.ttf";
 
 import axios from "axios";
 
-useEffect(() => {
+/*useEffect(() => {
   const link = "";
   //axios
   //   .get(link)
@@ -30,7 +30,7 @@ useEffect(() => {
   //     console.log(err);
   //     dispatch({ type: "preview_error" });
   //   });
-}, []);
+}, []);*/
 export default function PdfConsulta(props) {
   const metadata = props.data["X001010"][0].metadata;
   const stages = props.data["X001010"][0].stages;
