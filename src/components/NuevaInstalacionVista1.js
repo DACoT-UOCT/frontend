@@ -3,13 +3,88 @@ import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
 import { Col, Row, Button, Form, FormGroup, Label, Input, Popover, PopoverBody } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
+
 import { Link } from "react-router-dom";
 import { validacion } from "./NuevoReducer";
 
+/*Mensaje error*/
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Slide from '@material-ui/core/Slide';
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const NuevaInstalacionVista1 = () => {
+  
+  /*Mensaje error*/
+  const [open, setOpen] = React.useState(false);
+  
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
+  const validar_entrada = (
+    str,
+    nombre,
+    expresion = /.+/,
+  ) => {
+    console.log(str);
+    if (!expresion.test(str)) {
+      //si no se cumple la expresion regular
+      setOpen(true);
+      dispatch({ type: "error", payLoad: nombre });
+    }
+  };
+  const validar_formulario = () => {
+    //revisar las variables 1 a una
+    dispatch({ type: "reset_errores" });
+
+    state.junctions.map((junction, index) => {
+      validar_entrada(junction.id, "Código en Sistema");
+      validar_entrada(junction.addr, "Cruce");
+      validar_entrada(junction.codigo_cruce, "Código Cruce");
+    });
+    validar_entrada(state.metadata.comuna, "Comuna");
+    validar_entrada(state.metadata.controlador.modelo, " Controlador - Modelo");
+    validar_entrada(state.metadata.controlador.marca, "Controlador - Marca");
+    validar_entrada(state.metadata.mod_potencia, "Mod Potencia");
+    validar_entrada(state.metadata.detectores, "Detectores");
+    validar_entrada(state.metadata.otu.n_serie, "OTU - N Serie");
+    validar_entrada(state.metadata.otu.marca, "OTU - Marca");
+    validar_entrada(state.metadata.otu.tipo, "OTU - Tipo");
+    validar_entrada(state.metadata.otu.direccion_ip, "OTU - Dirección IP");
+    validar_entrada(state.metadata.otu.equipamientos, "OTU - Equipamientos");
+    validar_entrada(state.metadata.n_empalme, "N Empalme");
+    validar_entrada(state.metadata.capacidad_empalme, "Capacidad Empalme");
+    validar_entrada(state.metadata.ups.marca, "UPS - Marca");
+    validar_entrada(state.metadata.ups.modelo, "UPS - Modelo");
+    validar_entrada(state.metadata.ups.n_serie, "UPS - N Serie");
+    validar_entrada(state.metadata.ups.capacidad, "UPS - Capacidad");
+    validar_entrada(state.metadata.ups.duracion_carga, "UPS - Duración de Carga");
+    validar_entrada(state.metadata.postes_ganchos, "Postes Ganchos");
+    validar_entrada(state.metadata.postes_vehiculares, "Postes Vehiculares");
+    validar_entrada(state.metadata.postes_peatonales, "Postes Peatonales");
+    for (let cabezal in state.metadata.cabezales) {
+      validar_entrada(state.metadata.cabezales[cabezal].hal, `${cabezal} Halogeno`);
+      validar_entrada(state.metadata.cabezales[cabezal].led, `${cabezal} Led`);
+    }
+    validar_entrada(state.metadata.botoneras, "Botoneras");
+    validar_entrada(state.metadata.espira_local, "Espira Local");
+    validar_entrada(state.metadata.espira_scoot, "Espira Scoot");
+    validar_entrada(state.metadata.senal_hito, "Señal Hito");
+    validar_entrada(state.metadata.enlace_pc, "Tipo de Enlace 1");
+    if (state.metadata.enlace_pc === "Compartido")
+      validar_entrada(state.metadata.nodo_concentrador, "Nodo Concentrador");
+    validar_entrada(state.metadata.enlace_da, "Tipo de Enlace 2");
+
+    dispatch({ type: "siguiente" });
+  };
   return (
     <>
       <div className="grid-item nuevo-semaforo">
@@ -20,9 +95,8 @@ const NuevaInstalacionVista1 = () => {
           <Row>
             <Col sm={2}>
               <FormGroup>
-                <Label>Comuna</Label>
+                <Label for="comuna">Comuna</Label>
                 <Input
-                  required
                   bsSize="sm"
                   type="text"
                   name="comuna"
@@ -871,12 +945,48 @@ const NuevaInstalacionVista1 = () => {
             )}
           </Row>
 
+          {/*
+          <div className="grid-item">
+            {state.errors.length > 0 && <Label>Errores:</Label>}
+            <ul>
+              {state.errors.map((error) => {
+                return <li style={{ color: "red" }}>{error}</li>;
+              })}
+            </ul>
+          </div>
+          */}
+          <hr className="separador"></hr>
+
           <FormGroup>
-            <Col sm={{ offset: 9 }}>
-              <Button size="sm" href="/nuevo/formulario/2">
-                Siguiente
-              </Button>
-            </Col>
+            <Row>
+              <Col sm={{ offset: 5 }}>
+                <Button size="sm" onClick={validar_formulario}>
+                  Siguiente
+                </Button>
+                <Dialog
+                  open={open}
+                  TransitionComponent={Transition}
+                  keepMounted
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-slide-title"
+                  aria-describedby="alert-dialog-slide-description"
+                >
+                  <DialogContent>
+                    <DialogContentText>
+                      <Label className="texto-mensaje-error">Error en los siguientes campos:</Label>
+                      {state.errors.map((error) => {
+                        return <li>{error}</li>;
+                      })}
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button className="boton-mensaje-error" onClick={handleClose} >
+                      Ok
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </Col>
+            </Row>
           </FormGroup>
         </Form>
       </div>

@@ -104,33 +104,35 @@ export const initialState = {
   pdf_respaldo: "",
   imagen_instalacion: "",
   observaciones: "",
+  errors: [],
+  vista: 1,
 };
 
-const toBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-
 export function reducer(draft, action) {
+  draft.form_1_ok = false;
   switch (action.type) {
     case "metadata": {
       draft[action.type][action.fieldName] = action.payLoad;
       return;
     }
 
-    case "version": {
-      return;
-    }
-
-    case "componente": {
-      return;
-    }
-
     case "siguiente": {
-      draft.component = 2;
+      if (draft.errors.length === 0) draft.vista = 2;
+      return;
+    }
+
+    case "atras": {
+      draft.vista = 1;
+      return;
+    }
+
+    case "reset_errores": {
+      draft.errors = [];
+      return;
+    }
+    case "error": {
+      if (!draft.errors.includes(action.payLoad))
+        draft.errors.push(action.payLoad);
       return;
     }
 

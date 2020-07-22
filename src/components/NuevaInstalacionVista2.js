@@ -3,7 +3,7 @@ import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
 import { Col, Row, Button, Form, FormGroup, Label, Input, CustomInput } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 var fs = require("fs");
 
@@ -15,33 +15,62 @@ const NuevaInstalacionVista2 = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
-  const submit = async () => {
-    //verificar entradas
-
-    //pasar archivos a formato base64
-
-    //temp.imagen_instalacion = "";
-
-    //guardar JSON
-
-    console.log(state);
-    const str = JSON.stringify(state, null, 2);
-    //console.log(str);
-
-    //enviar
-    // const link = ""; //link de la api
-    // axios
-    //   .post(link, state)
-    //   .then((response) => {
-    //     console.log(response);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+  const validar_entrada = (
+    str,
+    expresion = /.+/,
+    msg = "Campos sin rellenar"
+  ) => {
+    if (!expresion.test(str)) {
+      //si no se cumple la expresion regular
+      dispatch({ type: "error", payLoad: msg });
+    }
   };
 
-  const volver = () => {
-    dispatch({ type: "volver" });
+  const validar_formulario = () => {
+    dispatch({ type: "reset_errores" });
+    state.stages.map((etapa) => {
+      validar_entrada(etapa.id);
+      validar_entrada(etapa.tipo);
+    });
+    state.fases.map((fase) => {
+      //valdiar fase.etapas
+      //las etapas de cada fase deben existir en el conjunto de etapas antes ingresadas
+    });
+    state.secuencias.map((secuencia) => {
+      //validar secuencias, sus valores deben coincidir con la cantidad de fases
+    });
+
+    state.entreverdes.map((Y) => {
+      Y.map((X) => {
+        //revisar cada X,Y
+      });
+    });
+
+    //validar observacion ?
+  };
+
+  const submit = async (e) => {
+    //verificar entradas
+    validar_formulario();
+
+    console.log(state);
+    if (state.errors.length === 0) {
+      //guardar JSON
+      const str = JSON.stringify(state, null, 2);
+      //console.log(str);
+
+      //enviar
+      // const link = ""; //link de la api
+      // axios
+      //   .post(link, state)
+      //   .then((response) => {
+      //     console.log(response);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+      alert("Formulario enviado exitosamente");
+    }
   };
 
   return (
@@ -406,8 +435,8 @@ const NuevaInstalacionVista2 = () => {
         <FormGroup>
           <Row>
             <Col sm={2}>
-              <Button size="sm" href="/nuevo/formulario/1">
-                Atras
+              <Button size="sm" onClick={() => dispatch({ type: "atras" })}>
+                Atrás
               </Button>
             </Col>
             <Col sm={8}></Col>

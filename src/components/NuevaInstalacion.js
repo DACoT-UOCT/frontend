@@ -9,7 +9,7 @@ import NuevaInstalacionVista2 from "./NuevaInstalacionVista2";
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 
-const NuevoSemaforo = () => {
+const NuevaInstalacion = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
 
   //FALTAN POR COLOCAR EN EL FORMULARIO
@@ -24,11 +24,14 @@ const NuevoSemaforo = () => {
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
-        <Route path="/nuevo/formulario/1" component={NuevaInstalacionVista1} />
-        <Route path="/nuevo/formulario/2" component={NuevaInstalacionVista2} />
+        {state.vista === 1 ? (
+          <NuevaInstalacionVista1 />
+        ) : (
+          <NuevaInstalacionVista2 />
+        )}
       </StateContext.Provider>
     </DispatchContext.Provider>
   );
 };
 
-export default NuevoSemaforo;
+export default NuevaInstalacion;

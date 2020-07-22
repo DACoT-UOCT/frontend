@@ -479,3 +479,17 @@ a {
 .generarPDF {
   background-color: blue;
 }
+
+
+.boton-mensaje-error {
+  background: #006cb8;
+}
+
+.boton-mensaje-error:hover {
+  background: #005ea1;
+}
+
+.texto-mensaje-error{
+  text-decoration: underline;
+  font-weight: bold;
+}
