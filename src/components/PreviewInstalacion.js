@@ -21,7 +21,13 @@ const PreviewInstalacion = () => {
     console.log("Abriendo programaciones");
   };
 
-  console.log(data);
+  // useEffect(async () => {
+  //   const result = await axios(
+  //     "https://hn.algolia.com/api/v1/search?query=redux"
+  //   );
+
+  //   setData(result.data);
+  // });
 
   return (
     <div className="preview">
@@ -70,20 +76,22 @@ const PreviewInstalacion = () => {
       {/* <button onClick={descargar_programaciones} className="descargar">
         Descargar programaciones
       </button> */}
-      <BlobProvider document={<PdfConsulta data={datosConsulta}/>}>
-        {({ url }) => (
-          /*<a className="descargar" 
+      <div style={{ margin: "25px" }}>
+        <BlobProvider document={<PdfConsulta data={datosConsulta} />}>
+          {({ url }) => (
+            /*<a className="descargar" 
           href={url} target="_blank">Generar pdf</a>*/
 
-          <a href={url} target="_blank" class="generarPDF">
-            <span>Generar PDF</span>
-            <svg width="13px" height="10px" viewBox="0 0 13 10">
-              <path d="M1,5 L11,5"></path>
-              <polyline points="8 1 12 5 8 9"></polyline>
-            </svg>
-          </a>
+            <a href={url} target="_blank" className="generarPDF">
+              <span>Descargar Programaciones</span>
+              <svg width="13px" height="10px" viewBox="0 0 13 10">
+                <path d="M1,5 L11,5"></path>
+                <polyline points="8 1 12 5 8 9"></polyline>
+              </svg>
+            </a>
           )}
-      </BlobProvider>
+        </BlobProvider>
+      </div>
     </div>
   );
 };

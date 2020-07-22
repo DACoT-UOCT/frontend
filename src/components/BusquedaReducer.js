@@ -39,18 +39,18 @@ export function reducer(draft, action) {
       draft[action.fieldName] = action.payload;
       return;
     }
-    case "buscar": {
+    case "get_preview_data": {
       draft.no_encontrado = false;
       draft.isLoading = true;
       draft.id_consultado = null;
       return;
     }
 
-    case "success": {
+    case "preview_success": {
       draft.isLoading = false;
       draft.id_consultado = draft.busqueda;
       draft.busqueda = "";
-      console.log(JSON.stringify(dummyData, null, 2));
+
       return;
     }
 
@@ -58,18 +58,12 @@ export function reducer(draft, action) {
       draft.data = dummyData;
       return;
     }
-    case "error": {
+    case "preview_error": {
       draft.no_encontrado = true;
       draft.isLoading = false;
       draft.data = null;
       return;
     }
-
-    // case "toggleTodoCompleted": {
-    //   const todo = draft.todos.find((item) => item.title === action.payload);
-    //   todo.completed = !todo.completed;
-    //   return;
-    // }
 
     default:
       return;

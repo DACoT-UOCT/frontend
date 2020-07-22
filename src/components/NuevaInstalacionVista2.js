@@ -1,7 +1,16 @@
 import React, { useContext } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
-import { Col, Row, Button, Form, FormGroup, Label, Input, CustomInput } from "reactstrap";
+import {
+  Col,
+  Row,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  CustomInput,
+} from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
@@ -49,28 +58,12 @@ const NuevaInstalacionVista2 = () => {
     //validar observacion ?
   };
 
-  const submit = async (e) => {
+  const submit = () => {
     //verificar entradas
     validar_formulario();
 
+    dispatch({ type: "try_submit" });
     console.log(state);
-    if (state.errors.length === 0) {
-      //guardar JSON
-      const str = JSON.stringify(state, null, 2);
-      //console.log(str);
-
-      //enviar
-      // const link = ""; //link de la api
-      // axios
-      //   .post(link, state)
-      //   .then((response) => {
-      //     console.log(response);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-      alert("Formulario enviado exitosamente");
-    }
   };
 
   return (
@@ -81,15 +74,15 @@ const NuevaInstalacionVista2 = () => {
         <legend className="seccion">Informacion de respaldo</legend>
         <FormGroup>
           <Label>
-            Adjuntar el PDF de la instalación para respaldar y verificar los datos
-            ingresados. El documento debe contener además la programacion y
-            periodización inicial, además de los bits de control para la OTU.
+            Adjuntar el PDF de la instalación para respaldar y verificar los
+            datos ingresados. El documento debe contener además la programacion
+            y periodización inicial, además de los bits de control para la OTU.
           </Label>
           <br></br>
           <CustomInput
             className="boton-file"
             type="file"
-            label={state.pdf_respaldo || 'No ha subido un archivo'}
+            label={state.pdf_respaldo || "No ha subido un archivo"}
             onChange={(e) => {
               const file = e.target.files[0];
               const reader = new FileReader();
@@ -106,15 +99,16 @@ const NuevaInstalacionVista2 = () => {
             }}
           />
         </FormGroup>
-  
+
         <hr className="separador"></hr>
 
         <FormGroup>
-          <Label>Adjuntar imagen de la instalación</Label><br></br>
+          <Label>Adjuntar imagen de la instalación</Label>
+          <br></br>
           <CustomInput
             className="boton-file"
             type="file"
-            label={"" || 'No ha subido un archivo'}
+            label={"" || "No ha subido un archivo"}
             onChange={(e) => {
               const file = e.target.files[0];
               const reader = new FileReader();
@@ -183,7 +177,7 @@ const NuevaInstalacionVista2 = () => {
             </Row>
           );
         })}
-        
+
         <Row>
           <Col sm={2}>
             <FormGroup>
@@ -199,11 +193,11 @@ const NuevaInstalacionVista2 = () => {
           <Col sm={2}>
             {state.stages.length > 1 && (
               <FormGroup>
-                  <Button
-                    size="sm"
-                    onClick={() => dispatch({ type: "eliminar_stage" })}>
-                    Eliminar
-                  </Button>
+                <Button
+                  size="sm"
+                  onClick={() => dispatch({ type: "eliminar_stage" })}>
+                  Eliminar
+                </Button>
               </FormGroup>
             )}
           </Col>
@@ -216,8 +210,13 @@ const NuevaInstalacionVista2 = () => {
             <Row form>
               <Col sm={1}>
                 <FormGroup>
-                  {index === 0 && (<><Label>N°</Label><br></br></>)}
-                  <Label>{index+1}</Label>
+                  {index === 0 && (
+                    <>
+                      <Label>N°</Label>
+                      <br></br>
+                    </>
+                  )}
+                  <Label>{index + 1}</Label>
                 </FormGroup>
               </Col>
 
@@ -249,7 +248,7 @@ const NuevaInstalacionVista2 = () => {
                   <CustomInput
                     className="boton-file"
                     type="file"
-                    label={"" || 'No ha subido un archivo'}
+                    label={"" || "No ha subido un archivo"}
                     onChange={(e) => {
                       const file = e.target.files[0];
                       const reader = new FileReader();
@@ -274,7 +273,7 @@ const NuevaInstalacionVista2 = () => {
             </Row>
           );
         })}
-        
+
         <Row>
           <Col sm={2}>
             <FormGroup>
@@ -308,8 +307,13 @@ const NuevaInstalacionVista2 = () => {
             <Row form>
               <Col sm={1}>
                 <FormGroup>
-                  {index === 0 && (<><Label>N°</Label><br></br></>)}
-                  <Label>{index+1}</Label>
+                  {index === 0 && (
+                    <>
+                      <Label>N°</Label>
+                      <br></br>
+                    </>
+                  )}
+                  <Label>{index + 1}</Label>
                 </FormGroup>
               </Col>
 
@@ -341,7 +345,7 @@ const NuevaInstalacionVista2 = () => {
           <Col sm={2}>
             <FormGroup>
               <Button
-                style={{"font-size":"17px"}}
+                style={{ "font-size": "17px" }}
                 size="sm"
                 onClick={() => {
                   dispatch({ type: "agregar_secuencia" });
@@ -429,7 +433,7 @@ const NuevaInstalacionVista2 = () => {
             />
           </Col>
         </FormGroup>
-        
+
         <hr className="separador"></hr>
 
         <FormGroup>
@@ -447,7 +451,6 @@ const NuevaInstalacionVista2 = () => {
             </Col>
           </Row>
         </FormGroup>
-
       </Form>
     </div>
   );

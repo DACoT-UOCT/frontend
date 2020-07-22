@@ -33,15 +33,16 @@ const ConsultaSemaforo = () => {
   const submitClick = async (e) => {
     e.preventDefault();
     dispatch({
-      type: "buscar",
+      type: "get_preview_data",
     });
 
     try {
       await getData();
-      dispatch({ type: "success" });
-    } catch {
-      dispatch({ type: "error" });
+      dispatch({ type: "preview_success" });
+    } catch (error) {
+      dispatch({ type: "preview_error" });
     }
+
     // const id = state.busqueda;
     // const link = "";
     // axios
@@ -50,12 +51,13 @@ const ConsultaSemaforo = () => {
     //     //solicitud exitosa
     //     console.log(response);
     //     dispatch({ type: "loadData", payLoad: response });
-    //     dispatch({ type: "success" });
+    //     dispatch({ type: "preview_success" });
+    //
     //   })
     //   .catch((err) => {
     //     //error
     //     console.log(err);
-    //     dispatch({ type: "error" });
+    //     dispatch({ type: "preview_error" });
     //   });
   };
 
@@ -70,7 +72,7 @@ const ConsultaSemaforo = () => {
           <div className="search-container">
             <Form onSubmit={submitClick}>
               <Row className="buscar">
-                  <Input
+                <Input
                   type="text"
                   placeholder="J000000"
                   value={busqueda}
@@ -80,9 +82,10 @@ const ConsultaSemaforo = () => {
                       fieldName: "busqueda",
                       payload: e.currentTarget.value,
                     });
-                  }}/>
-                  <Button type="submit">Buscar</Button>
-                  <Button type="reset">Limpiar</Button>
+                  }}
+                />
+                <Button type="submit">Buscar</Button>
+                <Button type="reset">Limpiar</Button>
               </Row>
             </Form>
           </div>
