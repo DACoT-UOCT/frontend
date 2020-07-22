@@ -3,14 +3,65 @@ import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
 import { Col, Row, Button, Form, FormGroup, Label, Input } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
+
 import { Link } from "react-router-dom";
 
 const NuevaInstalacionVista1 = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
-  const siguiente = () => {
-    console.log(state);
+  const validar_entrada = (
+    str,
+    expresion = /.+/,
+    msg = "Campos sin rellenar"
+  ) => {
+    if (!expresion.test(str)) {
+      //si no se cumple la expresion regular
+      dispatch({ type: "error", payLoad: msg });
+    }
+  };
+  const validar_formulario = () => {
+    //revisar las variables 1 a una
+    dispatch({ type: "reset_errores" });
+
+    state.junctions.map((junction, index) => {
+      validar_entrada(junction.id);
+      validar_entrada(junction.addr);
+      validar_entrada(junction.codigo_cruce);
+    });
+    validar_entrada(state.metadata.comuna);
+    validar_entrada(state.metadata.controlador.modelo);
+    validar_entrada(state.metadata.controlador.marca);
+    validar_entrada(state.metadata.mod_potencia);
+    validar_entrada(state.metadata.detectores);
+    validar_entrada(state.metadata.otu.n_serie);
+    validar_entrada(state.metadata.otu.marca);
+    validar_entrada(state.metadata.otu.tipo);
+    validar_entrada(state.metadata.otu.direccion_ip);
+    validar_entrada(state.metadata.otu.equipamientos);
+    validar_entrada(state.metadata.n_empalme);
+    validar_entrada(state.metadata.capacidad_empalme);
+    validar_entrada(state.metadata.ups.marca);
+    validar_entrada(state.metadata.ups.modelo);
+    validar_entrada(state.metadata.ups.n_serie);
+    validar_entrada(state.metadata.ups.capacidad);
+    validar_entrada(state.metadata.ups.duracion_carga);
+    validar_entrada(state.metadata.postes_ganchos);
+    validar_entrada(state.metadata.postes_vehiculares);
+    validar_entrada(state.metadata.postes_peatonales);
+    for (let cabezal in state.metadata.cabezales) {
+      validar_entrada(state.metadata.cabezales[cabezal].hal);
+      validar_entrada(state.metadata.cabezales[cabezal].led);
+    }
+    validar_entrada(state.metadata.botoneras);
+    validar_entrada(state.metadata.espira_local);
+    validar_entrada(state.metadata.espira_scoot);
+    validar_entrada(state.metadata.senal_hito);
+    validar_entrada(state.metadata.enlace_pc);
+    if (state.metadata.enlace_pc === "Compartido")
+      validar_entrada(state.metadata.nodo_concentrador);
+    validar_entrada(state.metadata.enlace_da);
+
     dispatch({ type: "siguiente" });
   };
   return (
@@ -25,7 +76,6 @@ const NuevaInstalacionVista1 = () => {
               <FormGroup>
                 <Label>Comuna</Label>
                 <Input
-                  required
                   bsSize="sm"
                   type="text"
                   name="comuna"
@@ -865,12 +915,25 @@ const NuevaInstalacionVista1 = () => {
             )}
           </Row>
 
+          <div className="grid-item">
+            {state.errors.length > 0 && <Label>Errores:</Label>}
+            <ul>
+              {state.errors.map((error) => {
+                return <li style={{ color: "red" }}>{error}</li>;
+              })}
+            </ul>
+          </div>
+
+          <hr className="separador"></hr>
+
           <FormGroup>
-            <Col sm={{ offset: 9 }}>
-              <Button size="sm">
-                <Link to="/nuevo/formulario/2">Siguiente</Link>
-              </Button>
-            </Col>
+            <Row>
+              <Col sm={{ offset: 5 }}>
+                <Button size="sm" onClick={validar_formulario}>
+                  Siguiente
+                </Button>
+              </Col>
+            </Row>
           </FormGroup>
         </Form>
       </div>

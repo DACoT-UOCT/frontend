@@ -64,13 +64,15 @@ const App = () => {
               <div className="app-container">
                 <Header />
                 <Route path="/consulta" component={ConsultaSemaforo} />
-                <Route path="/nuevo/formulario" component={NuevaInstalacion} />
+                <Route path="/nuevo/instalacion" component={NuevaInstalacion} />
               </div>
-              { <Link to="/">
-                <button onClick={() => dispatch({ type: "logOut" })}>
-                  Log Out
-                </button>
-              </Link> }
+              {
+                <Link to="/">
+                  <button onClick={() => dispatch({ type: "logOut" })}>
+                    Log Out
+                  </button>
+                </Link>
+              }
             </>
           )}
         </Router>
