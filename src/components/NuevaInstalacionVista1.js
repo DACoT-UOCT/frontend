@@ -1,27 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
-import { Col, Row, Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Col, Row, Button, Form, FormGroup, Label, Input, Popover, PopoverBody } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
 import { Link } from "react-router-dom";
+import { validacion } from "./NuevoReducer";
 
 const NuevaInstalacionVista1 = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
-  const siguiente = () => {
-    console.log(state);
-    dispatch({ type: "siguiente" });
-  };
   return (
     <>
       <div className="grid-item nuevo-semaforo">
-        <h4>Formulario para nuevo semaforo</h4>
+        <h4 className="form-titulo">Formulario para nuevo semaforo</h4>
         <Form>
           <FormularioJunction />
           <hr className="separador"></hr>
           <Row>
-            <Col sm={4}>
+            <Col sm={2}>
               <FormGroup>
                 <Label>Comuna</Label>
                 <Input
@@ -44,10 +41,10 @@ const NuevaInstalacionVista1 = () => {
           </Row>
 
           <hr className="separador"></hr>
-          <legend>Controlador</legend>
+          <legend className="seccion">Controlador</legend>
 
           <Row form>
-            <Col sm={4}>
+            <Col sm={3}>
               <FormGroup>
                 <Label>Marca</Label>
                 <Input
@@ -65,7 +62,8 @@ const NuevaInstalacionVista1 = () => {
                 />
               </FormGroup>
             </Col>
-            <Col sm={4}>
+            <Col sm={1}></Col>
+            <Col sm={3}>
               <FormGroup>
                 <Label>Modelo</Label>
                 <Input
@@ -88,7 +86,7 @@ const NuevaInstalacionVista1 = () => {
           <hr className="separador"></hr>
 
           <Row form>
-            <Col sm={4}>
+            <Col sm={3}>
               <FormGroup>
                 <Label>Mod. Potencia</Label>
                 <Input
@@ -131,7 +129,7 @@ const NuevaInstalacionVista1 = () => {
 
           <hr className="separador"></hr>
 
-          <legend>OTU</legend>
+          <legend className="seccion">OTU</legend>
           <Row form>
             <Col sm={3}>
               <FormGroup>
@@ -195,7 +193,7 @@ const NuevaInstalacionVista1 = () => {
           </Row>
 
           <Row form>
-            <Col sm={10}>
+            <Col sm={3}>
               <FormGroup>
                 <Label>Equipamientos</Label>
                 <Input
@@ -216,7 +214,7 @@ const NuevaInstalacionVista1 = () => {
             </Col>
           </Row>
           <Row form>
-            <Col sm={7}>
+            <Col sm={3}>
               <FormGroup>
                 <Label>Direccion IP</Label>
                 <Input
@@ -283,7 +281,7 @@ const NuevaInstalacionVista1 = () => {
 
           <hr className="separador"></hr>
 
-          <legend>UPS</legend>
+          <legend className="seccion">UPS</legend>
           <Row form>
             <Col sm={3}>
               <FormGroup>
@@ -367,7 +365,7 @@ const NuevaInstalacionVista1 = () => {
               </FormGroup>
             </Col>
             <Col sm={1}></Col>
-            <Col sm={4}>
+            <Col sm={3}>
               <FormGroup>
                 <Label>Duración Carga</Label>
                 <Input
@@ -414,9 +412,9 @@ const NuevaInstalacionVista1 = () => {
               </FormGroup>
             </Row> */}
 
-          <legend>Postes</legend>
+          <legend className="seccion">Postes</legend>
           <Row form>
-            <Col sm={2}>
+            <Col sm={1}>
               <FormGroup>
                 <Label>Ganchos</Label>
                 <Input
@@ -436,7 +434,7 @@ const NuevaInstalacionVista1 = () => {
               </FormGroup>
             </Col>
             <Col sm={1}></Col>
-            <Col sm={2}>
+            <Col sm={1}>
               <FormGroup>
                 <Label>Vehiculares</Label>
                 <Input
@@ -456,7 +454,7 @@ const NuevaInstalacionVista1 = () => {
               </FormGroup>
             </Col>
             <Col sm={1}></Col>
-            <Col sm={2}>
+            <Col sm={1}>
               <FormGroup>
                 <Label>Peatonales</Label>
                 <Input
@@ -479,235 +477,243 @@ const NuevaInstalacionVista1 = () => {
 
           <hr className="separador"></hr>
 
-          <legend>Cabezales</legend>
-          <Label sm={{ offset: 4 }}>Halogeno Led</Label>
-          <Row form>
-            <FormGroup row>
-              <Label sm={4}>Vehiculo L1</Label>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-l1-hal"
-                  placeholder="0"
-                  value={state.metadata.cabezales.l1.hal}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.l1",
-                      fieldName: "hal",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-l1-led"
-                  placeholder="0"
-                  value={state.metadata.cabezales.l1.led}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.l1",
-                      fieldName: "led",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-            </FormGroup>
-          </Row>
+          <legend className="seccion">Cabezales</legend>
+          <FormGroup row>
+            <Label sm={2}></Label>
+            <Label sm={1}>Halógeno</Label>
+            <Label sm={1}>Led</Label>
+          </FormGroup>
+          
+          <FormGroup row>
+            <Label sm={2}>Vehiculo L1</Label>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-l1-hal"
+                placeholder="0"
+                value={state.metadata.cabezales.l1.hal}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.l1",
+                    fieldName: "hal",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-l1-led"
+                placeholder="0"
+                value={state.metadata.cabezales.l1.led}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.l1",
+                    fieldName: "led",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+          </FormGroup>
+          
 
-          <Row form>
-            <FormGroup row>
-              <Label sm={4}>Vehiculo L2</Label>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-l2-hal"
-                  placeholder="0"
-                  value={state.metadata.cabezales.l2.hal}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.l2",
-                      fieldName: "hal",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-l2-led"
-                  placeholder="0"
-                  value={state.metadata.cabezales.l2.led}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.l2",
-                      fieldName: "led",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-            </FormGroup>
-          </Row>
+          
+          <FormGroup row>
+            <Label sm={2}>Vehiculo L2</Label>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-l2-hal"
+                placeholder="0"
+                value={state.metadata.cabezales.l2.hal}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.l2",
+                    fieldName: "hal",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-l2-led"
+                placeholder="0"
+                value={state.metadata.cabezales.l2.led}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.l2",
+                    fieldName: "led",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+          </FormGroup>
+        
 
-          <Row form>
-            <FormGroup row>
-              <Label sm={4}>Vehiculo L3-L4</Label>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-l3_l4-hal"
-                  placeholder="0"
-                  value={state.metadata.cabezales.l3_l4.hal}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.l3_l4",
-                      fieldName: "hal",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-l3_l4-led"
-                  placeholder="0"
-                  value={state.metadata.cabezales.l3_l4.led}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.l3_l4",
-                      fieldName: "led",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-            </FormGroup>
-          </Row>
+          
+          <FormGroup row>
+            <Label sm={2}>Vehiculo L3-L4</Label>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-l3_l4-hal"
+                placeholder="0"
+                value={state.metadata.cabezales.l3_l4.hal}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.l3_l4",
+                    fieldName: "hal",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-l3_l4-led"
+                placeholder="0"
+                value={state.metadata.cabezales.l3_l4.led}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.l3_l4",
+                    fieldName: "led",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+          </FormGroup>
+          
 
-          <Row form>
-            <FormGroup row>
-              <Label sm={4}>Vehiculo L5</Label>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-l5-hal"
-                  placeholder="0"
-                  value={state.metadata.cabezales.l5.hal}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.l5",
-                      fieldName: "hal",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-l5-led"
-                  placeholder="0"
-                  value={state.metadata.cabezales.l5.led}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.l5",
-                      fieldName: "led",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-            </FormGroup>
-          </Row>
+          
+          <FormGroup row>
+            <Label sm={2}>Vehiculo L5</Label>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-l5-hal"
+                placeholder="0"
+                value={state.metadata.cabezales.l5.hal}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.l5",
+                    fieldName: "hal",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-l5-led"
+                placeholder="0"
+                value={state.metadata.cabezales.l5.led}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.l5",
+                    fieldName: "led",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+          </FormGroup>
+          
 
-          <Row form>
-            <FormGroup row>
-              <Label sm={4}>Vehiculo L6</Label>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-l6-hal"
-                  placeholder="0"
-                  value={state.metadata.cabezales.l6.hal}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.l6",
-                      fieldName: "hal",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-l6-led"
-                  placeholder="0"
-                  value={state.metadata.cabezales.l6.led}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.l6",
-                      fieldName: "led",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-            </FormGroup>
-          </Row>
+          
+          <FormGroup row>
+            <Col sm={2}>
+              <Label>Vehiculo L6</Label>
+            </Col>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-l6-hal"
+                placeholder="0"
+                value={state.metadata.cabezales.l6.hal}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.l6",
+                    fieldName: "hal",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-l6-led"
+                placeholder="0"
+                value={state.metadata.cabezales.l6.led}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.l6",
+                    fieldName: "led",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+          </FormGroup>
+        
 
-          <Row form>
-            <FormGroup row>
-              <Label sm={4}>Peatonal</Label>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-peatonal-hal"
-                  placeholder="0"
-                  value={state.metadata.cabezales.peatonal.hal}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.peatonal",
-                      fieldName: "hal",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-              <Col sm={2}>
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cabezales-peatonal-led"
-                  placeholder="0"
-                  value={state.metadata.cabezales.peatonal.led}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "cabezales.peatonal",
-                      fieldName: "led",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </Col>
-            </FormGroup>
-          </Row>
+        
+          <FormGroup row>
+            <Col sm={2}>
+              <Label>Peatonal</Label>
+            </Col>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-peatonal-hal"
+                placeholder="0"
+                value={state.metadata.cabezales.peatonal.hal}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.peatonal",
+                    fieldName: "hal",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+            <Col sm={1}>
+              <Input
+                bsSize="sm"
+                type="text"
+                name="cabezales-peatonal-led"
+                placeholder="0"
+                value={state.metadata.cabezales.peatonal.led}
+                onChange={(e) => {
+                  dispatch({
+                    type: "cabezales.peatonal",
+                    fieldName: "led",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </Col>
+          </FormGroup>
+         
 
           <hr className="separador"></hr>
 
@@ -732,7 +738,7 @@ const NuevaInstalacionVista1 = () => {
               </FormGroup>
             </Col>
             <Col sm={1}></Col>
-            <Col sm={4}>
+            <Col sm={3}>
               <FormGroup>
                 <Label>Señal Hito</Label>
                 <Input
@@ -774,7 +780,7 @@ const NuevaInstalacionVista1 = () => {
               </FormGroup>
             </Col>
             <Col sm={1}></Col>
-            <Col sm={4}>
+            <Col sm={3}>
               <FormGroup>
                 <Label>Espira Scoot</Label>
                 <Input
@@ -796,7 +802,7 @@ const NuevaInstalacionVista1 = () => {
           </Row>
 
           <Row form>
-            <Col sm={4}>
+            <Col sm={3}>
               <FormGroup>
                 <Label>Tipo de Enlace</Label>
                 <Input
@@ -820,7 +826,7 @@ const NuevaInstalacionVista1 = () => {
           </Row>
 
           <Row form>
-            <Col sm={4}>
+            <Col sm={3}>
               <FormGroup>
                 <Label>Tipo de Enlace</Label>
                 <Input
@@ -843,7 +849,7 @@ const NuevaInstalacionVista1 = () => {
             </Col>
             <Col sm={1}></Col>
             {state.metadata.enlace_pc === "Compartido" && (
-              <Col sm={5}>
+              <Col sm={3}>
                 <FormGroup>
                   <Label>Nodo Concentrador</Label>
                   <Input
@@ -867,8 +873,8 @@ const NuevaInstalacionVista1 = () => {
 
           <FormGroup>
             <Col sm={{ offset: 9 }}>
-              <Button size="sm">
-                <Link to="/nuevo/formulario/2">Siguiente</Link>
+              <Button size="sm" href="/nuevo/formulario/2">
+                Siguiente
               </Button>
             </Col>
           </FormGroup>

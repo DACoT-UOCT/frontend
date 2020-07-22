@@ -6,7 +6,7 @@ import "../App.css";
 const Header = () => {
   return (
     <Navbar className="nav-principal grid-item">
-      <NavbarBrand className="nav-brand">
+      <NavbarBrand className="nav-brand" href="/">
         <img
         className="logo-dacot"
         height="50"

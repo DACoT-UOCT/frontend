@@ -9,13 +9,13 @@ const FormularioJunction = () => {
 
   return (
     <>
-      <legend>Junction</legend>
+      <legend className="seccion">Junction</legend>
       {state.junctions.map((junction, index) => {
         return (
           <Row form>
             <Col sm={3}>
               <FormGroup>
-                {index === 0 && <Label>Codigo en Sistema</Label>}
+                {index === 0 && <Label>Código en Sistema</Label>}
                 <Input
                   bsSize="sm"
                   type="text"
@@ -54,7 +54,7 @@ const FormularioJunction = () => {
                 />
               </FormGroup>
             </Col>
-            <Col sm={3}>
+            <Col sm={2}>
               <FormGroup>
                 {index === 0 && <Label>Código cruce</Label>}
                 <Input
@@ -77,28 +77,31 @@ const FormularioJunction = () => {
           </Row>
         );
       })}
-      {state.junctions.length > 1 && (
-        <FormGroup>
-          <Col sm={1}>
+      
+      <Row>
+        <Col sm={2}>
+          <FormGroup>
             <Button
               size="sm"
-              onClick={() => dispatch({ type: "eliminar_junction" })}>
-              Eliminar
+              onClick={() => {
+                dispatch({ type: "agregar_junction" });
+              }}>
+              Agregar junction
             </Button>
-          </Col>
-        </FormGroup>
-      )}
-      <FormGroup>
-        <Col sm={10}>
-          <Button
-            size="sm"
-            onClick={() => {
-              dispatch({ type: "agregar_junction" });
-            }}>
-            Agregar junction
-          </Button>
+          </FormGroup>
         </Col>
-      </FormGroup>
+        <Col>
+          {state.junctions.length > 1 && (
+            <FormGroup>
+              <Button
+                size="sm"
+                onClick={() => dispatch({ type: "eliminar_junction" })}>
+                Eliminar
+              </Button>
+            </FormGroup>
+          )}
+        </Col>
+      </Row>
     </>
   );
 };

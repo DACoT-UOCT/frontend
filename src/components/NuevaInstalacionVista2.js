@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
-import { Col, Row, Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Col, Row, Button, Form, FormGroup, Label, Input, CustomInput } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -46,39 +46,46 @@ const NuevaInstalacionVista2 = () => {
 
   return (
     <div className="grid-item nuevo-semaforo">
-      <legend>Formulario para nuevo semaforo</legend>
+      <h4 className="form-titulo">Formulario para nuevo semaforo</h4>
 
       <Form>
-        <legend>Informacion de respaldo</legend>
-        <Label>
-          Adjuntar el PDF de la instalación para respaldar y verificar los datos
-          ingresados. El documento debe contener además la programacion y
-          periodización inicial, además de los bits de control para la OTU.
-        </Label>
-        <Input
-          type="file"
-          onChange={(e) => {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onloadend = function () {
-              // cuando ya se paso a base64 ...
-              const b64 = reader.result.replace(/^data:.+;base64,/, "");
-              //console.log(b64); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
-              dispatch({
-                type: "upload_PDF",
-                payLoad: b64,
-              });
-            };
-          }}
-        />
-
+        <legend className="seccion">Informacion de respaldo</legend>
+        <FormGroup>
+          <Label>
+            Adjuntar el PDF de la instalación para respaldar y verificar los datos
+            ingresados. El documento debe contener además la programacion y
+            periodización inicial, además de los bits de control para la OTU.
+          </Label>
+          <br></br>
+          <CustomInput
+            className="boton-file"
+            type="file"
+            label={state.pdf_respaldo || 'No ha subido un archivo'}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              const reader = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onloadend = function () {
+                // cuando ya se paso a base64 ...
+                const b64 = reader.result.replace(/^data:.+;base64,/, "");
+                //console.log(b64); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
+                dispatch({
+                  type: "upload_PDF",
+                  payLoad: b64,
+                });
+              };
+            }}
+          />
+        </FormGroup>
+  
         <hr className="separador"></hr>
 
-        <Label>Adjuntar imagen de la instalación</Label>
-        <Row>
-          <input
+        <FormGroup>
+          <Label>Adjuntar imagen de la instalación</Label><br></br>
+          <CustomInput
+            className="boton-file"
             type="file"
+            label={"" || 'No ha subido un archivo'}
             onChange={(e) => {
               const file = e.target.files[0];
               const reader = new FileReader();
@@ -94,73 +101,63 @@ const NuevaInstalacionVista2 = () => {
               };
             }}
           />
-        </Row>
+        </FormGroup>
 
         <hr className="separador"></hr>
 
-        <>
-          <legend>Etapas</legend>
-          {state.stages.map((etapa, index) => {
-            return (
-              <Row form>
-                <Col sm={3}>
-                  <FormGroup>
-                    {index === 0 && <Label>Identificador</Label>}
-                    <Input
-                      bsSize="sm"
-                      type="text"
-                      placeholder=""
-                      value={etapa.id}
-                      onChange={(e) =>
-                        dispatch({
-                          type: "stage",
-                          index: index,
-                          fieldName: "id",
-                          payLoad: e.currentTarget.value,
-                        })
-                      }
-                    />
-                  </FormGroup>
-                </Col>
-                <Col sm={1}></Col>
-                <Col sm={4}>
-                  <FormGroup>
-                    {index === 0 && <Label>Tipo</Label>}
-                    <Input
-                      bsSize="sm"
-                      type="select"
-                      name="enlace_pc"
-                      value={etapa.tipo} // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
-                      onChange={(e) =>
-                        dispatch({
-                          type: "stage",
-                          index: index,
-                          fieldName: "tipo",
-                          payLoad: e.currentTarget.value,
-                        })
-                      }>
-                      <option value="" hidden></option>
-                      <option value="vehicular">Vehicular</option>
-                      <option value="peatonal">Peatonal</option>
-                    </Input>
-                  </FormGroup>
-                </Col>
-              </Row>
-            );
-          })}
-          {state.stages.length > 1 && (
-            <FormGroup>
-              <Col sm={1}>
-                <Button
-                  size="sm"
-                  onClick={() => dispatch({ type: "eliminar_stage" })}>
-                  Eliminar
-                </Button>
+        <legend>Etapas</legend>
+        {state.stages.map((etapa, index) => {
+          return (
+            <Row form>
+              <Col sm={3}>
+                <FormGroup>
+                  {index === 0 && <Label>Identificador</Label>}
+                  <Input
+                    bsSize="sm"
+                    type="text"
+                    placeholder=""
+                    value={etapa.id}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "stage",
+                        index: index,
+                        fieldName: "id",
+                        payLoad: e.currentTarget.value,
+                      })
+                    }
+                  />
+                </FormGroup>
               </Col>
-            </FormGroup>
-          )}
-          <FormGroup>
-            <Col sm={10}>
+              <Col sm={1}></Col>
+              <Col sm={2}>
+                <FormGroup>
+                  {index === 0 && <Label>Tipo</Label>}
+                  <Input
+                    bsSize="sm"
+                    type="select"
+                    name="enlace_pc"
+                    value={etapa.tipo} // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
+                    onChange={(e) =>
+                      dispatch({
+                        type: "stage",
+                        index: index,
+                        fieldName: "tipo",
+                        payLoad: e.currentTarget.value,
+                      })
+                    }>
+                    <option value="" hidden></option>
+                    <option value="vehicular">Vehicular</option>
+                    <option value="peatonal">Peatonal</option>
+                  </Input>
+                </FormGroup>
+              </Col>
+            </Row>
+          );
+        })}
+        
+        <Row>
+          <Col sm={2}>
+            <FormGroup>
               <Button
                 size="sm"
                 onClick={() => {
@@ -168,88 +165,90 @@ const NuevaInstalacionVista2 = () => {
                 }}>
                 Agregar etapa
               </Button>
-            </Col>
-          </FormGroup>
-        </>
-
+            </FormGroup>
+          </Col>
+          <Col sm={2}>
+            {state.stages.length > 1 && (
+              <FormGroup>
+                  <Button
+                    size="sm"
+                    onClick={() => dispatch({ type: "eliminar_stage" })}>
+                    Eliminar
+                  </Button>
+              </FormGroup>
+            )}
+          </Col>
+        </Row>
         <hr className="separador"></hr>
 
-        <>
-          <legend>Fases</legend>
-          {state.fases.map((fase, index) => {
-            return (
-              <Row form>
-                <Col sm={1}>
-                  <FormGroup>
-                    {index === 0 && <Label>N°</Label>}
-                    <Label>{index}</Label>
-                  </FormGroup>
-                </Col>
-
-                <Col sm={1}></Col>
-
-                <Col sm={3}>
-                  <FormGroup>
-                    {index === 0 && <Label>Etapas</Label>}
-                    <Input
-                      bsSize="sm"
-                      type="text"
-                      placeholder="A - B - C"
-                      value={fase.etapas.join(" - ").toUpperCase()}
-                      onChange={(e) =>
-                        dispatch({
-                          type: "fase",
-                          index: index,
-                          fieldName: "etapas",
-                          payLoad: e.currentTarget.value,
-                        })
-                      }
-                    />
-                  </FormGroup>
-                </Col>
-
-                <Col sm={4}>
-                  <FormGroup>
-                    {index === 0 && <Label>Imagen</Label>}
-                    <Input
-                      type="file"
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        const reader = new FileReader();
-                        reader.readAsDataURL(file);
-                        reader.onloadend = function () {
-                          // cuando ya se paso a base64 ...
-                          const b64 = reader.result.replace(
-                            /^data:.+;base64,/,
-                            ""
-                          );
-                          //console.log(b64); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
-                          dispatch({
-                            type: "upload_imagen_fase",
-                            index: index,
-                            payLoad: b64,
-                          });
-                        };
-                      }}
-                    />
-                  </FormGroup>
-                </Col>
-              </Row>
-            );
-          })}
-          {state.fases.length > 1 && (
-            <FormGroup>
+        <legend>Fases</legend>
+        {state.fases.map((fase, index) => {
+          return (
+            <Row form>
               <Col sm={1}>
-                <Button
-                  size="sm"
-                  onClick={() => dispatch({ type: "eliminar_fase" })}>
-                  Eliminar
-                </Button>
+                <FormGroup>
+                  {index === 0 && (<><Label>N°</Label><br></br></>)}
+                  <Label>{index+1}</Label>
+                </FormGroup>
               </Col>
-            </FormGroup>
-          )}
-          <FormGroup>
-            <Col sm={10}>
+
+              <Col sm={1}></Col>
+
+              <Col sm={3}>
+                <FormGroup>
+                  {index === 0 && <Label>Etapas</Label>}
+                  <Input
+                    bsSize="sm"
+                    type="text"
+                    placeholder="A - B - C"
+                    value={fase.etapas.join(" - ").toUpperCase()}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "fase",
+                        index: index,
+                        fieldName: "etapas",
+                        payLoad: e.currentTarget.value,
+                      })
+                    }
+                  />
+                </FormGroup>
+              </Col>
+
+              <Col sm={4}>
+                <FormGroup>
+                  {index === 0 && <Label>Imagen</Label>}
+                  <CustomInput
+                    className="boton-file"
+                    type="file"
+                    label={"" || 'No ha subido un archivo'}
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      const reader = new FileReader();
+                      reader.readAsDataURL(file);
+                      reader.onloadend = function () {
+                        // cuando ya se paso a base64 ...
+                        const b64 = reader.result.replace(
+                          /^data:.+;base64,/,
+                          ""
+                        );
+                        //console.log(b64); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
+                        dispatch({
+                          type: "upload_imagen_fase",
+                          index: index,
+                          payLoad: b64,
+                        });
+                      };
+                    }}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+          );
+        })}
+        
+        <Row>
+          <Col sm={2}>
+            <FormGroup>
               <Button
                 size="sm"
                 onClick={() => {
@@ -257,155 +256,169 @@ const NuevaInstalacionVista2 = () => {
                 }}>
                 Agregar fase
               </Button>
-            </Col>
-          </FormGroup>
-        </>
+            </FormGroup>
+          </Col>
+          <Col>
+            {state.fases.length > 1 && (
+              <FormGroup>
+                <Button
+                  size="sm"
+                  onClick={() => dispatch({ type: "eliminar_fase" })}>
+                  Eliminar
+                </Button>
+              </FormGroup>
+            )}
+          </Col>
+        </Row>
 
         <hr className="separador"></hr>
 
-        <>
-          <legend>Secuencias</legend>
-          {state.secuencias.map((secuencia, index) => {
-            return (
-              <Row form>
-                <Col sm={1}>
-                  <FormGroup>
-                    {index === 0 && <Label>N°</Label>}
-                    <Label>{index}</Label>
-                  </FormGroup>
-                </Col>
-
-                <Col sm={1}></Col>
-
-                <Col sm={3}>
-                  <FormGroup>
-                    {index === 0 && <Label>Fases</Label>}
-                    <Input
-                      bsSize="sm"
-                      type="text"
-                      placeholder="1 - 2 - 3"
-                      value={secuencia.join(" - ").toUpperCase()}
-                      onChange={(e) =>
-                        dispatch({
-                          type: "secuencia",
-                          index: index,
-                          payLoad: e.currentTarget.value,
-                        })
-                      }
-                    />
-                  </FormGroup>
-                </Col>
-              </Row>
-            );
-          })}
-          {state.secuencias.length > 1 && (
-            <FormGroup>
+        <legend>Secuencias</legend>
+        {state.secuencias.map((secuencia, index) => {
+          return (
+            <Row form>
               <Col sm={1}>
-                <Button
-                  size="sm"
-                  onClick={() => dispatch({ type: "eliminar_secuencia" })}>
-                  Eliminar
-                </Button>
+                <FormGroup>
+                  {index === 0 && (<><Label>N°</Label><br></br></>)}
+                  <Label>{index+1}</Label>
+                </FormGroup>
               </Col>
-            </FormGroup>
-          )}
-          <FormGroup>
-            <Col sm={10}>
+
+              <Col sm={1}></Col>
+
+              <Col sm={3}>
+                <FormGroup>
+                  {index === 0 && <Label>Fases</Label>}
+                  <Input
+                    bsSize="sm"
+                    type="text"
+                    placeholder="1 - 2 - 3"
+                    value={secuencia.join(" - ").toUpperCase()}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "secuencia",
+                        index: index,
+                        payLoad: e.currentTarget.value,
+                      })
+                    }
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+          );
+        })}
+
+        <Row>
+          <Col sm={2}>
+            <FormGroup>
               <Button
+                style={{"font-size":"17px"}}
                 size="sm"
                 onClick={() => {
                   dispatch({ type: "agregar_secuencia" });
                 }}>
                 Agregar secuencia
               </Button>
-            </Col>
-          </FormGroup>
-        </>
+            </FormGroup>
+          </Col>
+          <Col sm={2}>
+            {state.secuencias.length > 1 && (
+              <FormGroup>
+                <Button
+                  size="sm"
+                  onClick={() => dispatch({ type: "eliminar_secuencia" })}>
+                  Eliminar
+                </Button>
+              </FormGroup>
+            )}
+          </Col>
+        </Row>
 
-        <>
-          <legend>Matriz de entreverdes</legend>
-          <FormGroup>
-            <Row>
-              <Col sm={1}> </Col>
-              {state.entreverdes.map((fila, indice_fila) => {
-                return (
-                  <Col sm={1}>
-                    <Label>{state.stages[indice_fila].id}</Label>
-                  </Col>
-                );
-              })}
-            </Row>
+        <legend>Matriz de entreverdes</legend>
+        <FormGroup>
+          <Row>
+            <Col sm={1}> </Col>
             {state.entreverdes.map((fila, indice_fila) => {
               return (
-                <Row>
-                  <Col sm={1}>
-                    <Label>{state.stages[indice_fila].id}</Label>
-                  </Col>
-
-                  {fila.map((col, indice_col) => {
-                    return (
-                      <Col sm={1}>
-                        {/* <Label>{state.stages[indice_col].id}</Label> */}
-                        <Input
-                          bsSize="sm"
-                          type="text"
-                          placeholder="-"
-                          disabled={indice_col === indice_fila}
-                          value={col}
-                          onChange={(e) =>
-                            dispatch({
-                              type: "entreverde",
-                              index_fila: indice_fila,
-                              index_col: indice_col,
-                              payLoad: e.currentTarget.value,
-                            })
-                          }
-                        />
-                      </Col>
-                    );
-                  })}
-                </Row>
+                <Col sm={1}>
+                  <Label>{state.stages[indice_fila].id}</Label>
+                </Col>
               );
             })}
-          </FormGroup>
-        </>
+          </Row>
+          {state.entreverdes.map((fila, indice_fila) => {
+            return (
+              <Row>
+                <Col sm={1}>
+                  <Label>{state.stages[indice_fila].id}</Label>
+                </Col>
+
+                {fila.map((col, indice_col) => {
+                  return (
+                    <Col sm={1}>
+                      {/* <Label>{state.stages[indice_col].id}</Label> */}
+                      <Input
+                        bsSize="sm"
+                        type="text"
+                        placeholder="-"
+                        disabled={indice_col === indice_fila}
+                        value={col}
+                        onChange={(e) =>
+                          dispatch({
+                            type: "entreverde",
+                            index_fila: indice_fila,
+                            index_col: indice_col,
+                            payLoad: e.currentTarget.value,
+                          })
+                        }
+                      />
+                    </Col>
+                  );
+                })}
+              </Row>
+            );
+          })}
+        </FormGroup>
 
         <hr className="separador"></hr>
-        <>
-          <legend>Observaciones de la instalación</legend>
-          <FormGroup>
-            <Col sm={10}>
-              <Input
-                bsSize="sm"
-                type="textarea"
-                placeholder=""
-                value={state.observaciones}
-                onChange={(e) =>
-                  dispatch({
-                    type: "observaciones",
-                    payLoad: e.currentTarget.value,
-                  })
-                }
-              />
-            </Col>
-          </FormGroup>
-        </>
+
+        <legend>Observaciones de la instalación</legend>
+        <FormGroup>
+          <Col sm={10}>
+            <Input
+              className="observaciones"
+              bsSize="sm"
+              type="textarea"
+              placeholder=""
+              value={state.observaciones}
+              onChange={(e) =>
+                dispatch({
+                  type: "observaciones",
+                  payLoad: e.currentTarget.value,
+                })
+              }
+            />
+          </Col>
+        </FormGroup>
+        
         <hr className="separador"></hr>
 
         <FormGroup>
           <Row>
-            <Col>
-              <Button size="sm">
-                <Link to="/nuevo/formulario/1">Atras</Link>
+            <Col sm={2}>
+              <Button size="sm" href="/nuevo/formulario/1">
+                Atras
               </Button>
             </Col>
-            <Col sm={{ offset: 7 }}>
+            <Col sm={8}></Col>
+            <Col sm={2}>
               <Button size="sm" onClick={submit}>
                 Enviar
               </Button>
             </Col>
           </Row>
         </FormGroup>
+
       </Form>
     </div>
   );

@@ -215,6 +215,12 @@
   padding: 0px;
   margin-top: -5px;
   font-size: 30px;
+  cursor: pointer;
+  color: white;
+}
+
+.nav-brand:hover{
+  color: white;
 }
 
 .logo-dacot{
@@ -249,6 +255,19 @@
     /75% auto;
 }
 
+Label{
+  cursor: text;
+}
+
+.form-titulo{
+  text-align: center;
+  text-decoration-line: underline;
+}
+
+.seccion{
+  font-weight: bold;
+}
+
 .nuevo-semaforo {
   grid-area: caja;
   overflow-y: scroll;
@@ -259,7 +278,7 @@
   border: none;
   border-top: 2px solid #999999;
   text-align: center;
-  width: 75%;
+  width: 90%;
 }
 
 .consulta-semaforo {
@@ -342,7 +361,7 @@ search-container input[type="text"]:focus {
   grid-area: boton;
   margin-right: 50px;
   text-align: center;
-  align-self: flex-start;
+  align-self: center;
   height: 100%;
   box-sizing: border-box;
   font-size: 18px;
@@ -351,6 +370,63 @@ search-container input[type="text"]:focus {
   text-decoration: none;
   color: black;
 }
+
+a {
+  background: unset !important;
+}
+
+.generarPDF {
+  position: relative;
+  margin: auto;
+  padding: 19px 22px;
+  transition: all 0.2s ease;
+}
+.generarPDF:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  border-radius: 28px;
+  background: rgba(255, 171, 157, 0.5);
+  width: 56px;
+  height: 56px;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+.generarPDF span {
+  position: relative;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.generarPDF svg {
+  position: relative;
+  top: 0;
+  margin-left: 10px;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke: #111;
+  stroke-width: 2;
+  transform: translateX(-5px);
+  transition: all 0.3s ease;
+}
+.generarPDF:hover:before {
+  width: 100%;
+  background: #ffab9d;
+}
+.generarPDF:hover svg {
+  transform: translateX(0);
+  
+}
+.generarPDF:active {
+  transform: scale(0.96);
+}
+
 .imagen {
   grid-area: imagen;
   padding: 20px;
@@ -370,3 +446,36 @@ search-container input[type="text"]:focus {
   font-size: 24px;
 }
 
+.boton-file {
+  width: auto;
+}
+
+.custom-file-input{
+  height: 38px;
+}
+
+.custom-file{
+  height: 38px;
+}
+
+.custom-file-label{
+  border: 1px solid;
+  height: 38px;
+}
+
+.custom-file-label::before{
+  height: 38px;
+}
+
+.custom-file-label::after{
+  content: "Subir" !important;
+  height: 36px; 
+}
+
+.observaciones {
+  min-height: 90px;
+}
+
+.generarPDF {
+  background-color: blue;
+}
