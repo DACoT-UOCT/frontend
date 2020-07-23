@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { reducer, initialState } from "./NuevoReducer";
+import axios from "axios";
 import {
   BrowserRouter as Router,
   Switch,
@@ -28,24 +29,29 @@ const NuevaInstalacion = () => {
 
   useEffect(() => {
     if (state.submit === true) {
-      dispatch({ type: "submit" });
-      //guardar JSON
-      const str = JSON.stringify(state, null, 2);
-      //console.log(str);
+      //loading = true
+      const str = JSON.stringify(state);
+      console.log(str);
+      console.log("enviando useffect");
 
       //enviar
-      // const link = ""; //link de la api
-      // axios
-      //   .post(link, state)
-      //   .then((response) => {
-      //     console.log(response);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-
-      alert("enviando desde useefect");
-      //window.location.replace("/nuevo/instalacion");
+      const link = "http://54.224.251.49/petition"; //link de la api
+      axios({
+        method: "post",
+        url: link,
+        data: state,
+        headers: {},
+      })
+        .then((response) => {
+          console.log(response);
+          alert("Formulario enviado correctamente");
+          //window.location.replace("/nuevo/instalacion");
+        })
+        .catch((err) => {
+          alert("error en el envio");
+          dispatch({ type: "post_error" });
+          console.log("error" + err);
+        });
     }
   }, [state.submit]);
 

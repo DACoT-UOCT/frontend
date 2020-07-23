@@ -10,8 +10,6 @@ const PreviewInstalacion = () => {
   //contexto del componente Consulta
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
-  const data = state.data;
-  const version = data.datos_version;
 
   const descargar_programaciones = () => {
     //consultar informacion
@@ -34,35 +32,39 @@ const PreviewInstalacion = () => {
       <div className="data grid-item">
         <ul>
           Informacion del cruce
-          <li>{"Codigo en el sistema: " + data.junctions.join(" - ")}</li>
+          <li>{"Codigo en el sistema: " + state.junctions}</li>
           <li>
             Ubicacion:{" "}
-            {data.cruce.toUpperCase() + "   " + data.comuna.toUpperCase()}
+            {state.data.junctions[0].addr.toUpperCase() +
+              "   " +
+              state.data.metadata.comuna.toUpperCase()}
           </li>
-          <li>Empresa instaladora: {data.empresa}</li>
-          <li>Empresa encargada actualmente: {data.empresa}</li>
-          <li>Fecha de instalacion: {data.fecha_de_instalacion}</li>
+          <li>Empresa instaladora: {state.data.metadata.empresa}</li>
+          <li>Empresa encargada actualmente: {state.data.metadata.empresa}</li>
+          <li>
+            Fecha de instalacion: {state.data.metadata.fecha_de_instalacion}
+          </li>
         </ul>
 
         <ul>
           Estado actual
           <ul>
             Vigencia:
-            {data.vigente ? (
-              <li>Desde {data.vigente.desde}</li>
+            {state.data.metadata.datos_version.vigente ? (
+              <li>Desde {state.data.metadata.datos_version.vigente.desde}</li>
             ) : (
               <li>No vigente</li>
             )}
           </ul>
-          {version.nueva_instalacion && (
+          {state.data.metadata.datos_version.nueva_instalacion && (
             <ul>
               Nueva instalación en proceso
-              {version.aprobado_para_ingresar ? (
+              {state.data.metadata.datos_version.aprobado_para_ingresar ? (
                 <li>Datos validados, en espera de ser ingresados al SC</li>
-              ) : version.rechazado ? (
+              ) : state.data.metadata.datos_version.rechazado ? (
                 <ul>
                   Rechazado
-                  <li>{version.rechazado}</li>
+                  <li>{state.data.metadata.datos_version.rechazado}</li>
                 </ul>
               ) : (
                 <li>En espera de validación.</li>
@@ -71,7 +73,14 @@ const PreviewInstalacion = () => {
           )}
         </ul>
       </div>
-      <div className="imagen grid-item">Imagen del cruce</div>
+      <div className="imagen grid-item">
+        <img
+          src={`data:image/jpeg;base64,${state.data.imagen_instalacion}`}
+          width="150px"
+          height="150px"
+          alt=""
+        />
+      </div>
 
       {/* <button onClick={descargar_programaciones} className="descargar">
         Descargar programaciones

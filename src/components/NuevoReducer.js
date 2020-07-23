@@ -111,7 +111,7 @@ export const initialState = {
   imagen_instalacion: "",
   observaciones: "",
   errors: [],
-  vista: 2,
+  vista: 1,
   submit: false,
 };
 
@@ -147,6 +147,11 @@ export function reducer(draft, action) {
       if (draft.errors.length === 0) {
         draft.submit = true;
       }
+      return;
+    }
+
+    case "post_error": {
+      draft.submit = false;
       return;
     }
 
