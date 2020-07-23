@@ -1,27 +1,36 @@
 import React, { useContext, useState } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
-import { Col, Row, Button, Form, FormGroup, Label, Input, Popover, PopoverBody } from "reactstrap";
+import {
+  Col,
+  Row,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Popover,
+  PopoverBody,
+} from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
 
 import { Link } from "react-router-dom";
 import { validacion } from "./NuevoReducer";
 
 /*Mensaje error*/
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Slide from '@material-ui/core/Slide';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Slide from "@material-ui/core/Slide";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const NuevaInstalacionVista1 = () => {
-  
   /*Mensaje error*/
   const [open, setOpen] = React.useState(false);
-  
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -29,12 +38,7 @@ const NuevaInstalacionVista1 = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
-  const validar_entrada = (
-    str,
-    nombre,
-    expresion = /.+/,
-  ) => {
-    console.log(str);
+  const validar_entrada = (str, nombre, expresion = /.+/) => {
     if (!expresion.test(str)) {
       //si no se cumple la expresion regular
       setOpen(true);
@@ -66,12 +70,18 @@ const NuevaInstalacionVista1 = () => {
     validar_entrada(state.metadata.ups.modelo, "UPS - Modelo");
     validar_entrada(state.metadata.ups.n_serie, "UPS - N Serie");
     validar_entrada(state.metadata.ups.capacidad, "UPS - Capacidad");
-    validar_entrada(state.metadata.ups.duracion_carga, "UPS - Duración de Carga");
+    validar_entrada(
+      state.metadata.ups.duracion_carga,
+      "UPS - Duración de Carga"
+    );
     validar_entrada(state.metadata.postes_ganchos, "Postes Ganchos");
     validar_entrada(state.metadata.postes_vehiculares, "Postes Vehiculares");
     validar_entrada(state.metadata.postes_peatonales, "Postes Peatonales");
     for (let cabezal in state.metadata.cabezales) {
-      validar_entrada(state.metadata.cabezales[cabezal].hal, `${cabezal} Halogeno`);
+      validar_entrada(
+        state.metadata.cabezales[cabezal].hal,
+        `${cabezal} Halogeno`
+      );
       validar_entrada(state.metadata.cabezales[cabezal].led, `${cabezal} Led`);
     }
     validar_entrada(state.metadata.botoneras, "Botoneras");
@@ -557,7 +567,7 @@ const NuevaInstalacionVista1 = () => {
             <Label sm={1}>Halógeno</Label>
             <Label sm={1}>Led</Label>
           </FormGroup>
-          
+
           <FormGroup row>
             <Label sm={2}>Vehiculo L1</Label>
             <Col sm={1}>
@@ -593,9 +603,7 @@ const NuevaInstalacionVista1 = () => {
               />
             </Col>
           </FormGroup>
-          
 
-          
           <FormGroup row>
             <Label sm={2}>Vehiculo L2</Label>
             <Col sm={1}>
@@ -631,9 +639,7 @@ const NuevaInstalacionVista1 = () => {
               />
             </Col>
           </FormGroup>
-        
 
-          
           <FormGroup row>
             <Label sm={2}>Vehiculo L3-L4</Label>
             <Col sm={1}>
@@ -669,9 +675,7 @@ const NuevaInstalacionVista1 = () => {
               />
             </Col>
           </FormGroup>
-          
 
-          
           <FormGroup row>
             <Label sm={2}>Vehiculo L5</Label>
             <Col sm={1}>
@@ -707,9 +711,7 @@ const NuevaInstalacionVista1 = () => {
               />
             </Col>
           </FormGroup>
-          
 
-          
           <FormGroup row>
             <Col sm={2}>
               <Label>Vehiculo L6</Label>
@@ -747,9 +749,7 @@ const NuevaInstalacionVista1 = () => {
               />
             </Col>
           </FormGroup>
-        
 
-        
           <FormGroup row>
             <Col sm={2}>
               <Label>Peatonal</Label>
@@ -787,7 +787,6 @@ const NuevaInstalacionVista1 = () => {
               />
             </Col>
           </FormGroup>
-         
 
           <hr className="separador"></hr>
 
@@ -971,18 +970,21 @@ const NuevaInstalacionVista1 = () => {
                   keepMounted
                   onClose={handleClose}
                   aria-labelledby="alert-dialog-slide-title"
-                  aria-describedby="alert-dialog-slide-description"
-                >
+                  aria-describedby="alert-dialog-slide-description">
                   <DialogContent>
                     <DialogContentText>
-                      <Label className="texto-mensaje-error">Error en los siguientes campos:</Label>
+                      <Label className="texto-mensaje-error">
+                        Error en los siguientes campos:
+                      </Label>
                       {state.errors.map((error) => {
                         return <li>{error}</li>;
                       })}
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button className="boton-mensaje-error" onClick={handleClose} >
+                    <Button
+                      className="boton-mensaje-error"
+                      onClick={handleClose}>
                       Ok
                     </Button>
                   </DialogActions>
