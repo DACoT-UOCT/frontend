@@ -85,7 +85,7 @@ const PreviewInstalacion = () => {
       {/* <button onClick={descargar_programaciones} className="descargar">
         Descargar programaciones
       </button> */}
-      <div style={{ margin: "25px" }}>
+      <div style={{ margin: "25px", "grid-area": "boton" }}>
         <BlobProvider document={<PdfConsulta data={datosConsulta} />}>
           {({ url }) => (
             /*<a className="descargar" 

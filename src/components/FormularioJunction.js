@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
-import { Col, Row, Button, FormGroup, Label, Input } from "reactstrap";
+import { Col, Row, FormGroup, Label, Input, Button } from "reactstrap";
+import TextField from '@material-ui/core/TextField';
 
 const FormularioJunction = () => {
   const state = useContext(StateContext);
@@ -15,12 +16,29 @@ const FormularioJunction = () => {
           <Row form>
             <Col sm={3}>
               <FormGroup>
-                {index === 0 && <Label>Código en Sistema</Label>}
+                {/*{index === 0 && <Label>Código en Sistema</Label>}
                 <Input
                   bsSize="sm"
                   type="text"
                   name="junction"
                   placeholder="J000000"
+                  value={junction.id}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "junctions",
+                      index: index,
+                      fieldName: "id",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }
+                />*/}
+                <TextField
+                  id="outlined"
+                  label="Código en Sistema"
+                  variant="outlined"
+                  name="junction"
+                  placeholder="J000000"
+                  autoComplete="off"
                   value={junction.id}
                   onChange={(e) =>
                     dispatch({
@@ -36,7 +54,7 @@ const FormularioJunction = () => {
 
             <Col sm={6}>
               <FormGroup>
-                {index === 0 && <Label>Cruce</Label>}
+                {/*{index === 0 && <Label>Cruce</Label>}
                 <Input
                   bsSize="sm"
                   type="text"
@@ -51,17 +69,52 @@ const FormularioJunction = () => {
                       payLoad: e.currentTarget.value,
                     })
                   }
+                />*/}
+                <TextField
+                  id="outlined"
+                  label="Cruce"
+                  variant="outlined"
+                  name="cruce"
+                  placeholder="Calle - Calle"
+                  autoComplete="off"
+                  style={{width: "500px"}}
+                  value={junction.addr}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "junctions",
+                      index: index,
+                      fieldName: "addr",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }
                 />
               </FormGroup>
             </Col>
             <Col sm={2}>
               <FormGroup>
-                {index === 0 && <Label>Código cruce</Label>}
+                {/*{index === 0 && <Label>Código cruce</Label>}
                 <Input
                   bsSize="sm"
                   type="text"
                   name="cruce"
                   placeholder="0000"
+                  value={junction.codigo_cruce}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "junctions",
+                      index: index,
+                      fieldName: "codigo_cruce",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }
+                />*/}
+                <TextField
+                  id="outlined"
+                  label="Código Cruce"
+                  variant="outlined"
+                  name="cruce"
+                  placeholder="0000"
+                  autoComplete="off"
                   value={junction.codigo_cruce}
                   onChange={(e) =>
                     dispatch({
@@ -79,10 +132,9 @@ const FormularioJunction = () => {
       })}
       
       <Row>
-        <Col sm={2}>
+        <Col sm={3}>
           <FormGroup>
             <Button
-              size="sm"
               onClick={() => {
                 dispatch({ type: "agregar_junction" });
               }}>
@@ -94,7 +146,6 @@ const FormularioJunction = () => {
           {state.junctions.length > 1 && (
             <FormGroup>
               <Button
-                size="sm"
                 onClick={() => dispatch({ type: "eliminar_junction" })}>
                 Eliminar
               </Button>

@@ -89,7 +89,7 @@ const ConsultaSemaforo = () => {
               </Row>
             </Form>
           </div>
-          {isLoading && <p>Buscando</p>}
+          {isLoading && <p style={{"margin-left":"15px"}}>Buscando...</p>}
           {no_encontrado && (
             <div>
               {/* <PDFDownloadLink
@@ -107,7 +107,7 @@ const ConsultaSemaforo = () => {
                   loading ? "Generando Pdf..." : "Descargar Pdf"
                 }
               </PDFDownloadLink> */}
-              <p>Entrada no encontrada</p>
+              <p style={{"margin-left":"15px"}}>Entrada no encontrada</p>
             </div>
           )}
           {id_consultado != null && <PreviewInstalacion />}

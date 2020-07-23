@@ -1,30 +1,19 @@
 import React, { useContext, useState } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
-import {
-  Col,
-  Row,
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Popover,
-  PopoverBody,
-} from "reactstrap";
+import { Col,Row,Form,FormGroup,Label,Input,Button } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
-
 import { Link } from "react-router-dom";
 import { validacion } from "./NuevoReducer";
-
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import ButtonMaterial from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -99,20 +88,37 @@ const NuevaInstalacionVista1 = () => {
   };
   return (
     <>
+      
       <div className="grid-item nuevo-semaforo">
         <h4 className="form-titulo">Formulario para nuevo semaforo</h4>
         <Form>
           <FormularioJunction />
-          <hr className="separador"></hr>
+          {/*<hr className="separador"></hr>*/}
           <Row>
             <Col sm={2}>
               <FormGroup>
-                <Label for="comuna">Comuna</Label>
+                {/*<Label for="comuna">Comuna</Label>
                 <Input
                   bsSize="sm"
                   type="text"
                   name="comuna"
                   placeholder="Comuna"
+                  value={state.metadata.comuna}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "comuna",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }
+                />*/}
+                <TextField
+                  id="outlined"
+                  label="Comuna"
+                  variant="outlined"
+                  name="comuna"
+                  autoComplete="off"
+                  style={{width: "150px"}}
                   value={state.metadata.comuna}
                   onChange={(e) =>
                     dispatch({
@@ -132,12 +138,26 @@ const NuevaInstalacionVista1 = () => {
           <Row form>
             <Col sm={3}>
               <FormGroup>
-                <Label>Marca</Label>
+                {/*<Label>Marca</Label>
                 <Input
                   bsSize="sm"
                   type="text"
                   name="controlador"
                   placeholder="Marca"
+                  value={state.metadata.controlador.marca}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "marca controlador",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }
+                />*/}
+                <TextField
+                  id="outlined"
+                  label="Marca"
+                  variant="outlined"
+                  name="controlador"
+                  autoComplete="off"
                   value={state.metadata.controlador.marca}
                   onChange={(e) =>
                     dispatch({
@@ -151,12 +171,26 @@ const NuevaInstalacionVista1 = () => {
             <Col sm={1}></Col>
             <Col sm={3}>
               <FormGroup>
-                <Label>Modelo</Label>
+                {/*<Label>Modelo</Label>
                 <Input
                   bsSize="sm"
                   type="text"
                   name="controlador"
                   placeholder="Modelo"
+                  value={state.metadata.controlador.modelo}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "modelo controlador",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }
+                />*/}
+                <TextField
+                  id="outlined"
+                  label="Modelo"
+                  variant="outlined"
+                  name="controlador"
+                  autoComplete="off"
                   value={state.metadata.controlador.modelo}
                   onChange={(e) =>
                     dispatch({
@@ -174,11 +208,27 @@ const NuevaInstalacionVista1 = () => {
           <Row form>
             <Col sm={3}>
               <FormGroup>
-                <Label>Mod. Potencia</Label>
+                {/*<Label>Mod. Potencia</Label>
                 <Input
                   bsSize="sm"
                   type="text"
                   name="mod-potencia"
+                  placeholder="0"
+                  value={state.metadata.mod_potencia}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "mod_potencia",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }
+                />*/}
+                <TextField
+                  id="outlined"
+                  label="Mod. Potencia"
+                  variant="outlined"
+                  name="mod-potencia"
+                  autoComplete="off"
                   placeholder="0"
                   value={state.metadata.mod_potencia}
                   onChange={(e) =>
@@ -194,11 +244,27 @@ const NuevaInstalacionVista1 = () => {
             <Col sm={1}></Col>
             <Col sm={3}>
               <FormGroup>
-                <Label>Detectores</Label>
+                {/*<Label>Detectores</Label>
                 <Input
                   bsSize="sm"
                   type="text"
                   name="detectores"
+                  placeholder="0"
+                  value={state.metadata.detectores}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "metadata",
+                      fieldName: "detectores",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }
+                />*/}
+                <TextField
+                  id="outlined"
+                  label="Detectores"
+                  variant="outlined"
+                  name="detectores"
+                  autoComplete="off"
                   placeholder="0"
                   value={state.metadata.detectores}
                   onChange={(e) =>
@@ -963,9 +1029,9 @@ const NuevaInstalacionVista1 = () => {
           <FormGroup>
             <Row>
               <Col sm={{ offset: 5 }}>
-                <Button variant="contained" color="primary" onClick={validar_formulario}>
+                <ButtonMaterial variant="contained" color="primary" onClick={validar_formulario}>
                   Siguiente
-                </Button>
+                </ButtonMaterial>
                 <Dialog
                   open={open}
                   TransitionComponent={Transition}
