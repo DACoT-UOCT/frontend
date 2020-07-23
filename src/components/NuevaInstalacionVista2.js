@@ -9,28 +9,20 @@ import {
   Label,
   Input,
   CustomInput,
+  Button
 } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import ButtonMaterial from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
-
-const useStyles = makeStyles((theme) => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-  },
-}));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -240,7 +232,7 @@ const NuevaInstalacionVista2 = () => {
               <Button
                 variant="outlined"
                 size="small"
-                
+                className="botonAgregar"
                 onClick={() => {
                   dispatch({ type: "agregar_stage" });
                 }}>
@@ -336,7 +328,8 @@ const NuevaInstalacionVista2 = () => {
           <Col sm={2}>
             <FormGroup>
               <Button
-                size="sm"
+                variant="outlined"
+                size="small"
                 onClick={() => {
                   dispatch({ type: "agregar_fase" });
                 }}>
@@ -403,8 +396,8 @@ const NuevaInstalacionVista2 = () => {
           <Col sm={2}>
             <FormGroup>
               <Button
-                style={{ "font-size": "17px" }}
-                size="sm"
+                variant="outlined"
+                size="small"
                 onClick={() => {
                   dispatch({ type: "agregar_secuencia" });
                 }}>
@@ -498,14 +491,14 @@ const NuevaInstalacionVista2 = () => {
           <Row>
             <Col sm={4}></Col>
             <Col sm={2}>
-              <Button variant="contained" color="secondary" onClick={() => dispatch({ type: "atras" })}>
+              <ButtonMaterial variant="contained" color="secondary" onClick={() => dispatch({ type: "atras" })}>
                 Atrás
-              </Button>
+              </ButtonMaterial>
             </Col>
             <Col sm={2}>
-              <Button variant="contained" color="primary" onClick={validar_formulario}>
+              <ButtonMaterial variant="contained" color="primary" onClick={validar_formulario}>
                 Enviar
-              </Button>
+              </ButtonMaterial>
               <Dialog
                   open={open}
                   TransitionComponent={Transition}

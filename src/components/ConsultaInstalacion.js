@@ -101,24 +101,9 @@ const ConsultaSemaforo = () => {
               </Row>
             </Form>
           </div>
-          {isLoading && <p>Buscando</p>}
+          {isLoading && <p style={{ "margin-left": "15px" }}>Buscando...</p>}
           {no_encontrado && (
             <div>
-              {/* <PDFDownloadLink
-                document={<PdfConsulta data={datosConsulta} />}
-                fileName="interseccion.pdf"
-                style={{
-                  textDecoration: "none",
-                  padding: "10px",
-                  color: "#4a4a4a",
-                  backgroundColor: "#f2f2f2",
-                  border: "1px solid #4a4a4a"
-                }}
-              >
-                {({ blob, url, loading, error }) =>
-                  loading ? "Generando Pdf..." : "Descargar Pdf"
-                }
-              </PDFDownloadLink> */}
               <p>Entrada no encontrada</p>
             </div>
           )}
