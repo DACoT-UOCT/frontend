@@ -99,12 +99,12 @@ export const initialState = {
   ],
 
   fases: [
-    { 
+    {
       etapas: [],
-      imagen: null
-    }
+      imagen: null,
+    },
   ],
-  
+
   secuencias: [[]],
   entreverdes: [[""]],
   pdf_respaldo: "",
@@ -145,6 +145,7 @@ export function reducer(draft, action) {
 
     case "try_submit": {
       if (draft.errors.length === 0) {
+        draft._id = "X" + draft.junctions[0].id.slice(1, -1) + "0";
         draft.submit = true;
       }
       return;

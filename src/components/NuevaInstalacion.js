@@ -35,7 +35,7 @@ const NuevaInstalacion = () => {
       console.log("enviando useffect");
 
       //enviar
-      const link = "http://54.224.251.49/petition"; //link de la api
+      const link = "http://54.224.251.49/intersection"; //link de la api
       axios({
         method: "post",
         url: link,
