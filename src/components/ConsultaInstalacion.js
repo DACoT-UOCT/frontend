@@ -23,7 +23,9 @@ const ConsultaSemaforo = () => {
   async function getData() {
     //consulta por id al backend
     return new Promise((resolve, reject) => {
-      const link = "http://54.224.251.49/intersection/" + state.busqueda;
+      const link =
+        "http://54.224.251.49/intersection/" + state.busqueda.toUpperCase();
+
       axios
         .get(link)
         .then((response) => {
@@ -33,8 +35,7 @@ const ConsultaSemaforo = () => {
         })
         .catch((err) => {
           //error
-          console.log(err);
-          reject();
+          reject(err);
         });
     });
   }
@@ -48,6 +49,7 @@ const ConsultaSemaforo = () => {
       await getData();
       dispatch({ type: "preview_success" });
     } catch (error) {
+      console.log(error);
       dispatch({ type: "preview_error" });
     }
 
@@ -84,14 +86,13 @@ const ConsultaSemaforo = () => {
               <Row className="buscar">
                 <Input
                   type="text"
-                  placeholder="J000000"
-                  className="inputBusqueda"
+                  placeholder="X000000"
                   value={busqueda}
                   onChange={(e) => {
                     dispatch({
                       type: "field",
                       fieldName: "busqueda",
-                      payload: e.currentTarget.value,
+                      payload: e.currentTarget.value.toUpperCase(),
                     });
                   }}
                 />
@@ -100,7 +101,7 @@ const ConsultaSemaforo = () => {
               </Row>
             </Form>
           </div>
-          {isLoading && <p style={{"margin-left":"15px"}}>Buscando...</p>}
+          {isLoading && <p style={{ "margin-left": "15px" }}>Buscando...</p>}
           {no_encontrado && (
             <div>
               <p>Entrada no encontrada</p>
