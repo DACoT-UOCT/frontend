@@ -30,7 +30,7 @@ const Header = () => {
   return (
     <div className={classes.root}>
       <AppBar position="static" classes={{"background-color": "#006cb8"}}>
-        <Toolbar>            
+        <Toolbar>   
           <Typography variant="h6" className={classes.title}>
             <img
               className="logo-dacot"
@@ -42,7 +42,6 @@ const Header = () => {
             DACoT
           </Typography>
           <div className={classes.grow} />
-          
           <Link className="links" href="/consulta">
             <Button color="inherit">
               Consultar

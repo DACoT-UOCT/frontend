@@ -1038,9 +1038,10 @@ const NuevaInstalacionVista1 = () => {
                   keepMounted
                   onClose={handleClose}
                   aria-labelledby="alert-dialog-slide-title"
-                  aria-describedby="alert-dialog-slide-description"
-                >
-                  <DialogTitle id="alert-dialog-slide-title">Error en los siguientes campos:</DialogTitle>
+                  aria-describedby="alert-dialog-slide-description">
+                  <DialogTitle id="alert-dialog-slide-title">
+                    Error en los siguientes campos:
+                  </DialogTitle>
                   <DialogContent>
                     <DialogContentText>
                       {state.errors.map((error) => {

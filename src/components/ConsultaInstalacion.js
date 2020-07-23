@@ -3,6 +3,7 @@ import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./BusquedaReducer";
 import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
 import PreviewInstalacion from "./PreviewInstalacion";
+import axios from "axios";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -22,12 +23,19 @@ const ConsultaSemaforo = () => {
   async function getData() {
     //consulta por id al backend
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (busqueda === "1") {
-          dispatch({ type: "loadData" });
+      const link = "http://54.224.251.49/intersection/" + state.busqueda;
+      axios
+        .get(link)
+        .then((response) => {
+          //solicitud exitosa
+          dispatch({ type: "loadData", payLoad: response.data });
           resolve();
-        } else reject();
-      }, 1000);
+        })
+        .catch((err) => {
+          //error
+          console.log(err);
+          reject();
+        });
     });
   }
   const submitClick = async (e) => {
@@ -43,22 +51,24 @@ const ConsultaSemaforo = () => {
       dispatch({ type: "preview_error" });
     }
 
-    // const id = state.busqueda;
-    // const link = "";
-    // axios
-    //   .get(link)
-    //   .then((response) => {
-    //     //solicitud exitosa
-    //     console.log(response);
-    //     dispatch({ type: "loadData", payLoad: response });
-    //     dispatch({ type: "preview_success" });
-    //
-    //   })
-    //   .catch((err) => {
-    //     //error
-    //     console.log(err);
-    //     dispatch({ type: "preview_error" });
-    //   });
+    // const link = "http://54.224.251.49/intersection/X001330";
+    // const temp = false;
+
+    // if (!state.data)
+    //   axios
+    //     .get(link)
+    //     .then((response) => {
+    //       //solicitud exitosa
+    //       console.log(response.data);
+
+    //       dispatch({ type: "loadData", payLoad: response.data });
+    //       dispatch({ type: "preview_success" });
+    //     })
+    //     .catch((err) => {
+    //       //error
+    //       console.log(err);
+    //       dispatch({ type: "preview_error" });
+    //     });
   };
 
   useEffect(() => {
@@ -75,6 +85,7 @@ const ConsultaSemaforo = () => {
                 <Input
                   type="text"
                   placeholder="J000000"
+                  className="inputBusqueda"
                   value={busqueda}
                   onChange={(e) => {
                     dispatch({
@@ -92,25 +103,10 @@ const ConsultaSemaforo = () => {
           {isLoading && <p style={{"margin-left":"15px"}}>Buscando...</p>}
           {no_encontrado && (
             <div>
-              {/* <PDFDownloadLink
-                document={<PdfConsulta data={datosConsulta} />}
-                fileName="interseccion.pdf"
-                style={{
-                  textDecoration: "none",
-                  padding: "10px",
-                  color: "#4a4a4a",
-                  backgroundColor: "#f2f2f2",
-                  border: "1px solid #4a4a4a"
-                }}
-              >
-                {({ blob, url, loading, error }) =>
-                  loading ? "Generando Pdf..." : "Descargar Pdf"
-                }
-              </PDFDownloadLink> */}
-              <p style={{"margin-left":"15px"}}>Entrada no encontrada</p>
+              <p>Entrada no encontrada</p>
             </div>
           )}
-          {id_consultado != null && <PreviewInstalacion />}
+          {state.data != null && <PreviewInstalacion />}
         </div>
       </StateContext.Provider>
     </DispatchContext.Provider>

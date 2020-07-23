@@ -116,12 +116,12 @@ export function reducer(draft, action) {
       draft.isLoading = false;
       draft.id_consultado = draft.busqueda;
       draft.busqueda = "";
-
       return;
     }
 
     case "loadData": {
-      draft.data = dummyData;
+      draft.data = action.payLoad;
+      console.log(draft.data);
       draft.data.junctions.map((junction) => {
         draft.junctions += junction.id + "/ ";
       });

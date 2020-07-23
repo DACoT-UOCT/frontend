@@ -542,3 +542,7 @@ Button{
 .MuiAppBar-colorPrimary {
   background-color: #006cb8 !important;
 }
+
+.inputBusqueda{
+  text-transform: uppercase;
+}
