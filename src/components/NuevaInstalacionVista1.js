@@ -34,7 +34,6 @@ const NuevaInstalacionVista1 = () => {
     nombre,
     expresion = /.+/,
   ) => {
-    console.log(str);
     if (!expresion.test(str)) {
       //si no se cumple la expresion regular
       setOpen(true);
