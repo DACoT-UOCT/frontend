@@ -997,5 +997,4 @@ const NuevaInstalacionVista1 = () => {
     </>
   );
 };
-
 export default NuevaInstalacionVista1;

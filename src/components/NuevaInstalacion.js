@@ -39,18 +39,18 @@ const NuevaInstalacion = () => {
       axios({
         method: "post",
         url: link,
-        body: str,
+        data: state,
         headers: {},
       })
         .then((response) => {
           console.log(response);
-          alert("enviando desde useefect");
+          alert("Formulario enviado correctamente");
           //window.location.replace("/nuevo/instalacion");
         })
         .catch((err) => {
-          dispatch({ type: "post_error" });
-          console.log(err);
           alert("error en el envio");
+          dispatch({ type: "post_error" });
+          console.log("error" + err);
         });
     }
   }, [state.submit]);
