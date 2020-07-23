@@ -105,7 +105,7 @@ export const initialState = {
   imagen_instalacion: "",
   observaciones: "",
   errors: [],
-  vista: 2,
+  vista: 1,
   submit: false,
 };
 
