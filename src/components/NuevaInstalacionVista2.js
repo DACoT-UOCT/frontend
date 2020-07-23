@@ -14,6 +14,17 @@ import {
 import FormularioJunction from "./FormularioJunction";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Slide from '@material-ui/core/Slide';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 var fs = require("fs");
 
 const NuevaInstalacionVista2 = () => {
@@ -21,27 +32,38 @@ const NuevaInstalacionVista2 = () => {
   //pdf
   //etapas, fases, secuencias entreverdes
   //comentarios de la empresa
+
+  /*Mensaje error*/
+  const [open, setOpen] = React.useState(false);
+  
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
   const validar_entrada = (
     str,
+    nombre,
     expresion = /.+/,
-    msg = "Campos sin rellenar"
   ) => {
     if (!expresion.test(str)) {
       //si no se cumple la expresion regular
-      dispatch({ type: "error", payLoad: msg });
+      setOpen(true);
+      dispatch({ type: "error", payLoad: nombre });
     }
   };
 
   const validar_formulario = () => {
+
     dispatch({ type: "reset_errores" });
-    state.stages.map((etapa) => {
-      validar_entrada(etapa.id);
-      validar_entrada(etapa.tipo);
+
+    state.stages.map((etapa, index) => {
+      validar_entrada(etapa.id, "Etapa - Identificador");
+      validar_entrada(etapa.tipo, "Etapa - Tipo");
     });
-    state.fases.map((fase) => {
+    /*state.fases.map((fase) => {
       //valdiar fase.etapas
       //las etapas de cada fase deben existir en el conjunto de etapas antes ingresadas
     });
@@ -56,14 +78,10 @@ const NuevaInstalacionVista2 = () => {
     });
 
     //validar observacion ?
-  };
-
-  const submit = () => {
-    //verificar entradas
-    validar_formulario();
-
-    dispatch({ type: "try_submit" });
+    */
     console.log(state);
+    dispatch({ type: "try_submit" });
+   
   };
 
   return (
@@ -446,9 +464,31 @@ const NuevaInstalacionVista2 = () => {
             </Col>
             <Col sm={8}></Col>
             <Col sm={2}>
-              <Button size="sm" onClick={submit}>
+              <Button size="sm" onClick={validar_formulario}>
                 Enviar
               </Button>
+              <Dialog
+                  open={open}
+                  TransitionComponent={Transition}
+                  keepMounted
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-slide-title"
+                  aria-describedby="alert-dialog-slide-description"
+                >
+                  <DialogContent>
+                    <DialogContentText>
+                      <Label className="texto-mensaje-error">Error en los siguientes campos:</Label>
+                      {state.errors.map((error) => {
+                        return <li>{error}</li>;
+                      })}
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button className="boton-mensaje-error" onClick={handleClose} >
+                      Ok
+                    </Button>
+                  </DialogActions>
+                </Dialog>
             </Col>
           </Row>
         </FormGroup>
