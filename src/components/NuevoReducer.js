@@ -97,8 +97,14 @@ export const initialState = {
     },
     // A: "VEH",
   ],
-  fases: [{ etapas: [], imagen: null }],
 
+  fases: [
+    { 
+      etapas: [],
+      imagen: null
+    }
+  ],
+  
   secuencias: [[]],
   entreverdes: [[""]],
   pdf_respaldo: "",

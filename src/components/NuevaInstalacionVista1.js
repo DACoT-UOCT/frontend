@@ -1,17 +1,19 @@
 import React, { useContext, useState } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
-import { Col, Row, Button, Form, FormGroup, Label, Input, Popover, PopoverBody } from "reactstrap";
+import { Col, Row, Form, FormGroup, Label, Input, Popover, PopoverBody } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
 
 import { Link } from "react-router-dom";
 import { validacion } from "./NuevoReducer";
 
-/*Mensaje error*/
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -961,7 +963,7 @@ const NuevaInstalacionVista1 = () => {
           <FormGroup>
             <Row>
               <Col sm={{ offset: 5 }}>
-                <Button size="sm" onClick={validar_formulario}>
+                <Button variant="contained" color="primary" onClick={validar_formulario}>
                   Siguiente
                 </Button>
                 <Dialog
@@ -972,9 +974,9 @@ const NuevaInstalacionVista1 = () => {
                   aria-labelledby="alert-dialog-slide-title"
                   aria-describedby="alert-dialog-slide-description"
                 >
+                  <DialogTitle id="alert-dialog-slide-title">Error en los siguientes campos:</DialogTitle>
                   <DialogContent>
                     <DialogContentText>
-                      <Label className="texto-mensaje-error">Error en los siguientes campos:</Label>
                       {state.errors.map((error) => {
                         return <li>{error}</li>;
                       })}

@@ -45,7 +45,7 @@ const NuevaInstalacion = () => {
       //   });
 
       alert("enviando desde useefect");
-      window.location.replace("/nuevo/instalacion");
+      //window.location.replace("/nuevo/instalacion");
     }
   }, [state.submit]);
 

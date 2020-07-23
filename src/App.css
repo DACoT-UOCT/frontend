@@ -204,8 +204,7 @@
   position: sticky;
   
   align-items: center;
-  /* min-height: 5vh; */
-  /* max-height: 7vh; */
+  height: 65px;
   background: #006cb8;
   color: white;
   grid-area: header;
@@ -215,6 +214,7 @@
   padding: 0px;
   margin-top: -5px;
   font-size: 30px;
+  width: auto !important;
   cursor: pointer;
   color: white;
 }
@@ -461,6 +461,7 @@ a {
 .custom-file-label{
   border: 1px solid;
   height: 38px;
+  overflow: hidden;
 }
 
 .custom-file-label::before{
@@ -501,4 +502,15 @@ Input{
 
 .input-select{
   border: 1px solid !important;
+}
+
+.MuiButtonBase-root{
+  width:fit-content !important;
+}
+.MuiButton-label{
+  width:fit-content !important;
+}
+
+Button[variant="outlined"]{
+  font-size: 10px;
 }

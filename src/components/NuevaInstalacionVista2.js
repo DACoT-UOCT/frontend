@@ -4,7 +4,6 @@ import "../App.css";
 import {
   Col,
   Row,
-  Button,
   Form,
   FormGroup,
   Label,
@@ -15,11 +14,23 @@ import FormularioJunction from "./FormularioJunction";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
+
+const useStyles = makeStyles((theme) => ({
+  margin: {
+    margin: theme.spacing(1),
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
+}));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -59,26 +70,52 @@ const NuevaInstalacionVista2 = () => {
 
     dispatch({ type: "reset_errores" });
 
-    state.stages.map((etapa, index) => {
+    const comprobacionEtapas = [];
+    const cantFases = state.fases.length;
+    var ignorarEnMatriz = 0;
+    var i = 0;
+    var j = 0;
+
+    state.stages.map((etapa) => {
       validar_entrada(etapa.id, "Etapa - Identificador");
+      comprobacionEtapas.push(etapa.id);
       validar_entrada(etapa.tipo, "Etapa - Tipo");
     });
-    /*state.fases.map((fase) => {
-      //valdiar fase.etapas
-      //las etapas de cada fase deben existir en el conjunto de etapas antes ingresadas
-    });
-    state.secuencias.map((secuencia) => {
-      //validar secuencias, sus valores deben coincidir con la cantidad de fases
-    });
 
-    state.entreverdes.map((Y) => {
-      Y.map((X) => {
-        //revisar cada X,Y
+    //VALIDAR FASES
+    state.fases.map((fase) => {
+      //validar si hay input
+      validar_entrada(fase.etapas, "Fase - Etapas");
+      //validar si el input esta en las etapas
+      for (let etapa in fase.etapas){
+        if (!comprobacionEtapas.includes(fase.etapas[etapa])) {
+          setOpen(true);
+          dispatch({ type: "error", payLoad: "Fases - Etapas (No existe etapa)" });
+        }
+      }
+      
+      validar_entrada(fase.imagen, "Fase - Imagen");
+    });
+  
+    state.secuencias.map((secuencia) => {
+      //validar si hay input
+      validar_entrada(secuencia, "Secuencia - Fase");
+      //validar si el input esta en las fases
+      secuencia.map((sec) =>{
+        if (parseInt(sec) > cantFases) {
+          setOpen(true);
+          dispatch({ type: "error", payLoad: "Secuencia - Fases (No existe fase)" });
+        }
       });
     });
 
-    //validar observacion ?
-    */
+    for (i = 0; i < state.entreverdes.length; i++){
+      for (j = 0; j < state.entreverdes[i].length; j++){
+        if (j != ignorarEnMatriz) validar_entrada(state.entreverdes[i][j], "Matriz Entreverdes");
+      }
+      ignorarEnMatriz = ignorarEnMatriz + 1;
+    }
+
     console.log(state);
     dispatch({ type: "try_submit" });
    
@@ -201,7 +238,9 @@ const NuevaInstalacionVista2 = () => {
           <Col sm={2}>
             <FormGroup>
               <Button
-                size="sm"
+                variant="outlined"
+                size="small"
+                
                 onClick={() => {
                   dispatch({ type: "agregar_stage" });
                 }}>
@@ -248,7 +287,7 @@ const NuevaInstalacionVista2 = () => {
                     bsSize="sm"
                     type="text"
                     placeholder="A - B - C"
-                    value={fase.etapas.join(" - ").toUpperCase()}
+                    value={fase.etapas.join(" - ")}
                     onChange={(e) =>
                       dispatch({
                         type: "fase",
@@ -457,14 +496,14 @@ const NuevaInstalacionVista2 = () => {
 
         <FormGroup>
           <Row>
+            <Col sm={4}></Col>
             <Col sm={2}>
-              <Button size="sm" onClick={() => dispatch({ type: "atras" })}>
+              <Button variant="contained" color="secondary" onClick={() => dispatch({ type: "atras" })}>
                 Atrás
               </Button>
             </Col>
-            <Col sm={8}></Col>
             <Col sm={2}>
-              <Button size="sm" onClick={validar_formulario}>
+              <Button variant="contained" color="primary" onClick={validar_formulario}>
                 Enviar
               </Button>
               <Dialog
@@ -475,9 +514,9 @@ const NuevaInstalacionVista2 = () => {
                   aria-labelledby="alert-dialog-slide-title"
                   aria-describedby="alert-dialog-slide-description"
                 >
+                  <DialogTitle id="alert-dialog-slide-title">Error en los siguientes campos:</DialogTitle>
                   <DialogContent>
                     <DialogContentText>
-                      <Label className="texto-mensaje-error">Error en los siguientes campos:</Label>
                       {state.errors.map((error) => {
                         return <li>{error}</li>;
                       })}
@@ -490,6 +529,7 @@ const NuevaInstalacionVista2 = () => {
                   </DialogActions>
                 </Dialog>
             </Col>
+            
           </Row>
         </FormGroup>
       </Form>

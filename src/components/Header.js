@@ -18,6 +18,7 @@ const Header = () => {
       </NavbarBrand>
 
       <Nav className="nav-links-section">
+        
           <Link className="nav-link" to="/consulta" >Consultas</Link>
           <Link className="nav-link" to="/nuevo/instalacion">Nuevo Formulario</Link>     
       </Nav>
