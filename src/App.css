@@ -262,7 +262,7 @@ Label{
 
 .form-titulo{
   text-align: center;
-  text-decoration-line: underline;
+  
 }
 
 .seccion{
@@ -521,6 +521,9 @@ Input{
 }
 
 .MuiOutlinedInput-root{
+  height:50px;
+}
+.MuiFilledInput-root{
   height:50px;
 }
 

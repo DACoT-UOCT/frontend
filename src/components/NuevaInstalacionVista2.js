@@ -9,20 +9,19 @@ import {
   Label,
   Input,
   CustomInput,
-  Button
+  Button,
+  InputGroup,
+  InputGroupAddon
 } from "reactstrap";
-import FormularioJunction from "./FormularioJunction";
-import { Link, Redirect } from "react-router-dom";
-import axios from "axios";
 
-import { makeStyles } from '@material-ui/core/styles';
+import {TextField,
+        Dialog,
+        DialogActions,
+        DialogContent, 
+        DialogContentText, 
+        DialogTitle, 
+        Slide} from '@material-ui/core';
 import ButtonMaterial from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Slide from '@material-ui/core/Slide';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -113,6 +112,7 @@ const NuevaInstalacionVista2 = () => {
    
   };
 
+  ///////////////RETURN///////////////
   return (
     <div className="grid-item nuevo-semaforo">
       <h4 className="form-titulo">Formulario para nuevo semaforo</h4>
@@ -144,7 +144,7 @@ const NuevaInstalacionVista2 = () => {
                 });
               };
             }}
-          />
+          />          
         </FormGroup>
 
         <hr className="separador"></hr>
@@ -181,10 +181,11 @@ const NuevaInstalacionVista2 = () => {
             <Row form>
               <Col sm={3}>
                 <FormGroup>
-                  {index === 0 && <Label>Identificador</Label>}
-                  <Input
-                    bsSize="sm"
-                    type="text"
+                  <TextField
+                    id="outlined"
+                    label="Identificador"
+                    variant="outlined"
+                    autoComplete="off"
                     placeholder=""
                     value={etapa.id}
                     onChange={(e) =>
@@ -201,13 +202,17 @@ const NuevaInstalacionVista2 = () => {
               <Col sm={1}></Col>
               <Col sm={2}>
                 <FormGroup>
-                  {index === 0 && <Label>Tipo</Label>}
-                  <Input
-                    bsSize="sm"
-                    type="select"
-                    className="input-select"
-                    name="enlace_pc"
-                    value={etapa.tipo} // NO ESTA FUNCANDO SI SE ENVIA SIN ALTERAR LA OPCION
+                  <TextField
+                    id="outlined-select-currency-native"
+                    select
+                    label="Tipo"
+                    variant="outlined"
+                    name="tipo"
+                    autoComplete="off"
+                    SelectProps={{
+                      native: true,
+                    }}
+                    value={etapa.tipo}
                     onChange={(e) =>
                       dispatch({
                         type: "stage",
@@ -219,7 +224,7 @@ const NuevaInstalacionVista2 = () => {
                     <option value="" hidden></option>
                     <option value="vehicular">Vehicular</option>
                     <option value="peatonal">Peatonal</option>
-                  </Input>
+                  </TextField>
                 </FormGroup>
               </Col>
             </Row>
@@ -260,13 +265,15 @@ const NuevaInstalacionVista2 = () => {
             <Row form>
               <Col sm={1}>
                 <FormGroup>
-                  {index === 0 && (
-                    <>
-                      <Label>N°</Label>
-                      <br></br>
-                    </>
-                  )}
-                  <Label>{index + 1}</Label>
+                  <TextField
+                    disabled
+                    id="outlined"
+                    label="N°"
+                    variant="outlined"
+                    autoComplete="off"
+                    style={{width: "75px"}}
+                    value={index + 1}
+                  />
                 </FormGroup>
               </Col>
 
@@ -274,10 +281,11 @@ const NuevaInstalacionVista2 = () => {
 
               <Col sm={3}>
                 <FormGroup>
-                  {index === 0 && <Label>Etapas</Label>}
-                  <Input
-                    bsSize="sm"
-                    type="text"
+                  <TextField
+                    id="outlined"
+                    label="Etapas"
+                    variant="outlined"
+                    autoComplete="off"
                     placeholder="A - B - C"
                     value={fase.etapas.join(" - ")}
                     onChange={(e) =>
@@ -294,11 +302,10 @@ const NuevaInstalacionVista2 = () => {
 
               <Col sm={4}>
                 <FormGroup>
-                  {index === 0 && <Label>Imagen</Label>}
                   <CustomInput
                     className="boton-file"
                     type="file"
-                    label={"" || "No ha subido un archivo"}
+                    label={"" || "No ha subido una imagen"}
                     onChange={(e) => {
                       const file = e.target.files[0];
                       const reader = new FileReader();
@@ -358,13 +365,15 @@ const NuevaInstalacionVista2 = () => {
             <Row form>
               <Col sm={1}>
                 <FormGroup>
-                  {index === 0 && (
-                    <>
-                      <Label>N°</Label>
-                      <br></br>
-                    </>
-                  )}
-                  <Label>{index + 1}</Label>
+                  <TextField
+                    disabled
+                    id="outlined"
+                    label="N°"
+                    variant="outlined"
+                    autoComplete="off"
+                    style={{width: "75px"}}
+                    value={index + 1}
+                  />
                 </FormGroup>
               </Col>
 
@@ -372,10 +381,11 @@ const NuevaInstalacionVista2 = () => {
 
               <Col sm={3}>
                 <FormGroup>
-                  {index === 0 && <Label>Fases</Label>}
-                  <Input
-                    bsSize="sm"
-                    type="text"
+                  <TextField
+                    id="outlined"
+                    label="Fases"
+                    variant="outlined"
+                    autoComplete="off"
                     placeholder="1 - 2 - 3"
                     value={secuencia.join(" - ").toUpperCase()}
                     onChange={(e) =>
@@ -438,26 +448,51 @@ const NuevaInstalacionVista2 = () => {
                 </Col>
 
                 {fila.map((col, indice_col) => {
-                  return (
-                    <Col sm={1}>
-                      {/* <Label>{state.stages[indice_col].id}</Label> */}
-                      <Input
-                        bsSize="sm"
-                        type="text"
-                        placeholder="-"
-                        disabled={indice_col === indice_fila}
-                        value={col}
-                        onChange={(e) =>
-                          dispatch({
-                            type: "entreverde",
-                            index_fila: indice_fila,
-                            index_col: indice_col,
-                            payLoad: e.currentTarget.value,
-                          })
-                        }
-                      />
-                    </Col>
-                  );
+                  if (indice_col === indice_fila){
+                    return (
+                      <Col sm={1}>
+                        <TextField
+                          disabled
+                          id="filled"
+                          variant="filled"
+                          autoComplete="off"
+                          placeholder="-"
+                          style={{width: "75px"}}
+                          value={col}
+                          onChange={(e) =>
+                            dispatch({
+                              type: "entreverde",
+                              index_fila: indice_fila,
+                              index_col: indice_col,
+                              payLoad: e.currentTarget.value,
+                            })
+                          }
+                        />
+                      </Col>
+                    );
+                  }
+                  else{
+                    return (
+                      <Col sm={1}>
+                        <TextField
+                          id="outlined"
+                          variant="outlined"
+                          autoComplete="off"
+                          placeholder="-"
+                          style={{width: "75px"}}
+                          value={col}
+                          onChange={(e) =>
+                            dispatch({
+                              type: "entreverde",
+                              index_fila: indice_fila,
+                              index_col: indice_col,
+                              payLoad: e.currentTarget.value,
+                            })
+                          }
+                        />
+                      </Col>
+                    );
+                  }
                 })}
               </Row>
             );

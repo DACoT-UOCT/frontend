@@ -18,15 +18,6 @@ export const DispatchContext = React.createContext();
 const NuevaInstalacion = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
 
-  //FALTAN POR COLOCAR EN EL FORMULARIO
-  /*EMPRESA SERVICIO DE COMUNICACION
-    N ESTAPAS
-    GPS
-    OBSERVACIONES */
-
-  //CONSULTAR CON MIRNA
-  //CABEZALES GPS FECHA DE INSTALACION
-
   useEffect(() => {
     if (state.submit === true) {
       //loading = true

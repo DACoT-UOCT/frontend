@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
 import "../App.css";
-import { Col, Row, FormGroup, Label, Input, Button } from "reactstrap";
+import { Col, Row, FormGroup, Button } from "reactstrap";
 import TextField from '@material-ui/core/TextField';
 
 const FormularioJunction = () => {
@@ -16,22 +16,6 @@ const FormularioJunction = () => {
           <Row form>
             <Col sm={3}>
               <FormGroup>
-                {/*{index === 0 && <Label>Código en Sistema</Label>}
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="junction"
-                  placeholder="J000000"
-                  value={junction.id}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "junctions",
-                      index: index,
-                      fieldName: "id",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />*/}
                 <TextField
                   id="outlined"
                   label="Código en Sistema"
@@ -54,22 +38,6 @@ const FormularioJunction = () => {
 
             <Col sm={6}>
               <FormGroup>
-                {/*{index === 0 && <Label>Cruce</Label>}
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cruce"
-                  placeholder="Calle - Calle"
-                  value={junction.addr}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "junctions",
-                      index: index,
-                      fieldName: "addr",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />*/}
                 <TextField
                   id="outlined"
                   label="Cruce"
@@ -92,22 +60,6 @@ const FormularioJunction = () => {
             </Col>
             <Col sm={2}>
               <FormGroup>
-                {/*{index === 0 && <Label>Código cruce</Label>}
-                <Input
-                  bsSize="sm"
-                  type="text"
-                  name="cruce"
-                  placeholder="0000"
-                  value={junction.codigo_cruce}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "junctions",
-                      index: index,
-                      fieldName: "codigo_cruce",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />*/}
                 <TextField
                   id="outlined"
                   label="Código Cruce"

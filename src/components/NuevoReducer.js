@@ -44,28 +44,28 @@ export const initialState = {
     postes_peatonales: "",
     cabezales: {
       l1: {
-        hal: "",
-        led: "",
+        hal: "0",
+        led: "0",
       },
       l2: {
-        hal: "",
-        led: "",
+        hal: "0",
+        led: "0",
       },
       l3_l4: {
-        hal: "",
-        led: "",
+        hal: "0",
+        led: "0",
       },
       l5: {
-        hal: "",
-        led: "",
+        hal: "0",
+        led: "0",
       },
       l6: {
-        hal: "",
-        led: "",
+        hal: "0",
+        led: "0",
       },
       peatonal: {
-        hal: "",
-        led: "",
+        hal: "0",
+        led: "0",
       },
     },
     botoneras: "",

@@ -13,43 +13,6 @@ export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 
 const App = () => {
-  // const [state, dispatch] = useReducer(reducer, initialState);
-  //   useEffect(() => {
-
-  //       fetch(MOVIE_API_URL)
-  //           .then(response => response.json())
-  //           .then(jsonResponse => {
-
-  //           dispatch({
-  //               type: "SEARCH_MOVIES_SUCCESS",
-  //               payload: jsonResponse.Search
-  //       	});
-  //     	});
-  // 	}, []);
-
-  //   const search = searchValue => {
-  //   	dispatch({
-  //     	type: "SEARCH_MOVIES_REQUEST"
-  //   	});
-
-  //       fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=4a3b711b`)
-  //     	.then(response => response.json())
-  //     	.then(jsonResponse => {
-  //       	if (jsonResponse.Response === "True") {
-  //         	dispatch({
-  //               type: "SEARCH_MOVIES_SUCCESS",
-  //               payload: jsonResponse.Search
-  //         	});
-  //       	} else {
-  //         	dispatch({
-  //               type: "SEARCH_MOVIES_FAILURE",
-  //               error: jsonResponse.Error
-  //         	});
-  //         }
-  //     	});
-  //   };
-
-  //   //const { movies, errorMessage, loading } = state;
 
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const { username, password, isLoading, error, isLoggedIn } = state;
