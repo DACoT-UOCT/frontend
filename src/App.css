@@ -269,6 +269,11 @@ Label{
   font-weight: bold;
 }
 
+.subseccion{
+  font-weight: bold;
+  font-size: 18px;
+}
+
 .nuevo-semaforo {
   grid-area: caja;
   overflow-y: scroll;

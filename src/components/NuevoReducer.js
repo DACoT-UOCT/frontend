@@ -17,16 +17,26 @@ export const initialState = {
     },
     empresa: "Auter",
     fecha_de_instalacion: "", //como preguntar la fecha ?????????????
+    region: "",
     comuna: "",
     n_etapas: "", //calcular a partir de las etapas
     mod_potencia: "",
     detectores: "",
     otu: {
+      codigo: "",
       n_serie: "",
       marca: "",
       tipo: "",
       direccion_ip: "",
-      equipamientos: "",
+      netmask: "",
+      control: "",
+      respuesta: "",
+      equipamientos: [
+        {
+          desc: "",
+          ip: "",
+        },
+      ],
     },
     n_empalme: "",
     capacidad_empalme: "",
@@ -68,7 +78,8 @@ export const initialState = {
         led: "0",
       },
     },
-    botoneras: "",
+    d_peatonal: "0",
+    dyf_peatonal: "0",
     espira_local: "",
     espira_scoot: "",
     senal_hito: "",
@@ -79,6 +90,7 @@ export const initialState = {
     controlador: {
       modelo: "",
       marca: "",
+      ubicacion: "",
     },
   },
 
@@ -86,7 +98,6 @@ export const initialState = {
     {
       id: "",
       addr: "",
-      codigo_cruce: "",
     },
   ],
 
@@ -162,13 +173,24 @@ export function reducer(draft, action) {
     }
 
     case "agregar_junction": {
-      const nuevo = { id: "", addr: "", codigo_cruce: "" };
+      const nuevo = { id: "", addr: "" };
       draft.junctions.push(nuevo);
       return;
     }
 
     case "eliminar_junction": {
       draft.junctions.pop();
+      return;
+    }
+
+    case "agregar_equip": {
+      const nuevo = { desc: "", ip: "" };
+      draft.metadata.otu.equipamientos.push(nuevo);
+      return;
+    }
+
+    case "eliminar_equip": {
+      draft.metadata.otu.equipamientos.pop();
       return;
     }
 
@@ -182,8 +204,18 @@ export function reducer(draft, action) {
       return;
     }
 
+    case "ubicacion controlador": {
+      draft.metadata.controlador.ubicacion = action.payLoad;
+      return;
+    }
+
     case "otu": {
       draft.metadata.otu[action.fieldName] = action.payLoad;
+      return;
+    }
+
+    case "equipamiento": {
+      draft.metadata.otu.equipamientos[action.index][action.fieldName] = action.payLoad;
       return;
     }
 

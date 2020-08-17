@@ -150,7 +150,7 @@ const NuevaInstalacionVista2 = () => {
         <hr className="separador"></hr>
 
         <FormGroup>
-          <Label>Adjuntar imagen de la instalación</Label>
+          <Label>Adjuntar imagen de la instalación (Tipo Croquis)</Label>
           <br></br>
           <CustomInput
             className="boton-file"
@@ -223,6 +223,7 @@ const NuevaInstalacionVista2 = () => {
                     }>
                     <option value="" hidden></option>
                     <option value="vehicular">Vehicular</option>
+                    <option value="peatonal">Ciclista</option>
                     <option value="peatonal">Peatonal</option>
                   </TextField>
                 </FormGroup>

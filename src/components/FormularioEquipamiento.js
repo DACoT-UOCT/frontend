@@ -4,31 +4,31 @@ import "../App.css";
 import { Col, Row, FormGroup, Button } from "reactstrap";
 import TextField from '@material-ui/core/TextField';
 
-const FormularioJunction = () => {
+const FormularioEquipamiento = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
   return (
     <>
-      <legend className="seccion">Junction</legend>
-      {state.junctions.map((junction, index) => {
+      <legend className="subseccion">Equipamientos</legend>
+      {state.metadata.otu.equipamientos.map((equip, index) => {
         return (
           <Row form>
             <Col sm={3}>
               <FormGroup>
                 <TextField
                   id="outlined"
-                  label="Código en Sistema"
+                  label="Descripcion"
                   variant="outlined"
-                  name="junction"
-                  placeholder="J000000"
+                  name="equip_descripcion"
+                  placeholder=""
                   autoComplete="off"
-                  value={junction.id}
+                  value={equip.desc}
                   onChange={(e) =>
                     dispatch({
-                      type: "junctions",
+                      type: "equipamiento",
                       index: index,
-                      fieldName: "id",
+                      fieldName: "desc",
                       payLoad: e.currentTarget.value,
                     })
                   }
@@ -36,22 +36,21 @@ const FormularioJunction = () => {
               </FormGroup>
             </Col>
             <Col sm={1}></Col>
-            <Col sm={4}>
+            <Col sm={3}>
               <FormGroup>
                 <TextField
                   id="outlined"
-                  label="Cruce"
+                  label="Dirección IP"
                   variant="outlined"
-                  name="cruce"
-                  placeholder="Calle - Calle"
+                  name="equip_ip"
+                  placeholder=""
                   autoComplete="off"
-                  style={{width: "550px"}}
-                  value={junction.addr}
+                  value={equip.ip}
                   onChange={(e) =>
                     dispatch({
-                      type: "junctions",
+                      type: "equipamiento",
                       index: index,
-                      fieldName: "addr",
+                      fieldName: "ip",
                       payLoad: e.currentTarget.value,
                     })
                   }
@@ -67,17 +66,17 @@ const FormularioJunction = () => {
           <FormGroup>
             <Button
               onClick={() => {
-                dispatch({ type: "agregar_junction" });
+                dispatch({ type: "agregar_equip" });
               }}>
-              Agregar junction
+              Agregar Equipamiento
             </Button>
           </FormGroup>
         </Col>
         <Col>
-          {state.junctions.length > 1 && (
+          {state.metadata.otu.equipamientos.length > 1 && (
             <FormGroup>
               <Button
-                onClick={() => dispatch({ type: "eliminar_junction" })}>
+                onClick={() => dispatch({ type: "eliminar_equip" })}>
                 Eliminar
               </Button>
             </FormGroup>
@@ -88,4 +87,4 @@ const FormularioJunction = () => {
   );
 };
 
-export default FormularioJunction;
+export default FormularioEquipamiento;
