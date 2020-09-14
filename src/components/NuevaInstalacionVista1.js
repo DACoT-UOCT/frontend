@@ -55,7 +55,7 @@ const NuevaInstalacionVista1 = () => {
     validar_entrada(state.metadata.comuna, "Comuna");
     validar_entrada(state.metadata.controlador.modelo, " Controlador - Modelo");
     validar_entrada(state.metadata.controlador.marca, "Controlador - Marca");
-    validar_entrada(state.metadata.mod_potencia, "Mod Potencia");
+    //validar_entrada(state.metadata.mod_potencia, "Mod Potencia");
     validar_entrada(state.metadata.detectores, "Detectores");
     validar_entrada(state.metadata.otu.n_serie, "OTU - N Serie");
     validar_entrada(state.metadata.otu.marca, "OTU - Marca");
@@ -163,7 +163,39 @@ const NuevaInstalacionVista1 = () => {
                       payLoad: e.currentTarget.value,
                     })
                   }>
-                  <option></option>
+                  <option hidden></option>
+                  <option>Cerrillos</option>
+                  <option>Cerro Navia</option>
+                  <option>Conchalí</option>
+                  <option>El Bosque</option>
+                  <option>Estación Central</option>
+                  <option>Huechuraba</option>
+                  <option>Independencia</option>
+                  <option>La Cisterna</option>
+                  <option>La Florida</option>
+                  <option>La Granja</option>
+                  <option>La Pintana</option>
+                  <option>La Reina</option>
+                  <option>Las Condes</option>
+                  <option>Lo Barnechea</option>
+                  <option>Lo Espejo</option>
+                  <option>Lo Prado</option>
+                  <option>Macul</option>
+                  <option>Maipú</option>
+                  <option>Ñuñoa</option>
+                  <option>Pedro Aguirre Cerda</option>
+                  <option>Peñalolén</option>
+                  <option>Providencia</option>
+                  <option>Pudahuel</option>
+                  <option>Quilicura</option>
+                  <option>Quinta Normal</option>
+                  <option>Recoleta</option>
+                  <option>Renca</option>
+                  <option>San Joaquín</option>
+                  <option>San Miguel</option>
+                  <option>San Ramón</option>
+                  <option>Santiago</option>
+                  <option>Vitacura</option>
                 </TextField>
               </FormGroup>
             </Col>
