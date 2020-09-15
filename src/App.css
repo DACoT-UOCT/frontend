@@ -554,3 +554,13 @@ Button{
 .inputBusqueda{
   text-transform: uppercase;
 }
+
+.titulo{
+
+}
+
+.info{
+  border-style: solid;
+  width: 50%;
+  display: inline-block;
+}

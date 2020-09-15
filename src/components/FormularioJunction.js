@@ -14,50 +14,46 @@ const FormularioJunction = () => {
       {state.junctions.map((junction, index) => {
         return (
           <Row form>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Código en Sistema"
-                  variant="outlined"
-                  name="junction"
-                  placeholder="J000000"
-                  autoComplete="off"
-                  value={junction.id}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "junctions",
-                      index: index,
-                      fieldName: "id",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Código en Sistema"
+                variant="outlined"
+                name="junction"
+                placeholder="J000000"
+                autoComplete="off"
+                value={junction.id}
+                onChange={(e) =>
+                  dispatch({
+                    type: "junctions",
+                    index: index,
+                    fieldName: "id",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
             <Col sm={1}></Col>
-            <Col sm={4}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Cruce"
-                  variant="outlined"
-                  name="cruce"
-                  placeholder="Calle - Calle"
-                  autoComplete="off"
-                  style={{width: "550px"}}
-                  value={junction.addr}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "junctions",
-                      index: index,
-                      fieldName: "addr",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Cruce"
+                variant="outlined"
+                name="cruce"
+                placeholder="Calle - Calle"
+                autoComplete="off"
+                style={{width: "550px"}}
+                value={junction.addr}
+                onChange={(e) =>
+                  dispatch({
+                    type: "junctions",
+                    index: index,
+                    fieldName: "addr",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
           </Row>
         );
       })}

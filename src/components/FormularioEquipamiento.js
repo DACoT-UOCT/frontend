@@ -14,54 +14,49 @@ const FormularioEquipamiento = () => {
       {state.metadata.otu.equipamientos.map((equip, index) => {
         return (
           <Row form>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Descripcion"
-                  variant="outlined"
-                  name="equip_descripcion"
-                  placeholder=""
-                  autoComplete="off"
-                  value={equip.desc}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "equipamiento",
-                      index: index,
-                      fieldName: "desc",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Descripcion"
+                variant="outlined"
+                name="equip_descripcion"
+                placeholder=""
+                autoComplete="off"
+                value={equip.desc}
+                onChange={(e) =>
+                  dispatch({
+                    type: "equipamiento",
+                    index: index,
+                    fieldName: "desc",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
             <Col sm={1}></Col>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Dirección IP"
-                  variant="outlined"
-                  name="equip_ip"
-                  placeholder=""
-                  autoComplete="off"
-                  value={equip.ip}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "equipamiento",
-                      index: index,
-                      fieldName: "ip",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Dirección IP"
+                variant="outlined"
+                name="equip_ip"
+                placeholder=""
+                autoComplete="off"
+                value={equip.ip}
+                onChange={(e) =>
+                  dispatch({
+                    type: "equipamiento",
+                    index: index,
+                    fieldName: "ip",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
           </Row>
         );
       })}
       
-      <Row>
         <Col sm={3}>
           <FormGroup>
             <Button
@@ -82,7 +77,6 @@ const FormularioEquipamiento = () => {
             </FormGroup>
           )}
         </Col>
-      </Row>
     </>
   );
 };

@@ -13,9 +13,20 @@ import {TextField,
         Slide, 
         Switch, 
         Collapse, 
-        FormControlLabel} from '@material-ui/core';
+        FormControlLabel,
+        Typography,
+        Popover,
+        makeStyles} from '@material-ui/core';
 import ButtonMaterial from '@material-ui/core/Button';
 
+const useStyles = makeStyles((theme) => ({
+  popover: {
+    pointerEvents: 'none',
+  },
+  paper: {
+    padding: theme.spacing(1),
+  },
+}));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -23,7 +34,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const NuevaInstalacionVista1 = () => {
   /*Mensaje error*/
-  const [open, setOpen] = React.useState(false);
+  const [openWarning, setOpen] = React.useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -36,6 +47,19 @@ const NuevaInstalacionVista1 = () => {
 
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
+
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
 
   const validar_entrada = (str, nombre, expresion = /.+/) => {
     if (!expresion.test(str)) {
@@ -204,134 +228,150 @@ const NuevaInstalacionVista1 = () => {
           <hr className="separador"></hr>
 
           <legend className="seccion">OTU</legend>
+          
           <Row form>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  disabled
-                  id="outlined"
-                  label="Código"
-                  variant="outlined"
-                  name="otu-codigo"
-                  autoComplete="off"
-                  value= {"X"+state.junctions[0].id.substring(1,state.junctions[0].id.length-1)+"0"}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "otu",
-                      fieldName: "codigo",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                disabled
+                id="outlined"
+                label="Código"
+                variant="outlined"
+                name="otu-codigo"
+                autoComplete="off"
+                value= {"X"+state.junctions[0].id.substring(1,state.junctions[0].id.length-1)+"0"}
+                onChange={(e) =>
+                  dispatch({
+                    type: "otu",
+                    fieldName: "codigo",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
+            <img
+              aria-owns={open ? 'mouse-over-popover' : undefined}
+              aria-haspopup="true"
+              onMouseEnter={handlePopoverOpen}
+              onMouseLeave={handlePopoverClose}
+              src="/information.svg">
+            </img>
+            <Popover
+              id="mouse-over-popover"
+              className={classes.popover}
+              classes={{
+                paper: classes.paper,
+              }}
+              open={open}
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              onClose={handlePopoverClose}
+              disableRestoreFocus
+            >
+              <Typography>Lorem Ipsum</Typography>
+            </Popover>
           </Row>
           <Row form>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Marca"
-                  variant="outlined"
-                  name="marca"
-                  autoComplete="off"
-                  value={state.metadata.otu.marca}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "otu",
-                      fieldName: "marca",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Marca"
+                variant="outlined"
+                name="marca"
+                autoComplete="off"
+                value={state.metadata.otu.marca}
+                onChange={(e) =>
+                  dispatch({
+                    type: "otu",
+                    fieldName: "marca",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
             <Col sm={1}></Col>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Tipo"
-                  variant="outlined"
-                  name="otu-tipo"
-                  autoComplete="off"
-                  value={state.metadata.otu.tipo}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "otu",
-                      fieldName: "tipo",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Tipo"
+                variant="outlined"
+                name="otu-tipo"
+                autoComplete="off"
+                value={state.metadata.otu.tipo}
+                onChange={(e) =>
+                  dispatch({
+                    type: "otu",
+                    fieldName: "tipo",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
             <Col sm={1}></Col>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="N° Serie"
-                  variant="outlined"
-                  name="otu-serie"
-                  autoComplete="off"
-                  value={state.metadata.otu.n_serie}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "otu",
-                      fieldName: "n_serie",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-
-          <Row form>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Dirección IP"
-                  variant="outlined"
-                  name="otu-ip"
-                  autoComplete="off"
-                  value={state.metadata.otu.direccion_ip}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "otu",
-                      fieldName: "direccion_ip",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
-            <Col sm={1}></Col>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Mascara de Red"
-                  variant="outlined"
-                  name="otu-netmask"
-                  autoComplete="off"
-                  value={state.metadata.otu.netmask}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "otu",
-                      fieldName: "netmask",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="N° Serie"
+                variant="outlined"
+                name="otu-serie"
+                autoComplete="off"
+                value={state.metadata.otu.n_serie}
+                onChange={(e) =>
+                  dispatch({
+                    type: "otu",
+                    fieldName: "n_serie",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
           </Row>
 
           <Row form>
-            <Col sm={3}>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Dirección IP"
+                variant="outlined"
+                name="otu-ip"
+                autoComplete="off"
+                value={state.metadata.otu.direccion_ip}
+                onChange={(e) =>
+                  dispatch({
+                    type: "otu",
+                    fieldName: "direccion_ip",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
+            <Col sm={1}></Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Mascara de Red"
+                variant="outlined"
+                name="otu-netmask"
+                autoComplete="off"
+                value={state.metadata.otu.netmask}
+                onChange={(e) =>
+                  dispatch({
+                    type: "otu",
+                    fieldName: "netmask",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
+          </Row>
+
+          <Row form>
               <FormGroup>
                 <TextField
                   id="outlined"
@@ -350,70 +390,63 @@ const NuevaInstalacionVista1 = () => {
                   }
                 />
               </FormGroup>
-            </Col>
             <Col sm={1}></Col>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Palabra de Resp"
-                  variant="outlined"
-                  type="number"
-                  name="otu-respuesta"
-                  autoComplete="off"
-                  value={state.metadata.otu.respuesta}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "otu",
-                      fieldName: "respuesta",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Palabra de Resp"
+                variant="outlined"
+                type="number"
+                name="otu-respuesta"
+                autoComplete="off"
+                value={state.metadata.otu.respuesta}
+                onChange={(e) =>
+                  dispatch({
+                    type: "otu",
+                    fieldName: "respuesta",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
           </Row>
 
           <Row form>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="N° Empalme"
-                  variant="outlined"
-                  name="otu-empalme"
-                  autoComplete="off"
-                  value={state.metadata.n_empalme}
-                  onChange={(e) => 
-                    dispatch({
-                      type: "metadata",
-                      fieldName: "n_empalme",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="N° Empalme"
+                variant="outlined"
+                name="otu-empalme"
+                autoComplete="off"
+                value={state.metadata.n_empalme}
+                onChange={(e) => 
+                  dispatch({
+                    type: "metadata",
+                    fieldName: "n_empalme",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
             <Col sm={1}></Col>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Capacidad Empalme"
-                  variant="outlined"
-                  name="cap-empalme"
-                  autoComplete="off"
-                  value={state.metadata.capacidad_empalme}
-                  onChange={(e) => 
-                    dispatch({
-                      type: "metadata",
-                      fieldName: "capacidad_empalme",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Capacidad Empalme"
+                variant="outlined"
+                name="cap-empalme"
+                autoComplete="off"
+                value={state.metadata.capacidad_empalme}
+                onChange={(e) => 
+                  dispatch({
+                    type: "metadata",
+                    fieldName: "capacidad_empalme",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
           </Row>
 
           <FormularioEquipamiento />
@@ -423,119 +456,109 @@ const NuevaInstalacionVista1 = () => {
           <legend className="seccion">Controlador</legend>
 
           <Row form>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Marca"
-                  variant="outlined"
-                  name="controlador_marca"
-                  autoComplete="off"
-                  value={state.metadata.controlador.marca}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "marca controlador",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Marca"
+                variant="outlined"
+                name="controlador_marca"
+                autoComplete="off"
+                value={state.metadata.controlador.marca}
+                onChange={(e) =>
+                  dispatch({
+                    type: "marca controlador",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
             <Col sm={1}></Col>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Modelo"
-                  variant="outlined"
-                  name="controlador_modelo"
-                  autoComplete="off"
-                  value={state.metadata.controlador.modelo}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "modelo controlador",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Modelo"
+                variant="outlined"
+                name="controlador_modelo"
+                autoComplete="off"
+                value={state.metadata.controlador.modelo}
+                onChange={(e) =>
+                  dispatch({
+                    type: "modelo controlador",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
             <Col sm={1}></Col>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined-select-currency-native"
-                  select
-                  label="Ubicación"
-                  variant="outlined"
-                  name="controlador_ubicacion"
-                  autoComplete="off"
-                    SelectProps={{
-                      native: true,
-                    }}
-                  value={state.metadata.controlador.ubicacion}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "ubicacion controlador",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }>
-                  <option value="" hidden></option>
-                  {state.junctions.map((junction) => {
-                    return(
-                      <option>{junction.id}</option>
-                    )
-                  })}
-                </TextField>
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined-select-currency-native"
+                select
+                label="Ubicación"
+                variant="outlined"
+                name="controlador_ubicacion"
+                autoComplete="off"
+                  SelectProps={{
+                    native: true,
+                  }}
+                value={state.metadata.controlador.ubicacion}
+                onChange={(e) =>
+                  dispatch({
+                    type: "ubicacion controlador",
+                    payLoad: e.currentTarget.value,
+                  })
+                }>
+                <option value="" hidden></option>
+                {state.junctions.map((junction) => {
+                  return(
+                    <option>{junction.id}</option>
+                  )
+                })}
+              </TextField>
+            </FormGroup>
           </Row>
 
           <Row form>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  disabled
-                  id="outlined"
-                  label="Mod. Potencia"
-                  variant="outlined"
-                  name="mod-potencia"
-                  autoComplete="off"
-                  placeholder="0"
-                  type="number"
-                  value={state.metadata.mod_potencia}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "metadata",
-                      fieldName: "mod_potencia",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                disabled
+                id="outlined"
+                label="Mod. Potencia"
+                variant="outlined"
+                name="mod-potencia"
+                autoComplete="off"
+                placeholder="0"
+                type="number"
+                value={state.metadata.mod_potencia}
+                onChange={(e) =>
+                  dispatch({
+                    type: "metadata",
+                    fieldName: "mod_potencia",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
             <Col sm={1}></Col>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Detectores"
-                  variant="outlined"
-                  type="number"
-                  name="detectores"
-                  autoComplete="off"
-                  placeholder="0"
-                  value={state.metadata.detectores}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "metadata",
-                      fieldName: "detectores",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Detectores"
+                variant="outlined"
+                type="number"
+                name="detectores"
+                autoComplete="off"
+                placeholder="0"
+                value={state.metadata.detectores}
+                onChange={(e) =>
+                  dispatch({
+                    type: "metadata",
+                    fieldName: "detectores",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
           </Row>
 
           <hr className="separador"></hr>
@@ -570,72 +593,66 @@ const NuevaInstalacionVista1 = () => {
 
           <legend className="seccion">Postes</legend>
           <Row form>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Ganchos"
-                  variant="outlined"
-                  name="ganchos"
-                  type="number"
-                  autoComplete="off"
-                  placeholder="0"
-                  type="number"
-                  value={state.metadata.postes_ganchos}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "metadata",
-                      fieldName: "postes_ganchos",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Ganchos"
+                variant="outlined"
+                name="ganchos"
+                type="number"
+                autoComplete="off"
+                placeholder="0"
+                type="number"
+                value={state.metadata.postes_ganchos}
+                onChange={(e) => {
+                  dispatch({
+                    type: "metadata",
+                    fieldName: "postes_ganchos",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </FormGroup>
             <Col sm={1}></Col>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Vehiculares"
-                  variant="outlined"
-                  name="vehiculares"
-                  type="number"
-                  autoComplete="off"
-                  placeholder="0"
-                  value={state.metadata.postes_vehiculares}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "metadata",
-                      fieldName: "postes_vehiculares",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Vehiculares"
+                variant="outlined"
+                name="vehiculares"
+                type="number"
+                autoComplete="off"
+                placeholder="0"
+                value={state.metadata.postes_vehiculares}
+                onChange={(e) => {
+                  dispatch({
+                    type: "metadata",
+                    fieldName: "postes_vehiculares",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </FormGroup>
             <Col sm={1}></Col>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Peatonales"
-                  variant="outlined"
-                  name="peatonales"
-                  type="number"
-                  autoComplete="off"
-                  placeholder="0"
-                  value={state.metadata.postes_peatonales}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "metadata",
-                      fieldName: "postes_peatonales",
-                      payLoad: e.currentTarget.value,
-                    });
-                  }}
-                />
-              </FormGroup>
-            </Col>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Peatonales"
+                variant="outlined"
+                name="peatonales"
+                type="number"
+                autoComplete="off"
+                placeholder="0"
+                value={state.metadata.postes_peatonales}
+                onChange={(e) => {
+                  dispatch({
+                    type: "metadata",
+                    fieldName: "postes_peatonales",
+                    payLoad: e.currentTarget.value,
+                  });
+                }}
+              />
+            </FormGroup>
           </Row>
 
           <hr className="separador"></hr>
@@ -1223,7 +1240,7 @@ const NuevaInstalacionVista1 = () => {
                   Siguiente
                 </ButtonMaterial>
                 <Dialog
-                  open={open}
+                  open={openWarning}
                   TransitionComponent={Transition}
                   keepMounted
                   onClose={handleClose}
