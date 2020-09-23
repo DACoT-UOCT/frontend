@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
-import "../App.css";
+import "../../App.css";
 import {
   Col,
   Row,
@@ -11,17 +11,19 @@ import {
   CustomInput,
   Button,
   InputGroup,
-  InputGroupAddon
+  InputGroupAddon,
 } from "reactstrap";
 
-import {TextField,
-        Dialog,
-        DialogActions,
-        DialogContent, 
-        DialogContentText, 
-        DialogTitle, 
-        Slide} from '@material-ui/core';
-import ButtonMaterial from '@material-ui/core/Button';
+import {
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide,
+} from "@material-ui/core";
+import ButtonMaterial from "@material-ui/core/Button";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -37,7 +39,7 @@ const NuevaInstalacionVista2 = () => {
 
   /*Mensaje error*/
   const [open, setOpen] = React.useState(false);
-  
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -45,11 +47,7 @@ const NuevaInstalacionVista2 = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
-  const validar_entrada = (
-    str,
-    nombre,
-    expresion = /.+/,
-  ) => {
+  const validar_entrada = (str, nombre, expresion = /.+/) => {
     if (!expresion.test(str)) {
       //si no se cumple la expresion regular
       setOpen(true);
@@ -58,7 +56,6 @@ const NuevaInstalacionVista2 = () => {
   };
 
   const validar_formulario = () => {
-
     dispatch({ type: "reset_errores" });
 
     const comprobacionEtapas = [];
@@ -78,38 +75,44 @@ const NuevaInstalacionVista2 = () => {
       //validar si hay input
       validar_entrada(fase.etapas, "Fase - Etapas");
       //validar si el input esta en las etapas
-      for (let etapa in fase.etapas){
+      for (let etapa in fase.etapas) {
         if (!comprobacionEtapas.includes(fase.etapas[etapa])) {
           setOpen(true);
-          dispatch({ type: "error", payLoad: "Fases - Etapas (No existe etapa)" });
+          dispatch({
+            type: "error",
+            payLoad: "Fases - Etapas (No existe etapa)",
+          });
         }
       }
-      
+
       validar_entrada(fase.imagen, "Fase - Imagen");
     });
-  
+
     state.secuencias.map((secuencia) => {
       //validar si hay input
       validar_entrada(secuencia, "Secuencia - Fase");
       //validar si el input esta en las fases
-      secuencia.map((sec) =>{
+      secuencia.map((sec) => {
         if (parseInt(sec) > cantFases) {
           setOpen(true);
-          dispatch({ type: "error", payLoad: "Secuencia - Fases (No existe fase)" });
+          dispatch({
+            type: "error",
+            payLoad: "Secuencia - Fases (No existe fase)",
+          });
         }
       });
     });
 
-    for (i = 0; i < state.entreverdes.length; i++){
-      for (j = 0; j < state.entreverdes[i].length; j++){
-        if (j != ignorarEnMatriz) validar_entrada(state.entreverdes[i][j], "Matriz Entreverdes");
+    for (i = 0; i < state.entreverdes.length; i++) {
+      for (j = 0; j < state.entreverdes[i].length; j++) {
+        if (j != ignorarEnMatriz)
+          validar_entrada(state.entreverdes[i][j], "Matriz Entreverdes");
       }
       ignorarEnMatriz = ignorarEnMatriz + 1;
     }
 
     console.log(state);
     dispatch({ type: "try_submit" });
-   
   };
 
   ///////////////RETURN///////////////
@@ -144,7 +147,7 @@ const NuevaInstalacionVista2 = () => {
                 });
               };
             }}
-          />          
+          />
         </FormGroup>
 
         <hr className="separador"></hr>
@@ -272,7 +275,7 @@ const NuevaInstalacionVista2 = () => {
                     label="N°"
                     variant="outlined"
                     autoComplete="off"
-                    style={{width: "75px"}}
+                    style={{ width: "75px" }}
                     value={index + 1}
                   />
                 </FormGroup>
@@ -372,7 +375,7 @@ const NuevaInstalacionVista2 = () => {
                     label="N°"
                     variant="outlined"
                     autoComplete="off"
-                    style={{width: "75px"}}
+                    style={{ width: "75px" }}
                     value={index + 1}
                   />
                 </FormGroup>
@@ -449,7 +452,7 @@ const NuevaInstalacionVista2 = () => {
                 </Col>
 
                 {fila.map((col, indice_col) => {
-                  if (indice_col === indice_fila){
+                  if (indice_col === indice_fila) {
                     return (
                       <Col sm={1}>
                         <TextField
@@ -458,7 +461,7 @@ const NuevaInstalacionVista2 = () => {
                           variant="filled"
                           autoComplete="off"
                           placeholder="-"
-                          style={{width: "75px"}}
+                          style={{ width: "75px" }}
                           value={col}
                           onChange={(e) =>
                             dispatch({
@@ -471,8 +474,7 @@ const NuevaInstalacionVista2 = () => {
                         />
                       </Col>
                     );
-                  }
-                  else{
+                  } else {
                     return (
                       <Col sm={1}>
                         <TextField
@@ -480,7 +482,7 @@ const NuevaInstalacionVista2 = () => {
                           variant="outlined"
                           autoComplete="off"
                           placeholder="-"
-                          style={{width: "75px"}}
+                          style={{ width: "75px" }}
                           value={col}
                           onChange={(e) =>
                             dispatch({
@@ -527,38 +529,44 @@ const NuevaInstalacionVista2 = () => {
           <Row>
             <Col sm={4}></Col>
             <Col sm={2}>
-              <ButtonMaterial variant="contained" color="secondary" onClick={() => dispatch({ type: "atras" })}>
+              <ButtonMaterial
+                variant="contained"
+                color="secondary"
+                onClick={() => dispatch({ type: "atras" })}>
                 Atrás
               </ButtonMaterial>
             </Col>
             <Col sm={2}>
-              <ButtonMaterial variant="contained" color="primary" onClick={validar_formulario}>
+              <ButtonMaterial
+                variant="contained"
+                color="primary"
+                onClick={validar_formulario}>
                 Enviar
               </ButtonMaterial>
               <Dialog
-                  open={open}
-                  TransitionComponent={Transition}
-                  keepMounted
-                  onClose={handleClose}
-                  aria-labelledby="alert-dialog-slide-title"
-                  aria-describedby="alert-dialog-slide-description"
-                >
-                  <DialogTitle id="alert-dialog-slide-title">Error en los siguientes campos:</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText>
-                      {state.errors.map((error) => {
-                        return <li>{error}</li>;
-                      })}
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button className="boton-mensaje-error" onClick={handleClose} >
-                      Ok
-                    </Button>
-                  </DialogActions>
-                </Dialog>
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description">
+                <DialogTitle id="alert-dialog-slide-title">
+                  Error en los siguientes campos:
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    {state.errors.map((error) => {
+                      return <li>{error}</li>;
+                    })}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button className="boton-mensaje-error" onClick={handleClose}>
+                    Ok
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Col>
-            
           </Row>
         </FormGroup>
       </Form>

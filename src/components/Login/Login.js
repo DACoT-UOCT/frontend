@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import "../App.css";
+import "../../App.css";
 import { Button, Form, Input } from "reactstrap";
-import { DispatchContext, StateContext } from "./App";
+import { DispatchContext, StateContext } from "../App";
 
 // const first_click = true;
 
@@ -53,9 +53,9 @@ const LoginForm = () => {
               <div></div>
               <div></div>
             </div>
-            ) :
+          ) : (
             <div>
-              <Input 
+              <Input
                 type="text"
                 placeholder="usuario"
                 value={username}
@@ -64,22 +64,19 @@ const LoginForm = () => {
                     type: "field",
                     fieldName: "username",
                     payload: e.currentTarget.value,
-                  })}
+                  })
+                }
               />
-              <Input
-                type="password"
-                placeholder="contraseña"
-
-              />
+              <Input type="password" placeholder="contraseña" />
               <Button type="submit"> Ingresar </Button>
               <Button type="submit"> Ingresar con Google </Button>
               {error && <p className="log-error-message">{error}</p>}
             </div>
-          }
+          )}
         </Form>
       </div>
     </div>
-    
+
     /*<div>
       <div>
         <div>

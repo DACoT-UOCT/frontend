@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
-import "../App.css";
+import "../../App.css";
 import { Col, Row, FormGroup, Button } from "reactstrap";
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
 
 const FormularioEquipamiento = () => {
   const state = useContext(StateContext);
@@ -56,27 +56,26 @@ const FormularioEquipamiento = () => {
           </Row>
         );
       })}
-      
-        <Col sm={3}>
+
+      <Col sm={3}>
+        <FormGroup>
+          <Button
+            onClick={() => {
+              dispatch({ type: "agregar_equip" });
+            }}>
+            Agregar Equipamiento
+          </Button>
+        </FormGroup>
+      </Col>
+      <Col>
+        {state.metadata.otu.equipamientos.length > 1 && (
           <FormGroup>
-            <Button
-              onClick={() => {
-                dispatch({ type: "agregar_equip" });
-              }}>
-              Agregar Equipamiento
+            <Button onClick={() => dispatch({ type: "eliminar_equip" })}>
+              Eliminar
             </Button>
           </FormGroup>
-        </Col>
-        <Col>
-          {state.metadata.otu.equipamientos.length > 1 && (
-            <FormGroup>
-              <Button
-                onClick={() => dispatch({ type: "eliminar_equip" })}>
-                Eliminar
-              </Button>
-            </FormGroup>
-          )}
-        </Col>
+        )}
+      </Col>
     </>
   );
 };

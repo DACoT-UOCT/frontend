@@ -8,9 +8,9 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
-import fontLtSrc from "../Aller/Aller_Lt.ttf";
-import fontSrc from "../Aller/Aller_Rg.ttf";
-import fontBdSrc from "../Aller/Aller_Bd.ttf";
+import fontLtSrc from "../../Aller/Aller_Lt.ttf";
+import fontSrc from "../../Aller/Aller_Rg.ttf";
+import fontBdSrc from "../../Aller/Aller_Bd.ttf";
 
 import axios from "axios";
 
@@ -65,8 +65,8 @@ export default function PdfConsulta(props) {
     },
     container: {
       display: "flex",
-      flexDirection: "row"
-    },  
+      flexDirection: "row",
+    },
     mb: {
       marginBottom: "10pt",
     },
@@ -147,7 +147,8 @@ export default function PdfConsulta(props) {
       borderWidth: 1,
       borderLeftWidth: 1,
       borderTopWidth: 0,
-    },tableCol33: {
+    },
+    tableCol33: {
       width: "30%",
       borderStyle: "solid",
       borderColor: "#bfbfbf",
@@ -193,7 +194,7 @@ export default function PdfConsulta(props) {
         </Text>
         <Text>
           <Text style={styles.bold}>Junctions: </Text>
-          {data.junctions[0].id+' - '+data.junctions[0].id}
+          {data.junctions[0].id + " - " + data.junctions[0].id}
         </Text>
         <Text>
           <Text style={styles.bold}>Empresa: </Text>
@@ -216,7 +217,7 @@ export default function PdfConsulta(props) {
               </View>
             </View>
             {data.stages.map((entry, index) => {
-              stages[index] = entry.id 
+              stages[index] = entry.id;
               return (
                 <View style={styles.tableRow}>
                   <View style={styles.tableCol}>
@@ -276,65 +277,59 @@ export default function PdfConsulta(props) {
                     <Text style={styles.tableCell}>{index + 1}</Text>
                   </View>
                   <View style={styles.tableCol}>
-                    <Text style={styles.tableCell}>
-                      {entry.join("-")}
-                    </Text>
+                    <Text style={styles.tableCell}>{entry.join("-")}</Text>
                   </View>
                 </View>
               );
             })}
           </View>
-        </View> 
+        </View>
         <View style={styles.half}>
           <Text style={[styles.bold, styles.mb]}>Entreverdes: </Text>
           <View style={styles.table} wrap={false}>
             <View style={styles.tableRow}>
-              <View style={styles.tableColHeader33} >
+              <View style={styles.tableColHeader33}>
                 <Text style={styles.tableCellHeader}>De</Text>
               </View>
               <View style={styles.tableColHeader33}>
                 <Text style={styles.tableCellHeader}>A</Text>
               </View>
-            <View style={styles.tableColHeader33}>
+              <View style={styles.tableColHeader33}>
                 <Text style={styles.tableCellHeader}>Seg</Text>
               </View>
             </View>
             {data.entreverdes.map((entry, index) => {
               let text = [];
               let sg = "";
-              entry.map((stage, index2) =>{
-                if(stage != ""){
+              entry.map((stage, index2) => {
+                if (stage != "") {
                   text.push(stages[index2]);
                   sg = stage;
                 }
-              })
-              text = text.join(',');
-                return (
-                  <View style={styles.tableRow}>
-                    <View style={styles.tableCol33}>
-                      <Text style={styles.tableCell}>{stages[index]}</Text>
-                    </View>
-                    <View style={styles.tableCol33}>
-                      <Text style={styles.tableCell}>
-                        {text}
-                      </Text>
-                    </View>
-                    <View style={styles.tableCol33}>
-                      <Text style={styles.tableCell}>
-                        {sg}
-                      </Text>
-                    </View>
+              });
+              text = text.join(",");
+              return (
+                <View style={styles.tableRow}>
+                  <View style={styles.tableCol33}>
+                    <Text style={styles.tableCell}>{stages[index]}</Text>
                   </View>
-                );
+                  <View style={styles.tableCol33}>
+                    <Text style={styles.tableCell}>{text}</Text>
+                  </View>
+                  <View style={styles.tableCol33}>
+                    <Text style={styles.tableCell}>{sg}</Text>
+                  </View>
+                </View>
+              );
             })}
-          </View> 
+          </View>
         </View>
         <Text style={[styles.bold, styles.mb]}>Periodizaciones: </Text>
         <View style={styles.container}>
           <View style={styles.half}>
             <View style={styles.table} wrap={false}>
               <View style={styles.tableRow}>
-                <View style={styles.tableColHeader33} >
+                <View style={styles.tableColHeader33}>
                   <Text style={styles.tableCellHeader}>Dia</Text>
                 </View>
                 <View style={styles.tableColHeader33}>
@@ -345,30 +340,26 @@ export default function PdfConsulta(props) {
                 </View>
               </View>
               {data.tabla_periodizaciones.L.map((entry, index) => {
-                  return (
-                    <View style={styles.tableRow}>
-                      <View style={styles.tableCol33}>
-                        <Text style={styles.tableCell}>{'L'}</Text>
-                      </View>
-                      <View style={styles.tableCol33}>
-                        <Text style={styles.tableCell}>
-                          {entry[0]}
-                        </Text>
-                      </View>
-                      <View style={styles.tableCol33}>
-                        <Text style={styles.tableCell}>
-                          {entry[1]}
-                        </Text>
-                      </View>
+                return (
+                  <View style={styles.tableRow}>
+                    <View style={styles.tableCol33}>
+                      <Text style={styles.tableCell}>{"L"}</Text>
                     </View>
-                  );
+                    <View style={styles.tableCol33}>
+                      <Text style={styles.tableCell}>{entry[0]}</Text>
+                    </View>
+                    <View style={styles.tableCol33}>
+                      <Text style={styles.tableCell}>{entry[1]}</Text>
+                    </View>
+                  </View>
+                );
               })}
-            </View> 
-          </View>  
+            </View>
+          </View>
           <View style={styles.half}>
             <View style={styles.table} wrap={false}>
               <View style={styles.tableRow}>
-                <View style={styles.tableColHeader33} >
+                <View style={styles.tableColHeader33}>
                   <Text style={styles.tableCellHeader}>Dia</Text>
                 </View>
                 <View style={styles.tableColHeader33}>
@@ -379,75 +370,67 @@ export default function PdfConsulta(props) {
                 </View>
               </View>
               {data.tabla_periodizaciones.S.map((entry, index) => {
-                  return (
-                    <View style={styles.tableRow}>
-                      <View style={styles.tableCol33}>
-                        <Text style={styles.tableCell}>{'S'}</Text>
-                      </View>
-                      <View style={styles.tableCol33}>
-                        <Text style={styles.tableCell}>
-                          {entry[0]}
-                        </Text>
-                      </View>
-                      <View style={styles.tableCol33}>
-                        <Text style={styles.tableCell}>
-                          {entry[1]}
-                        </Text>
-                      </View>
+                return (
+                  <View style={styles.tableRow}>
+                    <View style={styles.tableCol33}>
+                      <Text style={styles.tableCell}>{"S"}</Text>
                     </View>
-                  );
+                    <View style={styles.tableCol33}>
+                      <Text style={styles.tableCell}>{entry[0]}</Text>
+                    </View>
+                    <View style={styles.tableCol33}>
+                      <Text style={styles.tableCell}>{entry[1]}</Text>
+                    </View>
+                  </View>
+                );
               })}
-            </View> 
-          </View>       
+            </View>
+          </View>
         </View>
         <View style={styles.half}>
-            <View style={styles.table} wrap={false}>
-              <View style={styles.tableRow}>
-                <View style={styles.tableColHeader33} >
-                  <Text style={styles.tableCellHeader}>Dia</Text>
-                </View>
-                <View style={styles.tableColHeader33}>
-                  <Text style={styles.tableCellHeader}>Hora</Text>
-                </View>
-                <View style={styles.tableColHeader33}>
-                  <Text style={styles.tableCellHeader}>Plan</Text>
-                </View>
+          <View style={styles.table} wrap={false}>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColHeader33}>
+                <Text style={styles.tableCellHeader}>Dia</Text>
               </View>
-              {data.tabla_periodizaciones.D.map((entry, index) => {
-                  return (
-                    <View style={styles.tableRow}>
-                      <View style={styles.tableCol33}>
-                        <Text style={styles.tableCell}>{'D'}</Text>
-                      </View>
-                      <View style={styles.tableCol33}>
-                        <Text style={styles.tableCell}>
-                          {entry[0]}
-                        </Text>
-                      </View>
-                      <View style={styles.tableCol33}>
-                        <Text style={styles.tableCell}>
-                          {entry[1]}
-                        </Text>
-                      </View>
-                    </View>
-                  );
-              })}
-            </View> 
-          </View>  
-          <View style={styles.container}>
+              <View style={styles.tableColHeader33}>
+                <Text style={styles.tableCellHeader}>Hora</Text>
+              </View>
+              <View style={styles.tableColHeader33}>
+                <Text style={styles.tableCellHeader}>Plan</Text>
+              </View>
+            </View>
+            {data.tabla_periodizaciones.D.map((entry, index) => {
+              return (
+                <View style={styles.tableRow}>
+                  <View style={styles.tableCol33}>
+                    <Text style={styles.tableCell}>{"D"}</Text>
+                  </View>
+                  <View style={styles.tableCol33}>
+                    <Text style={styles.tableCell}>{entry[0]}</Text>
+                  </View>
+                  <View style={styles.tableCol33}>
+                    <Text style={styles.tableCell}>{entry[1]}</Text>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+        <View style={styles.container}>
           <View style={styles.half}>
             <Text style={[styles.bold, styles.mb]}>Programación J001331: </Text>
             <View style={styles.table} wrap={false}>
               <View style={styles.tableRow}>
-                <View style={styles.tableColHeader80} >
-                    <Text style={styles.tableCellHeader}></Text>
-                  </View>
-                <View style={styles.tableColHeader20} >
+                <View style={styles.tableColHeader80}>
+                  <Text style={styles.tableCellHeader}></Text>
+                </View>
+                <View style={styles.tableColHeader20}>
                   <Text style={styles.tableCellHeader}>I.Sistema</Text>
                 </View>
               </View>
               <View style={styles.tableRow}>
-                <View style={styles.tableColHeader20} >
+                <View style={styles.tableColHeader20}>
                   <Text style={styles.tableCellHeader}>Plan</Text>
                 </View>
                 <View style={styles.tableColHeader20}>
@@ -463,16 +446,15 @@ export default function PdfConsulta(props) {
                   <Text style={styles.tableCellHeader}>F3</Text>
                 </View>
               </View>
-              {Object.entries(data.junctions[0].programacion).map((entry, index) => {
+              {Object.entries(data.junctions[0].programacion).map(
+                (entry, index) => {
                   return (
                     <View style={styles.tableRow}>
                       <View style={styles.tableCol20}>
                         <Text style={styles.tableCell}>{entry[0]}</Text>
                       </View>
                       <View style={styles.tableCol20}>
-                        <Text style={styles.tableCell}>
-                          {entry[1].cycle}
-                        </Text>
+                        <Text style={styles.tableCell}>{entry[1].cycle}</Text>
                       </View>
                       <View style={styles.tableCol20}>
                         <Text style={styles.tableCell}>
@@ -491,22 +473,23 @@ export default function PdfConsulta(props) {
                       </View>
                     </View>
                   );
-              })}
-            </View> 
-          </View>  
+                }
+              )}
+            </View>
+          </View>
           <View style={styles.half}>
             <Text style={[styles.bold, styles.mb]}>Programación J001332: </Text>
             <View style={styles.table} wrap={false}>
               <View style={styles.tableRow}>
-                <View style={styles.tableColHeader60} >
-                    <Text style={styles.tableCellHeader}></Text>
-                  </View>
-                <View style={styles.tableColHeader20} >
+                <View style={styles.tableColHeader60}>
+                  <Text style={styles.tableCellHeader}></Text>
+                </View>
+                <View style={styles.tableColHeader20}>
                   <Text style={styles.tableCellHeader}>I.Sistema</Text>
                 </View>
               </View>
               <View style={styles.tableRow}>
-                <View style={styles.tableColHeader20} >
+                <View style={styles.tableColHeader20}>
                   <Text style={styles.tableCellHeader}>Plan</Text>
                 </View>
                 <View style={styles.tableColHeader20}>
@@ -519,16 +502,15 @@ export default function PdfConsulta(props) {
                   <Text style={styles.tableCellHeader}>F2</Text>
                 </View>
               </View>
-              {Object.entries(data.junctions[1].programacion).map((entry, index) => {
+              {Object.entries(data.junctions[1].programacion).map(
+                (entry, index) => {
                   return (
                     <View style={styles.tableRow}>
                       <View style={styles.tableCol20}>
                         <Text style={styles.tableCell}>{entry[0]}</Text>
                       </View>
                       <View style={styles.tableCol20}>
-                        <Text style={styles.tableCell}>
-                          {entry[1].cycle}
-                        </Text>
+                        <Text style={styles.tableCell}>{entry[1].cycle}</Text>
                       </View>
                       <View style={styles.tableCol20}>
                         <Text style={styles.tableCell}>
@@ -542,9 +524,10 @@ export default function PdfConsulta(props) {
                       </View>
                     </View>
                   );
-              })}
-            </View> 
-          </View>  
+                }
+              )}
+            </View>
+          </View>
         </View>
       </Page>
     </Document>

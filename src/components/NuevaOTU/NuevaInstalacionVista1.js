@@ -1,32 +1,23 @@
 import React, { useContext, useState } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
-import "../App.css";
-import { Col,Row,Form,FormGroup,Label,Button } from "reactstrap";
+import "../../App.css";
+import { Col, Row, Form, FormGroup, Label, Button } from "reactstrap";
 import FormularioJunction from "./FormularioJunction";
 import FormularioEquipamiento from "./FormularioEquipamiento";
-import {TextField,
-        Dialog,
-        DialogActions,
-        DialogContent, 
-        DialogContentText, 
-        DialogTitle, 
-        Slide, 
-        Switch, 
-        Collapse, 
-        FormControlLabel,
-        Typography,
-        Popover,
-        makeStyles} from '@material-ui/core';
-import ButtonMaterial from '@material-ui/core/Button';
-
-const useStyles = makeStyles((theme) => ({
-  popover: {
-    pointerEvents: 'none',
-  },
-  paper: {
-    padding: theme.spacing(1),
-  },
-}));
+import PopOver from "../shared/PopOver";
+import {
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide,
+  Switch,
+  Collapse,
+  FormControlLabel,
+} from "@material-ui/core";
+import ButtonMaterial from "@material-ui/core/Button";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -47,19 +38,6 @@ const NuevaInstalacionVista1 = () => {
 
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
-
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
 
   const validar_entrada = (str, nombre, expresion = /.+/) => {
     if (!expresion.test(str)) {
@@ -116,11 +94,9 @@ const NuevaInstalacionVista1 = () => {
   };
   return (
     <>
-      
       <div className="grid-item nuevo-semaforo">
         <h4 className="form-titulo">Formulario para nuevo semaforo</h4>
         <Form>
-          
           <hr className="separador"></hr>
 
           <Row form>
@@ -133,7 +109,7 @@ const NuevaInstalacionVista1 = () => {
                   variant="outlined"
                   name="region"
                   autoComplete="off"
-                  style={{width: "350px"}}
+                  style={{ width: "350px" }}
                   SelectProps={{
                     native: true,
                   }}
@@ -153,14 +129,18 @@ const NuevaInstalacionVista1 = () => {
                   <option>Región de Coquimbo</option>
                   <option>Región de Valparaíso</option>
                   <option>Región Metropolitana de Santiago</option>
-                  <option>Región del Libertador General Bernardo O’Higgins</option>
+                  <option>
+                    Región del Libertador General Bernardo O’Higgins
+                  </option>
                   <option>Región del Maule</option>
                   <option>Región del Ñuble</option>
                   <option>Región del Biobío</option>
                   <option>Región de La Araucanía</option>
                   <option>Región de Los Ríos</option>
                   <option>Región de Los Lagos</option>
-                  <option>Región de Aysén del General Carlos Ibáñez del Campo</option>
+                  <option>
+                    Región de Aysén del General Carlos Ibáñez del Campo
+                  </option>
                   <option>Región de Magallanes y la Antártica Chilena</option>
                 </TextField>
               </FormGroup>
@@ -227,8 +207,11 @@ const NuevaInstalacionVista1 = () => {
 
           <hr className="separador"></hr>
 
-          <legend className="seccion">OTU</legend>
-          
+          <legend className="seccion">
+            OTU
+            <PopOver mensaje="Información de la OTU" />
+          </legend>
+
           <Row form>
             <FormGroup>
               <TextField
@@ -238,7 +221,14 @@ const NuevaInstalacionVista1 = () => {
                 variant="outlined"
                 name="otu-codigo"
                 autoComplete="off"
-                value= {"X"+state.junctions[0].id.substring(1,state.junctions[0].id.length-1)+"0"}
+                value={
+                  "X" +
+                  state.junctions[0].id.substring(
+                    1,
+                    state.junctions[0].id.length - 1
+                  ) +
+                  "0"
+                }
                 onChange={(e) =>
                   dispatch({
                     type: "otu",
@@ -248,34 +238,7 @@ const NuevaInstalacionVista1 = () => {
                 }
               />
             </FormGroup>
-            <img
-              aria-owns={open ? 'mouse-over-popover' : undefined}
-              aria-haspopup="true"
-              onMouseEnter={handlePopoverOpen}
-              onMouseLeave={handlePopoverClose}
-              src="/information.svg">
-            </img>
-            <Popover
-              id="mouse-over-popover"
-              className={classes.popover}
-              classes={{
-                paper: classes.paper,
-              }}
-              open={open}
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              onClose={handlePopoverClose}
-              disableRestoreFocus
-            >
-              <Typography>Lorem Ipsum</Typography>
-            </Popover>
+            <PopOver mensaje="Test" />
           </Row>
           <Row form>
             <FormGroup>
@@ -372,24 +335,24 @@ const NuevaInstalacionVista1 = () => {
           </Row>
 
           <Row form>
-              <FormGroup>
-                <TextField
-                  id="outlined"
-                  label="Palabras de Ctrl"
-                  variant="outlined"
-                  type="number"
-                  name="otu-control"
-                  autoComplete="off"
-                  value={state.metadata.otu.control}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "otu",
-                      fieldName: "control",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </FormGroup>
+            <FormGroup>
+              <TextField
+                id="outlined"
+                label="Palabras de Ctrl"
+                variant="outlined"
+                type="number"
+                name="otu-control"
+                autoComplete="off"
+                value={state.metadata.otu.control}
+                onChange={(e) =>
+                  dispatch({
+                    type: "otu",
+                    fieldName: "control",
+                    payLoad: e.currentTarget.value,
+                  })
+                }
+              />
+            </FormGroup>
             <Col sm={1}></Col>
             <FormGroup>
               <TextField
@@ -420,7 +383,7 @@ const NuevaInstalacionVista1 = () => {
                 name="otu-empalme"
                 autoComplete="off"
                 value={state.metadata.n_empalme}
-                onChange={(e) => 
+                onChange={(e) =>
                   dispatch({
                     type: "metadata",
                     fieldName: "n_empalme",
@@ -438,7 +401,7 @@ const NuevaInstalacionVista1 = () => {
                 name="cap-empalme"
                 autoComplete="off"
                 value={state.metadata.capacidad_empalme}
-                onChange={(e) => 
+                onChange={(e) =>
                   dispatch({
                     type: "metadata",
                     fieldName: "capacidad_empalme",
@@ -458,37 +421,32 @@ const NuevaInstalacionVista1 = () => {
           <Row form>
             <FormGroup>
               <TextField
-                id="outlined"
-                label="Marca"
-                variant="outlined"
-                name="controlador_marca"
-                autoComplete="off"
-                value={state.metadata.controlador.marca}
-                onChange={(e) =>
-                  dispatch({
-                    type: "marca controlador",
-                    payLoad: e.currentTarget.value,
-                  })
-                }
-              />
-            </FormGroup>
-            <Col sm={1}></Col>
-            <FormGroup>
-              <TextField
-                id="outlined"
+                id="outlined-select-currency-native"
+                select
                 label="Modelo"
                 variant="outlined"
-                name="controlador_modelo"
+                name="modelo"
                 autoComplete="off"
+                SelectProps={{
+                  native: true,
+                }}
                 value={state.metadata.controlador.modelo}
                 onChange={(e) =>
                   dispatch({
                     type: "modelo controlador",
                     payLoad: e.currentTarget.value,
                   })
-                }
-              />
+                }>
+                <option hidden></option>
+                <option>ST 900</option>
+                <option>ST 950</option>
+                <option>TEK 1/0</option>
+                <option>RSI</option>
+                <option>A25-A5</option>
+                <option>Sawarco-ITC-3</option>
+              </TextField>
             </FormGroup>
+
             <Col sm={1}></Col>
             <FormGroup>
               <TextField
@@ -498,9 +456,9 @@ const NuevaInstalacionVista1 = () => {
                 variant="outlined"
                 name="controlador_ubicacion"
                 autoComplete="off"
-                  SelectProps={{
-                    native: true,
-                  }}
+                SelectProps={{
+                  native: true,
+                }}
                 value={state.metadata.controlador.ubicacion}
                 onChange={(e) =>
                   dispatch({
@@ -510,9 +468,7 @@ const NuevaInstalacionVista1 = () => {
                 }>
                 <option value="" hidden></option>
                 {state.junctions.map((junction) => {
-                  return(
-                    <option>{junction.id}</option>
-                  )
+                  return <option>{junction.id}</option>;
                 })}
               </TextField>
             </FormGroup>
@@ -668,15 +624,14 @@ const NuevaInstalacionVista1 = () => {
             <Label sm={2}>Vehiculo L1</Label>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-l1-hal"
-                  type="number"
-                  autoComplete="off"
-                  
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.l1.hal}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-l1-hal"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.l1.hal}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.l1",
                     fieldName: "hal",
@@ -687,15 +642,14 @@ const NuevaInstalacionVista1 = () => {
             </Col>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-l1-led"
-                  type="number"
-                  autoComplete="off"
-                
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.l1.led}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-l1-led"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.l1.led}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.l1",
                     fieldName: "led",
@@ -710,15 +664,14 @@ const NuevaInstalacionVista1 = () => {
             <Label sm={2}>Vehiculo L2</Label>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-l2-hal"
-                  type="number"
-                  autoComplete="off"
-              
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.l2.hal}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-l2-hal"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.l2.hal}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.l2",
                     fieldName: "hal",
@@ -729,15 +682,14 @@ const NuevaInstalacionVista1 = () => {
             </Col>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-l2-led"
-                  type="number"
-                  autoComplete="off"
-                  
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.l2.led}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-l2-led"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.l2.led}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.l2",
                     fieldName: "led",
@@ -752,15 +704,14 @@ const NuevaInstalacionVista1 = () => {
             <Label sm={2}>Vehiculo L3-L4</Label>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-l3_l4-hal"
-                  type="number"
-                  autoComplete="off"
-                
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.l3_l4.hal}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-l3_l4-hal"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.l3_l4.hal}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.l3_l4",
                     fieldName: "hal",
@@ -771,15 +722,14 @@ const NuevaInstalacionVista1 = () => {
             </Col>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-l3_l4-led"
-                  type="number"
-                  autoComplete="off"
-            
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.l3_l4.led}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-l3_l4-led"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.l3_l4.led}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.l3_l4",
                     fieldName: "led",
@@ -794,15 +744,14 @@ const NuevaInstalacionVista1 = () => {
             <Label sm={2}>Vehiculo L5</Label>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-l5-hal"
-                  type="number"
-                  autoComplete="off"
-                
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.l5.hal}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-l5-hal"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.l5.hal}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.l5",
                     fieldName: "hal",
@@ -813,15 +762,14 @@ const NuevaInstalacionVista1 = () => {
             </Col>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-l5-led"
-                  type="number"
-                  autoComplete="off"
-                
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.l5.led}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-l5-led"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.l5.led}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.l5",
                     fieldName: "led",
@@ -838,15 +786,14 @@ const NuevaInstalacionVista1 = () => {
             </Col>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-l6-hal"
-                  type="number"
-                  autoComplete="off"
-                
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.l6.hal}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-l6-hal"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.l6.hal}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.l6",
                     fieldName: "hal",
@@ -857,15 +804,14 @@ const NuevaInstalacionVista1 = () => {
             </Col>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-l6-led"
-                  type="number"
-                  autoComplete="off"
-                
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.l6.led}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-l6-led"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.l6.led}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.l6",
                     fieldName: "led",
@@ -882,15 +828,14 @@ const NuevaInstalacionVista1 = () => {
             </Col>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-peatonal-hal"
-                  type="number"
-                  autoComplete="off"
-                  
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.peatonal.hal}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-peatonal-hal"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.peatonal.hal}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.peatonal",
                     fieldName: "hal",
@@ -901,15 +846,14 @@ const NuevaInstalacionVista1 = () => {
             </Col>
             <Col sm={2}>
               <TextField
-                  id="outlined"
-                  variant="outlined"
-                  name="cabezales-peatonal-led"
-                  type="number"
-                  autoComplete="off"
-              
-                  style={{width: "75px"}}
-                  value={state.metadata.cabezales.peatonal.led}
-                  onChange={(e) => {
+                id="outlined"
+                variant="outlined"
+                name="cabezales-peatonal-led"
+                type="number"
+                autoComplete="off"
+                style={{ width: "75px" }}
+                value={state.metadata.cabezales.peatonal.led}
+                onChange={(e) => {
                   dispatch({
                     type: "cabezales.peatonal",
                     fieldName: "led",
@@ -933,7 +877,7 @@ const NuevaInstalacionVista1 = () => {
                 name="d_peatonal"
                 type="number"
                 autoComplete="off"
-                style={{width: "75px"}}
+                style={{ width: "75px" }}
                 value={state.metadata.d_peatonal}
                 onChange={(e) => {
                   dispatch({
@@ -946,7 +890,7 @@ const NuevaInstalacionVista1 = () => {
             </Col>
           </FormGroup>
           <FormGroup row>
-          <Label sm={4}>Demanda y Facilidad Peatonal</Label>
+            <Label sm={4}>Demanda y Facilidad Peatonal</Label>
             <Col sm={3}>
               <TextField
                 id="outlined"
@@ -954,7 +898,7 @@ const NuevaInstalacionVista1 = () => {
                 name="dyf_peatonal"
                 type="number"
                 autoComplete="off"
-                style={{width: "75px"}}
+                style={{ width: "75px" }}
                 value={state.metadata.dyf_peatonal}
                 onChange={(e) => {
                   dispatch({
@@ -1113,7 +1057,7 @@ const NuevaInstalacionVista1 = () => {
                         payLoad: e.currentTarget.value,
                       });
                     }}
-                  />  
+                  />
                 </FormGroup>
               </Col>
             )}
@@ -1231,12 +1175,14 @@ const NuevaInstalacionVista1 = () => {
               </Col>
             </Row>
           </Collapse>
-      
 
           <FormGroup>
             <Row>
               <Col sm={{ offset: 5 }}>
-                <ButtonMaterial variant="contained" color="primary" onClick={validar_formulario}>
+                <ButtonMaterial
+                  variant="contained"
+                  color="primary"
+                  onClick={validar_formulario}>
                   Siguiente
                 </ButtonMaterial>
                 <Dialog

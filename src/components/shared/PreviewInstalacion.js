@@ -1,6 +1,6 @@
-import React, { useContext, useState} from "react";
-import "../App.css";
-import { DispatchContext, StateContext } from "./ConsultaInstalacion";
+import React, { useContext, useState } from "react";
+import "../../App.css";
+import { DispatchContext, StateContext } from "../Consulta/ConsultaInstalacion";
 import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 import PdfConsulta from "./PdfConsulta";
 import { Button } from "reactstrap";
@@ -21,10 +21,10 @@ const PreviewInstalacion = () => {
   const [ready, setReady] = useState(false);
 
   function toggle() {
-    setTimeout(() => {setReady(true) }, 1);
+    setTimeout(() => {
+      setReady(true);
+    }, 1);
   }
-
-  
 
   // useEffect(async () => {
   //   const result = await axios(
@@ -93,29 +93,28 @@ const PreviewInstalacion = () => {
         Descargar programaciones
       </button> */}
       <div>
-                {ready && (
-                     <BlobProvider document={<PdfConsulta data={state.data} />}>
-                            
-                     {({ url, loading }) => (loading ? 'Loading document...' :
-                       /*<a className="descargar" 
+        {ready && (
+          <BlobProvider document={<PdfConsulta data={state.data} />}>
+            {({ url, loading }) =>
+              loading ? (
+                "Loading document..."
+              ) : (
+                /*<a className="descargar" 
                        href={url} target="_blank">Generar pdf</a>*/
-             
-                       <a href={url} target="_blank" className="generarPDF">
-                         <span>Descargar Programaciones</span>
-                         <svg width="13px" height="10px" viewBox="0 0 13 10">
-                           <path d="M1,5 L11,5"></path>
-                           <polyline points="8 1 12 5 8 9"></polyline>
-                         </svg>
-                       </a>
-                     )}
-                   </BlobProvider>
-                  )}
-                {!ready && (
-                   <Button onClick={() => toggle()}>
-                        Generar Pdf
-                    </Button>
-                )}
-            </div>
+
+                <a href={url} target="_blank" className="generarPDF">
+                  <span>Descargar Programaciones</span>
+                  <svg width="13px" height="10px" viewBox="0 0 13 10">
+                    <path d="M1,5 L11,5"></path>
+                    <polyline points="8 1 12 5 8 9"></polyline>
+                  </svg>
+                </a>
+              )
+            }
+          </BlobProvider>
+        )}
+        {!ready && <Button onClick={() => toggle()}>Generar Pdf</Button>}
+      </div>
     </div>
   );
 };

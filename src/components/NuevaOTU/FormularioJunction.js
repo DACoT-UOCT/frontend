@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { DispatchContext, StateContext } from "./NuevaInstalacion";
-import "../App.css";
+import "../../App.css";
 import { Col, Row, FormGroup, Button } from "reactstrap";
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
 
 const FormularioJunction = () => {
   const state = useContext(StateContext);
@@ -42,7 +42,7 @@ const FormularioJunction = () => {
                 name="cruce"
                 placeholder="Calle - Calle"
                 autoComplete="off"
-                style={{width: "550px"}}
+                style={{ width: "550px" }}
                 value={junction.addr}
                 onChange={(e) =>
                   dispatch({
@@ -57,7 +57,7 @@ const FormularioJunction = () => {
           </Row>
         );
       })}
-      
+
       <Row>
         <Col sm={3}>
           <FormGroup>
@@ -72,8 +72,7 @@ const FormularioJunction = () => {
         <Col>
           {state.junctions.length > 1 && (
             <FormGroup>
-              <Button
-                onClick={() => dispatch({ type: "eliminar_junction" })}>
+              <Button onClick={() => dispatch({ type: "eliminar_junction" })}>
                 Eliminar
               </Button>
             </FormGroup>
