@@ -1,8 +1,8 @@
 import React, { useReducer, useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import "../App.css";
-import Header from "./shared/Header";
-import NuevaInstalacion from "./NuevaOTU/NuevaInstalacion";
+import Header from "./Shared/Header";
+import NuevaInstalacion from "./SolicitudInstalacionNueva/NuevaInstalacion";
 import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
 import Login from "./Login/Login";
 import { initialState, reducer } from "./Login/LoginReducer";

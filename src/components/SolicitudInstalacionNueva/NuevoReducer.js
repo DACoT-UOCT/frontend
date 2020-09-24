@@ -120,6 +120,7 @@ export const initialState = {
   entreverdes: [[""]],
   pdf_respaldo: "",
   imagen_instalacion: "",
+  bits_de_control: "",
   observaciones: "",
   errors: [],
   vista: 1,
@@ -135,12 +136,19 @@ export function reducer(draft, action) {
     }
 
     case "siguiente": {
-      if (draft.errors.length === 0) draft.vista = 2;
+      if (draft.errors.length === 0) {
+        if (draft.vista < 3) {
+          draft.vista += 1;
+        } else {
+          draft._id = "X" + draft.junctions[0].id.slice(1, -1) + "0";
+          draft.submit = true;
+        }
+      }
       return;
     }
 
     case "atras": {
-      draft.vista = 1;
+      draft.vista -= 1;
       return;
     }
 
@@ -173,7 +181,11 @@ export function reducer(draft, action) {
     }
 
     case "agregar_junction": {
-      const nuevo = { id: "", addr: "" };
+      const name =
+        "J" +
+        draft.metadata.otu.codigo.slice(1, 6) +
+        (draft.junctions.length + 1).toString();
+      const nuevo = { id: name, addr: "" };
       draft.junctions.push(nuevo);
       return;
     }
@@ -210,12 +222,25 @@ export function reducer(draft, action) {
     }
 
     case "otu": {
+      // junctions: [
+      //   {
+      //     id: "",
+      //     addr: "",
+      //   },
+      // ],
+      if (action.fieldName === "codigo") {
+        for (var i = 0; i < draft.junctions.length; i++) {
+          draft.junctions[i].id =
+            "J" + action.payLoad.slice(1, 6) + (i + 1).toString();
+        }
+      }
       draft.metadata.otu[action.fieldName] = action.payLoad;
       return;
     }
 
     case "equipamiento": {
-      draft.metadata.otu.equipamientos[action.index][action.fieldName] = action.payLoad;
+      draft.metadata.otu.equipamientos[action.index][action.fieldName] =
+        action.payLoad;
       return;
     }
 
@@ -294,6 +319,11 @@ export function reducer(draft, action) {
 
     case "upload_imagen_cruce": {
       draft.imagen_instalacion = action.payLoad;
+      return;
+    }
+
+    case "upload_bits_de_control": {
+      draft.bits_de_control = action.payLoad;
       return;
     }
 

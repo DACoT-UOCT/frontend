@@ -1,16 +1,20 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "./NuevaInstalacion";
-import "../../App.css";
+import { DispatchContext, StateContext } from "../NuevaInstalacion";
+import "../../../App.css";
 import { Col, Row, FormGroup, Button } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
+import PopOver from "../../Shared/PopOver";
 
-const FormularioEquipamiento = () => {
+const Equipamientos = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
   return (
     <>
-      <legend className="subseccion">Equipamientos</legend>
+      <legend className="subseccion">
+        Equipamientos
+        <PopOver mensaje="Considere cámaras, |||||||||||||||||||||" />
+      </legend>
       {state.metadata.otu.equipamientos.map((equip, index) => {
         return (
           <Row form>
@@ -80,4 +84,4 @@ const FormularioEquipamiento = () => {
   );
 };
 
-export default FormularioEquipamiento;
+export default Equipamientos;

@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "./NuevaInstalacion";
-import "../../App.css";
+import { DispatchContext, StateContext } from "../NuevaInstalacion";
+import "../../../App.css";
 import { Col, Row, FormGroup, Button } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 
-const FormularioJunction = () => {
+const Junctions = () => {
   const state = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
 
@@ -16,6 +16,7 @@ const FormularioJunction = () => {
           <Row form>
             <FormGroup>
               <TextField
+                disabled
                 id="outlined"
                 label="Código en Sistema"
                 variant="outlined"
@@ -60,14 +61,16 @@ const FormularioJunction = () => {
 
       <Row>
         <Col sm={3}>
-          <FormGroup>
-            <Button
-              onClick={() => {
-                dispatch({ type: "agregar_junction" });
-              }}>
-              Agregar junction
-            </Button>
-          </FormGroup>
+          {state.junctions.length < 9 && (
+            <FormGroup>
+              <Button
+                onClick={() => {
+                  dispatch({ type: "agregar_junction" });
+                }}>
+                Agregar junction
+              </Button>
+            </FormGroup>
+          )}
         </Col>
         <Col>
           {state.junctions.length > 1 && (
@@ -83,4 +86,4 @@ const FormularioJunction = () => {
   );
 };
 
-export default FormularioJunction;
+export default Junctions;
