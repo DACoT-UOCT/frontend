@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 
 import "../../App.css";
+import { DispatchContext } from "../App";
 import { unstable_batchedUpdates } from "react-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = () => {
+  const dispatch = useContext(DispatchContext);
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -48,6 +50,25 @@ const Header = () => {
           <Divider orientation="vertical" flexItem />
           <Link className="links" href="/nuevo/instalacion">
             <Button color="inherit">Nuevo Formulario</Button>
+          </Link>
+          <Divider orientation="vertical" flexItem />
+          <Link className="links" href="/nuevo/actualizacion">
+            <Button color="inherit">Solicitud actualizacion</Button>
+          </Link>
+          <Divider orientation="vertical" flexItem />
+          <Link className="links" href="/">
+            <Button color="inherit">Inicio</Button>
+          </Link>
+          <Divider orientation="vertical" flexItem />
+          <Link className="links" href="/administracion">
+            <Button color="inherit">Administracion</Button>
+          </Link>
+          <Link className="links" href="/">
+            <Button
+              color="inherit"
+              onClick={() => dispatch({ type: "logOut" })}>
+              Log Out
+            </Button>
           </Link>
         </Toolbar>
       </AppBar>

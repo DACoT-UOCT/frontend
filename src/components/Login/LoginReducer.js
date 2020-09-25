@@ -5,6 +5,7 @@ export const initialState = {
   error: "",
   isLoggedIn: true,
   first_click_login: false,
+  rol: "empresa",
 };
 
 export function reducer(draft, action) {

@@ -123,7 +123,7 @@ export const initialState = {
   bits_de_control: "",
   observaciones: "",
   errors: [],
-  vista: 1,
+  vista: 3,
   submit: false,
 };
 

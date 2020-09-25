@@ -8,6 +8,9 @@ import Login from "./Login/Login";
 import { initialState, reducer } from "./Login/LoginReducer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
+import NuevaActualizacion from "./SolicitudActualizacionNueva/NuevaActualizacion";
+import Dashboard from "./Dashboards/Dashboard";
+import Administracion from "./Administracion/Administracion";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -22,20 +25,19 @@ const App = () => {
           {!isLoggedIn ? (
             <Route path="/" exact component={Login} />
           ) : (
-            <>
-              <div className="app-container">
-                <Header />
+            <div className="app-container">
+              <Header />
+              <Switch>
                 <Route path="/consulta" component={ConsultaSemaforo} />
                 <Route path="/nuevo/instalacion" component={NuevaInstalacion} />
-              </div>
-              {
-                <Link to="/">
-                  <button onClick={() => dispatch({ type: "logOut" })}>
-                    Log Out
-                  </button>
-                </Link>
-              }
-            </>
+                <Route path="/administracion" component={Administracion} />
+                <Route
+                  path="/nuevo/actualizacion"
+                  component={() => <NuevaActualizacion id="X001450" />}
+                />
+                <Route path="/" component={() => <Dashboard id="X001450" />} />
+              </Switch>
+            </div>
           )}
         </Router>
       </StateContext.Provider>
