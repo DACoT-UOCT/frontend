@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import "../App.css";
-import Header from "./shared/Header";
+import Header from "./Shared/Header";
 import NuevaInstalacion from "./SolicitudInstalacionNueva/NuevaInstalacion";
 import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
 import Login from "./Login/Login";
@@ -34,7 +34,10 @@ const App = () => {
                   path="/nuevo/actualizacion"
                   component={() => <NuevaActualizacion id="X001450" />}
                 />
-                <Route path="/" component={() => <Dashboard id="X001450" rol={rol} />} />
+                <Route
+                  path="/"
+                  component={() => <Dashboard id="X001450" rol={rol} />}
+                />
               </Switch>
             </div>
           )}

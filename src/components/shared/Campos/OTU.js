@@ -5,7 +5,7 @@ import { Col, Row, FormGroup, Label } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import PopOver from "../../shared/PopOver";
+import PopOver from "../../Shared/PopOver";
 
 const OTU = (props) => {
   const state = props.state;

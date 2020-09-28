@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import "../../../App.css";
 import { Col, Row, FormGroup, Button } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
-import PopOver from "../../shared/PopOver";
+import PopOver from "../../Shared/PopOver";
 
 const Equipamientos = (props) => {
   const state = props.state;
