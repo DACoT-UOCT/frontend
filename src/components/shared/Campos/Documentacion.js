@@ -76,7 +76,7 @@ const Documentacion = (props) => {
         <CustomInput
           className="boton-file"
           type="file"
-          label={"" || "Adjuntar imgagen"}
+          label={"" || "Adjuntar imagen"}
           onChange={(e) => {
             const file = e.target.files[0];
             const reader = new FileReader();
