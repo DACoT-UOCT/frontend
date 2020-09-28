@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
-
-import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
-import PreviewInstalacion from "../shared/PreviewInstalacion";
+import { initialState, reducer } from "../Login/LoginReducer";
+import DashEmpresa from "./DashEmpresa";
 import axios from "axios";
 
 export const StateContext = React.createContext();
@@ -78,12 +77,14 @@ const Dashboard = (props) => {
   //   }, [isLoading]);
 
   return (
-    <div className="grid-item consulta-semaforo">
-      <p>dashboard del usuario logueado</p>
-      <p>empresa: muestra sus instalaciones vigentes</p>
-      <p>funcionario uoct: solicitudes pendientes </p>
-      <p>prop {props.id}</p>
-    </div>
+      props.rol=="empresa" ? (
+        <DashEmpresa/>
+      ) : (
+        <div className="grid-item consulta-semaforo">
+          <p>funcionario uoct: solicitudes pendientes </p>
+          <p>prop {props.id}</p>
+        </div>
+      )
   );
 };
 

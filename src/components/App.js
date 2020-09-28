@@ -7,7 +7,6 @@ import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
 import Login from "./Login/Login";
 import { initialState, reducer } from "./Login/LoginReducer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Link } from "react-router-dom";
 import NuevaActualizacion from "./SolicitudActualizacionNueva/NuevaActualizacion";
 import Dashboard from "./Dashboards/Dashboard";
 import Administracion from "./Administracion/Administracion";
@@ -17,7 +16,7 @@ export const DispatchContext = React.createContext();
 
 const App = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
-  const { username, password, isLoading, error, isLoggedIn } = state;
+  const { username, password, isLoading, error, isLoggedIn, rol } = state;
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
@@ -35,7 +34,7 @@ const App = () => {
                   path="/nuevo/actualizacion"
                   component={() => <NuevaActualizacion id="X001450" />}
                 />
-                <Route path="/" component={() => <Dashboard id="X001450" />} />
+                <Route path="/" component={() => <Dashboard id="X001450" rol={rol} />} />
               </Switch>
             </div>
           )}

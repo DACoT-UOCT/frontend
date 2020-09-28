@@ -21,7 +21,7 @@ const LoginForm = () => {
     //aqui se redirige a google y se compara la respuesta con la lista de correos válidos
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (username == "1") resolve();
+        if (username == "1" || username == "empresa") resolve();
         else reject();
       }, 1000);
     });
@@ -43,8 +43,8 @@ const LoginForm = () => {
   };
   return (
     //logo ministerio + formulario de ingreso con google
-    <div class="login-page">
-      <div class="form">
+    <div className="login-page">
+      <div className="form">
         <Form onSubmit={submitClick}>
           {isLoading ? (
             <div className="ldg-ellipsis-log">

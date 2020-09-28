@@ -44,6 +44,10 @@ const Header = () => {
             DACoT
           </Typography>
           <div className={classes.grow} />
+          <Link className="links" href="/">
+            <Button color="inherit">Inicio</Button>
+          </Link>
+          <Divider orientation="vertical" flexItem />
           <Link className="links" href="/consulta">
             <Button color="inherit">Consultar</Button>
           </Link>
@@ -56,18 +60,15 @@ const Header = () => {
             <Button color="inherit">Solicitud actualizacion</Button>
           </Link>
           <Divider orientation="vertical" flexItem />
-          <Link className="links" href="/">
-            <Button color="inherit">Inicio</Button>
-          </Link>
-          <Divider orientation="vertical" flexItem />
           <Link className="links" href="/administracion">
             <Button color="inherit">Administracion</Button>
           </Link>
+          <Divider orientation="vertical" flexItem />
           <Link className="links" href="/">
             <Button
               color="inherit"
               onClick={() => dispatch({ type: "logOut" })}>
-              Log Out
+              SALIR
             </Button>
           </Link>
         </Toolbar>
