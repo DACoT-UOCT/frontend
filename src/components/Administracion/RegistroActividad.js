@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Table } from "reactstrap";
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 import { useImmerReducer } from "use-immer";
 
 import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
@@ -18,6 +21,77 @@ import {
 } from "reactstrap";
 
 const RegistroActividad = (props) => {
+  const [registros, setRegistro] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [error, setError] = useState("");
+
+  const consultarRegistros = () => {
+    if (startDate <= endDate) {
+      setError("");
+    } else {
+      setError("Intervalo de fechas no válido");
+      return;
+    }
+    const consulta = { start: startDate.getTime(), end: endDate.getTime() };
+    console.log(consulta);
+    setRegistro([
+      {
+        _id: {
+          $oid: "5f6b955e265e41e4d0f21f1f",
+        },
+        user: "Camilo",
+        context: "GET",
+        component: "Sistema",
+        origin: "web",
+        date_modified: {
+          $date: 1600886110119,
+        },
+      },
+      {
+        _id: {
+          $oid: "5f6b9560265e41e4d0f21f20",
+        },
+        user: "Camilo",
+        context: "GET",
+        component: "Sistema",
+        origin: "web",
+        date_modified: {
+          $date: 1600886112204,
+        },
+      },
+      {
+        _id: {
+          $oid: "5f6b958b70822bbbf66da461",
+        },
+        user: "Camilo",
+        context: "GET",
+        component: "Sistema",
+        origin: "web",
+        date_modified: {
+          $date: 1600875355016,
+        },
+      },
+      {
+        _id: {
+          $oid: "5f6e428eb514270fd12f7854",
+        },
+        user: "Camilo",
+        context: "GET",
+        component: "Sistema",
+        origin: "web",
+        date_modified: {
+          $date: 1601050718167,
+        },
+      },
+    ]);
+  };
+
+  // useEffect(() => {
+  //   if (registros.length === 0) {
+  //     consultarRegistros();
+  //   }
+  // });
   //   const [state, dispatch] = useImmerReducer(reducer, initialState);
 
   //   const {
@@ -88,7 +162,45 @@ const RegistroActividad = (props) => {
 
   return (
     <>
-      <p>actividad</p>
+      <legend className="seccion">Registro de actividad </legend>
+      <p>Desde</p>
+      <DatePicker
+        selected={startDate}
+        onChange={(date) => setStartDate(date)}
+      />
+
+      <p>Hasta</p>
+      <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+      <Button onClick={() => consultarRegistros("usuarios")}>
+        <span>Consultar Registros</span>
+      </Button>
+
+      <p>{error}</p>
+      {registros.length > 0 && (
+        <Table hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Accion</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            {registros.map((registro) => {
+              return (
+                <tr>
+                  <th scope="row">1</th>
+                  <td> {registro.user}</td>
+                  <td> {registro.component}</td>
+
+                  <td> {new Date(registro.date_modified.$date).toString()}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      )}
     </>
   );
 };

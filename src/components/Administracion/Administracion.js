@@ -21,7 +21,7 @@ import RegistroActividad from "./RegistroActividad";
 import ListadoUsuarios from "./ListadoUsuarios";
 
 const Administracion = (props) => {
-  const [vista, setVista] = useState("usuarios");
+  const [vista, setVista] = useState("actividad");
   //   const [state, dispatch] = useImmerReducer(reducer, initialState);
 
   //   const {
