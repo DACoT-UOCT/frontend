@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 
 import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
-import PreviewInstalacion from "../Shared/PreviewInstalacion";
+import PreviewInstalacion from "../shared/PreviewInstalacion";
 import axios from "axios";
 
 export const StateContext = React.createContext();
