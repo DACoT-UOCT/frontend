@@ -1,6 +1,7 @@
 export const initialState = {
   username: "",
   password: "",
+  rol: "Funcionario UOCT",
   isLoading: false,
   error: "",
   isLoggedIn: true,

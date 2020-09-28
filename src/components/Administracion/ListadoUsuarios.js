@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Table } from "reactstrap";
 import { useImmerReducer } from "use-immer";
 
 import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
@@ -17,12 +18,38 @@ import {
   NavLink,
 } from "reactstrap";
 
-import RegistroActividad from "./RegistroActividad";
-import ListadoUsuarios from "./ListadoUsuarios";
+const ListadoUsuarios = (props) => {
+  const [usuarios, setUsuarios] = useState([]);
+  const consultarUsuarios = () => {
+    //consultar al backend
+    setUsuarios([
+      {
+        _id: {
+          $oid: "5f6fcf31023fdd720e2d0342",
+        },
+        uid: 11,
+        full_name: "Carlos Andres Ponce Godoy",
+        email: "cponce@gmail.com",
+        area: "Ingenieria",
+        rut: "19664296-K",
+      },
+      {
+        _id: {
+          $oid: "5f6fcf61ea94d4ad246e84e6",
+        },
+        uid: 12,
+        full_name: "Camilo Parra",
+        email: "caparra@gmail.com",
+        area: "Sala de Control",
+        rut: "19358103-K",
+      },
+    ]);
+  };
 
-const Administracion = (props) => {
-  const [vista, setVista] = useState("usuarios");
-  //   const [state, dispatch] = useImmerReducer(reducer, initialState);
+  useEffect(() => {
+    console.log(usuarios);
+    if (usuarios.length === 0) consultarUsuarios();
+  });
 
   //   const {
   //     busqueda,
@@ -91,21 +118,31 @@ const Administracion = (props) => {
   //   }, [isLoading]);
 
   return (
-    <div className="grid-item consulta-semaforo">
-      <Button onClick={() => setVista("usuarios")} to="/">
-        <span>Usuarios</span>
-      </Button>
-
-      <Button onClick={() => setVista("actividad")} to="/">
-        <span>Registro de actividad</span>
-      </Button>
-
-      <div className="grid-item">
-        {vista === "actividad" && <RegistroActividad />}
-        {vista === "usuarios" && <ListadoUsuarios />}
-      </div>
-    </div>
+    <>
+      <Table hover>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Rol en sistema</th>
+            <th>Correo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {usuarios.map((usuario) => {
+            return (
+              <tr>
+                <th scope="row">1</th>
+                <td> {usuario.full_name}</td>
+                <td> {usuario.area}</td>
+                <td> {usuario.email}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
+    </>
   );
 };
 
-export default Administracion;
+export default ListadoUsuarios;

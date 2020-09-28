@@ -17,11 +17,7 @@ import {
   NavLink,
 } from "reactstrap";
 
-import RegistroActividad from "./RegistroActividad";
-import ListadoUsuarios from "./ListadoUsuarios";
-
-const Administracion = (props) => {
-  const [vista, setVista] = useState("usuarios");
+const RegistroActividad = (props) => {
   //   const [state, dispatch] = useImmerReducer(reducer, initialState);
 
   //   const {
@@ -91,21 +87,10 @@ const Administracion = (props) => {
   //   }, [isLoading]);
 
   return (
-    <div className="grid-item consulta-semaforo">
-      <Button onClick={() => setVista("usuarios")} to="/">
-        <span>Usuarios</span>
-      </Button>
-
-      <Button onClick={() => setVista("actividad")} to="/">
-        <span>Registro de actividad</span>
-      </Button>
-
-      <div className="grid-item">
-        {vista === "actividad" && <RegistroActividad />}
-        {vista === "usuarios" && <ListadoUsuarios />}
-      </div>
-    </div>
+    <>
+      <p>actividad</p>
+    </>
   );
 };
 
-export default Administracion;
+export default RegistroActividad;
