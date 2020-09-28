@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "../NuevaInstalacion";
+
 import "../../../App.css";
 import { Col, Row, FormGroup, Button } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 
-const Secuencias = () => {
-  const state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+const Secuencias = (props) => {
+  const state = props.state;
+  const dispatch = props.dispatch;
 
   return (
     <>
       <legend>Secuencias</legend>
-      {state.secuencias.map((secuencia, index) => {
+      {state.map((secuencia, index) => {
         return (
           <Row form>
             <Col sm={1}>
@@ -67,7 +67,7 @@ const Secuencias = () => {
           </FormGroup>
         </Col>
         <Col sm={2}>
-          {state.secuencias.length > 1 && (
+          {state.length > 1 && (
             <FormGroup>
               <Button
                 size="sm"
@@ -82,4 +82,4 @@ const Secuencias = () => {
   );
 };
 
-export default Secuencias;
+export default React.memo(Secuencias);

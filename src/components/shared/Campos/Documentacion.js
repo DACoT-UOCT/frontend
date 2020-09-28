@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "../NuevaInstalacion";
+
 import "../../../App.css";
 
 import { FormGroup, Label, CustomInput } from "reactstrap";
 
-const Documentacion = () => {
-  const state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+const Documentacion = (props) => {
+  const state = props.state;
+  const dispatch = props.dispatch;
   return (
     <>
       <FormGroup>
@@ -20,9 +20,17 @@ const Documentacion = () => {
         <CustomInput
           className="boton-file"
           type="file"
-          label={state.pdf_respaldo || "Adjuntar PDF"}
+          label={"Adjuntar PDF"}
           onChange={(e) => {
             const file = e.target.files[0];
+            console.log(state);
+            if (file === undefined) {
+              dispatch({
+                type: "upload_PDF",
+                payLoad: "",
+              });
+              return;
+            }
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function () {

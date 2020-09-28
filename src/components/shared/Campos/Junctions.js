@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "../NuevaInstalacion";
+
 import "../../../App.css";
 import { Col, Row, FormGroup, Button } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 
-const Junctions = () => {
-  const state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+const Junctions = (props) => {
+  const state = props.state;
+  const dispatch = props.dispatch;
 
   return (
     <>
       <legend className="seccion">Junction</legend>
-      {state.junctions.map((junction, index) => {
+      {state.map((junction, index) => {
         return (
           <Row form>
             <FormGroup>
@@ -61,7 +61,7 @@ const Junctions = () => {
 
       <Row>
         <Col sm={3}>
-          {state.junctions.length < 9 && (
+          {state.length < 9 && (
             <FormGroup>
               <Button
                 onClick={() => {
@@ -73,7 +73,7 @@ const Junctions = () => {
           )}
         </Col>
         <Col>
-          {state.junctions.length > 1 && (
+          {state.length > 1 && (
             <FormGroup>
               <Button onClick={() => dispatch({ type: "eliminar_junction" })}>
                 Eliminar
@@ -86,4 +86,4 @@ const Junctions = () => {
   );
 };
 
-export default Junctions;
+export default React.memo(Junctions);

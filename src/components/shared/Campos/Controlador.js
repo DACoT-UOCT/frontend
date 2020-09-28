@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "../NuevaInstalacion";
+
 import "../../../App.css";
 import { Col, Row, FormGroup } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 
-const Controlador = () => {
-  const state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+const Controlador = (props) => {
+  const state = props.state;
+  const dispatch = props.dispatch;
 
   return (
     <>
@@ -24,7 +24,7 @@ const Controlador = () => {
             SelectProps={{
               native: true,
             }}
-            value={state.metadata.controlador.modelo}
+            value={state.modelo}
             onChange={(e) =>
               dispatch({
                 type: "modelo controlador",
@@ -45,31 +45,23 @@ const Controlador = () => {
         <FormGroup>
           <TextField
             id="outlined-select-currency-native"
-            select
             label="Ubicación"
             variant="outlined"
             name="controlador_ubicacion"
             autoComplete="off"
-            SelectProps={{
-              native: true,
-            }}
-            value={state.metadata.controlador.ubicacion}
+            value={state.ubicacion}
             onChange={(e) =>
               dispatch({
                 type: "ubicacion controlador",
                 payLoad: e.currentTarget.value,
               })
-            }>
-            <option value="" hidden></option>
-            {state.junctions.map((junction) => {
-              return <option>{junction.id}</option>;
-            })}
-          </TextField>
+            }
+          />
         </FormGroup>
       </Row>
 
       <Row form>
-        <FormGroup>
+        {/* <FormGroup>
           <TextField
             disabled
             id="outlined"
@@ -88,9 +80,9 @@ const Controlador = () => {
               })
             }
           />
-        </FormGroup>
+        </FormGroup> */}
         <Col sm={1}></Col>
-        <FormGroup>
+        {/* <FormGroup>
           <TextField
             id="outlined"
             label="Detectores"
@@ -108,10 +100,10 @@ const Controlador = () => {
               })
             }
           />
-        </FormGroup>
+        </FormGroup> */}
       </Row>
     </>
   );
 };
 
-export default Controlador;
+export default React.memo(Controlador);

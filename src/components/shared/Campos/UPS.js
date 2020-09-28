@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "../NuevaInstalacion";
+import {
+  DispatchContext,
+  StateContext,
+} from "../../SolicitudInstalacionNueva/NuevaInstalacion";
 import "../../../App.css";
 import { Col, Row, FormGroup } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 
-const UPS = () => {
-  const state = useContext(StateContext);
+const UPS = (props) => {
+  const state = props.state;
   const dispatch = useContext(DispatchContext);
 
   return (
@@ -20,7 +23,7 @@ const UPS = () => {
               variant="outlined"
               name="ups-marca"
               autoComplete="off"
-              value={state.metadata.ups.marca}
+              value={state.marca}
               onChange={(e) => {
                 dispatch({
                   type: "ups",
@@ -40,7 +43,7 @@ const UPS = () => {
               variant="outlined"
               name="ups-modelo"
               autoComplete="off"
-              value={state.metadata.ups.modelo}
+              value={state.modelo}
               onChange={(e) => {
                 dispatch({
                   type: "ups",
@@ -60,7 +63,7 @@ const UPS = () => {
               variant="outlined"
               name="ups-serie"
               autoComplete="off"
-              value={state.metadata.ups.n_serie}
+              value={state.n_serie}
               onChange={(e) => {
                 dispatch({
                   type: "ups",
@@ -82,7 +85,7 @@ const UPS = () => {
               variant="outlined"
               name="ups-capacidad"
               autoComplete="off"
-              value={state.metadata.ups.capacidad}
+              value={state.capacidad}
               onChange={(e) => {
                 dispatch({
                   type: "ups",
@@ -102,7 +105,7 @@ const UPS = () => {
               variant="outlined"
               name="ups-duracion"
               autoComplete="off"
-              value={state.metadata.ups.duracion_carga}
+              value={state.duracion_carga}
               onChange={(e) => {
                 dispatch({
                   type: "ups",
@@ -118,4 +121,4 @@ const UPS = () => {
   );
 };
 
-export default UPS;
+export default React.memo(UPS);

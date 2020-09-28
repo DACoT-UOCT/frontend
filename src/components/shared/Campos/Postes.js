@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "../NuevaInstalacion";
+
 import "../../../App.css";
 import { Col, Row, FormGroup } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 
-const Postes = () => {
-  const state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+const Postes = (props) => {
+  const state = props.state;
+  const dispatch = props.dispatch;
 
   return (
     <>
@@ -21,7 +21,7 @@ const Postes = () => {
             type="number"
             autoComplete="off"
             placeholder="0"
-            value={state.metadata.postes_ganchos}
+            value={state.postes_ganchos}
             onChange={(e) => {
               dispatch({
                 type: "metadata",
@@ -41,7 +41,7 @@ const Postes = () => {
             type="number"
             autoComplete="off"
             placeholder="0"
-            value={state.metadata.postes_vehiculares}
+            value={state.postes_vehiculares}
             onChange={(e) => {
               dispatch({
                 type: "metadata",
@@ -61,7 +61,7 @@ const Postes = () => {
             type="number"
             autoComplete="off"
             placeholder="0"
-            value={state.metadata.postes_peatonales}
+            value={state.postes_peatonales}
             onChange={(e) => {
               dispatch({
                 type: "metadata",
@@ -76,4 +76,4 @@ const Postes = () => {
   );
 };
 
-export default Postes;
+export default React.memo(Postes);

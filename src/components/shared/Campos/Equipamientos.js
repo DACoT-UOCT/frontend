@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "../NuevaInstalacion";
+
 import "../../../App.css";
 import { Col, Row, FormGroup, Button } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 import PopOver from "../../Shared/PopOver";
 
-const Equipamientos = () => {
-  const state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+const Equipamientos = (props) => {
+  const state = props.state;
+  const dispatch = props.dispatch;
 
   return (
     <>
@@ -15,7 +15,7 @@ const Equipamientos = () => {
         Equipamientos
         <PopOver mensaje="Considere cámaras, |||||||||||||||||||||" />
       </legend>
-      {state.metadata.otu.equipamientos.map((equip, index) => {
+      {state.map((equip, index) => {
         return (
           <Row form>
             <FormGroup>
@@ -72,7 +72,7 @@ const Equipamientos = () => {
         </FormGroup>
       </Col>
       <Col>
-        {state.metadata.otu.equipamientos.length > 1 && (
+        {state.length > 1 && (
           <FormGroup>
             <Button onClick={() => dispatch({ type: "eliminar_equip" })}>
               Eliminar
@@ -84,4 +84,4 @@ const Equipamientos = () => {
   );
 };
 
-export default Equipamientos;
+export default React.memo(Equipamientos);

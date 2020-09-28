@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "../NuevaInstalacion";
+
 import "../../../App.css";
 import { Col, Row, FormGroup, Button, CustomInput } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 
-const Fases = () => {
-  const state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+const Fases = (props) => {
+  const state = props.state;
+  const dispatch = props.dispatch;
 
   return (
     <>
       <legend>Fases</legend>
-      {state.fases.map((fase, index) => {
+      {state.map((fase, index) => {
         return (
           <Row form>
             <Col sm={1}>
@@ -93,7 +93,7 @@ const Fases = () => {
           </FormGroup>
         </Col>
         <Col>
-          {state.fases.length > 1 && (
+          {state.length > 1 && (
             <FormGroup>
               <Button
                 size="sm"
@@ -108,4 +108,4 @@ const Fases = () => {
   );
 };
 
-export default Fases;
+export default React.memo(Fases);

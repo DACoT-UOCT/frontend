@@ -1,25 +1,25 @@
 import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
-import { reducer, initialState } from "./NuevoReducer";
 import { Form } from "reactstrap";
 import { Switch, Collapse, FormControlLabel } from "@material-ui/core";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
-import Junctions from "./Campos/Junctions";
-import Equipamientos from "./Campos/Equipamientos";
-import Siguiente from "./Campos/Siguiente";
-import UPS from "./Campos/UPS";
-import OTU from "./Campos/OTU";
-import Cabezales from "./Campos/Cabezales";
-import Postes from "./Campos/Postes";
-import Controlador from "./Campos/Controlador";
-import Documentacion from "./Campos/Documentacion";
-import Etapas from "./Campos/Etapas";
-import Fases from "./Campos/Fases";
-import Secuencias from "./Campos/Secuencias";
-import Entreverdes from "./Campos/Entreverdes";
-import Observaciones from "./Campos/Observaciones";
+import { reducer, initialState } from "../Shared/FormularioReducer";
+import Junctions from "../Shared/Campos/Junctions";
+import Equipamientos from "../Shared/Campos/Equipamientos";
+import Siguiente from "../Shared/Campos/Siguiente";
+import UPS from "../Shared/Campos/UPS";
+import OTU from "../Shared/Campos/OTU";
+import Cabezales from "../Shared/Campos/Cabezales";
+import Postes from "../Shared/Campos/Postes";
+import Controlador from "../Shared/Campos/Controlador";
+import Documentacion from "../Shared/Campos/Documentacion";
+import Etapas from "../Shared/Campos/Etapas";
+import Fases from "../Shared/Campos/Fases";
+import Secuencias from "../Shared/Campos/Secuencias";
+import Entreverdes from "../Shared/Campos/Entreverdes";
+import Observaciones from "../Shared/Campos/Observaciones";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -28,6 +28,7 @@ export const DispatchContext = React.createContext();
 const NuevaInstalacion = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const [checked, setChecked] = React.useState(false);
+
   const handleChange = () => {
     setChecked((prev) => !prev);
   };
@@ -72,20 +73,29 @@ const NuevaInstalacion = () => {
               <legend className="seccion">Información del proyecto</legend>
               <div className="grid-item">
                 <Form>
-                  <OTU />
-                  <Equipamientos />
+                  <OTU state={state.metadata.otu} />
+                  <Equipamientos
+                    state={state.metadata.otu.equipamientos}
+                    dispatch={dispatch}
+                  />
 
                   <hr className="separador"></hr>
-                  <Controlador />
+                  <Controlador
+                    state={state.metadata.controlador}
+                    dispatch={dispatch}
+                  />
 
                   <hr className="separador"></hr>
-                  <Junctions />
+                  <Junctions state={state.junctions} dispatch={dispatch} />
 
                   <hr className="separador"></hr>
-                  <Postes />
+                  <Postes state={state.metadata} dispatch={dispatch} />
 
                   <hr className="separador"></hr>
-                  <Cabezales />
+                  <Cabezales
+                    state={state.metadata.cabezales}
+                    dispatch={dispatch}
+                  />
 
                   <hr className="separador"></hr>
                   <FormControlLabel
@@ -95,42 +105,42 @@ const NuevaInstalacion = () => {
                     label="Campos No Obligatorios"
                   />
                   <Collapse in={checked}>
-                    <UPS />
+                    <UPS state={state.metadata.ups} dispatch={dispatch} />
                   </Collapse>
                 </Form>
               </div>
-              <Siguiente />
+              <Siguiente state={state} dispatch={dispatch} />
             </>
           ) : state.vista === 2 ? (
             <>
               <legend className="seccion">Información de programaciones</legend>
               <div className="grid-item">
                 <Form>
-                  <Etapas />
+                  <Etapas state={state.stages} dispatch={dispatch} />
 
                   <hr className="separador"></hr>
-                  <Fases />
+                  <Fases state={state.fases} dispatch={dispatch} />
 
                   <hr className="separador"></hr>
-                  <Secuencias />
+                  <Secuencias state={state.secuencias} dispatch={dispatch} />
 
                   <hr className="separador"></hr>
-                  <Entreverdes />
+                  <Entreverdes state={state} dispatch={dispatch} />
 
                   <hr className="separador"></hr>
                 </Form>
               </div>
-              <Siguiente />
+              <Siguiente state={state} dispatch={dispatch} />
             </>
           ) : (
             <>
               <legend className="seccion">Documentación de respaldo</legend>
               <div className="grid-item">
-                <Documentacion />
+                <Documentacion state={state} dispatch={dispatch} />
                 <hr className="separador"></hr>
-                <Observaciones />
+                <Observaciones state={state} dispatch={dispatch} />
               </div>
-              <Siguiente />
+              <Siguiente state={state} dispatch={dispatch} />
             </>
           )}
         </div>

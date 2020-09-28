@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "../NuevaInstalacion";
+
 import "../../../App.css";
 import { Col, Row, FormGroup, Button, Label } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 
-const Entreverdes = () => {
-  const state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+const Entreverdes = (props) => {
+  const state = props.state;
+  const dispatch = props.dispatch;
 
   return (
     <>

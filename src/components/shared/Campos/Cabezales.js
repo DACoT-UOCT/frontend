@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "../NuevaInstalacion";
+
 import "../../../App.css";
 import { Col, FormGroup, Label } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 
-const Cabezales = () => {
-  const state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+const Cabezales = (props) => {
+  const state = props.state;
+  const dispatch = props.dispatch;
 
   return (
     <>
-      {" "}
+      {console.log("render cabezales")}
       <legend className="seccion">Cabezales</legend>
       <FormGroup row>
         <Label sm={2}></Label>
@@ -27,7 +27,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.l1.hal}
+            value={state.l1.hal}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.l1",
@@ -45,7 +45,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.l1.led}
+            value={state.l1.led}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.l1",
@@ -66,7 +66,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.l2.hal}
+            value={state.l2.hal}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.l2",
@@ -84,7 +84,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.l2.led}
+            value={state.l2.led}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.l2",
@@ -105,7 +105,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.l3_l4.hal}
+            value={state.l3_l4.hal}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.l3_l4",
@@ -123,7 +123,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.l3_l4.led}
+            value={state.l3_l4.led}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.l3_l4",
@@ -144,7 +144,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.l5.hal}
+            value={state.l5.hal}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.l5",
@@ -162,7 +162,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.l5.led}
+            value={state.l5.led}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.l5",
@@ -185,7 +185,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.l6.hal}
+            value={state.l6.hal}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.l6",
@@ -203,7 +203,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.l6.led}
+            value={state.l6.led}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.l6",
@@ -226,7 +226,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.peatonal.hal}
+            value={state.peatonal.hal}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.peatonal",
@@ -244,7 +244,7 @@ const Cabezales = () => {
             type="number"
             autoComplete="off"
             style={{ width: "75px" }}
-            value={state.metadata.cabezales.peatonal.led}
+            value={state.peatonal.led}
             onChange={(e) => {
               dispatch({
                 type: "cabezales.peatonal",
@@ -259,4 +259,4 @@ const Cabezales = () => {
   );
 };
 
-export default Cabezales;
+export default React.memo(Cabezales);

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { DispatchContext, StateContext } from "../NuevaInstalacion";
+
 import "../../../App.css";
 import { Col, Row, FormGroup, Button } from "reactstrap";
 import ButtonMaterial from "@material-ui/core/Button";
@@ -16,9 +16,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const Siguiente = () => {
-  const state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
+const Siguiente = (props) => {
+  const state = props.state;
+  const dispatch = props.dispatch;
 
   const [openWarning, setOpen] = React.useState(false);
 

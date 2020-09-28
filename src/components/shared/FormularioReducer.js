@@ -17,12 +17,12 @@ export const initialState = {
     },
     empresa: "Auter",
     fecha_de_instalacion: "", //como preguntar la fecha ?????????????
-    region: "",
-    comuna: "",
     n_etapas: "", //calcular a partir de las etapas
     mod_potencia: "",
     detectores: "",
     otu: {
+      region: "",
+      comuna: "",
       codigo: "",
       n_serie: "",
       marca: "",
@@ -31,6 +31,14 @@ export const initialState = {
       netmask: "",
       control: "",
       respuesta: "",
+      d_peatonal: false,
+      dyf_peatonal: false,
+      espira_local: false,
+      espira_scoot: false,
+      enlace_pc: "",
+      nodo_concentrador: "",
+      n_empalme: "",
+      capacidad_empalme: "",
       equipamientos: [
         {
           desc: "",
@@ -38,8 +46,6 @@ export const initialState = {
         },
       ],
     },
-    n_empalme: "",
-    capacidad_empalme: "",
     ups: {
       marca: "",
       modelo: "",
@@ -78,13 +84,8 @@ export const initialState = {
         led: "0",
       },
     },
-    d_peatonal: "0",
-    dyf_peatonal: "0",
-    espira_local: "",
-    espira_scoot: "",
+
     senal_hito: "",
-    enlace_pc: "",
-    nodo_concentrador: "",
     enlace_da: "",
 
     controlador: {
@@ -140,7 +141,6 @@ export function reducer(draft, action) {
         if (draft.vista < 3) {
           draft.vista += 1;
         } else {
-          draft._id = "X" + draft.junctions[0].id.slice(1, -1) + "0";
           draft.submit = true;
         }
       }
@@ -228,12 +228,18 @@ export function reducer(draft, action) {
       //     addr: "",
       //   },
       // ],
+
+      if (action.fieldName === "enlace_pc" && action.payLoad === "Propio") {
+        draft.metadata.otu.nodo_concentrador = "";
+      }
       if (action.fieldName === "codigo") {
+        draft._id = "X" + action.payLoad.slice(1, 6) + "0";
         for (var i = 0; i < draft.junctions.length; i++) {
           draft.junctions[i].id =
             "J" + action.payLoad.slice(1, 6) + (i + 1).toString();
         }
       }
+
       draft.metadata.otu[action.fieldName] = action.payLoad;
       return;
     }
