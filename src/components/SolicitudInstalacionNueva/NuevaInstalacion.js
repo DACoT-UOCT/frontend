@@ -124,7 +124,7 @@ const NuevaInstalacion = (props) => {
   }, [state.submit]);
 
   function getSteps() {
-    return ['Información General', 'Programación', 'Documentación', 'Enviar'];
+    return ['Información General', 'Programación', 'Documentación', 'Verificación'];
   }
 
   function getStepContent(stepIndex) {
@@ -204,7 +204,7 @@ const NuevaInstalacion = (props) => {
       <StateContext.Provider value={state}>
         <div className="grid-item nuevo-semaforo">
           <div className={classes.root}>
-            <Stepper activeStep={activeStep} alternativeLabel>
+            <Stepper activeStep={activeStep} alternativeLabel style={{"background":"none", "border-bottom":"2px solid #999999"}}>
               {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel>{label}</StepLabel>
@@ -218,9 +218,10 @@ const NuevaInstalacion = (props) => {
                   <Button onClick={handleReset}>Volver al inicio</Button>
                 </div>
               ) : (
-                <div className="grid-item" style={{"max-height":"515px","overflow-y":"scroll"}}>
+                <div className="grid-item" style={{"max-height":"515px","overflow-y":"scroll", "border":"0px"}}>
                   <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
                   <div>
+                    <Siguiente state={state} dispatch={dispatch} />
                     <Button
                       disabled={activeStep === 0}
                       onClick={handleBack}

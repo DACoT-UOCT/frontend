@@ -163,6 +163,7 @@ const Siguiente = (props) => {
                 <ButtonMaterial
                   variant="contained"
                   color="secondary"
+                  
                   onClick={() => dispatch({ type: "atras" })}>
                   Atrás
                 </ButtonMaterial>
