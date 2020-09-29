@@ -19,6 +19,7 @@
     "react-popper": "^2.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-step-progress": "^1.0.3",
     "reactstrap": "^8.5.1",
     "use-immer": "^0.4.0"
   },

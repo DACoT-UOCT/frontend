@@ -162,21 +162,25 @@ const RegistroActividad = (props) => {
 
   return (
     <>
-      <p>Desde</p>
-      <DatePicker
-        selected={startDate}
-        onChange={(date) => setStartDate(date)}
-      />
-
-      <p>Hasta</p>
-      <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
-      <Button onClick={() => consultarRegistros("usuarios")}>
-        <span>Consultar Registros</span>
-      </Button>
-
+      <div style={{"display":"flex"}}>
+        <div style={{"padding-left":"10px"}}>
+          <p>Desde</p>
+          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)}/>
+        </div>
+        
+        <div style={{"padding-left":"10px"}}>
+          <p>Hasta</p>
+          <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+        </div>
+        <div style={{"padding-left":"10px"}}>
+          <Button onClick={() => consultarRegistros("usuarios")}>
+            <span>Consultar Registros</span>
+          </Button>
+        </div>
+      </div>
       <p>{error}</p>
       {registros.length > 0 && (
-        <Table hover>
+        <Table hover style={{"overflowY":"auto"}}>
           <thead>
             <tr>
               <th>#</th>

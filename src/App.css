@@ -155,6 +155,7 @@ body {
   );
   border: 1px solid rgb(100, 100, 100);
   padding-left: 15px;
+  padding-right: 15px;
 }
 
 .welcome-view {
@@ -250,13 +251,12 @@ body {
 }
 
 .app-container {
-  height: 95vh;
+  height: 99vh;
   display: grid;
   grid-template:
     "header header header" 9vh
     ". . ." 1vh
-    ". caja ." 84vh
-    "footer footer footer"
+    ". caja ." 89vh
     /15% 70% 15%;
 }
 
@@ -279,8 +279,8 @@ Label{
 
 .nuevo-semaforo {
   grid-area: caja;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-y: hidden;
+  overflow-x: auto;
 }
 
 .separador {
