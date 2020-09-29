@@ -13,11 +13,11 @@ const Header = () => {
   const location = useLocation()
 
   const sections = {
-    '/': 'Inicio',
-    '/consulta' : 'Consultar Semáforo',
-    '/nuevo/instalacion' : 'Nueva Instalación',
-    '/administracion' : 'Dashboard Administrador',
-    '/nuevo/actualizacion' : 'Solicitar Actualización'
+    '/'                     : 'Inicio',
+    '/consulta'             : 'Consultar Semáforo',
+    '/nuevo/instalacion'    : 'Nueva Instalación',
+    '/administracion'       : 'Dashboard Administrador',
+    '/nuevo/actualizacion'  : 'Solicitar Actualización'
   }
 
   useEffect(() => {
