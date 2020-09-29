@@ -22,6 +22,10 @@
     background-color: rgba(49, 49, 49, 0.527);
 }
 
+.back:hover {
+    cursor: pointer;
+}
+
 .show {
     margin-right: 0;
 }
