@@ -83,7 +83,7 @@ const ConsultaSemaforo = () => {
         <div className="grid-item consulta-semaforo">
           <div className="search-container">
             <Form onSubmit={submitClick}>
-              <Row className="buscar">
+              <Row>
                 <Input
                   type="text"
                   placeholder="X000000"

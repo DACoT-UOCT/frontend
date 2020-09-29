@@ -46,6 +46,7 @@ const Header = () => {
             />{" "}
             DACoT
           </Typography>
+          {/*<Typography>{window.location.pathname}</Typography>*/}
           <Nav/>
         </Toolbar>
       </AppBar>

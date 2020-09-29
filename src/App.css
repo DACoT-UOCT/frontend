@@ -262,7 +262,6 @@ Label{
 
 .form-titulo{
   text-align: center;
-  
 }
 
 .seccion{
@@ -296,6 +295,12 @@ Label{
     "buscador" 7vh
     "informacion" auto
     / auto;
+}
+
+.dashboard-empresa {
+  grid-area: caja;
+  padding: 15px 15px;
+  
 }
 
 .search-container {
@@ -512,13 +517,6 @@ Input{
   border: 1px solid !important;
 }
 
-.MuiButtonBase-root{
-  width:fit-content !important;
-}
-.MuiButton-label{
-  width:fit-content !important;
-}
-
 .MuiFormControl-root {
   width: 200px;
   height: 50px;
@@ -538,6 +536,10 @@ Input{
 
 Button{
   font-size: 12px !important;
+}
+
+.boton-dashboard{
+  margin-bottom: 10px;
 }
 
 .links {
