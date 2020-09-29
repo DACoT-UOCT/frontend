@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState} from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import { useImmerReducer } from "use-immer";
 import "../App.css";
 import Header from "./Shared/Header";
@@ -6,7 +6,12 @@ import NuevaInstalacion from "./SolicitudInstalacionNueva/NuevaInstalacion";
 import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
 import Login from "./Login/Login";
 import { initialState, reducer } from "./Login/LoginReducer";
-import { BrowserRouter as Router, Switch, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import NuevaActualizacion from "./SolicitudActualizacionNueva/NuevaActualizacion";
 import Dashboard from "./Dashboards/Dashboard";
 import Administracion from "./Administracion/Administracion";
@@ -18,7 +23,6 @@ const App = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const { username, password, isLoading, error, isLoggedIn, rol } = state;
 
-
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
@@ -27,10 +31,13 @@ const App = () => {
             <Route path="/" exact component={Login} />
           ) : (
             <div className="app-container">
-              <Header/>
+              <Header />
               <Switch>
                 <Route path="/consulta" component={ConsultaSemaforo} />
-                <Route path="/nuevo/instalacion" component={NuevaInstalacion} />
+                <Route
+                  path="/nuevo/instalacion"
+                  component={() => <NuevaInstalacion state={state} />}
+                />
                 <Route path="/administracion" component={Administracion} />
                 <Route
                   path="/nuevo/actualizacion"

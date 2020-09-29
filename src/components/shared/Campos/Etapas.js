@@ -23,12 +23,12 @@ const Etapas = (props) => {
                   variant="outlined"
                   autoComplete="off"
                   placeholder=""
-                  value={etapa.id}
+                  value={etapa[0]}
                   onChange={(e) =>
                     dispatch({
                       type: "stage",
                       index: index,
-                      fieldName: "id",
+                      fieldName: 0,
                       payLoad: e.currentTarget.value,
                     })
                   }
@@ -48,12 +48,12 @@ const Etapas = (props) => {
                   SelectProps={{
                     native: true,
                   }}
-                  value={etapa.tipo}
+                  value={etapa[1]}
                   onChange={(e) =>
                     dispatch({
                       type: "stage",
                       index: index,
-                      fieldName: "tipo",
+                      fieldName: 1,
                       payLoad: e.currentTarget.value,
                     })
                   }>

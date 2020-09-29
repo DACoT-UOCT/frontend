@@ -1,5 +1,6 @@
 export const initialState = {
-  username: "Auter",
+  full_name: "Auter",
+  email: "correoempresa@gmail.com",
   password: "",
   rol: "Ingenieria", //'Sala de Control', 'Ingiería', 'TIC'
   isLoading: false,
