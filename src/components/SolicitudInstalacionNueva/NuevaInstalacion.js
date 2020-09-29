@@ -40,17 +40,31 @@ const NuevaInstalacion = (props) => {
 
   const procesar_json = () => {
     //procesa el json antes de enviarlo
-    const string = JSON.stringify(state);
-    const state_copy = JSON.parse(string);
+    const state_copy = JSON.parse(JSON.stringify(state));
 
     //agregar status_user
-    state_copy.status_user = "Yo";
+    state_copy.status_user = props.state.full_name;
 
     //convertir variables a enteros
+    state_copy.metadata.control = parseInt(state_copy.metadata.control);
+    state_copy.metadata.answer = parseInt(state_copy.metadata.answer);
+    state_copy.postes.ganchos = parseInt(state_copy.postes.ganchos);
+    state_copy.postes.vehiculares = parseInt(state_copy.postes.vehiculares);
+    state_copy.postes.peatonales = parseInt(state_copy.postes.peatonales);
+    for (var x in state_copy.cabezales) {
+      state_copy.cabezales[x].hal = parseInt(state_copy.cabezales[x].hal);
+      state_copy.cabezales[x].led = parseInt(state_copy.cabezales[x].led);
+    }
+
+    for (var i = 0; i < state_copy.entreverdes.length; i++) {
+      for (var j = 0; j < state_copy.entreverdes[0].length; j++) {
+        state_copy.entreverdes[i][j] = parseInt(state_copy.entreverdes[i][j]);
+      }
+    }
     //eliminar variables de control
     delete state_copy.errors;
     delete state_copy.vista;
-    delete state.submit;
+    delete state_copy.submit;
     console.log(state_copy);
     return state_copy;
   };
@@ -58,9 +72,9 @@ const NuevaInstalacion = (props) => {
     if (state.submit === true) {
       //loading = true
 
-      const str = JSON.stringify(state);
-      console.log(str);
-      console.log("enviando useffect");
+      //const str = JSON.stringify(state);
+      //console.log(str);
+      //console.log("enviando useffect");
       procesar_json();
 
       //enviar

@@ -22,8 +22,8 @@ export const initialState = {
     serial: "",
     ip_address: "",
     netmask: "",
-    control: "", //int
-    answer: "",
+    control: 0, //int
+    answer: 0,
     demanda_peatonal: false,
     facilidad_peatonal: false,
     detector_local: false,
@@ -50,9 +50,9 @@ export const initialState = {
   },
 
   postes: {
-    ganchos: "",
-    vehiculares: "",
-    peatonales: "",
+    ganchos: 0,
+    vehiculares: 0,
+    peatonales: 0,
   },
   //gps: "",
   cabezales: {
@@ -92,11 +92,8 @@ export const initialState = {
   ],
 
   stages: [
-    {
-      id: "",
-      tipo: "",
-    },
-    // A: "VEH",
+    ["", ""],
+    // "A", "VEH",
   ],
 
   fases: [
@@ -107,7 +104,7 @@ export const initialState = {
   ],
 
   secuencias: [[]], //[[1,2,3], "J003672"]
-  entreverdes: [[0]],
+  entreverdes: [["0"]],
   //bits_de_control: "",
 
   errors: [],
@@ -135,7 +132,14 @@ export function reducer(draft, action) {
       return;
     }
     case "metadata": {
-      draft[action.type][action.fieldName] = action.payLoad;
+      if (action.fieldName === "control" || action.fieldName === "answer") {
+        draft[action.type][action.fieldName] = parseInt(
+          action.payLoad.replace(/\D/, "")
+        );
+      } else {
+        draft[action.type][action.fieldName] = action.payLoad;
+      }
+
       return;
     }
 
@@ -292,18 +296,17 @@ export function reducer(draft, action) {
     }
 
     case "agregar_stage": {
-      const nuevo = { id: "", tipo: "" };
+      const nuevo = ["", ""];
       draft.stages.push(nuevo);
 
       //agregar columna a matriz de entreverdes
       draft.entreverdes.map((fila) => {
-        fila.push("");
+        fila.push("0");
       });
       //agregar fila al final de la matriz de entreverdes
       const largo = draft.stages.length;
-      const array = Array(largo).fill("");
+      const array = Array(largo).fill("0");
       draft.entreverdes.push(array);
-
       return;
     }
 

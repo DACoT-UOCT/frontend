@@ -99,9 +99,9 @@ const Siguiente = (props) => {
       var j = 0;
 
       state.stages.map((etapa) => {
-        validar_entrada(etapa.id, "Etapa - Identificador");
-        comprobacionEtapas.push(etapa.id);
-        validar_entrada(etapa.tipo, "Etapa - Tipo");
+        validar_entrada(etapa[0], "Etapa - Identificador");
+        comprobacionEtapas.push(etapa[0]);
+        validar_entrada(etapa[1], "Etapa - Tipo");
       });
 
       //VALIDAR FASES
