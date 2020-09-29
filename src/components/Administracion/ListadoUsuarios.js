@@ -119,7 +119,6 @@ const ListadoUsuarios = (props) => {
 
   return (
     <>
-      <legend className="seccion">Usuarios registrados en sistema</legend>
       <Table hover>
         <thead>
           <tr>

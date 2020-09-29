@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'flex-start',
   },
   column: {
-    flexBasis: '40%',
+    flexBasis: '33.33%',
   },
   helper: {
     borderLeft: `2px solid ${theme.palette.divider}`,
@@ -98,7 +98,7 @@ const DashEmpresa = () => {
               <Button className="boton-dashboard"> PDF de Respaldo </Button> <br></br>
               <Button className="boton-dashboard"> Programaciones </Button> <br></br>
               <Button className="boton-dashboard"> Historial de Cambios </Button> <br></br>
-              <Button className="boton-dashboard"> Modificar Entrada </Button>
+              <Button className="boton-dashboard"> Solicitar Modificación </Button>
             </div>
           </AccordionDetails>
         </Accordion>

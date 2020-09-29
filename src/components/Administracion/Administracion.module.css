@@ -1,0 +1,59 @@
+.admin {
+    display: flex;
+    flex-direction: column;
+    background: rgb(236, 238, 240);
+    padding: 25px;
+    padding-top: 40px;
+}
+
+.border {
+    border-radius: 10px 0px 10px 10px !important;
+}
+
+.selection {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: -50px;
+}
+
+.selection h2 {
+    font-size: 1.6rem;
+    padding-bottom: 20px;
+}
+
+.options button {  
+    display: inline-block;
+    background: none;
+    border: none;
+    color: gray;
+    padding: 10px;
+    border-radius: 10px 10px 0px 0px;
+    transform: translateY(2px);
+    transition: all 0.2s;
+}
+
+.options button:focus {  
+    outline: none;
+}
+
+.options button:hover {
+    color: black; 
+}
+
+.active {
+    background: white !important;
+    border-left: 2px solid lightgray !important;
+    border-right: 2px solid lightgray !important;
+    border-top: 2px solid lightgray !important;
+    color: black !important;
+}
+
+.info {
+    border: none;
+    background: rgb(255, 255, 255);
+    padding: 30px;
+    flex: 1;
+    border-radius: 10px;
+    border: 2px solid lightgray;
+}

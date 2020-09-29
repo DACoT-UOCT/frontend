@@ -84,8 +84,7 @@ const NuevaActualizacion = (props) => {
   return (
     <DispatchContext.Provider value={dispatch}>
        <StateContext.Provider value={state}>
-        <div className="grid-item actualizacion-semaforo">
-          {}
+        <div className="grid-item consulta-semaforo">
           <div className="search-container">
             <Form onSubmit={submitClick}>
               <Row>

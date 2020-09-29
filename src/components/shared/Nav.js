@@ -11,6 +11,7 @@ export default function Nav() {
 
     return (
         <>
+            <MenuIcon onClick={() => setShow(true)} className={styles.icon} fontSize="large"/>
             <div className={`${styles.menu} ${show && styles.show}`}>
                 <Link onClick={() => setShow(false)} className={styles.link} to="/">
                     <span>Inicio</span>
@@ -35,8 +36,7 @@ export default function Nav() {
                     </button>
                 </Link>
             </div>
-            {!show ? <MenuIcon onClick={() => setShow(true)} className={styles.icon} fontSize="large"/> :
-            <div onClick={() => setShow(false)} className={styles.back}></div>}
+            {show && <div onClick={() => setShow(false)} className={styles.back}></div>}
         </>
 )
 }

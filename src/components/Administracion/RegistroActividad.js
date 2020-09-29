@@ -162,7 +162,6 @@ const RegistroActividad = (props) => {
 
   return (
     <>
-      <legend className="seccion">Registro de actividad </legend>
       <p>Desde</p>
       <DatePicker
         selected={startDate}
