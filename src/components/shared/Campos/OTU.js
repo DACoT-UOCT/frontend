@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 
 import "../../../App.css";
 import { Col, Row, FormGroup, Label } from "reactstrap";
@@ -10,12 +12,14 @@ import PopOver from "../../Shared/PopOver";
 const OTU = (props) => {
   const state = props.state;
   const dispatch = props.dispatch;
+  const ancho_label = 4;
 
   return (
     <>
       <legend className="seccion">OTU</legend>
 
       <Row form>
+        <Label sm={ancho_label}>Código en sistema</Label>
         <FormGroup>
           <TextField
             id="outlined"
@@ -23,12 +27,11 @@ const OTU = (props) => {
             variant="outlined"
             name="otu-codigo"
             autoComplete="off"
-            value={state.codigo}
+            value={props.codigo}
             onChange={(e) =>
               dispatch({
-                type: "otu",
-                fieldName: "codigo",
-                payLoad: e.currentTarget.value,
+                type: "oid",
+                payLoad: e.currentTarget.value.toUpperCase(),
               })
             }
           />
@@ -36,6 +39,7 @@ const OTU = (props) => {
         <PopOver mensaje="Código de 6 dígitos que tendrá la instalación en el sistema (ej X001260)" />
       </Row>
       <Row form>
+        <Label sm={ancho_label}>Región</Label>
         <Col sm={4}>
           <FormGroup>
             <TextField
@@ -52,35 +56,36 @@ const OTU = (props) => {
               value={state.region}
               onChange={(e) =>
                 dispatch({
-                  type: "otu",
+                  type: "metadata",
                   fieldName: "region",
                   payLoad: e.currentTarget.value,
                 })
               }>
               <option hidden></option>
-              <option>Región de Arica y Parinacota</option>
+              {/* <option>Región de Arica y Parinacota</option>
               <option>Región de Tarapacá</option>
               <option>Región de Antofagasta</option>
               <option>Región de Atacama</option>
               <option>Región de Coquimbo</option>
-              <option>Región de Valparaíso</option>
+              <option>Región de Valparaíso</option> */}
               <option>Región Metropolitana de Santiago</option>
-              <option>Región del Libertador General Bernardo O’Higgins</option>
+              {/* <option>Región del Libertador General Bernardo O’Higgins</option>
               <option>Región del Maule</option>
               <option>Región del Ñuble</option>
               <option>Región del Biobío</option>
               <option>Región de La Araucanía</option>
               <option>Región de Los Ríos</option>
-              <option>Región de Los Lagos</option>
-              <option>
+              <option>Región de Los Lagos</option> */}
+              {/* <option>
                 Región de Aysén del General Carlos Ibáñez del Campo
               </option>
-              <option>Región de Magallanes y la Antártica Chilena</option>
+              <option>Región de Magallanes y la Antártica Chilena</option> */}
             </TextField>
           </FormGroup>
         </Col>
       </Row>
       <Row form>
+        <Label sm={ancho_label}>Comuna</Label>
         <Col sm={3}>
           <FormGroup>
             <TextField
@@ -93,11 +98,11 @@ const OTU = (props) => {
               SelectProps={{
                 native: true,
               }}
-              value={state.comuna}
+              value={state.commune}
               onChange={(e) =>
                 dispatch({
-                  type: "otu",
-                  fieldName: "comuna",
+                  type: "metadata",
+                  fieldName: "commune",
                   payLoad: e.currentTarget.value,
                 })
               }>
@@ -139,34 +144,71 @@ const OTU = (props) => {
         </Col>
       </Row>
 
-      <Row form>
-        <Col sm={3}>
-          <FormGroup>
-            <TextField
-              id="outlined-select-currency-native"
-              select
-              label="Tipo de Enlace"
-              variant="outlined"
-              name="enlace_pc"
-              autoComplete="off"
-              SelectProps={{
-                native: true,
-              }}
-              value={state.enlace_pc}
-              onChange={(e) => {
-                dispatch({
-                  type: "otu",
-                  fieldName: "enlace_pc",
-                  payLoad: e.currentTarget.value,
-                });
-              }}>
-              <option value="" hidden></option>
-              <option value="Propio">Propio</option>
-              <option value="Compartido">Compartido</option>
-            </TextField>
-          </FormGroup>
+      <Row>
+        <Label sm={ancho_label}>Fecha de instalacion</Label>
+        <Col>
+          <DatePicker
+            selected={state.installation_date}
+            onChange={(date) =>
+              dispatch({ type: "installation_date", payLoad: date.getTime() })
+            }
+          />
         </Col>
+      </Row>
+
+      <Row form>
+        <Label sm={ancho_label}>Tipo de enlace</Label>
+        <FormGroup>
+          <TextField
+            id="outlined-select-currency-native"
+            select
+            label="Tipo de Enlace"
+            variant="outlined"
+            name="enlace_pc"
+            autoComplete="off"
+            SelectProps={{
+              native: true,
+            }}
+            value={state.link_owner}
+            onChange={(e) => {
+              dispatch({
+                type: "metadata",
+                fieldName: "link_owner",
+                payLoad: e.currentTarget.value,
+              });
+            }}>
+            <option value="" hidden></option>
+            <option value="Propio">Propio</option>
+            <option value="Compartido">Compartido</option>
+          </TextField>
+        </FormGroup>
         <Col sm={1}></Col>
+        <FormGroup>
+          <TextField
+            id="outlined-select-currency-native"
+            select
+            label="Tipo de Enlace"
+            variant="outlined"
+            name="enlace_pc"
+            autoComplete="off"
+            SelectProps={{
+              native: true,
+            }}
+            value={state.link_type}
+            onChange={(e) => {
+              dispatch({
+                type: "metadata",
+                fieldName: "link_type",
+                payLoad: e.currentTarget.value,
+              });
+            }}>
+            <option value="" hidden></option>
+            <option value="Digital">Digital</option>
+            <option value="Analogo">Análogo</option>
+          </TextField>
+        </FormGroup>
+
+        {/* <Col sm={1}></Col>
         {state.enlace_pc === "Compartido" && (
           <Col sm={3}>
             <FormGroup>
@@ -187,45 +229,10 @@ const OTU = (props) => {
               />
             </FormGroup>
           </Col>
-        )}
+        )} */}
       </Row>
       <Row form>
-        <FormGroup>
-          <TextField
-            id="outlined"
-            label="Marca"
-            variant="outlined"
-            name="marca"
-            autoComplete="off"
-            value={state.marca}
-            onChange={(e) =>
-              dispatch({
-                type: "otu",
-                fieldName: "marca",
-                payLoad: e.currentTarget.value,
-              })
-            }
-          />
-        </FormGroup>
-        <Col sm={1}></Col>
-        <FormGroup>
-          <TextField
-            id="outlined"
-            label="Tipo"
-            variant="outlined"
-            name="otu-tipo"
-            autoComplete="off"
-            value={state.tipo}
-            onChange={(e) =>
-              dispatch({
-                type: "otu",
-                fieldName: "tipo",
-                payLoad: e.currentTarget.value,
-              })
-            }
-          />
-        </FormGroup>
-        <Col sm={1}></Col>
+        <Label sm={ancho_label}>Número de serie</Label>
         <FormGroup>
           <TextField
             id="outlined"
@@ -233,11 +240,11 @@ const OTU = (props) => {
             variant="outlined"
             name="otu-serie"
             autoComplete="off"
-            value={state.n_serie}
+            value={state.serial}
             onChange={(e) =>
               dispatch({
-                type: "otu",
-                fieldName: "n_serie",
+                type: "metadata",
+                fieldName: "serial",
                 payLoad: e.currentTarget.value,
               })
             }
@@ -246,6 +253,7 @@ const OTU = (props) => {
       </Row>
 
       <Row form>
+        <Label sm={ancho_label}>Dirección IP - Máscara de red</Label>
         <FormGroup>
           <TextField
             id="outlined"
@@ -253,16 +261,17 @@ const OTU = (props) => {
             variant="outlined"
             name="otu-ip"
             autoComplete="off"
-            value={state.direccion_ip}
+            value={state.ip_address}
             onChange={(e) =>
               dispatch({
-                type: "otu",
-                fieldName: "direccion_ip",
+                type: "metadata",
+                fieldName: "ip_address",
                 payLoad: e.currentTarget.value,
               })
             }
           />
         </FormGroup>
+
         <Col sm={1}></Col>
         <FormGroup>
           <TextField
@@ -274,7 +283,7 @@ const OTU = (props) => {
             value={state.netmask}
             onChange={(e) =>
               dispatch({
-                type: "otu",
+                type: "metadata",
                 fieldName: "netmask",
                 payLoad: e.currentTarget.value,
               })
@@ -284,10 +293,11 @@ const OTU = (props) => {
       </Row>
 
       <Row form>
+        <Label sm={ancho_label}>Número palabras de control y respuesta</Label>
         <FormGroup>
           <TextField
             id="outlined"
-            label="Palabras de Ctrl"
+            label="Control"
             variant="outlined"
             type="number"
             name="otu-control"
@@ -295,7 +305,7 @@ const OTU = (props) => {
             value={state.control}
             onChange={(e) =>
               dispatch({
-                type: "otu",
+                type: "metadata",
                 fieldName: "control",
                 payLoad: e.currentTarget.value,
               })
@@ -306,16 +316,16 @@ const OTU = (props) => {
         <FormGroup>
           <TextField
             id="outlined"
-            label="Palabra de Resp"
+            label="Respuesta"
             variant="outlined"
             type="number"
             name="otu-respuesta"
             autoComplete="off"
-            value={state.respuesta}
+            value={state.answer}
             onChange={(e) =>
               dispatch({
-                type: "otu",
-                fieldName: "respuesta",
+                type: "metadata",
+                fieldName: "answer",
                 payLoad: e.currentTarget.value,
               })
             }
@@ -323,7 +333,7 @@ const OTU = (props) => {
         </FormGroup>
       </Row>
 
-      <Row form>
+      {/* <Row form>
         <FormGroup>
           <TextField
             id="outlined"
@@ -359,7 +369,7 @@ const OTU = (props) => {
             }
           />
         </FormGroup>
-      </Row>
+      </Row> */}
 
       {/* <Row form>
         <Col sm={3}>
@@ -386,18 +396,18 @@ const OTU = (props) => {
       </Row> */}
 
       <Row form>
-        <Label sm={4}>Espira scoot</Label>
+        <Label sm={ancho_label}>Detector scoot</Label>
         <Col sm={3}>
           <FormGroup>
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={state.espira_scoot}
+                  checked={state.detector_scoot}
                   onChange={(e) =>
                     dispatch({
-                      type: "otu",
-                      fieldName: "espira_scoot",
-                      payLoad: !state.espira_scoot,
+                      type: "metadata",
+                      fieldName: "detector_scoot",
+                      payLoad: !state.detector_scoot,
                     })
                   }
                   name="gilad"
@@ -409,18 +419,18 @@ const OTU = (props) => {
       </Row>
 
       <Row form>
-        <Label sm={4}>Espira scoot</Label>
+        <Label sm={ancho_label}>Detector local</Label>
         <Col sm={3}>
           <FormGroup>
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={state.espira_local}
+                  checked={state.detector_local}
                   onChange={(e) =>
                     dispatch({
-                      type: "otu",
-                      fieldName: "espira_local",
-                      payLoad: !state.espira_local,
+                      type: "metadata",
+                      fieldName: "detector_local",
+                      payLoad: !state.detector_local,
                     })
                   }
                   name="gilad"
@@ -461,17 +471,17 @@ const OTU = (props) => {
           </Row>*/}
 
       <FormGroup row>
-        <Label sm={4}>Demanda Peatonal</Label>
+        <Label sm={ancho_label}>Demanda Peatonal</Label>
         <Col sm={3}>
           <FormControlLabel
             control={
               <Checkbox
-                checked={state.d_peatonal}
+                checked={state.demanda_peatonal}
                 onChange={(e) =>
                   dispatch({
-                    type: "otu",
-                    fieldName: "d_peatonal",
-                    payLoad: !state.d_peatonal,
+                    type: "metadata",
+                    fieldName: "demanda_peatonal",
+                    payLoad: !state.demanda_peatonal,
                   })
                 }
                 name="gilad"
@@ -481,17 +491,17 @@ const OTU = (props) => {
         </Col>
       </FormGroup>
       <FormGroup row>
-        <Label sm={4}>Facilidad Peatonal</Label>
+        <Label sm={ancho_label}>Facilidad Peatonal</Label>
         <Col sm={3}>
           <FormControlLabel
             control={
               <Checkbox
-                checked={state.dyf_peatonal}
+                checked={state.facilidad_peatonal}
                 onChange={(e) =>
                   dispatch({
-                    type: "otu",
-                    fieldName: "dyf_peatonal",
-                    payLoad: !state.dyf_peatonal,
+                    type: "metadata",
+                    fieldName: "facilidad_peatonal",
+                    payLoad: !state.facilidad_peatonal,
                   })
                 }
                 name="gilad"

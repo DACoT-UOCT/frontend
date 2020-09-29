@@ -37,40 +37,45 @@ const Siguiente = (props) => {
   const validar_formulario = () => {
     //revisar las variables 1 a una
     dispatch({ type: "reset_errores" });
+    console.log(state);
 
     if (state.vista === 1) {
+      validar_entrada(state.oid, "OTU - Codigo", /^(x|X)\d{5}0$/);
+      validar_entrada(state.metadata.region, "Región");
+      validar_entrada(state.metadata.commune, "Comuna");
+      validar_entrada(state.metadata.controller.model, " Controlador - Modelo");
+      validar_entrada(
+        state.metadata.controller.address_reference,
+        " Controlador - Ubicación"
+      );
+      validar_entrada(state.metadata.serial, "OTU - N Serie");
+      validar_entrada(state.metadata.ip_address, "OTU - Dirección IP");
+      validar_entrada(state.metadata.netmask, "OTU - Netmask");
+      validar_entrada(state.metadata.control, "OTU - N° palabras de control");
+      validar_entrada(state.metadata.answer, "OTU - N° palabras de respuesta");
+      validar_entrada(state.metadata.link_type, "OTU - Tipo de enlace");
+      validar_entrada(state.metadata.link_owner, "OTU - Tipo de enlace");
+
       state.junctions.map((junction, index) => {
         validar_entrada(junction.id, "Junction - Código en Sistema");
         validar_entrada(junction.addr, "Junction - Cruce");
       });
-      validar_entrada(state.metadata.comuna, "Comuna");
-      validar_entrada(
-        state.metadata.controlador.modelo,
-        " Controlador - Modelo"
-      );
-      validar_entrada(state.metadata.controlador.marca, "Controlador - Marca");
+      validar_entrada(state.postes.ganchos, "Postes Ganchos");
+      validar_entrada(state.postes.vehiculares, "Postes Vehiculares");
+      validar_entrada(state.postes.peatonales, "Postes Peatonales");
+      //validar_entrada(state.metadata.controller.marca, "Controlador - Marca");
       //validar_entrada(state.metadata.mod_potencia, "Mod Potencia");
-      validar_entrada(state.metadata.detectores, "Detectores");
-      validar_entrada(
-        state.metadata.otu.codigo,
-        "OTU - Codigo",
-        /^(x|X)\d{5}0$/
-      );
-      validar_entrada(state.metadata.otu.n_serie, "OTU - N Serie");
-      validar_entrada(state.metadata.otu.marca, "OTU - Marca");
-      validar_entrada(state.metadata.otu.tipo, "OTU - Tipo");
-      validar_entrada(state.metadata.otu.direccion_ip, "OTU - Dirección IP");
-      validar_entrada(state.metadata.otu.equipamientos, "OTU - Equipamientos");
-      validar_entrada(state.metadata.n_empalme, "N Empalme");
-      validar_entrada(state.metadata.capacidad_empalme, "Capacidad Empalme");
+      //validar_entrada(state.metadata.detectores, "Detectores");
+      //validar_entrada(state.metadata.otu.marca, "OTU - Marca");
+      //validar_entrada(state.metadata.otu.tipo, "OTU - Tipo");
+      //validar_entrada(state.metadata.otu.equipamientos, "OTU - Equipamientos");
+      //validar_entrada(state.metadata.n_empalme, "N Empalme");
+      //validar_entrada(state.metadata.capacidad_empalme, "Capacidad Empalme");
       /*validar_entrada(state.metadata.ups.marca, "UPS - Marca");
     validar_entrada(state.metadata.ups.modelo, "UPS - Modelo");
     validar_entrada(state.metadata.ups.n_serie, "UPS - N Serie");
     validar_entrada(state.metadata.ups.capacidad, "UPS - Capacidad");
     validar_entrada(state.metadata.ups.duracion_carga,"UPS - Duración de Carga");
-    validar_entrada(state.metadata.postes_ganchos, "Postes Ganchos");
-    validar_entrada(state.metadata.postes_vehiculares, "Postes Vehiculares");
-    validar_entrada(state.metadata.postes_peatonales, "Postes Peatonales");
     for (let cabezal in state.metadata.cabezales) {
       validar_entrada(
         state.metadata.cabezales[cabezal].hal,

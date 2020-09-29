@@ -1,99 +1,88 @@
 export const initialState = {
+  oid: "X",
   metadata: {
-    datos_version: {
-      vigente: false,
-      version: "0.0",
-      fecha: Date.now(),
-      evento: "nueva instalacion",
-      artifice: {
-        nombre: "Auter", //consultar del estado de la sesion
-        rol: "empresa",
-      },
-      ingresado_a_SC: false,
-      nueva_instalacion: true,
-      actualizando_instalacion: false,
-      aprobado_para_ingresar: false,
-      rechazado: false,
-    },
-    empresa: "Auter",
-    fecha_de_instalacion: "", //como preguntar la fecha ?????????????
-    n_etapas: "", //calcular a partir de las etapas
-    mod_potencia: "",
-    detectores: "",
-    otu: {
-      region: "",
-      comuna: "",
-      codigo: "",
-      n_serie: "",
-      marca: "",
-      tipo: "",
-      direccion_ip: "",
-      netmask: "",
-      control: "",
-      respuesta: "",
-      d_peatonal: false,
-      dyf_peatonal: false,
-      espira_local: false,
-      espira_scoot: false,
-      enlace_pc: "",
-      nodo_concentrador: "",
-      n_empalme: "",
-      capacidad_empalme: "",
-      equipamientos: [
-        {
-          desc: "",
-          ip: "",
-        },
-      ],
-    },
-    ups: {
-      marca: "",
-      modelo: "",
-      n_serie: "",
-      capacidad: "",
-      duracion_carga: "",
-    },
-    gps: "",
-    empresa_servicio_de_comunicacion: "",
-    postes_ganchos: "",
-    postes_vehiculares: "",
-    postes_peatonales: "",
-    cabezales: {
-      l1: {
-        hal: "0",
-        led: "0",
-      },
-      l2: {
-        hal: "0",
-        led: "0",
-      },
-      l3_l4: {
-        hal: "0",
-        led: "0",
-      },
-      l5: {
-        hal: "0",
-        led: "0",
-      },
-      l6: {
-        hal: "0",
-        led: "0",
-      },
-      peatonal: {
-        hal: "0",
-        led: "0",
-      },
+    version: "base",
+    installed_by: "",
+    maintainer: "", //se envia vacio al back o no se envia
+    status: "NEW", //"UPDATE"
+    status_date: Date.now(),
+    status_user: "", //ENVIAR CORREO
+    installation_date: Date.now(),
+    region: "",
+    commune: "",
+    pdf_data: "",
+    imgs: "", //imagen de la instalacion(pueden ser varias despues)
+    observations: "",
+    controller: {
+      model: "",
+      marca: "", //preguntar
+      address_reference: "",
     },
 
-    senal_hito: "",
-    enlace_da: "",
+    serial: "",
+    ip_address: "",
+    netmask: "",
+    control: "", //int
+    answer: "",
+    demanda_peatonal: false,
+    facilidad_peatonal: false,
+    detector_local: false,
+    detector_scoot: false,
+    link_type: "", //"Digital|Analogo"
+    link_owner: "", //"Propio|Compartido"
+    //nodo_concentrador: "",
+    //n_empalme: "",
+    //capacidad_empalme: "",
+    // equipamientos: [
+    //   {
+    //     desc: "",
+    //     ip: "",
+    //   },
+    // ],
+  },
 
-    controlador: {
-      modelo: "",
-      marca: "",
-      ubicacion: "",
+  ups: {
+    marca: "",
+    modelo: "",
+    n_serie: "",
+    capacidad: "",
+    duracion_carga: "",
+  },
+
+  postes: {
+    ganchos: "",
+    vehiculares: "",
+    peatonales: "",
+  },
+  //gps: "",
+  cabezales: {
+    l1: {
+      hal: "0",
+      led: "0",
+    },
+    l2: {
+      hal: "0",
+      led: "0",
+    },
+    l3_l4: {
+      hal: "0",
+      led: "0",
+    },
+    l5: {
+      hal: "0",
+      led: "0",
+    },
+    l6: {
+      hal: "0",
+      led: "0",
+    },
+    peatonal: {
+      hal: "0",
+      led: "0",
     },
   },
+
+  //senal_hito: "",
 
   junctions: [
     {
@@ -117,20 +106,34 @@ export const initialState = {
     },
   ],
 
-  secuencias: [[]],
-  entreverdes: [[""]],
-  pdf_respaldo: "",
-  imagen_instalacion: "",
-  bits_de_control: "",
-  observaciones: "",
+  secuencias: [[]], //[[1,2,3], "J003672"]
+  entreverdes: [[0]],
+  //bits_de_control: "",
+
   errors: [],
-  vista: 3,
+  vista: 1,
   submit: false,
 };
 
 export function reducer(draft, action) {
-  draft.form_1_ok = false;
   switch (action.type) {
+    case "onMount": {
+      return;
+    }
+
+    case "oid": {
+      for (var i = 0; i < draft.junctions.length; i++) {
+        draft.junctions[i].id =
+          "J" + action.payLoad.slice(1, 6) + (i + 1).toString();
+      }
+      draft.oid = "X" + action.payLoad.slice(1, 7);
+      return;
+    }
+
+    case "installation_date": {
+      draft.metadata.installation_date = action.payLoad;
+      return;
+    }
     case "metadata": {
       draft[action.type][action.fieldName] = action.payLoad;
       return;
@@ -182,9 +185,7 @@ export function reducer(draft, action) {
 
     case "agregar_junction": {
       const name =
-        "J" +
-        draft.metadata.otu.codigo.slice(1, 6) +
-        (draft.junctions.length + 1).toString();
+        "J" + draft.oid.slice(1, 6) + (draft.junctions.length + 1).toString();
       const nuevo = { id: name, addr: "" };
       draft.junctions.push(nuevo);
       return;
@@ -206,18 +207,13 @@ export function reducer(draft, action) {
       return;
     }
 
-    case "modelo controlador": {
-      draft.metadata.controlador.modelo = action.payLoad;
+    case "controller": {
+      draft.metadata.controller[action.fieldName] = action.payLoad;
       return;
     }
 
-    case "marca controlador": {
-      draft.metadata.controlador.marca = action.payLoad;
-      return;
-    }
-
-    case "ubicacion controlador": {
-      draft.metadata.controlador.ubicacion = action.payLoad;
+    case "postes": {
+      draft.postes[action.fieldName] = action.payLoad;
       return;
     }
 
@@ -229,16 +225,9 @@ export function reducer(draft, action) {
       //   },
       // ],
 
-      if (action.fieldName === "enlace_pc" && action.payLoad === "Propio") {
-        draft.metadata.otu.nodo_concentrador = "";
-      }
-      if (action.fieldName === "codigo") {
-        draft._id = "X" + action.payLoad.slice(1, 6) + "0";
-        for (var i = 0; i < draft.junctions.length; i++) {
-          draft.junctions[i].id =
-            "J" + action.payLoad.slice(1, 6) + (i + 1).toString();
-        }
-      }
+      // if (action.fieldName === "enlace_pc" && action.payLoad === "Propio") {
+      //   draft.metadata.otu.nodo_concentrador = "";
+      // }
 
       draft.metadata.otu[action.fieldName] = action.payLoad;
       return;
@@ -251,37 +240,37 @@ export function reducer(draft, action) {
     }
 
     case "ups": {
-      draft.metadata.ups[action.fieldName] = action.payLoad;
+      draft.ups[action.fieldName] = action.payLoad;
       return;
     }
 
     case "cabezales.l1": {
-      draft.metadata.cabezales.l1[action.fieldName] = action.payLoad;
+      draft.cabezales.l1[action.fieldName] = action.payLoad;
       return;
     }
 
     case "cabezales.l2": {
-      draft.metadata.cabezales.l2[action.fieldName] = action.payLoad;
+      draft.cabezales.l2[action.fieldName] = action.payLoad;
       return;
     }
 
     case "cabezales.l3_l4": {
-      draft.metadata.cabezales.l3_l4[action.fieldName] = action.payLoad;
+      draft.cabezales.l3_l4[action.fieldName] = action.payLoad;
       return;
     }
 
     case "cabezales.l5": {
-      draft.metadata.cabezales.l5[action.fieldName] = action.payLoad;
+      draft.cabezales.l5[action.fieldName] = action.payLoad;
       return;
     }
 
     case "cabezales.l6": {
-      draft.metadata.cabezales.l6[action.fieldName] = action.payLoad;
+      draft.cabezales.l6[action.fieldName] = action.payLoad;
       return;
     }
 
     case "cabezales.peatonal": {
-      draft.metadata.cabezales.peatonal[action.fieldName] = action.payLoad;
+      draft.cabezales.peatonal[action.fieldName] = action.payLoad;
       return;
     }
 

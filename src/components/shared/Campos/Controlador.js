@@ -24,10 +24,11 @@ const Controlador = (props) => {
             SelectProps={{
               native: true,
             }}
-            value={state.modelo}
+            value={state.model}
             onChange={(e) =>
               dispatch({
-                type: "modelo controlador",
+                type: "controller",
+                fieldName: "model",
                 payLoad: e.currentTarget.value,
               })
             }>
@@ -49,10 +50,11 @@ const Controlador = (props) => {
             variant="outlined"
             name="controlador_ubicacion"
             autoComplete="off"
-            value={state.ubicacion}
+            value={state.address_reference}
             onChange={(e) =>
               dispatch({
-                type: "ubicacion controlador",
+                type: "controller",
+                fieldName: "address_reference",
                 payLoad: e.currentTarget.value,
               })
             }
@@ -60,8 +62,8 @@ const Controlador = (props) => {
         </FormGroup>
       </Row>
 
-      <Row form>
-        {/* <FormGroup>
+      {/* <Row form>
+        <FormGroup>
           <TextField
             disabled
             id="outlined"
@@ -81,8 +83,8 @@ const Controlador = (props) => {
             }
           />
         </FormGroup> */}
-        <Col sm={1}></Col>
-        {/* <FormGroup>
+      <Col sm={1}></Col>
+      {/* <FormGroup>
           <TextField
             id="outlined"
             label="Detectores"
@@ -100,8 +102,8 @@ const Controlador = (props) => {
               })
             }
           />
-        </FormGroup> */}
-      </Row>
+        </FormGroup> 
+      </Row> */}
     </>
   );
 };

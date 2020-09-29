@@ -25,7 +25,7 @@ export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 
 //lag -> pasar parte del estado como prop, usar React.memo( () =>{})
-const NuevaInstalacion = () => {
+const NuevaInstalacion = (props) => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const [checked, setChecked] = React.useState(false);
 
@@ -34,30 +34,53 @@ const NuevaInstalacion = () => {
   };
 
   useEffect(() => {
+    console.log("onawake");
+    //dispatch({type: "onMount", payLoad: estado_general})
+  });
+
+  const procesar_json = () => {
+    //procesa el json antes de enviarlo
+    const string = JSON.stringify(state);
+    const state_copy = JSON.parse(string);
+
+    //agregar status_user
+    state_copy.status_user = "Yo";
+
+    //convertir variables a enteros
+    //eliminar variables de control
+    delete state_copy.errors;
+    delete state_copy.vista;
+    delete state.submit;
+    console.log(state_copy);
+    return state_copy;
+  };
+  useEffect(() => {
     if (state.submit === true) {
       //loading = true
+
       const str = JSON.stringify(state);
       console.log(str);
       console.log("enviando useffect");
+      procesar_json();
 
       //enviar
-      const link = "http://54.224.251.49/intersection"; //link de la api
-      axios({
-        method: "post",
-        url: link,
-        data: state,
-        headers: {},
-      })
-        .then((response) => {
-          console.log(response);
-          alert("Formulario enviado correctamente");
-          //window.location.replace("/nuevo/instalacion");
-        })
-        .catch((err) => {
-          alert("Error en el envio.");
-          dispatch({ type: "post_error" });
-          console.log("error" + err);
-        });
+      // const link = "http://54.224.251.49/intersection"; //link de la api
+      // axios({
+      //   method: "post",
+      //   url: link,
+      //   data: procesar_json(),
+      //   headers: {},
+      // })
+      //   .then((response) => {
+      //     console.log(response);
+      //     alert("Formulario enviado correctamente");
+      //     //window.location.replace("/nuevo/instalacion");
+      //   })
+      //   .catch((err) => {
+      //     alert("Error en el envio.");
+      //     dispatch({ type: "post_error" });
+      //     console.log("error" + err);
+      //   });
     }
   }, [state.submit]);
 
@@ -73,15 +96,19 @@ const NuevaInstalacion = () => {
               <legend className="seccion">Información del proyecto</legend>
               <div className="grid-item">
                 <Form>
-                  <OTU state={state.metadata.otu} />
-                  <Equipamientos
-                    state={state.metadata.otu.equipamientos}
+                  <OTU
+                    state={state.metadata}
+                    codigo={state.oid}
                     dispatch={dispatch}
                   />
+                  {/* <Equipamientos
+                    state={state.metadata.otu.equipamientos}
+                    dispatch={dispatch}
+                  /> */}
 
                   <hr className="separador"></hr>
                   <Controlador
-                    state={state.metadata.controlador}
+                    state={state.metadata.controller}
                     dispatch={dispatch}
                   />
 
@@ -89,13 +116,7 @@ const NuevaInstalacion = () => {
                   <Junctions state={state.junctions} dispatch={dispatch} />
 
                   <hr className="separador"></hr>
-                  <Postes state={state.metadata} dispatch={dispatch} />
-
-                  <hr className="separador"></hr>
-                  <Cabezales
-                    state={state.metadata.cabezales}
-                    dispatch={dispatch}
-                  />
+                  <Postes state={state.postes} dispatch={dispatch} />
 
                   <hr className="separador"></hr>
                   <FormControlLabel
@@ -105,7 +126,10 @@ const NuevaInstalacion = () => {
                     label="Campos No Obligatorios"
                   />
                   <Collapse in={checked}>
-                    <UPS state={state.metadata.ups} dispatch={dispatch} />
+                    <Cabezales state={state.cabezales} dispatch={dispatch} />
+
+                    <hr className="separador"></hr>
+                    <UPS state={state.ups} dispatch={dispatch} />
                   </Collapse>
                 </Form>
               </div>

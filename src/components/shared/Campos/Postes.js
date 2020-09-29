@@ -21,11 +21,11 @@ const Postes = (props) => {
             type="number"
             autoComplete="off"
             placeholder="0"
-            value={state.postes_ganchos}
+            value={state.ganchos}
             onChange={(e) => {
               dispatch({
-                type: "metadata",
-                fieldName: "postes_ganchos",
+                type: "postes",
+                fieldName: "ganchos",
                 payLoad: e.currentTarget.value,
               });
             }}
@@ -41,11 +41,11 @@ const Postes = (props) => {
             type="number"
             autoComplete="off"
             placeholder="0"
-            value={state.postes_vehiculares}
+            value={state.vehiculares}
             onChange={(e) => {
               dispatch({
-                type: "metadata",
-                fieldName: "postes_vehiculares",
+                type: "postes",
+                fieldName: "vehiculares",
                 payLoad: e.currentTarget.value,
               });
             }}
@@ -61,11 +61,11 @@ const Postes = (props) => {
             type="number"
             autoComplete="off"
             placeholder="0"
-            value={state.postes_peatonales}
+            value={state.peatonales}
             onChange={(e) => {
               dispatch({
-                type: "metadata",
-                fieldName: "postes_peatonales",
+                type: "postes",
+                fieldName: "peatonales",
                 payLoad: e.currentTarget.value,
               });
             }}

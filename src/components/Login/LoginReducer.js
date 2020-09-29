@@ -1,12 +1,11 @@
 export const initialState = {
-  username: "",
+  username: "Auter",
   password: "",
-  rol: "Funcionario UOCT",
+  rol: "Ingenieria", //'Sala de Control', 'Ingiería', 'TIC'
   isLoading: false,
   error: "",
   isLoggedIn: true,
   first_click_login: false,
-  rol: "empresa",
 };
 
 export function reducer(draft, action) {

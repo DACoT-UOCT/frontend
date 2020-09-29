@@ -10,7 +10,7 @@ const Junctions = (props) => {
 
   return (
     <>
-      <legend className="seccion">Junction</legend>
+      <legend className="seccion">Junctions</legend>
       {state.map((junction, index) => {
         return (
           <Row form>
