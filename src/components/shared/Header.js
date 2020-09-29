@@ -15,7 +15,7 @@ const Header = () => {
   const sections = {
     '/'                     : 'Inicio',
     '/consulta'             : 'Consultar Semáforo',
-    '/nuevo/instalacion'    : 'Nueva Instalación',
+    '/nuevo/instalacion'    : 'Solicitud de integración para proyectos de nuevos semáforos',
     '/administracion'       : 'Dashboard Administrador',
     '/nuevo/actualizacion'  : 'Solicitar Actualización'
   }

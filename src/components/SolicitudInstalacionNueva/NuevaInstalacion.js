@@ -1,9 +1,15 @@
 import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { Form } from "reactstrap";
-import { Switch, Collapse, FormControlLabel } from "@material-ui/core";
-import axios from "axios";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { Switch,
+        Collapse,
+        FormControlLabel,
+        Stepper,
+        Step,
+        StepLabel,
+        Button,
+        Typography, 
+        makeStyles } from "@material-ui/core";
 
 import { reducer, initialState } from "../Shared/FormularioReducer";
 import Junctions from "../Shared/Campos/Junctions";
@@ -24,10 +30,43 @@ import Observaciones from "../Shared/Campos/Observaciones";
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+  },
+  backButton: {
+    marginRight: theme.spacing(1),
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+}));
+
 //lag -> pasar parte del estado como prop, usar React.memo( () =>{})
 const NuevaInstalacion = (props) => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const [checked, setChecked] = React.useState(false);
+
+  //STEPPER STEPPER STEPPER STEPPER
+  const classes = useStyles();
+  const [activeStep, setActiveStep] = React.useState(0);
+  const steps = getSteps();
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+    
+  };
+  //STEPPER STEPPER STEPPER STEPPER
 
   const handleChange = () => {
     setChecked((prev) => !prev);
@@ -84,27 +123,134 @@ const NuevaInstalacion = (props) => {
     }
   }, [state.submit]);
 
+  function getSteps() {
+    return ['Información General', 'Programación', 'Documentación', 'Enviar'];
+  }
+
+  function getStepContent(stepIndex) {
+    switch (stepIndex) {
+      case 0:
+        return (
+          <Form>
+            <OTU
+              state={state.metadata}
+              codigo={state.oid}
+              dispatch={dispatch}
+            />
+            {/* <Equipamientos
+              state={state.metadata.otu.equipamientos}
+              dispatch={dispatch}
+            /> */}
+  
+            <hr className="separador"></hr>
+            <Controlador
+              state={state.metadata.controller}
+              dispatch={dispatch}
+            />
+  
+            <hr className="separador"></hr>
+            <Junctions state={state.junctions} dispatch={dispatch} />
+  
+            <hr className="separador"></hr>
+            <Postes state={state.postes} dispatch={dispatch} />
+  
+            <hr className="separador"></hr>
+            <FormControlLabel
+              control={
+                <Switch checked={checked} onChange={handleChange} />
+              }
+              label="Campos No Obligatorios"
+            />
+            <Collapse in={checked}>
+              <Cabezales state={state.cabezales} dispatch={dispatch} />
+  
+              <hr className="separador"></hr>
+              <UPS state={state.ups} dispatch={dispatch} />
+            </Collapse>
+          </Form>
+        );
+      case 1:
+        return (
+          <Form>
+            <Etapas state={state.stages} dispatch={dispatch} />
+
+            <hr className="separador"></hr>
+            <Fases state={state.fases} dispatch={dispatch} />
+
+            <hr className="separador"></hr>
+            <Secuencias state={state.secuencias} dispatch={dispatch} />
+
+            <hr className="separador"></hr>
+            <Entreverdes state={state} dispatch={dispatch} />
+
+            <hr className="separador"></hr>
+          </Form>
+        );
+      case 2:
+        return (
+          <>
+            <Documentacion state={state} dispatch={dispatch} />
+              <hr className="separador"></hr>
+            <Observaciones state={state} dispatch={dispatch} />
+          </>
+        );
+      default:
+        return 'Contenido Paso 4';
+    }
+  }
+
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
         <div className="grid-item nuevo-semaforo">
-          <h4 className="form-titulo">
-            Solicitud de integración para proyectos de nuevos semáforos
-          </h4>
+          <div className={classes.root}>
+            <Stepper activeStep={activeStep} alternativeLabel>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <div>
+              {activeStep === steps.length ? (
+                <div>
+                  <Typography className={classes.instructions}>Formulario enviado con exito</Typography>
+                  <Button onClick={handleReset}>Volver al inicio</Button>
+                </div>
+              ) : (
+                <div className="grid-item" style={{"max-height":"515px","overflow-y":"scroll"}}>
+                  <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                  <div>
+                    <Button
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      className={classes.backButton}
+                      variant="contained"
+                      color="secondary"
+                    >
+                      Atrás
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={handleNext} state={state} dispatch={dispatch}>
+                      {activeStep === steps.length - 1 ? 'Enviar' : 'Siguiente'}
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
           {state.vista === 1 ? (
             <>
-              <legend className="seccion">Información del proyecto</legend>
-              <div className="grid-item">
+              {/*<div className="grid-item" style={{"max-height":"535px","overflow-y":"scroll"}}>
                 <Form>
                   <OTU
                     state={state.metadata}
                     codigo={state.oid}
                     dispatch={dispatch}
                   />
-                  {/* <Equipamientos
+                  <Equipamientos
                     state={state.metadata.otu.equipamientos}
                     dispatch={dispatch}
-                  /> */}
+                  />
 
                   <hr className="separador"></hr>
                   <Controlador
@@ -132,11 +278,11 @@ const NuevaInstalacion = (props) => {
                     <UPS state={state.ups} dispatch={dispatch} />
                   </Collapse>
                 </Form>
-              </div>
-              <Siguiente state={state} dispatch={dispatch} />
+                <Siguiente state={state} dispatch={dispatch} />
+              </div>*/}
             </>
           ) : state.vista === 2 ? (
-            <>
+            {/*<>
               <legend className="seccion">Información de programaciones</legend>
               <div className="grid-item">
                 <Form>
@@ -155,9 +301,9 @@ const NuevaInstalacion = (props) => {
                 </Form>
               </div>
               <Siguiente state={state} dispatch={dispatch} />
-            </>
+            </>*/}
           ) : (
-            <>
+            {/*<>
               <legend className="seccion">Documentación de respaldo</legend>
               <div className="grid-item">
                 <Documentacion state={state} dispatch={dispatch} />
@@ -165,7 +311,7 @@ const NuevaInstalacion = (props) => {
                 <Observaciones state={state} dispatch={dispatch} />
               </div>
               <Siguiente state={state} dispatch={dispatch} />
-            </>
+            </>*/}
           )}
         </div>
       </StateContext.Provider>
