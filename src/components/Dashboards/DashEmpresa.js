@@ -36,18 +36,25 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'flex-start',
   },
   column: {
-    flexBasis: '33.33%',
+    flexBasis: '35%',
   },
-  helper: {
-    borderLeft: `2px solid ${theme.palette.divider}`,
+  column2: {
+    flexBasis: '40%',
+    textAlign: 'center',
+  },
+  column3: {
+    flexBasis: '25%',
+    padding: theme.spacing(1, 2),
+    marginTop: '10px',
+  },
+  hordivider: {
+    borderBottom: `2px solid ${theme.palette.divider}`,
     padding: theme.spacing(1, 2),
   },
-  link: {
-    color: theme.palette.primary.main,
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
+  divider: {
+    borderLeft: `2px solid ${theme.palette.divider}`,
+    borderRight: `2px solid ${theme.palette.divider}`,
+    padding: theme.spacing(1, 2),
   },
 }));
 
@@ -78,22 +85,23 @@ const DashEmpresa = () => {
           </AccordionSummary>
           <AccordionDetails className={classes.details}>
             <div className={classes.column}>
-              <legend>Información del Cruce</legend>
-                <span>Codigo OTU:</span><br/>
-                <span>Ubicacion:</span><br/>
-                <span>Empresa instaladora:</span><br/>
-                <span>Empresa encargada actualmente:</span><br/>
-                <span>Fecha de instalacion:</span>
+              <legend className={classes.hordivider}> Información del Cruce </legend>
+                <span>Codigo OTU:</span><br/><div className="info-acordeon">codiguito</div>
+                <span>Ubicacion:</span><br/><div className="info-acordeon">lugarcito</div>
+                <span>Empresa instaladora:</span><br/><div className="info-acordeon">empresita</div>
+                <span>Empresa encargada:</span><br/><div className="info-acordeon">empresita</div>
+                <span>Fecha de instalacion:</span><br/><div className="info-acordeon">fechita</div>
             </div>
-            <div className={classes.column}>
+            <div className={clsx(classes.column2, classes.divider)}>
               <img
+                style={{"margin-top":"10px"}}
                 height="320"
                 width="312"
                 src="/logo_transportes.png"
                 alt="Cruce"
               />
             </div>
-            <div className={clsx(classes.column, classes.helper)}>
+            <div className={classes.column3}>
               <Button className="boton-dashboard"> Información de Instalación </Button> <br></br>
               <Button className="boton-dashboard"> PDF de Respaldo </Button> <br></br>
               <Button className="boton-dashboard"> Programaciones </Button> <br></br>
