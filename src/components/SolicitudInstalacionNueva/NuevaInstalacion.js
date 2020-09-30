@@ -250,8 +250,9 @@ const NuevaInstalacion = (props) => {
             <div>
               <div
                 className="grid-item"
+                id="formulario"
                 style={{
-                  "max-height": "515px",
+                  "max-height": "460px",
                   "overflow-y": "scroll",
                   border: "0px",
                 }}>

@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DashEmpresa = () => {
+const DashFuncionario = () => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -102,11 +102,10 @@ const DashEmpresa = () => {
               />
             </div>
             <div className={classes.column3}>
-              <Button className="boton-dashboard"> Información de Instalación </Button> <br></br>
+              <Button color='success'> Aprobar </Button>
+              <Button color='danger' className='boton-rechazar'> Rechazar </Button> <br></br>
+              <Button className="boton-dashboard boton-infoinstalacion"> Información de Instalación </Button> <br></br>
               <Button className="boton-dashboard"> PDF de Respaldo </Button> <br></br>
-              <Button className="boton-dashboard"> Programaciones </Button> <br></br>
-              <Button className="boton-dashboard"> Historial de Cambios </Button> <br></br>
-              <Button className="boton-dashboard"> Solicitar Modificación </Button>
             </div>
           </AccordionDetails>
         </Accordion>
@@ -135,33 +134,9 @@ const DashEmpresa = () => {
           </AccordionDetails>
         </Accordion>
 
-        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')} TransitionProps={{ unmountOnExit: true }}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1c-content"
-            id="panel1c-header"
-          >
-            <div className={classes.column}>
-              <Typography className={classes.heading}>Location</Typography>
-            </div>
-            <div className={classes.column}>
-              <Typography className={classes.secondaryHeading}>Select trip destination</Typography>
-            </div>
-          </AccordionSummary>
-          <AccordionDetails className={classes.details}>
-            <div className={classes.column} />
-            <div className={classes.column}>
-              IMAGEN
-            </div>
-            <div className={clsx(classes.column, classes.helper)}>
-              BOTONES
-            </div>
-          </AccordionDetails>
-        </Accordion>
-
       </div>
     </div>
   );
 };
 
-export default DashEmpresa;
+export default DashFuncionario;
