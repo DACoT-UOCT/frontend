@@ -15,13 +15,14 @@ import {
 import NuevaActualizacion from "./SolicitudActualizacionNueva/NuevaActualizacion";
 import Dashboard from "./Dashboards/Dashboard";
 import Administracion from "./Administracion/Administracion";
+import Profile from "./Shared/Profile"
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 
 const App = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
-  const { username, password, isLoading, error, isLoggedIn, rol } = state;
+  const { full_name, password, isLoading, error, isLoggedIn, rol, email } = state;
 
   return (
     <DispatchContext.Provider value={dispatch}>
@@ -48,6 +49,7 @@ const App = () => {
                   component={() => <Dashboard id="X001450" rol={rol} />}
                 />
               </Switch>
+              <Profile user={full_name} email={email} rol={rol}/>
             </div>
           )}
         </Router>
