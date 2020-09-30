@@ -90,7 +90,7 @@ const ListadoUsuarios = (props) => {
 
   return (
     <>
-      <Table hover>
+      <Table hover responsive>
         <thead>
           <tr>
             <th>Nombre</th>

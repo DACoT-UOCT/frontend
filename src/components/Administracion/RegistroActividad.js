@@ -104,6 +104,7 @@ const RegistroActividad = () => {
           <Label>Desde</Label>
           <br></br>
           <DatePicker
+            dateFormat="dd/MM/yyyy"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
           />
@@ -113,6 +114,7 @@ const RegistroActividad = () => {
           <Label>Hasta</Label>
           <br></br>
           <DatePicker
+            dateFormat="dd/MM/yyyy"
             selected={endDate}
             onChange={(date) => setEndDate(date)}
           />
