@@ -32,7 +32,7 @@ export default function Nav() {
                     <button
                     color="inherit"
                     onClick={() => dispatch({ type: "logOut" })}>
-                    SALIR
+                    Salir
                     </button>
                 </Link>
             </div>

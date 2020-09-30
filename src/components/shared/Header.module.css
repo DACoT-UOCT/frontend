@@ -1,6 +1,6 @@
 .bar {
     width: 100vw !important;
-    background: #006cb8;
+    background: #034472;
     color: white;
     display: flex;
     justify-content: space-between !important;
@@ -10,20 +10,16 @@
 
 .logo {
     width: 10%;
-    display: flex;
-    font-weight: 300;
-    align-items: center;
-    font-size: 2vw;
     margin-right: 10px;
 }
 
 .logo img {
-    width: 4vw;
-    height: 3vw;
-    margin-right: 10px;
+    width: 110px;
+    margin-left: 10px;
 }
 
 .header_title {
     width: 80%;
     font-size: 1.6rem;
+    margin-bottom: 0;
 }

@@ -142,7 +142,9 @@ export function reducer(draft, action) {
 
       return;
     }
-
+    case "enviar":
+      draft.submit = true;
+      return;
     case "siguiente": {
       if (draft.errors.length === 0) {
         if (draft.vista < 3) {

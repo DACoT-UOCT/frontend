@@ -3,6 +3,7 @@ import { Table } from "reactstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import Loading from "../Shared/Loading";
 import DatePicker from "react-datepicker";
+import styles from './Administracion.module.css';
 import { useImmerReducer } from "use-immer";
 
 import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
@@ -50,17 +51,18 @@ const RegistroActividad = (props) => {
       temp.getFullYear() + "-" + temp.getMonth() + "-" + temp.getDate();
 
     const link =
-      "http://127.0.0.1:8000/history/" +
+      "http://54.198.42.186:8080/history/" +
       "?gte=" +
       startString +
       "&lte=" +
       endString;
-    console.log(link);
+
     return new Promise((resolve, reject) => {
       axios
         .get(link)
         .then((response) => {
           //solicitud exitosa
+          console.log(response);
           setRegistro(response.data);
           resolve();
         })
@@ -86,7 +88,7 @@ const RegistroActividad = (props) => {
 
   return (
     <>
-      <div style={{ display: "flex" }}>
+      <div className={styles.registro} style={{ display: "flex" }}>
         <div style={{ "padding-left": "10px" }}>
           <p>Desde</p>
           <DatePicker
