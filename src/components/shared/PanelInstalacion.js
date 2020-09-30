@@ -1,6 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
+import axios from "axios";
+import Loading from "../Shared/Loading";
 
 import styles from "./Nav.module.css";
 import { StateContext, DispatchContext } from "../App";
@@ -64,6 +66,57 @@ export default function PanelInstalacion(props) {
   const state = useContext(StateContext);
   const classes = useStyles();
 
+  const [otu, setOtu] = useState(null);
+  const [consultado, setConsultado] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!consultado && props.expanded === props.id) {
+      consultar();
+      setConsultado(true);
+    } else if (consultado && props.expanded !== props.id) {
+      setConsultado(false);
+      setOtu(null);
+      setError("");
+      setLoading(false);
+    }
+  }, [props.expanded]);
+
+  async function getData() {
+    //consulta por id al backend
+    const link =
+      state.rol === "Empresa"
+        ? "linkempresa" + "?user=" + state.email
+        : "linkfuncionario" + "?user=" + state.email;
+    return new Promise((resolve, reject) => {
+      axios
+        .get(link)
+        .then((response) => {
+          //solicitud exitosa
+          setOtu(response.data);
+          resolve();
+        })
+        .catch((err) => {
+          //error
+          reject(err);
+        });
+    });
+  }
+  const consultar = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      await getData();
+    } catch (error) {
+      console.log(error);
+      setError("Error en la consulta");
+    }
+    setLoading(false);
+    setOtu(1);
+  };
+
   return (
     <>
       <Accordion
@@ -82,54 +135,65 @@ export default function PanelInstalacion(props) {
               {props.type}
             </Typography>
           </div>
-        </AccordionSummary>
-        <AccordionDetails className={classes.details}>
+          {loading && <Loading />}
           <div className={classes.column}>
-            <legend className={classes.hordivider}>
-              {" "}
-              Información del Cruce{" "}
-            </legend>
-            <span>Codigo OTU:</span>
-            <br />
-            <div className="info-acordeon">codiguito</div>
-            <span>Ubicacion:</span>
-            <br />
-            <div className="info-acordeon">lugarcito</div>
-            <span>Empresa instaladora:</span>
-            <br />
-            <div className="info-acordeon">empresita</div>
-            <span>Empresa encargada:</span>
-            <br />
-            <div className="info-acordeon">empresita</div>
-            <span>Fecha de instalacion:</span>
-            <br />
-            <div className="info-acordeon">fechita</div>
+            <Typography className={classes.secondaryHeading}>
+              {error}
+            </Typography>
           </div>
-          <div className={clsx(classes.column2, classes.divider)}>
-            <img
-              style={{ "margin-top": "10px" }}
-              height="320"
-              width="312"
-              src="/logo_transportes.png"
-              alt="Cruce"
-            />
-          </div>
-          <div className={classes.column3}>
-            <Button color="success"> Aprobar </Button>
-            <Button color="danger" className="boton-rechazar">
-              {" "}
-              Rechazar{" "}
-            </Button>{" "}
-            <br></br>
-            <Button className="boton-dashboard boton-infoinstalacion">
-              {" "}
-              Información de Instalación{" "}
-            </Button>{" "}
-            <br></br>
-            <Button className="boton-dashboard"> PDF de Respaldo </Button>{" "}
-            <br></br>
-          </div>
-        </AccordionDetails>
+        </AccordionSummary>
+        {otu !== null && !loading && (
+          <AccordionDetails className={classes.details}>
+            <div className={classes.column}>
+              <legend className={classes.hordivider}>
+                {" "}
+                Información del Cruce{" "}
+              </legend>
+              <span>Codigo OTU:</span>
+              <br />
+              <div className="info-acordeon">codiguito</div>
+              <span>Ubicacion:</span>
+              <br />
+              <div className="info-acordeon">lugarcito</div>
+              <span>Empresa instaladora:</span>
+              <br />
+              <div className="info-acordeon">empresita</div>
+              <span>Empresa encargada:</span>
+              <br />
+              <div className="info-acordeon">empresita</div>
+              <span>Fecha de instalacion:</span>
+              <br />
+              <div className="info-acordeon">fechita</div>
+            </div>
+            <div className={clsx(classes.column2, classes.divider)}>
+              <img
+                style={{ "margin-top": "10px" }}
+                height="320"
+                width="312"
+                src="/logo_transportes.png"
+                alt="Cruce"
+              />
+            </div>
+            <div className={classes.column3}>
+              <Button color="success"> Aprobar </Button>
+              <Button color="danger" className="boton-rechazar">
+                {" "}
+                Rechazar{" "}
+              </Button>{" "}
+              <br></br>
+              <Button className="boton-dashboard boton-infoinstalacion">
+                {" "}
+                Información de Instalación{" "}
+              </Button>{" "}
+              <br></br>
+              <Button className="boton-dashboard">
+                {" "}
+                PDF de Respaldo{" "}
+              </Button>{" "}
+              <br></br>
+            </div>
+          </AccordionDetails>
+        )}
       </Accordion>
     </>
   );

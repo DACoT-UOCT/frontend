@@ -122,7 +122,7 @@ const Dashboard = () => {
       {state.rol === "Empresa" ? (
         <h3>Instalaciones operativas</h3>
       ) : (
-        <h3>Solicitudes de integración pendientes</h3> //para los funcionarios
+        <h3>Solicitudes pendientes</h3> //para los funcionarios
       )}
       <div className={classes.root}>
         {!loading ? (
