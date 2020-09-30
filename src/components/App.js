@@ -58,11 +58,18 @@ const App = () => {
                 </>
               )}
               {state.is_admin && (
-                <Route
-                  exact
-                  path="/administracion"
-                  component={Administracion}
-                />
+                <>
+                  <Route
+                    exact
+                    path="/administracion"
+                    component={Administracion}
+                  />
+                  <Route
+                    exact
+                    path="/nuevo/digitalizacion"
+                    component={NuevaInstalacion}
+                  />
+                </>
               )}
               <Route
                 exact

@@ -18,6 +18,8 @@ const Header = () => {
     "/administracion": "Administración",
     "/nuevo/actualizacion":
       "Solicitud de actualización para instalaciones operativas",
+    "/nuevo/digitalizacion":
+      "Digitalización manual para instalaciones operativas",
   };
 
   useEffect(() => {

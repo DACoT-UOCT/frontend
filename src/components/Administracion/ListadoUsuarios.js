@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Table } from "reactstrap";
+import { StateContext } from "../App";
 import { useImmerReducer } from "use-immer";
 
 import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
@@ -19,6 +20,7 @@ import {
 } from "reactstrap";
 
 const ListadoUsuarios = (props) => {
+  const state = useContext(StateContext);
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -58,8 +60,7 @@ const ListadoUsuarios = (props) => {
 
   async function getData() {
     //consulta por id al backend
-    const link = "http://54.198.42.186:8080/users";
-
+    const link = "http://54.198.42.186:8080/users" + "?user=" + state.email;
     return new Promise((resolve, reject) => {
       axios
         .get(link)
@@ -92,9 +93,9 @@ const ListadoUsuarios = (props) => {
       <Table hover>
         <thead>
           <tr>
-            <th>#</th>
             <th>Nombre</th>
             <th>Rol en sistema</th>
+            <th>Área</th>
             <th>Correo</th>
           </tr>
         </thead>
@@ -102,8 +103,8 @@ const ListadoUsuarios = (props) => {
           {usuarios.map((usuario) => {
             return (
               <tr>
-                <th scope="row">1</th>
                 <td> {usuario.full_name}</td>
+                <td> {usuario.rol}</td>
                 <td> {usuario.area}</td>
                 <td> {usuario.email}</td>
               </tr>

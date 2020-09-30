@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import Loading from "../Shared/Loading";
 import DatePicker from "react-datepicker";
 import styles from "./Administracion.module.css";
-import { useImmerReducer } from "use-immer";
+import { StateContext } from "../App";
 
-import {Label} from "reactstrap";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
+import { Label } from "reactstrap";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
 
 import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
 import PreviewInstalacion from "../Shared/PreviewInstalacion";
@@ -30,7 +30,8 @@ import {
   NavLink,
 } from "reactstrap";
 
-const RegistroActividad = (props) => {
+const RegistroActividad = () => {
+  const state = useContext(StateContext);
   const [registros, setRegistro] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -63,9 +64,9 @@ const RegistroActividad = (props) => {
       "?gte=" +
       startString +
       "&lte=" +
-      endString;
-
-    console.log(link);
+      endString +
+      "&user=" +
+      state.email;
 
     return new Promise((resolve, reject) => {
       axios
@@ -100,7 +101,8 @@ const RegistroActividad = (props) => {
     <>
       <div className={styles.registro} style={{ display: "flex" }}>
         <div style={{ "padding-left": "10px" }}>
-          <Label>Desde</Label><br></br>
+          <Label>Desde</Label>
+          <br></br>
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -108,7 +110,8 @@ const RegistroActividad = (props) => {
         </div>
 
         <div style={{ "padding-left": "10px" }}>
-          <Label>Hasta</Label><br></br>
+          <Label>Hasta</Label>
+          <br></br>
           <DatePicker
             selected={endDate}
             onChange={(date) => setEndDate(date)}
@@ -123,7 +126,7 @@ const RegistroActividad = (props) => {
       <p>{error}</p>
       {loading && <Loading />}
       {registros.length > 0 && (
-        <TableContainer style={{'max-height':'295px'}}>
+        <TableContainer style={{ "max-height": "295px" }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -140,8 +143,9 @@ const RegistroActividad = (props) => {
                     <TableCell>1</TableCell>
                     <TableCell>{registro.user}</TableCell>
                     <TableCell>{registro.component}</TableCell>
-
-                    <TableCell>{new Date(registro.date_modified.$date).toString()}</TableCell>
+                    <TableCell>
+                      {new Date(registro.date_modified.$date).toLocaleString()}
+                    </TableCell>
                   </TableRow>
                 );
               })}

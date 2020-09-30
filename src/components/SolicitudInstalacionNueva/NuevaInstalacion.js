@@ -11,14 +11,12 @@ import {
   Stepper,
   Step,
   StepLabel,
-  Button,
   Typography,
   makeStyles,
 } from "@material-ui/core";
 
 import { reducer, initialState } from "../Shared/FormularioReducer";
 import Junctions from "../Shared/Campos/Junctions";
-import Equipamientos from "../Shared/Campos/Equipamientos";
 import Siguiente from "../Shared/Campos/Siguiente";
 import UPS from "../Shared/Campos/UPS";
 import OTU from "../Shared/Campos/OTU";
@@ -32,6 +30,7 @@ import Fases from "../Shared/Campos/Fases";
 import Secuencias from "../Shared/Campos/Secuencias";
 import Entreverdes from "../Shared/Campos/Entreverdes";
 import Observaciones from "../Shared/Campos/Observaciones";
+import { useLocation } from "react-router-dom";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -53,27 +52,11 @@ const useStyles = makeStyles((theme) => ({
 const NuevaInstalacion = (props) => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const [checked, setChecked] = React.useState(false);
+  const location = useLocation();
 
   //STEPPER STEPPER STEPPER STEPPER
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
-
-  const handleNext = () => {
-    if (activeStep === steps.length - 1) {
-      dispatch({ type: "enviar" });
-    }
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-  //STEPPER STEPPER STEPPER STEPPER
 
   const handleChange = () => {
     setChecked((prev) => !prev);
@@ -110,10 +93,17 @@ const NuevaInstalacion = (props) => {
     return JSON.stringify(state_copy);
   };
   useEffect(() => {
+    console.log(location.pathname);
     if (state.submit === true) {
       //enviar
 
-      const link = "http://54.198.42.186:8080/request"; //link de la api
+      var link;
+      if (location.pathname === "/nuevo/instalacion") {
+        link = "http://54.198.42.186:8080/request";
+      } else if (location.pathname === "/nuevo/digitalizacion") {
+        link = "http://54.198.42.186:8080/request";
+      }
+
       axios({
         method: "post",
         url: link,
@@ -275,85 +265,6 @@ const NuevaInstalacion = (props) => {
               </div>
             </div>
           </div>
-          {/* {state.vista === 1 ? (
-            <>
-              <div className="grid-item" style={{"max-height":"535px","overflow-y":"scroll"}}>
-                <Form>
-                  <OTU
-                    state={state.metadata}
-                    codigo={state.oid}
-                    dispatch={dispatch}
-                  />
-                  <Equipamientos
-                    state={state.metadata.otu.equipamientos}
-                    dispatch={dispatch}
-                  />
-
-                  <hr className="separador"></hr>
-                  <Controlador
-                    state={state.metadata.controller}
-                    dispatch={dispatch}
-                  />
-
-                  <hr className="separador"></hr>
-                  <Junctions state={state.junctions} dispatch={dispatch} />
-
-                  <hr className="separador"></hr>
-                  <Postes state={state.postes} dispatch={dispatch} />
-
-                  <hr className="separador"></hr>
-                  <FormControlLabel
-                    control={
-                      <Switch checked={checked} onChange={handleChange} />
-                    }
-                    label="Campos No Obligatorios"
-                  />
-                  <Collapse in={checked}>
-                    <Cabezales state={state.cabezales} dispatch={dispatch} />
-
-                    <hr className="separador"></hr>
-                    <UPS state={state.ups} dispatch={dispatch} />
-                  </Collapse>
-                </Form>
-                <Siguiente state={state} dispatch={dispatch} />
-              </div>
-            </>
-          ) : state.vista === 2 ? (
-            {
-              <>
-              <legend className="seccion">Información de programaciones</legend>
-              <div className="grid-item">
-                <Form>
-                  <Etapas state={state.stages} dispatch={dispatch} />
-
-                  <hr className="separador"></hr>
-                  <Fases state={state.fases} dispatch={dispatch} />
-
-                  <hr className="separador"></hr>
-                  <Secuencias state={state.secuencias} dispatch={dispatch} />
-
-                  <hr className="separador"></hr>
-                  <Entreverdes state={state} dispatch={dispatch} />
-
-                  <hr className="separador"></hr>
-                </Form>
-              </div>
-              <Siguiente state={state} dispatch={dispatch} />
-            </>
-            }
-          ) : (
-            {
-              <>
-              <legend className="seccion">Documentación de respaldo</legend>
-              <div className="grid-item">
-                <Documentacion state={state} dispatch={dispatch} />
-                <hr className="separador"></hr>
-                <Observaciones state={state} dispatch={dispatch} />
-              </div>
-              <Siguiente state={state} dispatch={dispatch} />
-            </>
-            }
-          )} */}
         </div>
       </StateContext.Provider>
     </DispatchContext.Provider>

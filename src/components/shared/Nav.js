@@ -44,12 +44,20 @@ export default function Nav() {
           </Link>
         )}
         {state.is_admin && (
-          <Link
-            onClick={() => setShow(false)}
-            className={styles.link}
-            to="/administracion">
-            <span>Administración</span>
-          </Link>
+          <>
+            <Link
+              onClick={() => setShow(false)}
+              className={styles.link}
+              to="/nuevo/digitalizacion">
+              <span>Digitalización manual</span>
+            </Link>
+            <Link
+              onClick={() => setShow(false)}
+              className={styles.link}
+              to="/administracion">
+              <span>Administración</span>
+            </Link>
+          </>
         )}
         <Link onClick={() => setShow(false)} className={styles.link} to="/">
           <button color="inherit" onClick={() => dispatch({ type: "logOut" })}>

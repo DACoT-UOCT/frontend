@@ -108,7 +108,7 @@ export const initialState = {
   //bits_de_control: "",
 
   errors: [],
-  vista: 3,
+  vista: 1,
   submit: false,
   isLoading: true,
 };
