@@ -254,10 +254,11 @@ body {
   height: 99vh;
   display: grid;
   grid-template:
-    "header header header" 9vh
-    ". . ." 1vh
-    ". caja ." 89vh
-    /15% 70% 15%;
+    "header header header header header" 8vh
+    ". . . . ." 5vh
+    ". caja . profile ." 82vh
+    ". . . . ." 5vh
+    /15% 64% 2% 17% 2%;
 }
 
 Label{
