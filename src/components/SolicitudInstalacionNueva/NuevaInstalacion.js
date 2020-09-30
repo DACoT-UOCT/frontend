@@ -241,7 +241,7 @@ const NuevaInstalacion = (props) => {
                   <Button onClick={handleReset}>Volver al inicio</Button>
                 </div>
               ) : (
-                <div className="grid-item" style={{"max-height":"515px","overflow-y":"scroll", "border":"0px"}}>
+                <div className="grid-item" style={{"height":"460px","overflow-y":"scroll", "border":"0px"}}>
                   <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
                   <div>
                     <Siguiente state={state} dispatch={dispatch} />
