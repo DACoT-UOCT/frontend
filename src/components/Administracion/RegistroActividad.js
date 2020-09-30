@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "reactstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import Loading from "../Shared/Loading";
 import DatePicker from "react-datepicker";
 import styles from "./Administracion.module.css";
 import { useImmerReducer } from "use-immer";
 
+import {Label} from "reactstrap";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+
 import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
 import PreviewInstalacion from "../Shared/PreviewInstalacion";
 import axios from "axios";
 
-import ButtonMaterial from "@material-ui/core/Button";
+import ButtonMaterial from "@material-ui/core/Table";
 import Link from "@material-ui/core/Link";
 import {
   Nav,
@@ -92,7 +100,7 @@ const RegistroActividad = (props) => {
     <>
       <div className={styles.registro} style={{ display: "flex" }}>
         <div style={{ "padding-left": "10px" }}>
-          <p>Desde</p>
+          <Label>Desde</Label><br></br>
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -100,7 +108,7 @@ const RegistroActividad = (props) => {
         </div>
 
         <div style={{ "padding-left": "10px" }}>
-          <p>Hasta</p>
+          <Label>Hasta</Label><br></br>
           <DatePicker
             selected={endDate}
             onChange={(date) => setEndDate(date)}
@@ -115,29 +123,31 @@ const RegistroActividad = (props) => {
       <p>{error}</p>
       {loading && <Loading />}
       {registros.length > 0 && (
-        <Table hover style={{ overflowY: "auto" }}>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nombre</th>
-              <th>Accion</th>
-              <th>Fecha</th>
-            </tr>
-          </thead>
-          <tbody>
-            {registros.map((registro) => {
-              return (
-                <tr>
-                  <th scope="row">1</th>
-                  <td> {registro.user}</td>
-                  <td> {registro.component}</td>
+        <TableContainer style={{'max-height':'295px'}}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <TableCell>#</TableCell>
+                <TableCell>Nombre</TableCell>
+                <TableCell>Accion</TableCell>
+                <TableCell>Fecha</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {registros.map((registro) => {
+                return (
+                  <TableRow hover>
+                    <TableCell>1</TableCell>
+                    <TableCell>{registro.user}</TableCell>
+                    <TableCell>{registro.component}</TableCell>
 
-                  <td> {new Date(registro.date_modified.$date).toString()}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
+                    <TableCell>{new Date(registro.date_modified.$date).toString()}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
     </>
   );
