@@ -7,7 +7,7 @@ import ListadoUsuarios from "./ListadoUsuarios";
 import styles from "./Administracion.module.css";
 
 const Administracion = (props) => {
-  const [vista, setVista] = useState("actividad");
+  const [vista, setVista] = useState("usuarios");
   const [titulo, setTitulo] = useState("Usuarios registrados en sistema");
 
   return (

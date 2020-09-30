@@ -76,15 +76,13 @@ const Dashboard = (props) => {
   //     if (isLoading) console.log("Solicitando datos del cruce " + busqueda);
   //   }, [isLoading]);
 
-  return (
-      props.rol=="empresa" ? (
-        <DashEmpresa/>
-      ) : (
-        <div className="grid-item consulta-semaforo">
-          <p>funcionario uoct: solicitudes pendientes </p>
-          <p>prop {props.id}</p>
-        </div>
-      )
+  return props.rol === "Empresa" ? (
+    <DashEmpresa />
+  ) : (
+    <div className="grid-item consulta-semaforo">
+      <p>funcionario uoct: solicitudes pendientes </p>
+      <p>prop {props.id}</p>
+    </div>
   );
 };
 
