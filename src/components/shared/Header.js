@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "../../App.css";
 import styles from "./Header.module.css";
@@ -26,9 +27,9 @@ const Header = () => {
 
   return (
     <div className={styles.bar}>
-      <div className={styles.logo}>
+      <Link className={styles.logo} to="/">
         <img src="/logo.png" alt="Logo" />
-      </div>
+      </Link>
       <h2 className={styles.header_title}>{section}</h2>
       <Nav />
     </div>

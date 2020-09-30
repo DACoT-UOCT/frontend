@@ -12,12 +12,23 @@
 
 body {
   background-color: rgb(236, 238, 240);
+  font-family: "Averis", sans-serif;
+}
+
+@font-face {
+  font-family: Averis;
+  src: url(/fonts/Metropolis/Metropolis-Medium.otf);
+}
+
+@font-face {
+  font-family: Averis;
+  src: url(/fonts/Metropolis/Metropolis-SemiBold.otf);
+  font-weight: 700;
 }
 
 /*---------------------------------------------------*/
 /*-----------------------LOGIN-----------------------*/
 /*---------------------------------------------------*/
-@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 .login-page {
   width: 360px;
@@ -52,7 +63,7 @@ body {
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 .form input {
-  font-family: "Roboto", sans-serif;
+  font-family: "Averis", sans-serif;
   outline: 0;
   background: #f2f2f2;
   width: 100%;
@@ -63,7 +74,7 @@ body {
   font-size: 14px;
 }
 .form button {
-  font-family: "Roboto", sans-serif;
+  font-family: "Averis", sans-serif;
   text-transform: uppercase;
   outline: 0;
   background: #006cb8;
