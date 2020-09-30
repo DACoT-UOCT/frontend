@@ -139,7 +139,7 @@ const NuevaInstalacion = (props) => {
     switch (stepIndex) {
       case 1:
         return (
-          <Form>
+          <>
             <OTU
               state={state.metadata}
               codigo={state.oid}
@@ -173,7 +173,7 @@ const NuevaInstalacion = (props) => {
               <hr className="separador"></hr>
               <UPS state={state.ups} dispatch={dispatch} />
             </Collapse>
-          </Form>
+          </>
         );
       case 2:
         return (

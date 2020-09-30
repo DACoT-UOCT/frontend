@@ -1,8 +1,17 @@
 import React, { useContext } from "react";
-
 import "../../../App.css";
-import { Col, Row, FormGroup } from "reactstrap";
-import TextField from "@material-ui/core/TextField";
+import { Label } from "reactstrap";
+import { styled } from '@material-ui/core/styles';
+import {  Table,
+          TableBody,
+          TableCell,
+          TableContainer,
+          TableRow,
+          TextField } from '@material-ui/core';
+
+const Campo = styled(TextField)({
+  background: 'none',
+});
 
 const Controlador = (props) => {
   const state = props.state;
@@ -12,59 +21,72 @@ const Controlador = (props) => {
     <>
       <legend className="seccion">Controlador</legend>
 
-      <Row form>
-        <FormGroup>
-          <TextField
-            id="outlined-select-currency-native"
-            select
-            label="Modelo"
-            variant="outlined"
-            name="modelo"
-            autoComplete="off"
-            SelectProps={{
-              native: true,
-            }}
-            value={state.model}
-            onChange={(e) =>
-              dispatch({
-                type: "controller",
-                fieldName: "model",
-                payLoad: e.currentTarget.value,
-              })
-            }>
-            <option hidden></option>
-            <option>ST 900</option>
-            <option>ST 950</option>
-            <option>TEK 1/0</option>
-            <option>RSI</option>
-            <option>A25-A5</option>
-            <option>Sawarco-ITC-3</option>
-          </TextField>
-        </FormGroup>
+      <TableContainer>
+        <Table size='small' aria-label="simple table">
+          <TableBody>
+            <TableRow>
+              <TableCell component="th" scope="row">
+                <Label>Modelo</Label>
+              </TableCell>
+              <TableCell align="left">
+                <Campo
+                  id="standard-select-currency-native"
+                  select
+                  label="Modelo"
+                  variant="standard"
+                  name="modelo"
+                  autoComplete="off"
+                  SelectProps={{
+                    native: true,
+                  }}
+                  value={state.model}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "controller",
+                      fieldName: "model",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }>
+                  <option hidden></option>
+                  <option>ST 900</option>
+                  <option>ST 950</option>
+                  <option>TEK 1/0</option>
+                  <option>RSI</option>
+                  <option>A25-A5</option>
+                  <option>Sawarco-ITC-3</option>
+                </Campo>
+              </TableCell>
+            </TableRow>
 
-        <Col sm={1}></Col>
-        <FormGroup>
-          <TextField
-            id="outlined-select-currency-native"
-            label="Ubicación"
-            variant="outlined"
-            name="controlador_ubicacion"
-            autoComplete="off"
-            value={state.address_reference}
-            onChange={(e) =>
-              dispatch({
-                type: "controller",
-                fieldName: "address_reference",
-                payLoad: e.currentTarget.value,
-              })
-            }
-          />
-        </FormGroup>
-      </Row>
+            <TableRow>
+              <TableCell component="th" scope="row">
+                <Label>Ubicación</Label>
+              </TableCell>
+              <TableCell align="left">
+                <Campo
+                  id="standard"
+                  label="Ubicación"
+                  variant="standard"
+                  name="controlador_ubicacion"
+                  autoComplete="off"
+                  value={state.address_reference}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "controller",
+                      fieldName: "address_reference",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }
+                />
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       {/* <Row form>
         <FormGroup>
-          <TextField
+          <Campo
             disabled
             id="outlined"
             label="Mod. Potencia"
@@ -83,9 +105,8 @@ const Controlador = (props) => {
             }
           />
         </FormGroup> */}
-      <Col sm={1}></Col>
       {/* <FormGroup>
-          <TextField
+          <Campo
             id="outlined"
             label="Detectores"
             variant="outlined"

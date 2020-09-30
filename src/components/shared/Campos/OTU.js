@@ -1,18 +1,18 @@
 import React, { useContext } from "react";
-import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "react-datepicker";
-import { styled } from '@material-ui/core/styles';
 import "../../../App.css";
-import { Col, Row, FormGroup, Label } from "reactstrap";
-import TextField from "@material-ui/core/TextField";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import "react-datepicker/dist/react-datepicker.css";
 import PopOver from "../../Shared/PopOver";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
+import DatePicker from "react-datepicker";
+import { Label } from "reactstrap";
+import {  Checkbox,
+          FormControlLabel,
+          Table,
+          TableBody,
+          TableCell,
+          TableContainer,
+          TableRow,
+          TextField,
+          styled } from '@material-ui/core';
 
 const Campo = styled(TextField)({
   background: 'none',
@@ -21,7 +21,6 @@ const Campo = styled(TextField)({
 const OTU = (props) => {
   const state = props.state;
   const dispatch = props.dispatch;
-  const ancho_label = 4;
 
   return (
     <>

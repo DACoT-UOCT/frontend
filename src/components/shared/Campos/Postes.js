@@ -1,8 +1,18 @@
 import React, { useContext } from "react";
 
 import "../../../App.css";
-import { Col, Row, FormGroup } from "reactstrap";
-import TextField from "@material-ui/core/TextField";
+import { Label } from "reactstrap";
+import {  Table,
+          TableBody,
+          TableCell,
+          TableContainer,
+          TableRow,
+          TextField,
+          styled } from '@material-ui/core';
+
+const Campo = styled(TextField)({
+background: 'none',
+});
 
 const Postes = (props) => {
   const state = props.state;
@@ -11,67 +21,87 @@ const Postes = (props) => {
   return (
     <>
       <legend className="seccion">Postes</legend>
-      <Row form>
-        <FormGroup>
-          <TextField
-            id="outlined"
-            label="Ganchos"
-            variant="outlined"
-            name="ganchos"
-            type="number"
-            autoComplete="off"
-            placeholder="0"
-            value={state.ganchos}
-            onChange={(e) => {
-              dispatch({
-                type: "postes",
-                fieldName: "ganchos",
-                payLoad: e.currentTarget.value,
-              });
-            }}
-          />
-        </FormGroup>
-        <Col sm={1}></Col>
-        <FormGroup>
-          <TextField
-            id="outlined"
-            label="Vehiculares"
-            variant="outlined"
-            name="vehiculares"
-            type="number"
-            autoComplete="off"
-            placeholder="0"
-            value={state.vehiculares}
-            onChange={(e) => {
-              dispatch({
-                type: "postes",
-                fieldName: "vehiculares",
-                payLoad: e.currentTarget.value,
-              });
-            }}
-          />
-        </FormGroup>
-        <Col sm={1}></Col>
-        <FormGroup>
-          <TextField
-            id="outlined"
-            label="Peatonales"
-            variant="outlined"
-            name="peatonales"
-            type="number"
-            autoComplete="off"
-            placeholder="0"
-            value={state.peatonales}
-            onChange={(e) => {
-              dispatch({
-                type: "postes",
-                fieldName: "peatonales",
-                payLoad: e.currentTarget.value,
-              });
-            }}
-          />
-        </FormGroup>
-      </Row>
+
+      <TableContainer>
+        <Table size='small' aria-label="simple table">
+          <TableBody>
+            <TableRow>
+              <TableCell component="th" scope="row">
+                <Label>Ganchos</Label>
+              </TableCell>
+              <TableCell align="left">
+                <Campo
+                  id="standard"
+                  label="Ganchos"
+                  variant="standard"
+                  name="ganchos"
+                  type="number"
+                  autoComplete="off"
+                  placeholder="0"
+                  value={state.ganchos}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "postes",
+                      fieldName: "ganchos",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+              </TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell component="th" scope="row">
+                <Label>Vehiculares</Label>
+              </TableCell>
+              <TableCell align="left">
+                <Campo
+                  id="standard"
+                  label="Vehiculares"
+                  variant="standard"
+                  name="vehiculares"
+                  type="number"
+                  autoComplete="off"
+                  placeholder="0"
+                  value={state.vehiculares}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "postes",
+                      fieldName: "vehiculares",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+              </TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell component="th" scope="row">
+                <Label>Peatonales</Label>
+              </TableCell>
+              <TableCell align="left">
+                <Campo
+                  id="standard"
+                  label="Peatonales"
+                  variant="standard"
+                  name="peatonales"
+                  type="number"
+                  autoComplete="off"
+                  placeholder="0"
+                  value={state.peatonales}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "postes",
+                      fieldName: "peatonales",
+                      payLoad: e.currentTarget.value,
+                    });
+                  }}
+                />
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };

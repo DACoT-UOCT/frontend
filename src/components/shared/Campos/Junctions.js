@@ -1,8 +1,18 @@
 import React, { useContext } from "react";
 
 import "../../../App.css";
-import { Col, Row, FormGroup, Button } from "reactstrap";
-import TextField from "@material-ui/core/TextField";
+import { Button } from "reactstrap";
+import {  Table,
+          TableBody,
+          TableCell,
+          TableContainer,
+          TableRow,
+          TextField,
+          styled } from '@material-ui/core';
+
+const Campo = styled(TextField)({
+background: 'none',
+});
 
 const Junctions = (props) => {
   const state = props.state;
@@ -11,77 +21,80 @@ const Junctions = (props) => {
   return (
     <>
       <legend className="seccion">Junctions</legend>
-      {state.map((junction, index) => {
-        return (
-          <Row form>
-            <FormGroup>
-              <TextField
-                disabled
-                id="outlined"
-                label="Código en Sistema"
-                variant="outlined"
-                name="junction"
-                placeholder="J000000"
-                autoComplete="off"
-                value={junction.id}
-                onChange={(e) =>
-                  dispatch({
-                    type: "junctions",
-                    index: index,
-                    fieldName: "id",
-                    payLoad: e.currentTarget.value,
-                  })
-                }
-              />
-            </FormGroup>
-            <Col sm={1}></Col>
-            <FormGroup>
-              <TextField
-                id="outlined"
-                label="Cruce"
-                variant="outlined"
-                name="cruce"
-                placeholder="Calle - Calle"
-                autoComplete="off"
-                style={{ width: "550px" }}
-                value={junction.addr}
-                onChange={(e) =>
-                  dispatch({
-                    type: "junctions",
-                    index: index,
-                    fieldName: "addr",
-                    payLoad: e.currentTarget.value,
-                  })
-                }
-              />
-            </FormGroup>
-          </Row>
-        );
-      })}
+      <TableContainer>
+        <Table size='small' aria-label="simple table">
+          <TableBody>
+            {state.map((junction, index) => {
+              return (
+                <>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      <Campo
+                        disabled
+                        id="standard"
+                        label="Código en Sistema"
+                        variant="standard"
+                        name="junction"
+                        placeholder="J000000"
+                        autoComplete="off"
+                        value={junction.id}
+                        onChange={(e) =>
+                          dispatch({
+                            type: "junctions",
+                            index: index,
+                            fieldName: "id",
+                            payLoad: e.currentTarget.value,
+                          })
+                        }
+                      />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Campo
+                        id="standard"
+                        label="Cruce"
+                        variant="standard"
+                        name="cruce"
+                        placeholder="Calle - Calle"
+                        autoComplete="off"
+                        style={{ width: "550px" }}
+                        value={junction.addr}
+                        onChange={(e) =>
+                          dispatch({
+                            type: "junctions",
+                            index: index,
+                            fieldName: "addr",
+                            payLoad: e.currentTarget.value,
+                          })
+                        }
+                      />
+                    </TableCell>
+                  </TableRow>
+                </>
+              );
+            })}
 
-      <Row>
-        <Col sm={3}>
-          {state.length < 9 && (
-            <FormGroup>
-              <Button
-                onClick={() => {
-                  dispatch({ type: "agregar_junction" });
-                }}>
-                Agregar junction
-              </Button>
-            </FormGroup>
-          )}
-        </Col>
-        <Col>
-          {state.length > 1 && (
-            <FormGroup>
-              <Button onClick={() => dispatch({ type: "eliminar_junction" })}>
-                Eliminar
-              </Button>
-            </FormGroup>
-          )}
-        </Col>
-      </Row>
+            {state.length < 9 && (
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  <Button
+                    onClick={() => {
+                      dispatch({ type: "agregar_junction" });
+                    }}>
+                    Agregar junction
+                  </Button>
+                </TableCell>
+                {state.length > 1 && (
+                  <TableCell align="left">
+                    <Button onClick={() => dispatch({ type: "eliminar_junction" })}>
+                      Eliminar
+                    </Button>
+                  </TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>  
     </>
   );
 };
