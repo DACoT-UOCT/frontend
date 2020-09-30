@@ -41,22 +41,35 @@ const App = () => {
           ) : (
             <div className="app-container">
               <Header />
-              <Switch>
-                <Route path="/consulta" component={ConsultaSemaforo} />
+
+              <Route exact path="/consulta" component={ConsultaSemaforo} />
+              {state.rol === "Empresa" && (
+                <>
+                  <Route
+                    exact
+                    path="/nuevo/instalacion"
+                    component={() => <NuevaInstalacion state={state} />}
+                  />
+                  <Route
+                    exact
+                    path="/nuevo/actualizacion"
+                    component={() => <NuevaActualizacion id="X001450" />}
+                  />
+                </>
+              )}
+              {state.is_admin && (
                 <Route
-                  path="/nuevo/instalacion"
-                  component={() => <NuevaInstalacion state={state} />}
+                  exact
+                  path="/administracion"
+                  component={Administracion}
                 />
-                <Route path="/administracion" component={Administracion} />
-                <Route
-                  path="/nuevo/actualizacion"
-                  component={() => <NuevaActualizacion id="X001450" />}
-                />
-                <Route
-                  path="/"
-                  component={() => <Dashboard id="X001450" rol={rol} />}
-                />
-              </Switch>
+              )}
+              <Route
+                exact
+                path="/"
+                component={() => <Dashboard id="X001450" rol={rol} />}
+              />
+
               <Profile
                 user={state.full_name}
                 email={state.email}

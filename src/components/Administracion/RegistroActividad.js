@@ -3,7 +3,7 @@ import { Table } from "reactstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import Loading from "../Shared/Loading";
 import DatePicker from "react-datepicker";
-import styles from './Administracion.module.css';
+import styles from "./Administracion.module.css";
 import { useImmerReducer } from "use-immer";
 
 import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
@@ -43,19 +43,21 @@ const RegistroActividad = (props) => {
     const startString =
       startDate.getFullYear() +
       "-" +
-      startDate.getMonth() +
+      (startDate.getMonth() + 1) +
       "-" +
       startDate.getDate();
     var temp = new Date(endDate.getTime() + +24 * 60 * 60 * 1000);
     const endString =
-      temp.getFullYear() + "-" + temp.getMonth() + "-" + temp.getDate();
+      temp.getFullYear() + "-" + (temp.getMonth() + 1) + "-" + temp.getDate();
 
     const link =
-      "http://54.198.42.186:8080/history/" +
+      "http://54.198.42.186:8080/history" +
       "?gte=" +
       startString +
       "&lte=" +
       endString;
+
+    console.log(link);
 
     return new Promise((resolve, reject) => {
       axios

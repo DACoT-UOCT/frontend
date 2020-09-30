@@ -3,6 +3,7 @@ export const initialState = {
   email: "correoempresa@gmail.com",
   password: "",
   rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
+  is_admin: false,
   isLoading: false,
   error: "",
   isLoggedIn: true,
@@ -12,12 +13,17 @@ export const initialState = {
 const funcionario = {
   full_name: "Nicolas Grandón",
   email: "correonicolas@gmail.com",
-  password: "",
-  rol: "Funcionario", //'Sala de Control', 'Ingiería', 'TIC'
-  isLoading: false,
-  error: "",
-  isLoggedIn: true,
-  first_click_login: false,
+  rol: "Personal UOCT",
+  area: "Administración",
+  is_admin: true,
+};
+
+var empresa = {
+  full_name: "Auter",
+  email: "correoempresa@gmail.com",
+  rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
+  area: "Contratista",
+  is_admin: false,
 };
 
 export function reducer(draft, action) {
@@ -27,10 +33,12 @@ export function reducer(draft, action) {
         draft.full_name = funcionario.full_name;
         draft.email = funcionario.email;
         draft.rol = funcionario.rol;
+        draft.is_admin = funcionario.is_admin;
       } else {
         draft.full_name = initialState.full_name;
         draft.email = initialState.email;
         draft.rol = initialState.rol;
+        draft.is_admin = initialState.is_admin;
       }
       return;
     }
