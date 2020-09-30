@@ -148,6 +148,8 @@ const OTU = (props) => {
         <Label sm={ancho_label}>Fecha de instalacion</Label>
         <Col>
           <DatePicker
+            dateFormat="dd/MM/yyyy"
+            withPortal
             selected={state.installation_date}
             onChange={(date) =>
               dispatch({ type: "installation_date", payLoad: date.getTime() })

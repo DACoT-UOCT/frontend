@@ -51,17 +51,18 @@ const RegistroActividad = (props) => {
       temp.getFullYear() + "-" + temp.getMonth() + "-" + temp.getDate();
 
     const link =
-      "http://127.0.0.1:8000/history/" +
+      "http://54.198.42.186:8080/history/" +
       "?gte=" +
       startString +
       "&lte=" +
       endString;
-    console.log(link);
+
     return new Promise((resolve, reject) => {
       axios
         .get(link)
         .then((response) => {
           //solicitud exitosa
+          console.log(response);
           setRegistro(response.data);
           resolve();
         })
