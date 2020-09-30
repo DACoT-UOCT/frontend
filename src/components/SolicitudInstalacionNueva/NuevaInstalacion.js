@@ -17,6 +17,7 @@ import Equipamientos from "../Shared/Campos/Equipamientos";
 import Siguiente from "../Shared/Campos/Siguiente";
 import UPS from "../Shared/Campos/UPS";
 import OTU from "../Shared/Campos/OTU";
+import Verificacion from "../Shared/Campos/Verificacion";
 import Cabezales from "../Shared/Campos/Cabezales";
 import Postes from "../Shared/Campos/Postes";
 import Controlador from "../Shared/Campos/Controlador";
@@ -208,8 +209,16 @@ const NuevaInstalacion = (props) => {
             <Observaciones state={state} dispatch={dispatch} />
           </>
         );
+      case 3:
+        return (
+          <Verificacion
+            state={state}
+            codigo={state.oid}
+            dispatch={dispatch}
+          />
+          );
       default:
-        return 'Contenido Paso 4';
+        return '';
     }
   }
 
