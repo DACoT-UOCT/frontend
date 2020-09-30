@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "../Login/LoginReducer";
 import DashEmpresa from "./DashEmpresa";
+import DashFuncionario from "./DashFuncionario";
 import axios from "axios";
 
 export const StateContext = React.createContext();
@@ -79,10 +80,7 @@ const Dashboard = (props) => {
   return props.rol === "Empresa" ? (
     <DashEmpresa />
   ) : (
-    <div className="grid-item consulta-semaforo">
-      <p>funcionario uoct: solicitudes pendientes </p>
-      <p>prop {props.id}</p>
-    </div>
+    <DashFuncionario/>
   );
 };
 
