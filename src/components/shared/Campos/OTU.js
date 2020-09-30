@@ -15,7 +15,7 @@ import {  Checkbox,
           styled } from '@material-ui/core';
 
 const Campo = styled(TextField)({
-  background: 'none',
+  background: "none",
 });
 
 const OTU = (props) => {
@@ -27,7 +27,7 @@ const OTU = (props) => {
       <legend className="seccion">OTU</legend>
 
       <TableContainer>
-        <Table size='small' aria-label="simple table">
+        <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -168,7 +168,10 @@ const OTU = (props) => {
                   withPortal
                   selected={state.installation_date}
                   onChange={(date) =>
-                    dispatch({ type: "installation_date", payLoad: date.getTime() })
+                    dispatch({
+                      type: "installation_date",
+                      payLoad: date.getTime(),
+                    })
                   }
                 />
               </TableCell>
@@ -200,8 +203,7 @@ const OTU = (props) => {
                   <option value="" hidden></option>
                   <option value="Propio">Propio</option>
                   <option value="Compartido">Compartido</option>
-                </Campo>
-                {" "}
+                </Campo>{" "}
                 <Campo
                   id="standard-select-currency-native"
                   select
@@ -229,7 +231,7 @@ const OTU = (props) => {
 
             <TableRow>
               <TableCell component="th" scope="row">
-                <Label>Número de serie</Label>
+                <Label>Número de serie OTU</Label>
               </TableCell>
               <TableCell align="left">
                 <Campo
@@ -269,8 +271,7 @@ const OTU = (props) => {
                       payLoad: e.currentTarget.value,
                     })
                   }
-                />
-                {" "}
+                />{" "}
                 <Campo
                   id="standard"
                   label="Mascara de Red"
@@ -309,8 +310,7 @@ const OTU = (props) => {
                       payLoad: e.currentTarget.value,
                     })
                   }
-                />
-                {" "}
+                />{" "}
                 <Campo
                   id="standard"
                   label="Respuesta"
@@ -425,12 +425,11 @@ const OTU = (props) => {
                 />
               </TableCell>
             </TableRow>
-
           </TableBody>
         </Table>
       </TableContainer>
 
-     {/*{state.enlace_pc === "Compartido" && (
+      {/*{state.enlace_pc === "Compartido" && (
           <Col sm={3}>
             <FormGroup>
               <Campo
@@ -542,7 +541,6 @@ const OTU = (props) => {
               </FormGroup>
             </Col>
           </Row>*/}
-
     </>
   );
 };

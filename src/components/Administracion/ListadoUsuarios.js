@@ -25,31 +25,6 @@ const ListadoUsuarios = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [consultado, setConsultado] = useState(false);
-  // const consultarUsuarios = () => {
-  //   //consultar al backend
-  // //   setUsuarios([
-  // //     {
-  // //       _id: {
-  // //         $oid: "5f6fcf31023fdd720e2d0342",
-  // //       },
-  // //       uid: 11,
-  // //       full_name: "Carlos Andres Ponce Godoy",
-  // //       email: "cponce@gmail.com",
-  // //       area: "Ingenieria",
-  // //       rut: "19664296-K",
-  // //     },
-  // //     {
-  // //       _id: {
-  // //         $oid: "5f6fcf61ea94d4ad246e84e6",
-  // //       },
-  // //       uid: 12,
-  // //       full_name: "Camilo Parra",
-  // //       email: "caparra@gmail.com",
-  // //       area: "Sala de Control",
-  // //       rut: "19358103-K",
-  // //     },
-  // //   ]);
-  // // };
 
   useEffect(() => {
     if (!consultado) {
