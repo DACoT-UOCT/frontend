@@ -105,6 +105,7 @@ const RegistroActividad = () => {
           <br></br>
           <DatePicker
             dateFormat="dd/MM/yyyy"
+            withPortal
             selected={startDate}
             onChange={(date) => setStartDate(date)}
           />
@@ -115,6 +116,7 @@ const RegistroActividad = () => {
           <br></br>
           <DatePicker
             dateFormat="dd/MM/yyyy"
+            withPortal
             selected={endDate}
             onChange={(date) => setEndDate(date)}
           />
