@@ -548,6 +548,14 @@ Button{
   margin-bottom: 10px;
 }
 
+.boton-rechazar{
+  margin-left:18px;
+}
+
+.boton-infoinstalacion{
+  margin-top: 20px;
+}
+
 .links {
   all: unset !important;
 }
