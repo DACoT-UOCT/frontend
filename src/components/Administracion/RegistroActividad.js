@@ -3,6 +3,7 @@ import { Table } from "reactstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import Loading from "../Shared/Loading";
 import DatePicker from "react-datepicker";
+import styles from './Administracion.module.css';
 import { useImmerReducer } from "use-immer";
 
 import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
@@ -86,7 +87,7 @@ const RegistroActividad = (props) => {
 
   return (
     <>
-      <div style={{ display: "flex" }}>
+      <div className={styles.registro} style={{ display: "flex" }}>
         <div style={{ "padding-left": "10px" }}>
           <p>Desde</p>
           <DatePicker

@@ -26,13 +26,12 @@ const Header = () => {
 
   return (
     <div className={styles.bar}>
-        <h2 className={styles.logo}>
+        <div className={styles.logo}>
           <img
-            src="/logo_dacot.png"
+            src="/logo.png"
             alt="Logo"
-          />{" "}
-          DACoT
-        </h2>
+          />
+        </div>
         <h2 className={styles.header_title}>{section}</h2>
         <Nav/>
     </div>
