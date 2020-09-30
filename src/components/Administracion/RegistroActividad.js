@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "reactstrap";
 import "react-datepicker/dist/react-datepicker.css";
+import Loading from "../Shared/Loading";
 import DatePicker from "react-datepicker";
 import { useImmerReducer } from "use-immer";
 
@@ -25,162 +26,92 @@ const RegistroActividad = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const consultarRegistros = () => {
     if (startDate <= endDate) {
-      setError("");
+      submitClick();
     } else {
       setError("Intervalo de fechas no válido");
       return;
     }
-    const consulta = { start: startDate.getTime(), end: endDate.getTime() };
-    console.log(consulta);
-    setRegistro([
-      {
-        _id: {
-          $oid: "5f6b955e265e41e4d0f21f1f",
-        },
-        user: "Camilo",
-        context: "GET",
-        component: "Sistema",
-        origin: "web",
-        date_modified: {
-          $date: 1600886110119,
-        },
-      },
-      {
-        _id: {
-          $oid: "5f6b9560265e41e4d0f21f20",
-        },
-        user: "Camilo",
-        context: "GET",
-        component: "Sistema",
-        origin: "web",
-        date_modified: {
-          $date: 1600886112204,
-        },
-      },
-      {
-        _id: {
-          $oid: "5f6b958b70822bbbf66da461",
-        },
-        user: "Camilo",
-        context: "GET",
-        component: "Sistema",
-        origin: "web",
-        date_modified: {
-          $date: 1600875355016,
-        },
-      },
-      {
-        _id: {
-          $oid: "5f6e428eb514270fd12f7854",
-        },
-        user: "Camilo",
-        context: "GET",
-        component: "Sistema",
-        origin: "web",
-        date_modified: {
-          $date: 1601050718167,
-        },
-      },
-    ]);
   };
+  async function getData() {
+    //consulta por id al backend
 
-  // useEffect(() => {
-  //   if (registros.length === 0) {
-  //     consultarRegistros();
-  //   }
-  // });
-  //   const [state, dispatch] = useImmerReducer(reducer, initialState);
+    const startString =
+      startDate.getFullYear() +
+      "-" +
+      startDate.getMonth() +
+      "-" +
+      startDate.getDate();
+    var temp = new Date(endDate.getTime() + +24 * 60 * 60 * 1000);
+    const endString =
+      temp.getFullYear() + "-" + temp.getMonth() + "-" + temp.getDate();
 
-  //   const {
-  //     busqueda,
-  //     isLoading,
-  //     id_consultado,
-  //     no_encontrado,
-  //     data,
-  //     imagen_cruce,
-  //   } = state;
+    const link =
+      "http://127.0.0.1:8000/history/" +
+      "?gte=" +
+      startString +
+      "&lte=" +
+      endString;
+    console.log(link);
+    return new Promise((resolve, reject) => {
+      axios
+        .get(link)
+        .then((response) => {
+          //solicitud exitosa
+          setRegistro(response.data);
+          resolve();
+        })
+        .catch((err) => {
+          //error
+          reject(err);
+        });
+    });
+  }
+  const submitClick = async () => {
+    setLoading(true);
+    setRegistro([]);
+    setError("");
 
-  //   async function getData() {
-  //     //consulta por id al backend
-  //     return new Promise((resolve, reject) => {
-  //       const link =
-  //         "http://54.224.251.49/intersection/" + state.busqueda.toUpperCase();
-
-  //       axios
-  //         .get(link)
-  //         .then((response) => {
-  //           //solicitud exitosa
-  //           dispatch({ type: "loadData", payLoad: response.data });
-  //           resolve();
-  //         })
-  //         .catch((err) => {
-  //           //error
-  //           reject(err);
-  //         });
-  //     });
-  //   }
-  //   const submitClick = async (e) => {
-  //     e.preventDefault();
-  //     dispatch({
-  //       type: "get_preview_data",
-  //     });
-
-  //     try {
-  //       await getData();
-  //       dispatch({ type: "preview_success" });
-  //     } catch (error) {
-  //       console.log(error);
-  //       dispatch({ type: "preview_error" });
-  //     }
-
-  // const link = "http://54.224.251.49/intersection/X001330";
-  // const temp = false;
-
-  // if (!state.data)
-  //   axios
-  //     .get(link)
-  //     .then((response) => {
-  //       //solicitud exitosa
-  //       console.log(response.data);
-
-  //       dispatch({ type: "loadData", payLoad: response.data });
-  //       dispatch({ type: "preview_success" });
-  //     })
-  //     .catch((err) => {
-  //       //error
-  //       console.log(err);
-  //       dispatch({ type: "preview_error" });
-  //     });
-  //   };
-
-  //   useEffect(() => {
-  //     if (isLoading) console.log("Solicitando datos del cruce " + busqueda);
-  //   }, [isLoading]);
+    try {
+      await getData();
+    } catch (error) {
+      console.log(error);
+      setError("Error en la consulta");
+    }
+    setLoading(false);
+  };
 
   return (
     <>
-      <div style={{"display":"flex"}}>
-        <div style={{"padding-left":"10px"}}>
+      <div style={{ display: "flex" }}>
+        <div style={{ "padding-left": "10px" }}>
           <p>Desde</p>
-          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)}/>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+          />
         </div>
-        
-        <div style={{"padding-left":"10px"}}>
+
+        <div style={{ "padding-left": "10px" }}>
           <p>Hasta</p>
-          <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+          />
         </div>
-        <div style={{"padding-left":"10px"}}>
+        <div style={{ "padding-left": "10px" }}>
           <Button onClick={() => consultarRegistros("usuarios")}>
             <span>Consultar Registros</span>
           </Button>
         </div>
       </div>
       <p>{error}</p>
+      {loading && <Loading />}
       {registros.length > 0 && (
-        <Table hover style={{"overflowY":"auto"}}>
+        <Table hover style={{ overflowY: "auto" }}>
           <thead>
             <tr>
               <th>#</th>
