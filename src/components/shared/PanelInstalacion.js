@@ -75,11 +75,11 @@ export default function PanelInstalacion(props) {
           aria-controls="panel1c-content"
           id="panel1c-header">
           <div className={classes.column}>
-            <Typography className={classes.heading}>Location</Typography>
+            <Typography className={classes.heading}>{props.id}</Typography>
           </div>
           <div className={classes.column}>
             <Typography className={classes.secondaryHeading}>
-              Select trip destination
+              {props.type}
             </Typography>
           </div>
         </AccordionSummary>

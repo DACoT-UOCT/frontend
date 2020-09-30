@@ -1,86 +1,274 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useImmerReducer } from "use-immer";
-import { initialState, reducer } from "../Login/LoginReducer";
-import DashEmpresa from "./DashEmpresa";
-import DashFuncionario from "./DashFuncionario";
 import axios from "axios";
 
-export const StateContext = React.createContext();
-export const DispatchContext = React.createContext();
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import { Button } from "reactstrap";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import PanelInstalacion from "../Shared/PanelInstalacion";
+import { StateContext } from "../App";
+import Loading from "../Shared/Loading";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  AccordionActions,
+  Typography,
+  Chip,
+} from "@material-ui/core";
 
-const Dashboard = (props) => {
-  //   const [state, dispatch] = useImmerReducer(reducer, initialState);
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
+  },
+  icon: {
+    verticalAlign: "bottom",
+    height: 20,
+    width: 20,
+  },
+  details: {
+    alignItems: "flex-start",
+  },
+  column: {
+    flexBasis: "37%",
+  },
+  column2: {
+    flexBasis: "40%",
+    textAlign: "center",
+  },
+  column3: {
+    flexBasis: "23%",
+    padding: theme.spacing(1, 2),
+    marginTop: "10px",
+  },
+  hordivider: {
+    borderBottom: `2px solid ${theme.palette.divider}`,
+    padding: theme.spacing(1, 2),
+  },
+  divider: {
+    borderLeft: `2px solid ${theme.palette.divider}`,
+    borderRight: `2px solid ${theme.palette.divider}`,
+    padding: theme.spacing(1, 2),
+  },
+}));
 
-  //   const {
-  //     busqueda,
-  //     isLoading,
-  //     id_consultado,
-  //     no_encontrado,
-  //     data,
-  //     imagen_cruce,
-  //   } = state;
+const Dashboard = () => {
+  const state = useContext(StateContext);
+  const classes = useStyles();
+  const [expanded, setExpanded] = useState(false);
+  const [listado, setListado] = useState([]);
+  const [consultado, setConsultado] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  //   async function getData() {
-  //     //consulta por id al backend
-  //     return new Promise((resolve, reject) => {
-  //       const link =
-  //         "http://54.224.251.49/intersection/" + state.busqueda.toUpperCase();
+  useEffect(() => {
+    if (!consultado) {
+      consultar();
+      setConsultado(true);
+    }
+  });
 
-  //       axios
-  //         .get(link)
-  //         .then((response) => {
-  //           //solicitud exitosa
-  //           dispatch({ type: "loadData", payLoad: response.data });
-  //           resolve();
-  //         })
-  //         .catch((err) => {
-  //           //error
-  //           reject(err);
-  //         });
-  //     });
-  //   }
-  //   const submitClick = async (e) => {
-  //     e.preventDefault();
-  //     dispatch({
-  //       type: "get_preview_data",
-  //     });
+  async function getData() {
+    //consulta por id al backend
+    const link =
+      state.rol === "Empresa"
+        ? "linkempresa" + "?user=" + state.email
+        : "linkfuncionario" + "?user=" + state.email;
+    return new Promise((resolve, reject) => {
+      axios
+        .get(link)
+        .then((response) => {
+          //solicitud exitosa
+          setListado(response.data);
+          resolve();
+        })
+        .catch((err) => {
+          //error
+          reject(err);
+        });
+    });
+  }
+  const consultar = async () => {
+    setLoading(true);
+    setError("");
 
-  //     try {
-  //       await getData();
-  //       dispatch({ type: "preview_success" });
-  //     } catch (error) {
-  //       console.log(error);
-  //       dispatch({ type: "preview_error" });
-  //     }
+    try {
+      await getData();
+    } catch (error) {
+      console.log(error);
+      setError("Error en la consulta");
+    }
+    setLoading(false);
+    setListado([
+      { id: "x01", type: "Solicitud de integración" },
+      { id: "x02", type: "Solicitud de actualización" },
+    ]);
+  };
 
-  // const link = "http://54.224.251.49/intersection/X001330";
-  // const temp = false;
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
-  // if (!state.data)
-  //   axios
-  //     .get(link)
-  //     .then((response) => {
-  //       //solicitud exitosa
-  //       console.log(response.data);
+  return (
+    <div className="grid-item dashboard-empresa">
+      {state.rol === "Empresa" ? (
+        <h3>Instalaciones operativas</h3>
+      ) : (
+        <h3>Solicitudes de integración pendientes</h3> //para los funcionarios
+      )}
+      <div className={classes.root}>
+        {!loading ? (
+          <>
+            <p>{error}</p>
+            {listado.map((i) => {
+              return (
+                <>
+                  <PanelInstalacion
+                    expanded={expanded}
+                    id={i.id} //ahi ingresar el X
+                    type={i.type}
+                    handleChange={handleChange}
+                  />
+                </>
+              );
+            })}
+          </>
+        ) : (
+          <>
+            <Loading />
+          </>
+        )}
+        {/* <Accordion
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
+          TransitionProps={{ unmountOnExit: true }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1c-content"
+            id="panel1c-header">
+            <div className={classes.column}>
+              <Typography className={classes.heading}>Location</Typography>
+            </div>
+            <div className={classes.column}>
+              <Typography className={classes.secondaryHeading}>
+                Select trip destination
+              </Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails className={classes.details}>
+            <div className={classes.column}>
+              <legend className={classes.hordivider}>
+                {" "}
+                Información del Cruce{" "}
+              </legend>
+              <span>Codigo OTU:</span>
+              <br />
+              <div className="info-acordeon">codiguito</div>
+              <span>Ubicacion:</span>
+              <br />
+              <div className="info-acordeon">lugarcito</div>
+              <span>Empresa instaladora:</span>
+              <br />
+              <div className="info-acordeon">empresita</div>
+              <span>Empresa encargada:</span>
+              <br />
+              <div className="info-acordeon">empresita</div>
+              <span>Fecha de instalacion:</span>
+              <br />
+              <div className="info-acordeon">fechita</div>
+            </div>
+            <div className={clsx(classes.column2, classes.divider)}>
+              <img
+                style={{ "margin-top": "10px" }}
+                height="320"
+                width="312"
+                src="/logo_transportes.png"
+                alt="Cruce"
+              />
+            </div>
+            <div className={classes.column3}>
+              <Button className="boton-dashboard">
+                {" "}
+                Información de Instalación{" "}
+              </Button>{" "}
+              <br></br>
+              <Button className="boton-dashboard">
+                {" "}
+                PDF de Respaldo{" "}
+              </Button>{" "}
+              <br></br>
+              <Button className="boton-dashboard"> Programaciones </Button>{" "}
+              <br></br>
+              <Button className="boton-dashboard">
+                {" "}
+                Historial de Cambios{" "}
+              </Button>{" "}
+              <br></br>
+              <Button className="boton-dashboard">
+                {" "}
+                Solicitar Modificación{" "}
+              </Button>
+            </div>
+          </AccordionDetails>
+        </Accordion>
 
-  //       dispatch({ type: "loadData", payLoad: response.data });
-  //       dispatch({ type: "preview_success" });
-  //     })
-  //     .catch((err) => {
-  //       //error
-  //       console.log(err);
-  //       dispatch({ type: "preview_error" });
-  //     });
-  //   };
+        <Accordion
+          expanded={expanded === "panel2"}
+          onChange={handleChange("panel2")}
+          TransitionProps={{ unmountOnExit: true }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1c-content"
+            id="panel1c-header">
+            <div className={classes.column}>
+              <Typography className={classes.heading}>Location</Typography>
+            </div>
+            <div className={classes.column}>
+              <Typography className={classes.secondaryHeading}>
+                Select trip destination
+              </Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails className={classes.details}>
+            <div className={classes.column} />
+            <div className={classes.column}>IMAGEN</div>
+            <div className={clsx(classes.column, classes.helper)}>BOTONES</div>
+          </AccordionDetails>
+        </Accordion>
 
-  //   useEffect(() => {
-  //     if (isLoading) console.log("Solicitando datos del cruce " + busqueda);
-  //   }, [isLoading]);
-
-  return props.rol === "Empresa" ? (
-    <DashEmpresa />
-  ) : (
-    <DashFuncionario/>
+        <Accordion
+          expanded={expanded === "panel3"}
+          onChange={handleChange("panel3")}
+          TransitionProps={{ unmountOnExit: true }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1c-content"
+            id="panel1c-header">
+            <div className={classes.column}>
+              <Typography className={classes.heading}>Location</Typography>
+            </div>
+            <div className={classes.column}>
+              <Typography className={classes.secondaryHeading}>
+                Select trip destination
+              </Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails className={classes.details}>
+            <div className={classes.column} />
+            <div className={classes.column}>IMAGEN</div>
+            <div className={clsx(classes.column, classes.helper)}>BOTONES</div>
+          </AccordionDetails>
+        </Accordion> */}
+      </div>
+    </div>
   );
 };
 
