@@ -108,8 +108,9 @@ export const initialState = {
   //bits_de_control: "",
 
   errors: [],
-  vista: 1,
+  vista: 3,
   submit: false,
+  isLoading: true,
 };
 
 export function reducer(draft, action) {
@@ -145,13 +146,17 @@ export function reducer(draft, action) {
     case "enviar":
       draft.submit = true;
       return;
+
+    case "reset": {
+      draft.vista = 1;
+      return;
+    }
     case "siguiente": {
       if (draft.errors.length === 0) {
-        if (draft.vista < 3) {
-          draft.vista += 1;
-        } else {
+        if (draft.vista === 4) {
           draft.submit = true;
         }
+        draft.vista += 1;
       }
       return;
     }
@@ -179,8 +184,14 @@ export function reducer(draft, action) {
       return;
     }
 
+    case "post_success": {
+      draft.success = true;
+      draft.isLoading = false;
+      return;
+    }
     case "post_error": {
-      draft.submit = false;
+      draft.success = false;
+      draft.isLoading = false;
       return;
     }
 

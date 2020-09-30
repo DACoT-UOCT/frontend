@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { Form } from "reactstrap";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import Loading from "../Shared/Loading";
 import {
   Switch,
   Collapse,
@@ -77,11 +79,6 @@ const NuevaInstalacion = (props) => {
     setChecked((prev) => !prev);
   };
 
-  useEffect(() => {
-    console.log("onawake");
-    //dispatch({type: "onMount", payLoad: estado_general})
-  });
-
   const procesar_json = () => {
     //procesa el json antes de enviarlo
     const state_copy = JSON.parse(JSON.stringify(state));
@@ -128,6 +125,7 @@ const NuevaInstalacion = (props) => {
         .then((response) => {
           console.log(response);
           alert("Formulario enviado correctamente");
+          dispatch({ type: "post_success" });
           //window.location.replace("/nuevo/instalacion");
         })
         .catch((err) => {
@@ -149,7 +147,7 @@ const NuevaInstalacion = (props) => {
 
   function getStepContent(stepIndex) {
     switch (stepIndex) {
-      case 0:
+      case 1:
         return (
           <Form>
             <OTU
@@ -187,7 +185,7 @@ const NuevaInstalacion = (props) => {
             </Collapse>
           </Form>
         );
-      case 1:
+      case 2:
         return (
           <Form>
             <Etapas state={state.stages} dispatch={dispatch} />
@@ -204,7 +202,7 @@ const NuevaInstalacion = (props) => {
             <hr className="separador"></hr>
           </Form>
         );
-      case 2:
+      case 3:
         return (
           <>
             <Documentacion state={state} dispatch={dispatch} />
@@ -212,9 +210,29 @@ const NuevaInstalacion = (props) => {
             <Observaciones state={state} dispatch={dispatch} />
           </>
         );
-      case 3:
+      case 4:
         return (
           <Verificacion state={state} codigo={state.oid} dispatch={dispatch} />
+        );
+
+      case 5:
+        return (
+          <>
+            {state.isLoading ? (
+              <Loading />
+            ) : (
+              <div>
+                <Typography className={classes.instructions}>
+                  {state.success
+                    ? "Formulario enviado con exito"
+                    : "Error de envío del formulario, si el problema persiste contactar con el administrador"}
+                </Typography>
+                <Link to="/">
+                  <span>Volver al inicio</span>
+                </Link>
+              </div>
+            )}
+          </>
         );
       default:
         return "";
@@ -227,7 +245,7 @@ const NuevaInstalacion = (props) => {
         <div className="grid-item nuevo-semaforo">
           <div className={classes.root}>
             <Stepper
-              activeStep={activeStep}
+              activeStep={state.vista - 1}
               alternativeLabel
               style={{
                 background: "none",
@@ -240,50 +258,26 @@ const NuevaInstalacion = (props) => {
               ))}
             </Stepper>
             <div>
-              {activeStep === steps.length ? (
-                <div>
-                  <Typography className={classes.instructions}>
-                    Formulario enviado con exito
-                  </Typography>
-                  <Button onClick={handleReset}>Volver al inicio</Button>
-                </div>
-              ) : (
-                <div
-                  className="grid-item"
-                  style={{
-                    "max-height": "515px",
-                    "overflow-y": "scroll",
-                    border: "0px",
-                  }}>
-                  <Typography className={classes.instructions}>
-                    {getStepContent(activeStep)}
-                  </Typography>
-                  <div>
-                    <Siguiente state={state} dispatch={dispatch} />
-                    <Button
-                      disabled={activeStep === 0}
-                      onClick={handleBack}
-                      className={classes.backButton}
-                      variant="contained"
-                      color="secondary">
-                      Atrás
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                      state={state}
-                      dispatch={dispatch}>
-                      {activeStep === steps.length - 1 ? "Enviar" : "Siguiente"}
-                    </Button>
-                  </div>
-                </div>
-              )}
+              <div
+                className="grid-item"
+                style={{
+                  "max-height": "515px",
+                  "overflow-y": "scroll",
+                  border: "0px",
+                }}>
+                <Typography className={classes.instructions}>
+                  {getStepContent(state.vista)}
+                </Typography>
+
+                {state.vista < 5 && (
+                  <Siguiente state={state} dispatch={dispatch} />
+                )}
+              </div>
             </div>
           </div>
-          {state.vista === 1 ? (
+          {/* {state.vista === 1 ? (
             <>
-              {/*<div className="grid-item" style={{"max-height":"535px","overflow-y":"scroll"}}>
+              <div className="grid-item" style={{"max-height":"535px","overflow-y":"scroll"}}>
                 <Form>
                   <OTU
                     state={state.metadata}
@@ -322,11 +316,11 @@ const NuevaInstalacion = (props) => {
                   </Collapse>
                 </Form>
                 <Siguiente state={state} dispatch={dispatch} />
-              </div>*/}
+              </div>
             </>
           ) : state.vista === 2 ? (
             {
-              /*<>
+              <>
               <legend className="seccion">Información de programaciones</legend>
               <div className="grid-item">
                 <Form>
@@ -345,11 +339,11 @@ const NuevaInstalacion = (props) => {
                 </Form>
               </div>
               <Siguiente state={state} dispatch={dispatch} />
-            </>*/
+            </>
             }
           ) : (
             {
-              /*<>
+              <>
               <legend className="seccion">Documentación de respaldo</legend>
               <div className="grid-item">
                 <Documentacion state={state} dispatch={dispatch} />
@@ -357,9 +351,9 @@ const NuevaInstalacion = (props) => {
                 <Observaciones state={state} dispatch={dispatch} />
               </div>
               <Siguiente state={state} dispatch={dispatch} />
-            </>*/
+            </>
             }
-          )}
+          )} */}
         </div>
       </StateContext.Provider>
     </DispatchContext.Provider>

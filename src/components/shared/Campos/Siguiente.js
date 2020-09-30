@@ -10,17 +10,32 @@ import {
   DialogContentText,
   DialogTitle,
   Slide,
+  makeStyles,
 } from "@material-ui/core";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+  backButton: {
+    marginRight: theme.spacing(1),
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+}));
+
 const Siguiente = (props) => {
   const state = props.state;
   const dispatch = props.dispatch;
 
   const [openWarning, setOpen] = React.useState(false);
+  const classes = useStyles();
 
   const handleClose = () => {
     setOpen(false);
@@ -63,34 +78,6 @@ const Siguiente = (props) => {
       validar_entrada(state.postes.ganchos, "Postes Ganchos");
       validar_entrada(state.postes.vehiculares, "Postes Vehiculares");
       validar_entrada(state.postes.peatonales, "Postes Peatonales");
-      //validar_entrada(state.metadata.controller.marca, "Controlador - Marca");
-      //validar_entrada(state.metadata.mod_potencia, "Mod Potencia");
-      //validar_entrada(state.metadata.detectores, "Detectores");
-      //validar_entrada(state.metadata.otu.marca, "OTU - Marca");
-      //validar_entrada(state.metadata.otu.tipo, "OTU - Tipo");
-      //validar_entrada(state.metadata.otu.equipamientos, "OTU - Equipamientos");
-      //validar_entrada(state.metadata.n_empalme, "N Empalme");
-      //validar_entrada(state.metadata.capacidad_empalme, "Capacidad Empalme");
-      /*validar_entrada(state.metadata.ups.marca, "UPS - Marca");
-    validar_entrada(state.metadata.ups.modelo, "UPS - Modelo");
-    validar_entrada(state.metadata.ups.n_serie, "UPS - N Serie");
-    validar_entrada(state.metadata.ups.capacidad, "UPS - Capacidad");
-    validar_entrada(state.metadata.ups.duracion_carga,"UPS - Duración de Carga");
-    for (let cabezal in state.metadata.cabezales) {
-      validar_entrada(
-        state.metadata.cabezales[cabezal].hal,
-        `${cabezal} Halogeno`
-      );
-      validar_entrada(state.metadata.cabezales[cabezal].led, `${cabezal} Led`);
-    }
-    validar_entrada(state.metadata.botoneras, "Botoneras");
-    validar_entrada(state.metadata.espira_local, "Espira Local");
-    validar_entrada(state.metadata.espira_scoot, "Espira Scoot");
-    validar_entrada(state.metadata.senal_hito, "Señal Hito");
-    validar_entrada(state.metadata.enlace_pc, "Tipo de Enlace 1");
-    if (state.metadata.enlace_pc === "Compartido")
-      validar_entrada(state.metadata.nodo_concentrador, "Nodo Concentrador");
-    validar_entrada(state.metadata.enlace_da, "Tipo de Enlace 2");*/
     } else if (state.vista === 2) {
       const comprobacionEtapas = [];
       const cantFases = state.fases.length;
@@ -154,55 +141,42 @@ const Siguiente = (props) => {
 
   return (
     <>
-      <FormGroup>
-        <Row>
-          {state.vista > 1 && (
-            <>
-              <Col sm={4}></Col>
-              <Col sm={2}>
-                <ButtonMaterial
-                  variant="contained"
-                  color="secondary"
-                  
-                  onClick={() => dispatch({ type: "atras" })}>
-                  Atrás
-                </ButtonMaterial>
-              </Col>
-            </>
-          )}
-          <Col sm={state.vista === 1 ? { offset: 5 } : { offset: 0 }}>
-            <ButtonMaterial
-              variant="contained"
-              color="primary"
-              onClick={validar_formulario}>
-              Siguiente
-            </ButtonMaterial>
-            <Dialog
-              open={openWarning}
-              TransitionComponent={Transition}
-              keepMounted
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-slide-title"
-              aria-describedby="alert-dialog-slide-description">
-              <DialogTitle id="alert-dialog-slide-title">
-                Error en los siguientes campos:
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  {state.errors.map((error) => {
-                    return <li>{error}</li>;
-                  })}
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button className="boton-mensaje-error" onClick={handleClose}>
-                  OK
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Col>
-        </Row>
-      </FormGroup>
+      <>
+        <Button
+          disabled={state.vista === 1}
+          variant="contained"
+          color="secondary"
+          className={classes.backButton}
+          onClick={() => dispatch({ type: "atras" })}>
+          Atrás
+        </Button>
+      </>
+      <Button variant="contained" color="primary" onClick={validar_formulario}>
+        {state.vista === 4 ? "Enviar" : "Siguiente"}
+      </Button>
+      <Dialog
+        open={openWarning}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description">
+        <DialogTitle id="alert-dialog-slide-title">
+          Error en los siguientes campos:
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {state.errors.map((error) => {
+              return <li>{error}</li>;
+            })}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button className="boton-mensaje-error" onClick={handleClose}>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
