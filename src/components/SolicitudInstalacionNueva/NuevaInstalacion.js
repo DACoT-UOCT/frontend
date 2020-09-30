@@ -99,9 +99,9 @@ const NuevaInstalacion = (props) => {
 
       var link;
       if (location.pathname === "/nuevo/instalacion") {
-        link = "http://54.198.42.186:8080/request";
+        link = "http://54.198.42.186:8080/request?user=" + props.email;
       } else if (location.pathname === "/nuevo/digitalizacion") {
-        link = "http://54.198.42.186:8080/request";
+        link = "http://54.198.42.186:8080/otu?user=" + props.email;
       }
 
       axios({

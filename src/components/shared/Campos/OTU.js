@@ -1,21 +1,21 @@
 import React, { useContext } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
-import { styled } from '@material-ui/core/styles';
+import { styled } from "@material-ui/core/styles";
 import "../../../App.css";
 import { Col, Row, FormGroup, Label } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import PopOver from "../../Shared/PopOver";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableRow from "@material-ui/core/TableRow";
 
 const Campo = styled(TextField)({
-  background: 'none',
+  background: "none",
 });
 
 const OTU = (props) => {
@@ -28,7 +28,7 @@ const OTU = (props) => {
       <legend className="seccion">OTU</legend>
 
       <TableContainer>
-        <Table size='small' aria-label="simple table">
+        <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -169,7 +169,10 @@ const OTU = (props) => {
                   withPortal
                   selected={state.installation_date}
                   onChange={(date) =>
-                    dispatch({ type: "installation_date", payLoad: date.getTime() })
+                    dispatch({
+                      type: "installation_date",
+                      payLoad: date.getTime(),
+                    })
                   }
                 />
               </TableCell>
@@ -201,8 +204,7 @@ const OTU = (props) => {
                   <option value="" hidden></option>
                   <option value="Propio">Propio</option>
                   <option value="Compartido">Compartido</option>
-                </Campo>
-                {" "}
+                </Campo>{" "}
                 <Campo
                   id="standard-select-currency-native"
                   select
@@ -230,7 +232,7 @@ const OTU = (props) => {
 
             <TableRow>
               <TableCell component="th" scope="row">
-                <Label>Número de serie</Label>
+                <Label>Número de serie OTU</Label>
               </TableCell>
               <TableCell align="left">
                 <Campo
@@ -270,8 +272,7 @@ const OTU = (props) => {
                       payLoad: e.currentTarget.value,
                     })
                   }
-                />
-                {" "}
+                />{" "}
                 <Campo
                   id="standard"
                   label="Mascara de Red"
@@ -310,8 +311,7 @@ const OTU = (props) => {
                       payLoad: e.currentTarget.value,
                     })
                   }
-                />
-                {" "}
+                />{" "}
                 <Campo
                   id="standard"
                   label="Respuesta"
@@ -426,12 +426,11 @@ const OTU = (props) => {
                 />
               </TableCell>
             </TableRow>
-
           </TableBody>
         </Table>
       </TableContainer>
 
-     {/*{state.enlace_pc === "Compartido" && (
+      {/*{state.enlace_pc === "Compartido" && (
           <Col sm={3}>
             <FormGroup>
               <Campo
@@ -543,7 +542,6 @@ const OTU = (props) => {
               </FormGroup>
             </Col>
           </Row>*/}
-
     </>
   );
 };
