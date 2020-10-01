@@ -1,24 +1,17 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import { Form } from "reactstrap";
 import { StateContext } from "../App";
 
 import {
   Col,
-  Row,
   FormGroup,
-  Button,
-  Label,
   Input,
   CustomInput,
 } from "reactstrap";
 import { Typography } from "@material-ui/core";
 import ButtonMaterial from "@material-ui/core/Button";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
-import clsx from "clsx";
 
 import Verificacion from "../Shared/Campos/Verificacion";
 

@@ -1,23 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Table } from "reactstrap";
 import { StateContext } from "../App";
-import { useImmerReducer } from "use-immer";
 
-import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
-import PreviewInstalacion from "../Shared/PreviewInstalacion";
 import axios from "axios";
-
-import ButtonMaterial from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
-import {
-  Nav,
-  NavItem,
-  Dropdown,
-  DropdownItem,
-  DropdownToggle,
-  DropdownMenu,
-  NavLink,
-} from "reactstrap";
 
 const ListadoUsuarios = (props) => {
   const state = useContext(StateContext);

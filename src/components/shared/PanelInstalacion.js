@@ -1,10 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import MenuIcon from "@material-ui/icons/Menu";
 import axios from "axios";
 import Loading from "../Shared/Loading";
-import { Redirect } from "react-router-dom";
-import { initialState } from "../Shared/FormularioReducer";
 
 import { StateContext, DispatchContext } from "../App";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,9 +12,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  AccordionActions,
   Typography,
-  Chip,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({

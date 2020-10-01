@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-// import { useImmerReducer } from "use-immer";
-import axios from "axios";
+import React, { useState } from "react";
 
 import RegistroActividad from "./RegistroActividad";
 import ListadoUsuarios from "./ListadoUsuarios";
