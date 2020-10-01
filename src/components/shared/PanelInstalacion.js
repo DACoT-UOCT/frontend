@@ -87,14 +87,14 @@ export default function PanelInstalacion(props) {
     // state.rol === "Empresa"
     //   ? "linkempresa" + "?user=" + state.email
     //   : "linkfuncionario" + "?user=" + state.email;
-    console.log(link);
-    return;
+
     return new Promise((resolve, reject) => {
       axios
         .get(link)
         .then((response) => {
           //solicitud exitosa
           setOtu(response.data);
+          console.log(response.data);
           resolve();
         })
         .catch((err) => {
