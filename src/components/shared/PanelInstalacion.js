@@ -179,25 +179,27 @@ export default function PanelInstalacion(props) {
               />
             </div>
             <div className={classes.column3}>
-              <Link
-                to="/procesar/solicitud"
-                className="nada"
-                onClick={() => {
-                  dispatch({
-                    type: "levantar_actualizacion",
-                    payLoad: otu,
-                  });
-                }}>
-                <div className="linkBoton">Procesar Solicitud</div>
-              </Link>
-              <br></br>
+              {state.rol === "Personal UOCT" && (
+                <>
+                  <Link
+                    to="/procesar/solicitud"
+                    className="nada"
+                    onClick={() => {
+                      dispatch({
+                        type: "levantar_actualizacion",
+                        payLoad: otu,
+                      });
+                    }}>
+                    <div className="linkBoton">Procesar Solicitud</div>
+                  </Link>
+                  <br></br>
+                </>
+              )}
               <Button className="botonDashboard">PDF de Respaldo</Button>
               {state.rol === "Empresa" && (
                 <>
                   <Button className="botonDashboard">Programaciones</Button>
-                  <Button className="botonDashboard">
-                    Historial de Cambios
-                  </Button>
+                  <Button className="botonDashboard">Historial de Cambios</Button>
                   <Link
                     to="/nuevo/instalacion"
                     className="nada"

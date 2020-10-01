@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { Form } from "reactstrap";
@@ -38,6 +38,7 @@ export default function ProcesarSolicitud(props) {
   const classes = useStyles();
   const state = useContext(StateContext);
   console.log(state.actualizando);
+  let history = useHistory();
 
   const [comentario, setComentario] = useState("");
   const [imagen, setImagen] = useState(null);
@@ -144,6 +145,13 @@ export default function ProcesarSolicitud(props) {
                     </Col>
                   </FormGroup>
                   <div style={{ textAlign: "center" }}>
+                    <ButtonMaterial
+                      variant="contained"
+                      color="default"
+                      className={classes.backButton}
+                      onClick={() => history.goBack()}>
+                      Volver
+                    </ButtonMaterial>
                     <ButtonMaterial
                       variant="contained"
                       color="secondary"
