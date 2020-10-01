@@ -38,6 +38,8 @@ const RegistroActividad = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [vacio, setVacio] = useState("");
+
   const consultarRegistros = () => {
     if (startDate <= endDate) {
       submitClick();
@@ -76,6 +78,11 @@ const RegistroActividad = () => {
           console.log(response);
           setRegistro(response.data);
           resolve();
+          console.log(registros.length);
+          if (registros.length === 0) {
+            console.log("entre")
+            setVacio("No hay actividad entre el intervalo");
+          }
         })
         .catch((err) => {
           //error
@@ -87,9 +94,11 @@ const RegistroActividad = () => {
     setLoading(true);
     setRegistro([]);
     setError("");
+    setVacio("");
 
     try {
       await getData();
+      console.log(getData());
     } catch (error) {
       console.log(error);
       setError("Error en la consulta");
@@ -129,7 +138,7 @@ const RegistroActividad = () => {
       </div>
       <p>{error}</p>
       {loading && <Loading />}
-      {registros.length > 0 && (
+      {registros.length > 0 ? (
         <TableContainer style={{ "max-height": "295px" }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -156,6 +165,8 @@ const RegistroActividad = () => {
             </TableBody>
           </Table>
         </TableContainer>
+      ):(
+      <Label>{vacio}</Label>
       )}
     </>
   );
