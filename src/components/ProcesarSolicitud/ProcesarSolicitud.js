@@ -78,7 +78,7 @@ export default function ProcesarSolicitud(props) {
               id="formulario"
               style={{
                 "max-height": "460px",
-                "overflow-y": "scroll",
+                "overflow-y": "auto",
                 border: "0px",
               }}>
               {submit === false ? (
@@ -123,7 +123,7 @@ export default function ProcesarSolicitud(props) {
                       />
                     </Col>
                   </FormGroup>
-                  <div style={{'textAlign':'center'}}>
+                  <div style={{textAlign:"center"}}>
                     <ButtonMaterial
                       variant="contained"
                       color="secondary"
