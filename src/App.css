@@ -319,9 +319,9 @@ Label{
   overflow-y: auto;
 }
 
-.info-acordeon{
-  text-align: right;
-  margin-right: 20px;
+.AcordeonCol1Inf{
+  float: right;
+  margin-right: 5px;
 }
 
 .search-container {

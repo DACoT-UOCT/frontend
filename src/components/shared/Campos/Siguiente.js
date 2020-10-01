@@ -141,19 +141,19 @@ const Siguiente = (props) => {
 
   return (
     <>
-      <>
-        <Button
+      <div style={{'textAlign':'center'}}>
+        <ButtonMaterial
           disabled={state.vista === 1}
           variant="contained"
           color="secondary"
           className={classes.backButton}
           onClick={() => dispatch({ type: "atras" })}>
           Atrás
-        </Button>
-      </>
-      <Button variant="contained" color="primary" onClick={validar_formulario}>
-        {state.vista === 4 ? "Enviar" : "Siguiente"}
-      </Button>
+        </ButtonMaterial>
+        <ButtonMaterial variant="contained" color="primary" onClick={validar_formulario}>
+          {state.vista === 4 ? "Enviar" : "Siguiente"}
+        </ButtonMaterial>
+      </div>
       <Dialog
         open={openWarning}
         TransitionComponent={Transition}
