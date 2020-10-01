@@ -393,7 +393,7 @@ export function reducer(draft, action) {
     }
 
     case "observaciones": {
-      draft.observaciones = action.payLoad;
+      draft.observations = action.payLoad;
       return;
     }
 

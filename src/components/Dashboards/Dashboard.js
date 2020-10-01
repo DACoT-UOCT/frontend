@@ -81,7 +81,7 @@ const Dashboard = () => {
     const link =
       state.rol === "Empresa"
         ? "linkempresa" + "?user=" + state.email
-        : "linkfuncionario" + "?user=" + state.email;
+        : "http://54.198.42.186:8080/request" + "?user=" + state.email;
     return new Promise((resolve, reject) => {
       axios
         .get(link)
@@ -107,10 +107,10 @@ const Dashboard = () => {
       setError("Error en la consulta");
     }
     setLoading(false);
-    setListado([
-      { id: "x01", type: "Solicitud de integración" },
-      { id: "x02", type: "Solicitud de actualización" },
-    ]);
+    // setListado([
+    //   { id: "x01", type: "Solicitud de integración" },
+    //   { id: "x02", type: "Solicitud de actualización" },
+    // ]);
   };
 
   const handleChange = (panel) => (event, isExpanded) => {
