@@ -91,9 +91,11 @@ export default function ProcesarSolicitud(props) {
               className="grid-item"
               id="formulario"
               style={{
-                "max-height": "460px",
+                'marginTop':'5px',
+                "paddingBottom": "5px",
+                "height": "575px",
                 "overflow-y": "auto",
-                border: "0px",
+                "border": "0px",
               }}>
               {submit === false ? (
                 <>
