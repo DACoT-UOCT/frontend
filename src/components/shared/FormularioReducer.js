@@ -2,7 +2,7 @@ export const initialState = {
   oid: "X",
   metadata: {
     version: "base",
-    installed_by: "",
+    //installed_by: "",
     maintainer: "", //se envia vacio al back o no se envia
     status: "NEW", //"UPDATE"
     status_date: Date.now(),
@@ -155,17 +155,17 @@ export function reducer(draft, action) {
       if (draft.errors.length === 0) {
         if (draft.vista === 4) {
           draft.submit = true;
-          document.getElementById('formulario').scrollTop = 0;
+          document.getElementById("formulario").scrollTop = 0;
         }
         draft.vista += 1;
-        document.getElementById('formulario').scrollTop = 0;
+        document.getElementById("formulario").scrollTop = 0;
       }
       return;
     }
 
     case "atras": {
       draft.vista -= 1;
-      document.getElementById('formulario').scrollTop = 0;
+      document.getElementById("formulario").scrollTop = 0;
       return;
     }
 

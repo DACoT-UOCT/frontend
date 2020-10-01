@@ -13,6 +13,7 @@ import {
   StepLabel,
   Typography,
   makeStyles,
+  Button,
 } from "@material-ui/core";
 
 import { reducer, initialState } from "../Shared/FormularioReducer";
@@ -89,6 +90,7 @@ const NuevaInstalacion = (props) => {
     delete state_copy.errors;
     delete state_copy.vista;
     delete state_copy.submit;
+    delete state_copy.isLoading;
     console.log(state_copy);
     return JSON.stringify(state_copy);
   };
@@ -99,10 +101,11 @@ const NuevaInstalacion = (props) => {
 
       var link;
       if (location.pathname === "/nuevo/instalacion") {
-        link = "http://54.198.42.186:8080/request?user=" + props.email;
+        link = "http://54.198.42.186:8080/request?user=" + props.state.email;
       } else if (location.pathname === "/nuevo/digitalizacion") {
-        link = "http://54.198.42.186:8080/otu?user=" + props.email;
+        link = "http://54.198.42.186:8080/otu?user=" + props.state.email;
       }
+      console.log(link);
 
       axios({
         method: "post",

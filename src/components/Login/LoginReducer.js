@@ -1,3 +1,5 @@
+import { Redirect } from "react-router-dom";
+
 export const initialState = {
   full_name: "Auter",
   email: "correoempresa@gmail.com",
@@ -8,6 +10,7 @@ export const initialState = {
   error: "",
   isLoggedIn: true,
   first_click_login: false,
+  actualizando: "",
 };
 
 const funcionario = {
@@ -61,6 +64,11 @@ export function reducer(draft, action) {
       console.log(draft.rol);
       return;
     }
+
+    case "levantar_actualizacion":
+      draft.actualizando = action.payLoad;
+
+      return;
     case "error": {
       draft.error = "usuario o contraseña incorrecto";
       draft.isLoggedIn = false;

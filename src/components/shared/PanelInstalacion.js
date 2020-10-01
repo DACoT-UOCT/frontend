@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import axios from "axios";
 import Loading from "../Shared/Loading";
+import { Redirect } from "react-router-dom";
 
 import styles from "./Nav.module.css";
 import { StateContext, DispatchContext } from "../App";
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   column2: {
     flexBasis: "40%",
-    textAlign: 'center',
+    textAlign: "center",
   },
   column3: {
     flexBasis: "24%",
@@ -119,7 +120,10 @@ export default function PanelInstalacion(props) {
         expanded={props.expanded === props.id}
         onChange={props.handleChange(props.id)}
         TransitionProps={{ unmountOnExit: true }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1c-content" id="panel1c-header">
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1c-content"
+          id="panel1c-header">
           <div className={classes.column}>
             <Typography className={classes.heading}>{props.id}</Typography>
           </div>
@@ -139,18 +143,23 @@ export default function PanelInstalacion(props) {
           <AccordionDetails className={classes.details}>
             <div className={classes.column}>
               <legend>Información del Cruce</legend>
-              <span>Codigo OTU:</span><br />
+              <span>Codigo OTU:</span>
+              <br />
               <div className="info-acordeon">codiguito</div>
-              <span>Ubicacion:</span><br />
+              <span>Ubicacion:</span>
+              <br />
               <div className="info-acordeon">lugarcito</div>
-              <span>Empresa instaladora:</span><br />
+              <span>Empresa instaladora:</span>
+              <br />
               <div className="info-acordeon">empresita</div>
-              <span>Empresa encargada:</span><br />
+              <span>Empresa encargada:</span>
+              <br />
               <div className="info-acordeon">empresita</div>
-              <span>Fecha de instalacion:</span><br />
+              <span>Fecha de instalacion:</span>
+              <br />
               <div className="info-acordeon">fechita</div>
             </div>
-            <div className={clsx(classes.column2,classes.divider)}>
+            <div className={clsx(classes.column2, classes.divider)}>
               <img
                 style={{ "margin-top": "10px" }}
                 height="320"
@@ -160,21 +169,39 @@ export default function PanelInstalacion(props) {
               />
             </div>
             <div className={classes.column3}>
-              {state.rol == "Personal UOCT" &&
+              {state.rol == "Personal UOCT" && (
                 <>
                   <Button color="success"> Aprobar </Button>
-                  <Button color="danger" className="boton-rechazar">Rechazar</Button><br></br>
+                  <Button color="danger" className="boton-rechazar">
+                    Rechazar
+                  </Button>
+                  <br></br>
                 </>
-              }
-                <Button className="boton-dashboard boton-infoinstalacion">Información de Instalación</Button><br></br>
-                <Button className="boton-dashboard">PDF de Respaldo</Button>
-              {state.rol == "Empresa" &&
-                <> 
-                <Button className="boton-dashboard">Programaciones</Button>
-                <Button className="boton-dashboard">Historial de Cambios</Button>
-                <Button className="boton-dashboard">Modificar entrada</Button>
+              )}
+              <Button className="boton-dashboard boton-infoinstalacion">
+                Información de Instalación
+              </Button>
+              <br></br>
+              <Button className="boton-dashboard">PDF de Respaldo</Button>
+              {state.rol == "Empresa" && (
+                <>
+                  <Button className="boton-dashboard">Programaciones</Button>
+                  <Button className="boton-dashboard">
+                    Historial de Cambios
+                  </Button>
+                  <Link
+                    to="/nuevo/instalacion"
+                    className="boton-dashboard"
+                    onClick={() => {
+                      dispatch({
+                        type: "levantar_modificacion",
+                        payLoad: props.id,
+                      });
+                    }}>
+                    Modificar entrada
+                  </Link>
                 </>
-              }
+              )}
             </div>
           </AccordionDetails>
         )}

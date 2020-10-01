@@ -52,7 +52,6 @@ const Siguiente = (props) => {
   const validar_formulario = () => {
     //revisar las variables 1 a una
     dispatch({ type: "reset_errores" });
-    console.log(state);
 
     if (state.vista === 1) {
       validar_entrada(state.oid, "OTU - Codigo", /^(x|X)\d{5}0$/);
