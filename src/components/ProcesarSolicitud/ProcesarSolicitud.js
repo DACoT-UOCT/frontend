@@ -4,12 +4,7 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { StateContext } from "../App";
 
-import {
-  Col,
-  FormGroup,
-  Input,
-  CustomInput,
-} from "reactstrap";
+import { Col, FormGroup, Input, CustomInput } from "reactstrap";
 import { Typography } from "@material-ui/core";
 import ButtonMaterial from "@material-ui/core/Button";
 
@@ -99,7 +94,7 @@ export default function ProcesarSolicitud(props) {
               }}>
               {submit === false ? (
                 <>
-                  <Verificacion state={state.actualizando} />
+                  <Verificacion state={state.actualizando} procesar={true} />
                   <hr className="separador"></hr>
                   <h2>Procesar solicitud</h2>
                   <legend>Imagen complementaria</legend>

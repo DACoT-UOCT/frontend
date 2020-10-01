@@ -2,15 +2,22 @@ import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../App.css";
 import { Col, Row, Label } from "reactstrap";
-import {  Table,
-          TableBody,
-          TableCell,
-          TableContainer,
-          TableRow } from '@material-ui/core';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+} from "@material-ui/core";
 
 const Verificacion = (props) => {
-  const state = props.state;
+  const state = JSON.parse(JSON.stringify(props.state));
   console.log(state);
+  if (props.procesar) {
+    state.secuencias.map((secuencia, index) => {
+      state.secuencias[index] = secuencia.fases;
+    });
+  }
 
   const ancho_label = 4;
   const date = new Date(state.metadata.installation_date.$date);
@@ -97,41 +104,81 @@ const Verificacion = (props) => {
       <Label>Peatonales:</Label> <Label>{state.postes.peatonales}</Label>
       <br></br>
       <legend className="seccion">Cabezales</legend>
-
       <TableContainer>
         <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>
-              <TableCell component="th" scope="row"><Label></Label></TableCell>
-              <TableCell align="center"><Label>Vehiculo L1</Label></TableCell>
-              <TableCell align="center"><Label>Vehiculo L2</Label></TableCell>
-              <TableCell align="center"><Label>Vehiculo L3-L4</Label></TableCell>
-              <TableCell align="center"><Label>Vehiculo L5</Label></TableCell>
-              <TableCell align="center"><Label>Vehiculo L6</Label></TableCell>
-              <TableCell align="center"><Label>Peatonal</Label></TableCell>
+              <TableCell component="th" scope="row">
+                <Label></Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>Vehiculo L1</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>Vehiculo L2</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>Vehiculo L3-L4</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>Vehiculo L5</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>Vehiculo L6</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>Peatonal</Label>
+              </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell component="th" scope="row"><Label>Halógeno</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.l1.hal}</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.l2.hal}</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.l3_l4.hal}</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.l5.hal}</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.l6.hal}</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.peatonal.hal}</Label></TableCell>
+              <TableCell component="th" scope="row">
+                <Label>Halógeno</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.l1.hal}</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.l2.hal}</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.l3_l4.hal}</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.l5.hal}</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.l6.hal}</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.peatonal.hal}</Label>
+              </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell component="th" scope="row"><Label>Led</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.l1.led}</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.l2.led}</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.l3_l4.led}</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.l5.led}</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.l6.led}</Label></TableCell>
-              <TableCell align="center"><Label>{state.cabezales.peatonal.led}</Label></TableCell>
+              <TableCell component="th" scope="row">
+                <Label>Led</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.l1.led}</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.l2.led}</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.l3_l4.led}</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.l5.led}</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.l6.led}</Label>
+              </TableCell>
+              <TableCell align="center">
+                <Label>{state.cabezales.peatonal.led}</Label>
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
-
       <legend className="seccion">UPS</legend>
       <Label>Marca:</Label> <Label>{state.ups.marca}</Label>
       <br></br>
@@ -143,7 +190,7 @@ const Verificacion = (props) => {
       <br></br>
       <Label>Duración Carga:</Label> <Label>{state.ups.duracion_carga}</Label>
       <br></br>
-      {/* <legend className="seccion">Etapas</legend>
+      <legend className="seccion">Etapas</legend>
       {state.stages.map((stage) => {
         return (
           <>
@@ -175,7 +222,7 @@ const Verificacion = (props) => {
       <legend className="seccion">Matriz Entreverdes</legend>
       {}
       <legend className="seccion">Observaciones</legend>
-      <Label>{state.metadata.observations}</Label> */}
+      <Label>{state.metadata.observations}</Label>
     </>
   );
 };
