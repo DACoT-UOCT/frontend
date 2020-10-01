@@ -18,7 +18,7 @@ const Observaciones = (props) => {
             bsSize="sm"
             type="textarea"
             placeholder=""
-            value={state.observations}
+            value={state.metadata.observations}
             onChange={(e) =>
               dispatch({
                 type: "observaciones",

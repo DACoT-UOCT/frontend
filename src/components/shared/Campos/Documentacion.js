@@ -70,7 +70,7 @@ const Documentacion = (props) => {
         />
       </FormGroup>
 
-      <FormGroup>
+      {/* <FormGroup>
         <Label>Adjuntar imagen con los bits de control</Label>
         <br></br>
         <CustomInput
@@ -92,7 +92,7 @@ const Documentacion = (props) => {
             };
           }}
         />
-      </FormGroup>
+      </FormGroup> */}
     </>
   );
 };

@@ -78,10 +78,15 @@ const Dashboard = () => {
 
   async function getData() {
     //consulta por id al backend
-    const link =
-      state.rol === "Empresa"
-        ? "linkempresa" + "?user=" + state.email
-        : "http://54.198.42.186:8080/request" + "?user=" + state.email;
+    var link;
+    if (state.rol === "Empresa") {
+      link = "linkempresa" + "?user=" + state.email;
+    } else {
+      link = "http://54.198.42.186:8080/request" + "?user=" + state.email;
+    }
+
+    console.log(link);
+    return;
     return new Promise((resolve, reject) => {
       axios
         .get(link)

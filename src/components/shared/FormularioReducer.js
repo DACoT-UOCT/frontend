@@ -105,7 +105,6 @@ export const initialState = {
 
   secuencias: [[]], //[[1,2,3], "J003672"]
   entreverdes: [["0"]],
-  //bits_de_control: "",
 
   errors: [],
   vista: 1,
@@ -327,17 +326,17 @@ export function reducer(draft, action) {
     }
 
     case "upload_PDF": {
-      draft.pdf_respaldo = action.payLoad;
+      draft.metadata.pdf_data = action.payLoad;
       return;
     }
 
     case "upload_imagen_cruce": {
-      draft.imagen_instalacion = action.payLoad;
+      draft.imgs = action.payLoad;
       return;
     }
 
     case "upload_bits_de_control": {
-      draft.bits_de_control = action.payLoad;
+      draft.metadata.control = action.payLoad;
       return;
     }
 
@@ -393,7 +392,7 @@ export function reducer(draft, action) {
     }
 
     case "observaciones": {
-      draft.observations = action.payLoad;
+      draft.metadata.observations = action.payLoad;
       return;
     }
 
