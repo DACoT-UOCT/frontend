@@ -9,6 +9,7 @@ import { initialState } from "../Shared/FormularioReducer";
 import { StateContext, DispatchContext } from "../App";
 import { makeStyles } from "@material-ui/core/styles";
 import { Form } from "reactstrap";
+
 import {
   Col,
   Row,
@@ -40,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProcesarSolicitud(props) {
+  const state = useContext(StateContext);
   const classes = useStyles();
   const [comentario, setComentario] = useState("");
   const [imagen, setImagen] = useState(null);
@@ -53,13 +55,17 @@ export default function ProcesarSolicitud(props) {
       correos: correos,
     };
     var link; //link + user + oid
+
     if (aprobar) {
+      link = "/accept-request/props.?user=" + state.email;
       console.log("aprobar");
       console.log(respuesta);
     } else {
+      link = "/reject-request/props.?user=" + state.email;
       console.log("rechazar");
     }
-
+    console.log(link);
+    return;
     axios({
       method: "post",
       url: link,
