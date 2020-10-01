@@ -39,19 +39,15 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "flex-start",
   },
   column: {
-    flexBasis: "37%",
+    flexBasis: "36%",
   },
   column2: {
     flexBasis: "40%",
-    textAlign: "center",
+    textAlign: 'center',
   },
   column3: {
-    flexBasis: "23%",
-    padding: theme.spacing(1, 2),
+    flexBasis: "24%",
     marginTop: "10px",
-  },
-  hordivider: {
-    borderBottom: `2px solid ${theme.palette.divider}`,
     padding: theme.spacing(1, 2),
   },
   divider: {
@@ -123,10 +119,7 @@ export default function PanelInstalacion(props) {
         expanded={props.expanded === props.id}
         onChange={props.handleChange(props.id)}
         TransitionProps={{ unmountOnExit: true }}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1c-content"
-          id="panel1c-header">
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1c-content" id="panel1c-header">
           <div className={classes.column}>
             <Typography className={classes.heading}>{props.id}</Typography>
           </div>
@@ -145,27 +138,19 @@ export default function PanelInstalacion(props) {
         {otu !== null && !loading && (
           <AccordionDetails className={classes.details}>
             <div className={classes.column}>
-              <legend className={classes.hordivider}>
-                {" "}
-                Información del Cruce{" "}
-              </legend>
-              <span>Codigo OTU:</span>
-              <br />
+              <legend>Información del Cruce</legend>
+              <span>Codigo OTU:</span><br />
               <div className="info-acordeon">codiguito</div>
-              <span>Ubicacion:</span>
-              <br />
+              <span>Ubicacion:</span><br />
               <div className="info-acordeon">lugarcito</div>
-              <span>Empresa instaladora:</span>
-              <br />
+              <span>Empresa instaladora:</span><br />
               <div className="info-acordeon">empresita</div>
-              <span>Empresa encargada:</span>
-              <br />
+              <span>Empresa encargada:</span><br />
               <div className="info-acordeon">empresita</div>
-              <span>Fecha de instalacion:</span>
-              <br />
+              <span>Fecha de instalacion:</span><br />
               <div className="info-acordeon">fechita</div>
             </div>
-            <div className={clsx(classes.column2, classes.divider)}>
+            <div className={clsx(classes.column2,classes.divider)}>
               <img
                 style={{ "margin-top": "10px" }}
                 height="320"
@@ -175,22 +160,21 @@ export default function PanelInstalacion(props) {
               />
             </div>
             <div className={classes.column3}>
-              <Button color="success"> Aprobar </Button>
-              <Button color="danger" className="boton-rechazar">
-                {" "}
-                Rechazar{" "}
-              </Button>{" "}
-              <br></br>
-              <Button className="boton-dashboard boton-infoinstalacion">
-                {" "}
-                Información de Instalación{" "}
-              </Button>{" "}
-              <br></br>
-              <Button className="boton-dashboard">
-                {" "}
-                PDF de Respaldo{" "}
-              </Button>{" "}
-              <br></br>
+              {state.rol == "Personal UOCT" &&
+                <>
+                  <Button color="success"> Aprobar </Button>
+                  <Button color="danger" className="boton-rechazar">Rechazar</Button><br></br>
+                </>
+              }
+                <Button className="boton-dashboard boton-infoinstalacion">Información de Instalación</Button><br></br>
+                <Button className="boton-dashboard">PDF de Respaldo</Button>
+              {state.rol == "Empresa" &&
+                <> 
+                <Button className="boton-dashboard">Programaciones</Button>
+                <Button className="boton-dashboard">Historial de Cambios</Button>
+                <Button className="boton-dashboard">Modificar entrada</Button>
+                </>
+              }
             </div>
           </AccordionDetails>
         )}
