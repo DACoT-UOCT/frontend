@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { Form } from "reactstrap";
-import StateContext from "../App";
+import { StateContext } from "../App";
 
 import {
   Col,
@@ -22,22 +22,23 @@ import clsx from "clsx";
 
 import Verificacion from "../Shared/Campos/Verificacion";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-  },
-  backButton: {
-    marginRight: theme.spacing(1),
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-}));
-
 export default function ProcesarSolicitud(props) {
-  const state = useContext(StateContext);
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      width: "100%",
+    },
+    backButton: {
+      marginRight: theme.spacing(1),
+    },
+    instructions: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    },
+  }));
   const classes = useStyles();
+  const state = useContext(StateContext);
+  console.log(state.actualizando);
+
   const [comentario, setComentario] = useState("");
   const [imagen, setImagen] = useState(null);
   const [correos, setCorreos] = useState([""]);
@@ -46,25 +47,33 @@ export default function ProcesarSolicitud(props) {
   const enviar = (aprobar) => {
     var respuesta = {
       comentario: comentario,
-      imagen_complementaria: imagen,
-      correos: correos,
+      file: imagen,
+      mails: correos,
     };
-    var link; //link + user + oid
+    var link = "link"; //link + user + oid
 
     if (aprobar) {
-      link = "/accept-request/props.?user=" + state.email;
+      link =
+        "http://54.198.42.186:8080/accept-request/" +
+        state.actualizando.oid +
+        "?user=" +
+        state.email;
       console.log("aprobar");
       console.log(respuesta);
     } else {
-      link = "/reject-request/props.?user=" + state.email;
+      link =
+        "http://54.198.42.186:8080/reject-request/" +
+        state.actualizando.oid +
+        "?user=" +
+        state.email;
       console.log("rechazar");
     }
     console.log(link);
-    return;
+
     axios({
-      method: "post",
+      method: "put",
       url: link,
-      data: "request=" + JSON.stringify(respuesta),
+      data: "data=" + JSON.stringify(respuesta),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
       },
@@ -94,7 +103,7 @@ export default function ProcesarSolicitud(props) {
               }}>
               {submit === false ? (
                 <>
-                  <Verificacion state={props.state} />
+                  <Verificacion state={state.actualizando} />
                   <hr className="separador"></hr>
                   <h2>Procesar solicitud</h2>
                   <legend>Imagen complementaria</legend>
