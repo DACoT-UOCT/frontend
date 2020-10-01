@@ -84,13 +84,14 @@ const Dashboard = () => {
     } else {
       link = "http://54.198.42.186:8080/request" + "?user=" + state.email;
     }
-    console.log(link);
+
     return new Promise((resolve, reject) => {
       axios
         .get(link)
         .then((response) => {
           //solicitud exitosa
           setListado(response.data);
+          console.log(response.data);
           resolve();
         })
         .catch((err) => {
@@ -120,6 +121,11 @@ const Dashboard = () => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  const estados = {
+    NEW: "Solicitud de integración",
+    UPDATE: "Solicitud de actualización",
+  };
+
   return (
     <div className="grid-item dashboard-empresa">
       {state.rol === "Empresa" ? (
@@ -136,8 +142,8 @@ const Dashboard = () => {
                 <>
                   <PanelInstalacion
                     expanded={expanded}
-                    id={i.id} //ahi ingresar el X
-                    type={i.type}
+                    id={i.oid} //ahi ingresar el X
+                    type={estados[i.metadata.status]}
                     handleChange={handleChange}
                   />
                 </>
