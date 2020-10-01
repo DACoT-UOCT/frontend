@@ -48,7 +48,7 @@ export default function ProcesarSolicitud(props) {
 
     if (aprobar) {
       link =
-        "http://54.198.42.186:8080/accept-request/" +
+        "http://34.224.95.239:8080/accept-request/" +
         state.actualizando.oid +
         "?user=" +
         state.email;
@@ -56,7 +56,7 @@ export default function ProcesarSolicitud(props) {
       console.log(respuesta);
     } else {
       link =
-        "http://54.198.42.186:8080/reject-request/" +
+        "http://34.224.95.239:8080/reject-request/" +
         state.actualizando.oid +
         "?user=" +
         state.email;

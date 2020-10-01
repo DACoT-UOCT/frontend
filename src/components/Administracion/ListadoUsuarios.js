@@ -20,7 +20,7 @@ const ListadoUsuarios = (props) => {
 
   async function getData() {
     //consulta por id al backend
-    const link = "http://54.198.42.186:8080/users" + "?user=" + state.email;
+    const link = "http://34.224.95.239:8080/users" + "?user=" + state.email;
     return new Promise((resolve, reject) => {
       axios
         .get(link)
