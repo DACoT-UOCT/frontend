@@ -228,7 +228,7 @@ const NuevaInstalacion = (props) => {
           </>
         );
       case 4:
-        return <Verificacion state={state} />;
+        return <Verificacion state={state} procesar={false} />;
 
       case 5:
         return (
