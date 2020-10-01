@@ -591,3 +591,7 @@ Button{
   width: 50%;
   display: inline-block;
 }
+
+.inputCabezales{
+  text-align: center;
+}
