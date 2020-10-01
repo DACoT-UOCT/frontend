@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import Loading from "../Shared/Loading";
 import DatePicker from "react-datepicker";
@@ -11,24 +11,11 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 
-import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
-import PreviewInstalacion from "../Shared/PreviewInstalacion";
+import { Button } from "reactstrap";
 import axios from "axios";
 
-import ButtonMaterial from "@material-ui/core/Table";
-import Link from "@material-ui/core/Link";
-import {
-  Nav,
-  NavItem,
-  Dropdown,
-  DropdownItem,
-  DropdownToggle,
-  DropdownMenu,
-  NavLink,
-} from "reactstrap";
 
 const RegistroActividad = () => {
   const state = useContext(StateContext);

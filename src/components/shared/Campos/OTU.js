@@ -82,7 +82,7 @@ const OTU = (props) => {
                   <option>Región de Atacama</option>
                   <option>Región de Coquimbo</option>
                   <option>Región de Valparaíso</option> */}
-                  <option>Región Metropolitana de Santiago</option>
+                  <option value="Región Metropolitana de Santiago">Región Metropolitana de Santiago</option>
                   {/* <option>Región del Libertador General Bernardo O’Higgins</option>
                   <option>Región del Maule</option>
                   <option>Región del Ñuble</option>

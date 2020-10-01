@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Page,
   Text,
   View,
   Document,
   StyleSheet,
-  Image,
   Font,
 } from "@react-pdf/renderer";
 import fontLtSrc from "../../Aller/Aller_Lt.ttf";

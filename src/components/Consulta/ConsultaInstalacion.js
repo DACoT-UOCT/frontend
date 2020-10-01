@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./BusquedaReducer";
-import { Form, Row, Col, Button, Input, FormGroup } from "reactstrap";
+import { Form, Row, Button, Input } from "reactstrap";
 import PreviewInstalacion from "../Shared/PreviewInstalacion";
 import axios from "axios";
 

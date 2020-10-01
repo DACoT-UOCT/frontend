@@ -1,22 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useImmerReducer } from "use-immer";
 import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import { Button } from "reactstrap";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PanelInstalacion from "../Shared/PanelInstalacion";
 import { StateContext } from "../App";
 import Loading from "../Shared/Loading";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  AccordionActions,
-  Typography,
-  Chip,
-} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {

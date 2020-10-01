@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from "react";
+import React from "react";
 import { useImmerReducer } from "use-immer";
 import "../App.css";
 import Header from "./Shared/Header";
@@ -9,9 +9,7 @@ import { initialState, reducer } from "./Login/LoginReducer";
 import ProcesarSolicitud from "./ProcesarSolicitud/ProcesarSolicitud";
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  useLocation,
 } from "react-router-dom";
 import NuevaActualizacion from "./SolicitudActualizacionNueva/NuevaActualizacion";
 import Dashboard from "./Dashboards/Dashboard";

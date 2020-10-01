@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import "../../App.css";
-import { Col, FormGroup, Label } from "reactstrap";
-import TextField from "@material-ui/core/TextField";
 
-const Loading = (props) => {
+const Loading = () => {
   return (
     <>
       <div className="ldg-ellipsis-log">

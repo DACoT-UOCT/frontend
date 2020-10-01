@@ -3,7 +3,6 @@ import { useImmerReducer } from "use-immer";
 import { reducer, initialState } from "./ActualizacionReducer";
 import PreviewInstalacion from "../Shared/PreviewInstalacion";
 import { Button, Form, Row, Input } from "reactstrap";
-import { Col, FormGroup } from "reactstrap";
 import axios from "axios";
 
 // import Junctions from "./Campos/Junctions";
