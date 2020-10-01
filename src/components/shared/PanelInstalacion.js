@@ -114,7 +114,6 @@ export default function PanelInstalacion(props) {
       setError("Error en la consulta");
     }
     setLoading(false);
-    setOtu(initialState);
   };
 
   return (

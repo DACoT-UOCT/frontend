@@ -78,12 +78,12 @@ const Dashboard = () => {
 
   async function getData() {
     //consulta por id al backend
-    var link;
-    if (state.rol === "Empresa") {
-      link = "linkempresa" + "?user=" + state.email;
-    } else {
-      link = "http://54.198.42.186:8080/request" + "?user=" + state.email;
-    }
+    var link = "http://54.198.42.186:8080/request" + "?user=" + state.email;
+    // if (state.rol === "Empresa") {
+    //   link = "linkempresa" + "?user=" + state.email;
+    // } else {
+    //   link = "http://54.198.42.186:8080/request" + "?user=" + state.email;
+    // }
 
     return new Promise((resolve, reject) => {
       axios

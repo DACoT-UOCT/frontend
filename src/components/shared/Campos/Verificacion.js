@@ -6,9 +6,10 @@ import { Col, Row, Label, Table } from "reactstrap";
 
 const Verificacion = (props) => {
   const state = props.state;
+  console.log(state);
 
   const ancho_label = 4;
-  const date = new Date(state.metadata.installation_date);
+  const date = new Date(state.metadata.installation_date.$date);
   const fecha =
     date.getDay() + "-" + date.getMonth() + "-" + date.getFullYear();
   const fila = state.entreverdes.length;
@@ -18,7 +19,6 @@ const Verificacion = (props) => {
       <h5 style={{ textAlign: "center" }}>
         Verifique que los datos ingresado son correctos
       </h5>
-      {/*OTU*/}
       <legend className="seccion">OTU</legend>
       <Row>
         <Col>
@@ -68,14 +68,12 @@ const Verificacion = (props) => {
           <br></br>
         </Col>
       </Row>
-      {/*Controlador*/}
       <legend className="seccion">Controlador</legend>
       <Label>Modelo:</Label> <Label>{state.metadata.controller.model}</Label>
       <br></br>
       <Label>Ubicación:</Label>{" "}
       <Label>{state.metadata.controller.address_reference}</Label>
       <br></br>
-      {/*Junctions*/}
       <legend className="seccion">Junctions</legend>
       {state.junctions.map((junction) => {
         return (
@@ -87,7 +85,6 @@ const Verificacion = (props) => {
           </>
         );
       })}
-      {/*Postes*/}
       <legend className="seccion">Postes</legend>
       <Label>Ganchos:</Label> <Label>{state.postes.ganchos}</Label>
       <br></br>
@@ -95,7 +92,6 @@ const Verificacion = (props) => {
       <br></br>
       <Label>Peatonales:</Label> <Label>{state.postes.peatonales}</Label>
       <br></br>
-      {/*Cabezales*/}
       <legend className="seccion">Cabezales</legend>
       <Table responsive>
         <thead>
@@ -130,7 +126,6 @@ const Verificacion = (props) => {
           </tr>
         </tbody>
       </Table>
-      {/*UPS*/}
       <legend className="seccion">UPS</legend>
       <Label>Marca:</Label> <Label>{state.ups.marca}</Label>
       <br></br>
@@ -142,8 +137,7 @@ const Verificacion = (props) => {
       <br></br>
       <Label>Duración Carga:</Label> <Label>{state.ups.duracion_carga}</Label>
       <br></br>
-      {/*Etapas*/}
-      <legend className="seccion">Etapas</legend>
+      {/* <legend className="seccion">Etapas</legend>
       {state.stages.map((stage) => {
         return (
           <>
@@ -154,7 +148,6 @@ const Verificacion = (props) => {
           </>
         );
       })}
-      {/*Fases*/}
       <legend className="seccion">Fases</legend>
       {state.fases.map((fase, index) => {
         return (
@@ -164,7 +157,6 @@ const Verificacion = (props) => {
           </>
         );
       })}
-      {/*Secuencias*/}
       <legend className="seccion">Secuencias</legend>
       {state.secuencias.map((secuencia, index) => {
         return (
@@ -174,14 +166,10 @@ const Verificacion = (props) => {
           </>
         );
       })}
-      {/*Entreverdes*/}
       <legend className="seccion">Matriz Entreverdes</legend>
-      {
-      
-      }
-      {/*Observaciones*/}
+      {}
       <legend className="seccion">Observaciones</legend>
-      <Label>{state.metadata.observations}</Label>
+      <Label>{state.metadata.observations}</Label> */}
     </>
   );
 };
