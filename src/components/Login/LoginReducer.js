@@ -67,8 +67,8 @@ export function reducer(draft, action) {
 
     case "levantar_actualizacion":
       draft.actualizando = action.payLoad;
-
       return;
+
     case "error": {
       draft.error = "usuario o contraseña incorrecto";
       draft.isLoggedIn = false;

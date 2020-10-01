@@ -6,6 +6,7 @@ import NuevaInstalacion from "./SolicitudInstalacionNueva/NuevaInstalacion";
 import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
 import Login from "./Login/Login";
 import { initialState, reducer } from "./Login/LoginReducer";
+import ProcesarSolicitud from "./ProcesarSolicitud/ProcesarSolicitud";
 import {
   BrowserRouter as Router,
   Switch,
@@ -43,6 +44,13 @@ const App = () => {
               <Header />
 
               <Route exact path="/consulta" component={ConsultaSemaforo} />
+              <Route
+                exact
+                path="/info/instalacion"
+                component={() => (
+                  <ProcesarSolicitud state={state.actualizando} />
+                )}
+              />
               {state.rol === "Empresa" && (
                 <>
                   <Route
@@ -55,6 +63,7 @@ const App = () => {
                     path="/actualizar/instalacion"
                     component={() => <NuevaInstalacion state={state} />}
                   />
+                  "/info/instalacion"
                   <Route
                     exact
                     path="/nuevo/actualizacion"

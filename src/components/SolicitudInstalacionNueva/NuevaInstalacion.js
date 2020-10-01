@@ -210,9 +210,7 @@ const NuevaInstalacion = (props) => {
           </>
         );
       case 4:
-        return (
-          <Verificacion state={state} codigo={state.oid} dispatch={dispatch} />
-        );
+        return <Verificacion state={state} />;
 
       case 5:
         return (
