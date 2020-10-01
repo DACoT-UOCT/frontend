@@ -4,6 +4,7 @@ import { Form } from "reactstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Loading from "../Shared/Loading";
+
 import {
   Switch,
   Collapse,
@@ -51,9 +52,14 @@ const useStyles = makeStyles((theme) => ({
 
 //lag -> pasar parte del estado como prop, usar React.memo( () =>{})
 const NuevaInstalacion = (props) => {
-  const [state, dispatch] = useImmerReducer(reducer, initialState);
-  const [checked, setChecked] = React.useState(false);
   const location = useLocation();
+  const [state, dispatch] = useImmerReducer(
+    reducer,
+    location.pathname === "/actualizar/instalacion"
+      ? props.state.actualizando
+      : initialState
+  );
+  const [checked, setChecked] = React.useState(false);
 
   //STEPPER STEPPER STEPPER STEPPER
   const classes = useStyles();
@@ -68,7 +74,7 @@ const NuevaInstalacion = (props) => {
     const state_copy = JSON.parse(JSON.stringify(state));
 
     //agregar status_user
-    state_copy.status_user = props.state.full_name;
+    state_copy.metadata.status_user = props.state.email;
 
     //convertir variables a enteros
     state_copy.metadata.control = parseInt(state_copy.metadata.control);

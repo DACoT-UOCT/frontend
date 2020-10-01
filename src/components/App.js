@@ -52,6 +52,11 @@ const App = () => {
                   />
                   <Route
                     exact
+                    path="/actualizar/instalacion"
+                    component={() => <NuevaInstalacion state={state} />}
+                  />
+                  <Route
+                    exact
                     path="/nuevo/actualizacion"
                     component={() => <NuevaActualizacion id="X001450" />}
                   />

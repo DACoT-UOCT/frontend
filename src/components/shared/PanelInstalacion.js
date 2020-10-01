@@ -4,6 +4,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import axios from "axios";
 import Loading from "../Shared/Loading";
 import { Redirect } from "react-router-dom";
+import { initialState } from "../Shared/FormularioReducer";
 
 import { StateContext, DispatchContext } from "../App";
 import { makeStyles } from "@material-ui/core/styles";
@@ -110,7 +111,7 @@ export default function PanelInstalacion(props) {
       setError("Error en la consulta");
     }
     setLoading(false);
-    setOtu(1);
+    setOtu(initialState);
   };
 
   return (
@@ -198,8 +199,8 @@ export default function PanelInstalacion(props) {
                     className="boton-dashboard"
                     onClick={() => {
                       dispatch({
-                        type: "levantar_modificacion",
-                        payLoad: props.id,
+                        type: "levantar_actualizacion",
+                        payLoad: otu,
                       });
                     }}>
                     Modificar entrada
