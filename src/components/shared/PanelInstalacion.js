@@ -177,16 +177,6 @@ export default function PanelInstalacion(props) {
               />
             </div>
             <div className={classes.column3}>
-              {state.rol == "Personal UOCT" && (
-                <>
-                  <Button color="success"> Aprobar </Button>
-                  <Button color="danger" className="boton-rechazar">
-                    Rechazar
-                  </Button>
-                  <br></br>
-                </>
-              )}
-
               <Link
                 to="/procesar/solicitud"
                 className="nada"
@@ -196,7 +186,7 @@ export default function PanelInstalacion(props) {
                     payLoad: otu,
                   });
                 }}>
-                <div className="linkBoton">Información de Instalación</div>
+                <div className="linkBoton">Procesar Solicitud</div>
               </Link>
               <br></br>
               <Button className="botonDashboard">PDF de Respaldo</Button>

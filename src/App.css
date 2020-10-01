@@ -556,7 +556,7 @@ Button{
 }
 
 .botonDashboard{
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .boton-rechazar{
@@ -598,7 +598,7 @@ Button{
 
 .linkBoton {
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-top: 10px;
   background-color: #6c757d;
   border-color: #6c757d;
   display: inline-block;
