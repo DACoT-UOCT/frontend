@@ -98,7 +98,7 @@ export default function ProcesarSolicitud(props) {
               id="formulario"
               style={{
                 "max-height": "460px",
-                "overflow-y": "scroll",
+                "overflow-y": "auto",
                 border: "0px",
               }}>
               {submit === false ? (
