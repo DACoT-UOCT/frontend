@@ -555,7 +555,7 @@ Button{
   font-size: 12px !important;
 }
 
-.boton-dashboard{
+.botonDashboard{
   margin-bottom: 10px;
 }
 
@@ -594,4 +594,42 @@ Button{
 
 .inputCabezales{
   text-align: center;
+}
+
+.linkBoton {
+  cursor: pointer;
+  margin-bottom: 10px;
+  background-color: #6c757d;
+  border-color: #6c757d;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  border-radius: .25rem;
+  -webkit-writing-mode: horizontal-tb !important;
+  text-rendering: auto;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-indent: 0px;
+  text-shadow: none;
+  align-items: flex-start;
+  font-size: 12px;
+  font-family: "Averis", sans-serif;
+  color: #fff;
+}
+
+.linkBoton:hover{
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  background-color:#5a6268;
+}
+
+.nada{
+  all: unset;
+}
+
+.nada:hover{
+  all: unset;
+  
 }
