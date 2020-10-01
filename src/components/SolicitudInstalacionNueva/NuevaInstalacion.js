@@ -74,7 +74,10 @@ const NuevaInstalacion = (props) => {
     const state_copy = JSON.parse(JSON.stringify(state));
 
     //agregar status_user
-    state_copy.metadata.status_user = props.state.email;
+    //state_copy.metadata.status_user = props.state.email;
+    if (location.pathname === "/nuevo/digitalizacion") {
+      state_copy.metadata.status = "SYSTEM";
+    }
 
     //convertir variables a enteros
     state_copy.metadata.control = parseInt(state_copy.metadata.control);
@@ -105,12 +108,12 @@ const NuevaInstalacion = (props) => {
     if (state.submit === true) {
       //enviar
 
-      var link;
-      if (location.pathname === "/nuevo/instalacion") {
-        link = "http://54.198.42.186:8080/request?user=" + props.state.email;
-      } else if (location.pathname === "/nuevo/digitalizacion") {
-        link = "http://54.198.42.186:8080/otu?user=" + props.state.email;
-      }
+      var link = "http://54.198.42.186:8080/request?user=" + props.state.email;
+      // if (location.pathname === "/nuevo/instalacion") {
+      //   link = "http://54.198.42.186:8080/request?user=" + props.state.email;
+      // } else if (location.pathname === "/nuevo/digitalizacion") {
+      //   link = "http://54.198.42.186:8080/otu?user=" + props.state.email;
+      // }
       console.log(link);
 
       axios({

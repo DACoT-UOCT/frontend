@@ -81,7 +81,7 @@ const App = () => {
                   <Route
                     exact
                     path="/nuevo/digitalizacion"
-                    component={NuevaInstalacion}
+                    component={() => <NuevaInstalacion state={state} />}
                   />
                 </>
               )}

@@ -6,7 +6,7 @@ export const initialState = {
     maintainer: "", //se envia vacio al back o no se envia
     status: "NEW", //"UPDATE"
     status_date: Date.now(),
-    status_user: "", //ENVIAR CORREO
+    status_user: "correoempresa@gmail.com", //ENVIAR CORREO
     installation_date: Date.now(),
     region: "",
     commune: "",
