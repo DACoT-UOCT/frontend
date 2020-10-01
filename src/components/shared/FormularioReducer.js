@@ -331,7 +331,7 @@ export function reducer(draft, action) {
     }
 
     case "upload_imagen_cruce": {
-      draft.imgs = action.payLoad;
+      draft.metadata.imgs = action.payLoad;
       return;
     }
 

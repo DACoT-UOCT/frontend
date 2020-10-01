@@ -84,9 +84,7 @@ const Dashboard = () => {
     } else {
       link = "http://54.198.42.186:8080/request" + "?user=" + state.email;
     }
-
     console.log(link);
-    return;
     return new Promise((resolve, reject) => {
       axios
         .get(link)
