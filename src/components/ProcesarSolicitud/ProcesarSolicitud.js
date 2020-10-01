@@ -2,12 +2,18 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import  {
-          Col,
-          FormGroup,
-          Input,
-          CustomInput,
-        } from "reactstrap";
+import { Form } from "reactstrap";
+import StateContext from "../App";
+
+import {
+  Col,
+  Row,
+  FormGroup,
+  Button,
+  Label,
+  Input,
+  CustomInput,
+} from "reactstrap";
 import { Typography } from "@material-ui/core";
 import ButtonMaterial from "@material-ui/core/Button";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -30,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProcesarSolicitud(props) {
+  const state = useContext(StateContext);
   const classes = useStyles();
   const [comentario, setComentario] = useState("");
   const [imagen, setImagen] = useState(null);
@@ -43,13 +50,17 @@ export default function ProcesarSolicitud(props) {
       correos: correos,
     };
     var link; //link + user + oid
+
     if (aprobar) {
+      link = "/accept-request/props.?user=" + state.email;
       console.log("aprobar");
       console.log(respuesta);
     } else {
+      link = "/reject-request/props.?user=" + state.email;
       console.log("rechazar");
     }
-
+    console.log(link);
+    return;
     axios({
       method: "post",
       url: link,
@@ -123,7 +134,7 @@ export default function ProcesarSolicitud(props) {
                       />
                     </Col>
                   </FormGroup>
-                  <div style={{textAlign:"center"}}>
+                  <div style={{ textAlign: "center" }}>
                     <ButtonMaterial
                       variant="contained"
                       color="secondary"

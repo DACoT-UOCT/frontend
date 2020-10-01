@@ -82,10 +82,13 @@ export default function PanelInstalacion(props) {
 
   async function getData() {
     //consulta por id al backend
-    const link =
-      state.rol === "Empresa"
-        ? "linkempresa" + "?user=" + state.email
-        : "linkfuncionario" + "?user=" + state.email;
+    //http://54.198.42.186:8080/request/X123450
+    const link = "http://54.198.42.186:8080/request/" + props.id;
+    // state.rol === "Empresa"
+    //   ? "linkempresa" + "?user=" + state.email
+    //   : "linkfuncionario" + "?user=" + state.email;
+    console.log(link);
+    return;
     return new Promise((resolve, reject) => {
       axios
         .get(link)

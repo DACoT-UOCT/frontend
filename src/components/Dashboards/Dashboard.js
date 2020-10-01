@@ -124,6 +124,7 @@ const Dashboard = () => {
   const estados = {
     NEW: "Solicitud de integración",
     UPDATE: "Solicitud de actualización",
+    APPROVED: "Instalación en funcionamiento",
   };
 
   return (
