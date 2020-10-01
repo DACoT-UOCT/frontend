@@ -46,7 +46,7 @@ const App = () => {
               <Route exact path="/consulta" component={ConsultaSemaforo} />
               <Route
                 exact
-                path="/info/instalacion"
+                path="/procesar/solicitud"
                 component={() => (
                   <ProcesarSolicitud state={state.actualizando} />
                 )}

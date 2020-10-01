@@ -183,12 +183,21 @@ export default function PanelInstalacion(props) {
                   <br></br>
                 </>
               )}
-              <Button className="botonDashboard boton-infoinstalacion">
-                Información de Instalación
-              </Button>
+
+              <Link
+                to="/procesar/solicitud"
+                className="nada"
+                onClick={() => {
+                  dispatch({
+                    type: "levantar_actualizacion",
+                    payLoad: otu,
+                  });
+                }}>
+                <div className="linkBoton">Información de Instalación</div>
+              </Link>
               <br></br>
               <Button className="botonDashboard">PDF de Respaldo</Button>
-              {state.rol == "Empresa" && (
+              {state.rol === "Empresa" && (
                 <>
                   <Button className="botonDashboard">Programaciones</Button>
                   <Button className="botonDashboard">
