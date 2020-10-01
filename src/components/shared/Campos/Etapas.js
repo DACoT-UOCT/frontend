@@ -58,9 +58,9 @@ const Etapas = (props) => {
                     })
                   }>
                   <option value="" hidden></option>
-                  <option value="vehicular">Vehicular</option>
-                  <option value="peatonal">Ciclista</option>
-                  <option value="peatonal">Peatonal</option>
+                  <option value="Vehicular">Vehicular</option>
+                  <option value="Ciclista">Ciclista</option>
+                  <option value="Peatonal">Peatonal</option>
                 </TextField>
               </FormGroup>
             </Col>
