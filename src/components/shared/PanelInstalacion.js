@@ -5,11 +5,10 @@ import axios from "axios";
 import Loading from "../Shared/Loading";
 import { Redirect } from "react-router-dom";
 
-import styles from "./Nav.module.css";
 import { StateContext, DispatchContext } from "../App";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Button } from "reactstrap";
+import { Button, Label } from "reactstrap";
 import clsx from "clsx";
 import {
   Accordion,
@@ -143,21 +142,26 @@ export default function PanelInstalacion(props) {
           <AccordionDetails className={classes.details}>
             <div className={classes.column}>
               <legend>Información del Cruce</legend>
-              <span>Codigo OTU:</span>
-              <br />
-              <div className="info-acordeon">codiguito</div>
-              <span>Ubicacion:</span>
-              <br />
-              <div className="info-acordeon">lugarcito</div>
-              <span>Empresa instaladora:</span>
-              <br />
-              <div className="info-acordeon">empresita</div>
-              <span>Empresa encargada:</span>
-              <br />
-              <div className="info-acordeon">empresita</div>
-              <span>Fecha de instalacion:</span>
-              <br />
-              <div className="info-acordeon">fechita</div>
+              <div>
+                <Label>Codigo OTU:</Label>
+                <Label className="AcordeonCol1Inf">codiguito</Label>
+              </div>
+              <div>
+                <Label>Ubicacion:</Label>
+                <Label className="AcordeonCol1Inf">lugarcito</Label>
+              </div>
+              <div>
+                <Label>Empresa instaladora:</Label>
+                <Label className="AcordeonCol1Inf">empresita</Label>
+              </div>
+              <div>
+                <Label>Empresa encargada:</Label>
+                <Label className="AcordeonCol1Inf">empresita</Label>
+              </div>
+              <div>
+                <Label>Fecha de instalacion:</Label>
+                <Label className="AcordeonCol1Inf">fechita</Label>
+              </div>
             </div>
             <div className={clsx(classes.column2, classes.divider)}>
               <img
