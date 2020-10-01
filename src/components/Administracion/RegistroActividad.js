@@ -62,7 +62,7 @@ const RegistroActividad = () => {
       temp.getFullYear() + "-" + (temp.getMonth() + 1) + "-" + temp.getDate();
 
     const link =
-      "http://54.198.42.186:8080/history" +
+      "http://34.224.95.239:8080/history" +
       "?gte=" +
       startString +
       "&lte=" +
@@ -80,7 +80,7 @@ const RegistroActividad = () => {
           resolve();
           console.log(registros.length);
           if (registros.length === 0) {
-            console.log("entre")
+            console.log("entre");
             setVacio("No hay actividad entre el intervalo");
           }
         })
@@ -165,8 +165,8 @@ const RegistroActividad = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      ):(
-      <Label>{vacio}</Label>
+      ) : (
+        <Label>{vacio}</Label>
       )}
     </>
   );

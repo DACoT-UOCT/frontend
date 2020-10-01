@@ -82,8 +82,8 @@ export default function PanelInstalacion(props) {
 
   async function getData() {
     //consulta por id al backend
-    //http://54.198.42.186:8080/request/X123450
-    const link = "http://54.198.42.186:8080/request/" + props.id;
+    //http://34.224.95.239:8080/request/X123450
+    const link = "http://34.224.95.239:8080/request/" + props.id;
     // state.rol === "Empresa"
     //   ? "linkempresa" + "?user=" + state.email
     //   : "linkfuncionario" + "?user=" + state.email;
@@ -151,22 +151,26 @@ export default function PanelInstalacion(props) {
               </div>
               <div>
                 <Label>Ubicacion:</Label>
-                <Label className="AcordeonCol1Inf">{otu.metadata.controller.address_reference}</Label>
+                <Label className="AcordeonCol1Inf">
+                  {otu.metadata.controller.address_reference}
+                </Label>
               </div>
               <div>
                 <Label>Empresa instaladora:</Label>
-                <Label className="AcordeonCol1Inf">{otu.metadata.status_user}</Label>
+                <Label className="AcordeonCol1Inf">
+                  {otu.metadata.status_user}
+                </Label>
               </div>
               <div>
                 <Label>Empresa encargada:</Label>
-                <Label className="AcordeonCol1Inf">{otu.metadata.status_user}</Label>
+                <Label className="AcordeonCol1Inf">
+                  {otu.metadata.status_user}
+                </Label>
               </div>
               <div>
                 <Label>Fecha de instalacion:</Label>
                 {console.log(otu.metadata.installation_date)}
-                <Label className="AcordeonCol1Inf">
-                  FECHA
-                </Label>
+                <Label className="AcordeonCol1Inf">FECHA</Label>
               </div>
             </div>
             <div className={clsx(classes.column2, classes.divider)}>
@@ -199,7 +203,9 @@ export default function PanelInstalacion(props) {
               {state.rol === "Empresa" && (
                 <>
                   <Button className="botonDashboard">Programaciones</Button>
-                  <Button className="botonDashboard">Historial de Cambios</Button>
+                  <Button className="botonDashboard">
+                    Historial de Cambios
+                  </Button>
                   <Link
                     to="/nuevo/instalacion"
                     className="nada"

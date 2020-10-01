@@ -108,11 +108,11 @@ const NuevaInstalacion = (props) => {
     if (state.submit === true) {
       //enviar
 
-      var link = "http://54.198.42.186:8080/request?user=" + props.state.email;
+      var link = "http://34.224.95.239:8080/request?user=" + props.state.email;
       // if (location.pathname === "/nuevo/instalacion") {
-      //   link = "http://54.198.42.186:8080/request?user=" + props.state.email;
+      //   link = "http://34.224.95.239:8080/request?user=" + props.state.email;
       // } else if (location.pathname === "/nuevo/digitalizacion") {
-      //   link = "http://54.198.42.186:8080/otu?user=" + props.state.email;
+      //   link = "http://34.224.95.239:8080/otu?user=" + props.state.email;
       // }
       console.log(link);
 
