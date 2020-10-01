@@ -114,7 +114,6 @@ export default function PanelInstalacion(props) {
       setError("Error en la consulta");
     }
     setLoading(false);
-    setOtu(initialState);
   };
 
   return (
@@ -148,23 +147,26 @@ export default function PanelInstalacion(props) {
               <legend>Información del Cruce</legend>
               <div>
                 <Label>Codigo OTU:</Label>
-                <Label className="AcordeonCol1Inf">codiguito</Label>
+                <Label className="AcordeonCol1Inf">{otu.oid}</Label>
               </div>
               <div>
                 <Label>Ubicacion:</Label>
-                <Label className="AcordeonCol1Inf">lugarcito</Label>
+                <Label className="AcordeonCol1Inf">{otu.metadata.controller.address_reference}</Label>
               </div>
               <div>
                 <Label>Empresa instaladora:</Label>
-                <Label className="AcordeonCol1Inf">empresita</Label>
+                <Label className="AcordeonCol1Inf">{otu.metadata.status_user}</Label>
               </div>
               <div>
                 <Label>Empresa encargada:</Label>
-                <Label className="AcordeonCol1Inf">empresita</Label>
+                <Label className="AcordeonCol1Inf">{otu.metadata.status_user}</Label>
               </div>
               <div>
                 <Label>Fecha de instalacion:</Label>
-                <Label className="AcordeonCol1Inf">fechita</Label>
+                {console.log(otu.metadata.installation_date)}
+                <Label className="AcordeonCol1Inf">
+                  FECHA
+                </Label>
               </div>
             </div>
             <div className={clsx(classes.column2, classes.divider)}>
