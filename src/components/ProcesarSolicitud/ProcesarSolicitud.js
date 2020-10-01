@@ -1,23 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import MenuIcon from "@material-ui/icons/Menu";
 import axios from "axios";
-import Loading from "../Shared/Loading";
-import { Redirect } from "react-router-dom";
-import { initialState } from "../Shared/FormularioReducer";
-
-import { StateContext, DispatchContext } from "../App";
 import { makeStyles } from "@material-ui/core/styles";
-import { Form } from "reactstrap";
-import {
-  Col,
-  Row,
-  FormGroup,
-  Button,
-  Label,
-  Input,
-  CustomInput,
-} from "reactstrap";
+import  {
+          Col,
+          FormGroup,
+          Input,
+          CustomInput,
+        } from "reactstrap";
 import { Typography } from "@material-ui/core";
 import ButtonMaterial from "@material-ui/core/Button";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -133,22 +123,25 @@ export default function ProcesarSolicitud(props) {
                       />
                     </Col>
                   </FormGroup>
-                  <ButtonMaterial
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      enviar(true);
-                    }}>
-                    Aprobar
-                  </ButtonMaterial>
-                  <ButtonMaterial
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      enviar(false);
-                    }}>
-                    Rechazar
-                  </ButtonMaterial>
+                  <div style={{'textAlign':'center'}}>
+                    <ButtonMaterial
+                      variant="contained"
+                      color="secondary"
+                      className={classes.backButton}
+                      onClick={() => {
+                        enviar(false);
+                      }}>
+                      Rechazar
+                    </ButtonMaterial>
+                    <ButtonMaterial
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        enviar(true);
+                      }}>
+                      Aprobar
+                    </ButtonMaterial>
+                  </div>
                 </>
               ) : (
                 <>

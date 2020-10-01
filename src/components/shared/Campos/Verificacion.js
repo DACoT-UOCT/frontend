@@ -176,6 +176,9 @@ const Verificacion = (props) => {
       })}
       {/*Entreverdes*/}
       <legend className="seccion">Matriz Entreverdes</legend>
+      {
+      
+      }
       {/*Observaciones*/}
       <legend className="seccion">Observaciones</legend>
       <Label>{state.metadata.observations}</Label>
