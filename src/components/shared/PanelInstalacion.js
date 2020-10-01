@@ -207,7 +207,7 @@ export default function PanelInstalacion(props) {
                     Historial de Cambios
                   </Button>
                   <Link
-                    to="/nuevo/instalacion"
+                    to="/actualizar/instalacion"
                     className="nada"
                     onClick={() => {
                       dispatch({

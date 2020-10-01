@@ -53,12 +53,27 @@ const useStyles = makeStyles((theme) => ({
 //lag -> pasar parte del estado como prop, usar React.memo( () =>{})
 const NuevaInstalacion = (props) => {
   const location = useLocation();
+  console.log(props.state.actualizando);
+  var temp = JSON.parse(JSON.stringify(props.state.actualizando));
+  if (location.pathname === "/actualizar/instalacion") {
+    temp.metadata.installation_date = temp.metadata.installation_date.$date;
+    temp.metadata.status_date = temp.metadata.status_date.$date;
+    temp.metadata.status = "UPDATE";
+    temp.secuencias.map((secuencia, index) => {
+      temp.secuencias[index] = secuencia.fases;
+    });
+    temp.errors = [];
+    temp.vista = 1;
+    temp.submit = false;
+    temp.isLoading = true;
+  }
+  console.log(temp);
   const [state, dispatch] = useImmerReducer(
     reducer,
-    location.pathname === "/actualizar/instalacion"
-      ? props.state.actualizando
-      : initialState
+    location.pathname === "/actualizar/instalacion" ? temp : initialState
   );
+
+  console.log(state);
   const [checked, setChecked] = React.useState(false);
 
   //STEPPER STEPPER STEPPER STEPPER
