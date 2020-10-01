@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import "../../../App.css";
 import { Label } from "reactstrap";
-import {  Checkbox,
-          FormControlLabel,
-          Table,
+import {  Table,
           TableBody,
           TableCell,
           TableContainer,
@@ -29,12 +27,12 @@ const Cabezales = (props) => {
           <TableBody>
             <TableRow>
               <TableCell component="th" scope="row"><Label></Label></TableCell>
-              <TableCell align="left"><Label className='inputCabezales'>Vehiculo L1</Label></TableCell>
-              <TableCell align="left"><Label className='inputCabezales'>Vehiculo L2</Label></TableCell>
-              <TableCell align="left"><Label className='inputCabezales'>Vehiculo L3-L4</Label></TableCell>
-              <TableCell align="left"><Label className='inputCabezales'>Vehiculo L5</Label></TableCell>
-              <TableCell align="left"><Label className='inputCabezales'>Vehiculo L6</Label></TableCell>
-              <TableCell align="left"><Label className='inputCabezales'>Peatonal</Label></TableCell>
+              <TableCell align="center"><Label >Vehiculo L1</Label></TableCell>
+              <TableCell align="center"><Label >Vehiculo L2</Label></TableCell>
+              <TableCell align="center"><Label >Vehiculo L3-L4</Label></TableCell>
+              <TableCell align="center"><Label >Vehiculo L5</Label></TableCell>
+              <TableCell align="center"><Label >Vehiculo L6</Label></TableCell>
+              <TableCell align="center"><Label >Peatonal</Label></TableCell>
             </TableRow>
 
             <TableRow>

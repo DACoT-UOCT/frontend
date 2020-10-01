@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import "../../../App.css";
-import { Col, Row, FormGroup, Button } from "reactstrap";
+import { Button } from "reactstrap";
 import ButtonMaterial from "@material-ui/core/Button";
 import {
   Dialog,

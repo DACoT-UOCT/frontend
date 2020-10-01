@@ -1,8 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
-
 import "../../../App.css";
-import { Col, Row, Label, Table } from "reactstrap";
+import { Col, Row, Label } from "reactstrap";
+import {  Table,
+          TableBody,
+          TableCell,
+          TableContainer,
+          TableRow } from '@material-ui/core';
 
 const Verificacion = (props) => {
   const state = props.state;
@@ -93,39 +97,41 @@ const Verificacion = (props) => {
       <Label>Peatonales:</Label> <Label>{state.postes.peatonales}</Label>
       <br></br>
       <legend className="seccion">Cabezales</legend>
-      <Table responsive>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Vehiculo L1</th>
-            <th>Vehiculo L2</th>
-            <th>Vehiculo L3-L4</th>
-            <th>Vehiculo L5</th>
-            <th>Vehiculo L6</th>
-            <th>Peatonal</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th>Halógeno</th>
-            <td>{state.cabezales.l1.hal}</td>
-            <td>{state.cabezales.l2.hal}</td>
-            <td>{state.cabezales.l3_l4.hal}</td>
-            <td>{state.cabezales.l5.hal}</td>
-            <td>{state.cabezales.l6.hal}</td>
-            <td>{state.cabezales.peatonal.hal}</td>
-          </tr>
-          <tr>
-            <th>Led</th>
-            <td>{state.cabezales.l1.led}</td>
-            <td>{state.cabezales.l2.led}</td>
-            <td>{state.cabezales.l3_l4.led}</td>
-            <td>{state.cabezales.l5.led}</td>
-            <td>{state.cabezales.l6.led}</td>
-            <td>{state.cabezales.peatonal.led}</td>
-          </tr>
-        </tbody>
-      </Table>
+
+      <TableContainer>
+        <Table size="small" aria-label="simple table">
+          <TableBody>
+            <TableRow>
+              <TableCell component="th" scope="row"><Label></Label></TableCell>
+              <TableCell align="center"><Label>Vehiculo L1</Label></TableCell>
+              <TableCell align="center"><Label>Vehiculo L2</Label></TableCell>
+              <TableCell align="center"><Label>Vehiculo L3-L4</Label></TableCell>
+              <TableCell align="center"><Label>Vehiculo L5</Label></TableCell>
+              <TableCell align="center"><Label>Vehiculo L6</Label></TableCell>
+              <TableCell align="center"><Label>Peatonal</Label></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell component="th" scope="row"><Label>Halógeno</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.l1.hal}</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.l2.hal}</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.l3_l4.hal}</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.l5.hal}</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.l6.hal}</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.peatonal.hal}</Label></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell component="th" scope="row"><Label>Led</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.l1.led}</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.l2.led}</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.l3_l4.led}</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.l5.led}</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.l6.led}</Label></TableCell>
+              <TableCell align="center"><Label>{state.cabezales.peatonal.led}</Label></TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+
       <legend className="seccion">UPS</legend>
       <Label>Marca:</Label> <Label>{state.ups.marca}</Label>
       <br></br>

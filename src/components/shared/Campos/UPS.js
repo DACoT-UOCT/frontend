@@ -1,13 +1,8 @@
 import React, { useContext } from "react";
-import {
-  DispatchContext,
-  StateContext,
-} from "../../SolicitudInstalacionNueva/NuevaInstalacion";
+import { DispatchContext } from "../../SolicitudInstalacionNueva/NuevaInstalacion";
 import "../../../App.css";
 import { Label } from "reactstrap";
-import {  Checkbox,
-          FormControlLabel,
-          Table,
+import {  Table,
           TableBody,
           TableCell,
           TableContainer,

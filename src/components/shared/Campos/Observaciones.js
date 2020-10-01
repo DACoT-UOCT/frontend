@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import "../../../App.css";
-import { Col, Row, FormGroup, Button, Label, Input } from "reactstrap";
-import TextField from "@material-ui/core/TextField";
+import { Input } from "reactstrap";
 
 const Observaciones = (props) => {
   const state = props.state;
@@ -11,23 +10,19 @@ const Observaciones = (props) => {
   return (
     <>
       <legend>Observaciones de la instalación</legend>
-      <FormGroup>
-        <Col sm={10}>
-          <Input
-            className="observaciones"
-            bsSize="sm"
-            type="textarea"
-            placeholder=""
-            value={state.metadata.observations}
-            onChange={(e) =>
-              dispatch({
-                type: "observaciones",
-                payLoad: e.currentTarget.value,
-              })
-            }
-          />
-        </Col>
-      </FormGroup>
+      <Input
+        className="observaciones"
+        bsSize="sm"
+        type="textarea"
+        placeholder=""
+        value={state.metadata.observations}
+        onChange={(e) =>
+          dispatch({
+            type: "observaciones",
+            payLoad: e.currentTarget.value,
+          })
+        }
+      />
     </>
   );
 };

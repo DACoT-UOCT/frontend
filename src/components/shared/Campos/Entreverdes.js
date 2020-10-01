@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import "../../../App.css";
-import { Col, Row, FormGroup, Button, Label } from "reactstrap";
+import { Col, Row, FormGroup, Label } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 
 const Entreverdes = (props) => {

@@ -1,8 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import "../../../App.css";
-import { Col, Row, FormGroup, Button } from "reactstrap";
-import TextField from "@material-ui/core/TextField";
+import { Button } from "reactstrap";
+import {  Table,
+          TableBody,
+          TableCell,
+          TableContainer,
+          TableRow,
+          TextField,
+          styled } from '@material-ui/core';
+
+const Campo = styled(TextField)({
+background: "none",
+});
 
 const Etapas = (props) => {
   const state = props.state;
@@ -10,17 +20,19 @@ const Etapas = (props) => {
 
   return (
     <>
-      {console.log("render etapas")}
       <legend>Etapas</legend>
+      <TableContainer>
+        <Table size="small" aria-label="simple table">
+          <TableBody>
       {state.map((etapa, index) => {
         return (
-          <Row form>
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
+          <>
+            <TableRow>
+              <TableCell component="th" scope="row">
+                <Campo
+                  id="standard"
                   label="Identificador"
-                  variant="outlined"
+                  variant="standard"
                   autoComplete="off"
                   placeholder=""
                   value={etapa[0]}
@@ -33,16 +45,13 @@ const Etapas = (props) => {
                     })
                   }
                 />
-              </FormGroup>
-            </Col>
-            <Col sm={1}></Col>
-            <Col sm={2}>
-              <FormGroup>
-                <TextField
-                  id="outlined-select-currency-native"
+              </TableCell>
+              <TableCell align="left">
+                <Campo
+                  id="standard-select-currency-native"
                   select
                   label="Tipo"
-                  variant="outlined"
+                  variant="standard"
                   name="tipo"
                   autoComplete="off"
                   SelectProps={{
@@ -61,39 +70,37 @@ const Etapas = (props) => {
                   <option value="Vehicular">Vehicular</option>
                   <option value="Ciclista">Ciclista</option>
                   <option value="Peatonal">Peatonal</option>
-                </TextField>
-              </FormGroup>
-            </Col>
-          </Row>
+                </Campo>
+              </TableCell>
+            </TableRow>
+          </>
         );
       })}
-
-      <Row>
-        <Col sm={2}>
-          <FormGroup>
-            <Button
-              variant="outlined"
-              size="small"
-              className="botonAgregar"
-              onClick={() => {
-                dispatch({ type: "agregar_stage" });
-              }}>
-              Agregar etapa
-            </Button>
-          </FormGroup>
-        </Col>
-        <Col sm={2}>
-          {state.length > 1 && (
-            <FormGroup>
-              <Button
-                size="sm"
-                onClick={() => dispatch({ type: "eliminar_stage" })}>
-                Eliminar
-              </Button>
-            </FormGroup>
-          )}
-        </Col>
-      </Row>
+            <TableRow>
+              <TableCell component="th" scope="row">
+                <Button
+                  variant="standard"
+                  size="small"
+                  className="botonAgregar"
+                  onClick={() => {
+                    dispatch({ type: "agregar_stage" });
+                  }}>
+                  Agregar etapa
+                </Button>
+              </TableCell>
+            {state.length > 1 && (
+              <TableCell align="left">
+                <Button
+                  size="sm"
+                  onClick={() => dispatch({ type: "eliminar_stage" })}>
+                  Eliminar
+                </Button>
+              </TableCell>
+            )}
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };

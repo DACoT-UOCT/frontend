@@ -1,8 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import "../../../App.css";
-import { Col, Row, FormGroup, Button, CustomInput } from "reactstrap";
-import TextField from "@material-ui/core/TextField";
+import { Button, CustomInput } from "reactstrap";
+import {  Table,
+          TableBody,
+          TableCell,
+          TableContainer,
+          TableRow,
+          TextField,
+          styled } from '@material-ui/core';
+
+const Campo = styled(TextField)({
+  background: "none",
+});
 
 const Fases = (props) => {
   const state = props.state;
@@ -11,31 +21,29 @@ const Fases = (props) => {
   return (
     <>
       <legend>Fases</legend>
+      <TableContainer>
+        <Table size="small" aria-label="simple table">
+          <TableBody>
       {state.map((fase, index) => {
         return (
-          <Row form>
-            <Col sm={1}>
-              <FormGroup>
-                <TextField
+          <>
+            <TableRow>
+              <TableCell component="th" scope="row">
+                <Campo
                   disabled
-                  id="outlined"
+                  id="standard"
                   label="N°"
-                  variant="outlined"
+                  variant="standard"
                   autoComplete="off"
                   style={{ width: "75px" }}
                   value={index + 1}
                 />
-              </FormGroup>
-            </Col>
-
-            <Col sm={1}></Col>
-
-            <Col sm={3}>
-              <FormGroup>
-                <TextField
-                  id="outlined"
+              </TableCell>
+              <TableCell align="left">
+                <Campo
+                  id="standard"
                   label="Etapas"
-                  variant="outlined"
+                  variant="standard"
                   autoComplete="off"
                   placeholder="A - B - C"
                   value={fase.etapas.join(" - ")}
@@ -48,11 +56,8 @@ const Fases = (props) => {
                     })
                   }
                 />
-              </FormGroup>
-            </Col>
-
-            <Col sm={4}>
-              <FormGroup>
+              </TableCell>
+              <TableCell align="left">
                 <CustomInput
                   className="boton-file"
                   type="file"
@@ -73,37 +78,35 @@ const Fases = (props) => {
                     };
                   }}
                 />
-              </FormGroup>
-            </Col>
-          </Row>
+              </TableCell>
+            </TableRow>
+          </>
         );
       })}
-
-      <Row>
-        <Col sm={2}>
-          <FormGroup>
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={() => {
-                dispatch({ type: "agregar_fase" });
-              }}>
-              Agregar fase
-            </Button>
-          </FormGroup>
-        </Col>
-        <Col>
+            <TableRow>
+              <TableCell component="th" scope="row">
+                <Button
+                  variant="standard"
+                  size="small"
+                  onClick={() => {
+                    dispatch({ type: "agregar_fase" });
+                  }}>
+                  Agregar fase
+                </Button>
+              </TableCell>
           {state.length > 1 && (
-            <FormGroup>
-              <Button
-                size="sm"
-                onClick={() => dispatch({ type: "eliminar_fase" })}>
-                Eliminar
-              </Button>
-            </FormGroup>
+              <TableCell align="left">
+                <Button
+                  size="sm"
+                  onClick={() => dispatch({ type: "eliminar_fase" })}>
+                  Eliminar
+                </Button>
+              </TableCell>
           )}
-        </Col>
-      </Row>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };
