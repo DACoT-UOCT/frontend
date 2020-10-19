@@ -2,20 +2,22 @@ import React from "react";
 
 import "../../../App.css";
 import { Label } from "reactstrap";
-import {  Table,
-          TableBody,
-          TableCell,
-          TableContainer,
-          TableRow,
-          TextField,
-          styled } from '@material-ui/core';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TextField,
+  styled,
+} from "@material-ui/core";
 
 const Campo = styled(TextField)({
-background: 'none',
+  background: "none",
 });
 
 const Postes = (props) => {
-  const state = props.state;
+  const poles = props.state;
   const dispatch = props.dispatch;
 
   return (
@@ -23,7 +25,7 @@ const Postes = (props) => {
       <legend className="seccion">Postes</legend>
 
       <TableContainer>
-        <Table size='small' aria-label="simple table">
+        <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -38,12 +40,12 @@ const Postes = (props) => {
                   type="number"
                   autoComplete="off"
                   placeholder="0"
-                  value={state.ganchos}
+                  value={poles.hooks}
                   onChange={(e) => {
                     dispatch({
-                      type: "postes",
-                      fieldName: "ganchos",
-                      payLoad: e.currentTarget.value,
+                      type: "poles",
+                      fieldName: "hooks",
+                      payLoad: parseInt(e.currentTarget.value),
                     });
                   }}
                 />
@@ -63,12 +65,12 @@ const Postes = (props) => {
                   type="number"
                   autoComplete="off"
                   placeholder="0"
-                  value={state.vehiculares}
+                  value={poles.vehicular}
                   onChange={(e) => {
                     dispatch({
-                      type: "postes",
-                      fieldName: "vehiculares",
-                      payLoad: e.currentTarget.value,
+                      type: "poles",
+                      fieldName: "vehicular",
+                      payLoad: parseInt(e.currentTarget.value),
                     });
                   }}
                 />
@@ -88,12 +90,12 @@ const Postes = (props) => {
                   type="number"
                   autoComplete="off"
                   placeholder="0"
-                  value={state.peatonales}
+                  value={poles.pedestrian}
                   onChange={(e) => {
                     dispatch({
-                      type: "postes",
-                      fieldName: "peatonales",
-                      payLoad: e.currentTarget.value,
+                      type: "poles",
+                      fieldName: "pedestrian",
+                      payLoad: parseInt(e.currentTarget.value),
                     });
                   }}
                 />

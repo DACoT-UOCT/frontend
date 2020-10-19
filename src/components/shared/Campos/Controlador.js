@@ -1,20 +1,24 @@
 import React from "react";
 import "../../../App.css";
 import { Label } from "reactstrap";
-import { styled } from '@material-ui/core/styles';
-import {  Table,
-          TableBody,
-          TableCell,
-          TableContainer,
-          TableRow,
-          TextField } from '@material-ui/core';
+import { styled } from "@material-ui/core/styles";
+import {
+  Checkbox,
+  FormControlLabel,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TextField,
+} from "@material-ui/core";
 
 const Campo = styled(TextField)({
-  background: 'none',
+  background: "none",
 });
 
 const Controlador = (props) => {
-  const state = props.state;
+  const controller = props.state;
   const dispatch = props.dispatch;
 
   return (
@@ -22,7 +26,7 @@ const Controlador = (props) => {
       <legend className="seccion">Controlador</legend>
 
       <TableContainer>
-        <Table size='small' aria-label="simple table">
+        <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -39,7 +43,11 @@ const Controlador = (props) => {
                   SelectProps={{
                     native: true,
                   }}
-                  value={state.model}
+                  value={
+                    controller.model.model !== ""
+                      ? controller.model.model
+                      : "NN"
+                  }
                   onChange={(e) =>
                     dispatch({
                       type: "controller",
@@ -69,7 +77,11 @@ const Controlador = (props) => {
                   variant="standard"
                   name="controlador_ubicacion"
                   autoComplete="off"
-                  value={state.address_reference}
+                  value={
+                    controller.address_reference !== ""
+                      ? controller.address_reference
+                      : "NN"
+                  }
                   onChange={(e) =>
                     dispatch({
                       type: "controller",
@@ -80,51 +92,33 @@ const Controlador = (props) => {
                 />
               </TableCell>
             </TableRow>
+
+            <TableRow>
+              <TableCell component="th" scope="row">
+                <Label>GPS</Label>
+              </TableCell>
+              <TableCell align="left">
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="primary"
+                      checked={controller.gps}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "controller",
+                          fieldName: "gps",
+                          payLoad: !controller.gps,
+                        })
+                      }
+                      name="gilad"
+                    />
+                  }
+                />
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
-
-      {/* <Row form>
-        <FormGroup>
-          <Campo
-            disabled
-            id="outlined"
-            label="Mod. Potencia"
-            variant="outlined"
-            name="mod-potencia"
-            autoComplete="off"
-            placeholder="0"
-            type="number"
-            value={state.metadata.mod_potencia}
-            onChange={(e) =>
-              dispatch({
-                type: "metadata",
-                fieldName: "mod_potencia",
-                payLoad: e.currentTarget.value,
-              })
-            }
-          />
-        </FormGroup> */}
-      {/* <FormGroup>
-          <Campo
-            id="outlined"
-            label="Detectores"
-            variant="outlined"
-            type="number"
-            name="detectores"
-            autoComplete="off"
-            placeholder="0"
-            value={state.metadata.detectores}
-            onChange={(e) =>
-              dispatch({
-                type: "metadata",
-                fieldName: "detectores",
-                payLoad: e.currentTarget.value,
-              })
-            }
-          />
-        </FormGroup> 
-      </Row> */}
     </>
   );
 };

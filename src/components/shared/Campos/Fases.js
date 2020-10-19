@@ -2,20 +2,22 @@ import React from "react";
 
 import "../../../App.css";
 import { Button, CustomInput } from "reactstrap";
-import {  Table,
-          TableBody,
-          TableCell,
-          TableContainer,
-          TableRow,
-          TextField,
-          styled } from '@material-ui/core';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TextField,
+  styled,
+} from "@material-ui/core";
 
 const Campo = styled(TextField)({
   background: "none",
 });
 
 const Fases = (props) => {
-  const state = props.state;
+  const fases = props.state;
   const dispatch = props.dispatch;
 
   return (
@@ -24,65 +26,49 @@ const Fases = (props) => {
       <TableContainer>
         <Table size="small" aria-label="simple table">
           <TableBody>
-      {state.map((fase, index) => {
-        return (
-          <>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                <Campo
-                  disabled
-                  id="standard"
-                  label="N°"
-                  variant="standard"
-                  autoComplete="off"
-                  style={{ width: "75px" }}
-                  value={index + 1}
-                />
-              </TableCell>
-              <TableCell align="left">
-                <Campo
-                  id="standard"
-                  label="Etapas"
-                  variant="standard"
-                  autoComplete="off"
-                  placeholder="A - B - C"
-                  value={fase.etapas.join(" - ")}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "fase",
-                      index: index,
-                      fieldName: "etapas",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }
-                />
-              </TableCell>
-              <TableCell align="left">
-                <CustomInput
-                  className="boton-file"
-                  type="file"
-                  label={"" || "No ha subido una imagen"}
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onloadend = function () {
-                      // cuando ya se paso a base64 ...
-                      const b64 = reader.result.replace(/^data:.+;base64,/, "");
-                      //console.log(b64); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
-                      dispatch({
-                        type: "upload_imagen_fase",
-                        index: index,
-                        payLoad: b64,
-                      });
-                    };
-                  }}
-                />
-              </TableCell>
-            </TableRow>
-          </>
-        );
-      })}
+            {fases.map((fase, index) => {
+              return (
+                <>
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      <Campo
+                        disabled
+                        id="standard"
+                        label="N°"
+                        variant="standard"
+                        autoComplete="off"
+                        style={{ width: "75px" }}
+                        value={index + 1}
+                      />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Campo
+                        id="standard"
+                        label="Etapas"
+                        variant="standard"
+                        autoComplete="off"
+                        placeholder="A - B - C"
+                        value={fase.join("-")}
+                        onKeyUp={(e) => {
+                          dispatch({
+                            type: "fase_backspace",
+                            index: index,
+                            keyCode: e.keyCode,
+                          });
+                        }}
+                        onChange={(e) =>
+                          dispatch({
+                            type: "fase",
+                            index: index,
+                            payLoad: e.currentTarget.value.toUpperCase(),
+                          })
+                        }
+                      />
+                    </TableCell>
+                  </TableRow>
+                </>
+              );
+            })}
             <TableRow>
               <TableCell component="th" scope="row">
                 <Button
@@ -94,15 +80,15 @@ const Fases = (props) => {
                   Agregar fase
                 </Button>
               </TableCell>
-          {state.length > 1 && (
-              <TableCell align="left">
-                <Button
-                  size="sm"
-                  onClick={() => dispatch({ type: "eliminar_fase" })}>
-                  Eliminar
-                </Button>
-              </TableCell>
-          )}
+              {fases.length > 1 && (
+                <TableCell align="left">
+                  <Button
+                    size="sm"
+                    onClick={() => dispatch({ type: "eliminar_fase" })}>
+                    Eliminar
+                  </Button>
+                </TableCell>
+              )}
             </TableRow>
           </TableBody>
         </Table>

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
-import { Form } from "reactstrap";
+import { Label } from "reactstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Loading from "../Shared/Loading";
@@ -17,16 +17,18 @@ import {
   Button,
 } from "@material-ui/core";
 
-import { reducer, initialState } from "../Shared/FormularioReducer";
+import { reducer, initialState } from "../Shared/Reducers/FormularioReducer";
 import Junctions from "../Shared/Campos/Junctions";
 import Siguiente from "../Shared/Campos/Siguiente";
 import UPS from "../Shared/Campos/UPS";
+import General from "../Shared/Campos/General";
 import OTU from "../Shared/Campos/OTU";
 import Verificacion from "../Shared/Campos/Verificacion";
 import Cabezales from "../Shared/Campos/Cabezales";
 import Postes from "../Shared/Campos/Postes";
 import Controlador from "../Shared/Campos/Controlador";
 import Documentacion from "../Shared/Campos/Documentacion";
+import DocumentacionProgramaciones from "../Shared/Campos/DocumentacionProgramaciones";
 import Etapas from "../Shared/Campos/Etapas";
 import Fases from "../Shared/Campos/Fases";
 import Secuencias from "../Shared/Campos/Secuencias";
@@ -85,7 +87,7 @@ const NuevaInstalacion = (props) => {
   };
 
   const procesar_json = () => {
-    //procesa el json antes de enviarlo
+    //procesa el json antes de envio
     const state_copy = JSON.parse(JSON.stringify(state));
 
     //agregar status_user
@@ -167,27 +169,29 @@ const NuevaInstalacion = (props) => {
       case 1:
         return (
           <>
-            <OTU
-              state={state.metadata}
-              codigo={state.oid}
-              dispatch={dispatch}
-            />
+            <div className="grid-item">
+              <General
+                state={state.metadata}
+                codigo={state.oid}
+                dispatch={dispatch}
+              />
+            </div>
+
+            <hr className="separador"></hr>
+            <OTU state={state.otu} codigo={state.oid} dispatch={dispatch} />
             {/* <Equipamientos
               state={state.metadata.otu.equipamientos}
               dispatch={dispatch}
             /> */}
 
             <hr className="separador"></hr>
-            <Controlador
-              state={state.metadata.controller}
-              dispatch={dispatch}
-            />
+            <Controlador state={state.controller} dispatch={dispatch} />
 
             <hr className="separador"></hr>
-            <Junctions state={state.junctions} dispatch={dispatch} />
+            <Junctions state={state.otu.junctions} dispatch={dispatch} />
 
             <hr className="separador"></hr>
-            <Postes state={state.postes} dispatch={dispatch} />
+            <UPS state={state.ups} dispatch={dispatch} />
 
             <hr className="separador"></hr>
             <FormControlLabel
@@ -195,29 +199,41 @@ const NuevaInstalacion = (props) => {
               label="Campos No Obligatorios"
             />
             <Collapse in={checked}>
-              <Cabezales state={state.cabezales} dispatch={dispatch} />
+              <Postes state={state.poles} dispatch={dispatch} />
 
               <hr className="separador"></hr>
-              <UPS state={state.ups} dispatch={dispatch} />
+              <Cabezales state={state.headers} dispatch={dispatch} />
             </Collapse>
           </>
         );
       case 2:
         return (
-          <Form>
-            <Etapas state={state.stages} dispatch={dispatch} />
+          <>
+            <DocumentacionProgramaciones
+              state={state.metadata.img}
+              dispatch={dispatch}
+            />
+            {state.metadata.img && (
+              <>
+                <Etapas state={state.otu.stages} dispatch={dispatch} />
+
+                <hr className="separador"></hr>
+                <Fases state={state.otu.fases} dispatch={dispatch} />
+
+                <hr className="separador"></hr>
+                <Secuencias state={state.otu.secuencias} dispatch={dispatch} />
+
+                <hr className="separador"></hr>
+                <Entreverdes
+                  entreverdes={state.otu.entreverdes}
+                  stages={state.otu.stages}
+                  dispatch={dispatch}
+                />
+              </>
+            )}
 
             <hr className="separador"></hr>
-            <Fases state={state.fases} dispatch={dispatch} />
-
-            <hr className="separador"></hr>
-            <Secuencias state={state.secuencias} dispatch={dispatch} />
-
-            <hr className="separador"></hr>
-            <Entreverdes state={state} dispatch={dispatch} />
-
-            <hr className="separador"></hr>
-          </Form>
+          </>
         );
       case 3:
         return (

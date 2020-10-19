@@ -2,29 +2,31 @@ import React from "react";
 
 import "../../../App.css";
 import { Button } from "reactstrap";
-import {  Table,
-          TableBody,
-          TableCell,
-          TableContainer,
-          TableRow,
-          TextField,
-          styled } from '@material-ui/core';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TextField,
+  styled,
+} from "@material-ui/core";
 
 const Campo = styled(TextField)({
-background: 'none',
+  background: "none",
 });
 
 const Junctions = (props) => {
-  const state = props.state;
+  const junctions = props.state;
   const dispatch = props.dispatch;
 
   return (
     <>
       <legend className="seccion">Junctions</legend>
       <TableContainer>
-        <Table size='small' aria-label="simple table">
+        <Table size="small" aria-label="simple table">
           <TableBody>
-            {state.map((junction, index) => {
+            {junctions.map((junction, index) => {
               return (
                 <>
                   <TableRow>
@@ -37,15 +39,15 @@ const Junctions = (props) => {
                         name="junction"
                         placeholder="J000000"
                         autoComplete="off"
-                        value={junction.id}
-                        onChange={(e) =>
-                          dispatch({
-                            type: "junctions",
-                            index: index,
-                            fieldName: "id",
-                            payLoad: e.currentTarget.value,
-                          })
-                        }
+                        value={junction.jid}
+                        // onChange={(e) =>
+                        //   dispatch({
+                        //     type: "junctions",
+                        //     index: index,
+                        //     fieldName: "jid",
+                        //     payLoad: e.currentTarget.value,
+                        //   })
+                        // }
                       />
                     </TableCell>
                     <TableCell align="left">
@@ -57,12 +59,16 @@ const Junctions = (props) => {
                         placeholder="Calle - Calle"
                         autoComplete="off"
                         style={{ width: "550px" }}
-                        value={junction.addr}
+                        value={
+                          junction.metadata.address_reference !== ""
+                            ? junction.meatadata.address_reference
+                            : "NN"
+                        }
                         onChange={(e) =>
                           dispatch({
                             type: "junctions",
                             index: index,
-                            fieldName: "addr",
+                            fieldName: "address_reference",
                             payLoad: e.currentTarget.value,
                           })
                         }
@@ -73,7 +79,7 @@ const Junctions = (props) => {
               );
             })}
 
-            {state.length < 9 && (
+            {junctions.length < 9 && (
               <TableRow>
                 <TableCell component="th" scope="row">
                   <Button
@@ -83,18 +89,21 @@ const Junctions = (props) => {
                     Agregar junction
                   </Button>
                 </TableCell>
-                {state.length > 1 && (
-                  <TableCell align="left">
-                    <Button onClick={() => dispatch({ type: "eliminar_junction" })}>
-                      Eliminar
-                    </Button>
-                  </TableCell>
-                )}
+              </TableRow>
+            )}
+            {junctions.length > 1 && (
+              <TableRow>
+                <TableCell align="left">
+                  <Button
+                    onClick={() => dispatch({ type: "eliminar_junction" })}>
+                    Eliminar
+                  </Button>
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </TableContainer>  
+      </TableContainer>
     </>
   );
 };
