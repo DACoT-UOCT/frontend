@@ -56,7 +56,7 @@ export const initialState = {
       model: "",
       firmware_version: "",
       checksum: "",
-      date: { $date: Date.now() },
+      date: { $date: "" },
     },
   },
   headers: [
@@ -126,7 +126,7 @@ export const initialState = {
   observations: "",
 
   errors: [],
-  vista: 4,
+  vista: 2,
   submit: false,
   isLoading: true,
 };
@@ -212,14 +212,6 @@ export function reducer(draft, action) {
       return;
     }
 
-    case "try_submit": {
-      if (draft.errors.length === 0) {
-        draft._id = "X" + draft.junctions[0].id.slice(1, -1) + "0";
-        draft.submit = true;
-      }
-      return;
-    }
-
     case "post_success": {
       draft.success = true;
       draft.isLoading = false;
@@ -252,7 +244,7 @@ export function reducer(draft, action) {
         metadata: { location: "pointField", address_reference: "" },
         //plans: "",  //se asignan cuando se lee el SC
       };
-      draft.junctions.push(nuevo);
+      draft.otu.junctions.push(nuevo);
       return;
     }
 
@@ -268,23 +260,47 @@ export function reducer(draft, action) {
       return;
     }
 
+    case "controller_model": {
+      if (action.fieldName === "company") {
+        draft.controller.model[action.fieldName].name = action.payLoad;
+        draft.controller.model.model = "";
+        draft.controller.model.firmware_version = "";
+        draft.controller.model.checksum = "";
+        draft.controller.model.date.$date = "";
+      } else if (action.fieldName === "date") {
+        draft.controller.model[action.fieldName].$date = action.payLoad;
+      } else if (action.fieldName === "model") {
+        draft.controller.model[action.fieldName] = action.payLoad;
+        draft.controller.model.firmware_version = "";
+        draft.controller.model.date.$date = "";
+        draft.controller.model.checksum = "";
+      } else if (action.fieldName === "firmware_version") {
+        draft.controller.model[action.fieldName] = action.payLoad;
+        action.modelos.map((marca) => {
+          if (marca.company === draft.controller.model.company.name) {
+            marca.models.map((modelo) => {
+              if (modelo.name === draft.controller.model.model)
+                modelo.firmware.map((firmware) => {
+                  if (
+                    firmware.version === draft.controller.model.firmware_version
+                  ) {
+                    draft.controller.model.checksum = firmware.checksum;
+                    draft.controller.model.date.$date = firmware.date.$date;
+                  }
+                });
+            });
+          }
+        });
+      }
+      return;
+    }
+
     case "poles": {
       draft.poles[action.fieldName] = action.payLoad;
       return;
     }
 
     case "otu": {
-      // junctions: [
-      //   {
-      //     id: "",
-      //     addr: "",
-      //   },
-      // ],
-
-      // if (action.fieldName === "enlace_pc" && action.payLoad === "Propio") {
-      //   draft.metadata.otu.nodo_concentrador = "";
-      // }
-
       draft.metadata.otu[action.fieldName] = action.payLoad;
       return;
     }
@@ -302,14 +318,18 @@ export function reducer(draft, action) {
 
     case "header": {
       //CHECK
-      draft.headers[action.index][action.fieldName] = action.payLoad;
+      draft.headers[action.index][action.fieldName] = parseInt(action.payLoad);
       return;
     }
 
     case "stage": {
-      draft.otu.stages[action.index][action.fieldName] = action.payLoad
-        .replace(/\s/g, "")
-        .replace(/[^a-zA-Z]/g, "");
+      if (action.fieldName === 0) {
+        draft.otu.stages[action.index][
+          action.fieldName
+        ] = action.payLoad.replace(/\s/g, "").replace(/[^a-zA-Z]/g, "");
+      } else {
+        draft.otu.stages[action.index][action.fieldName] = action.payLoad;
+      }
       return;
     }
 
@@ -404,7 +424,8 @@ export function reducer(draft, action) {
         .replace(/\s/g, "")
         .replace(/[^0-9-]/g, "")
         .split("-");
-      draft.otu.secuencias[action.index] = lista;
+
+      draft.otu.secuencias[action.index] = lista.map(Number);
       return;
     }
 
@@ -419,9 +440,8 @@ export function reducer(draft, action) {
     }
 
     case "entreverde": {
-      console.log("hola" + action.payLoad);
       draft.otu.entreverdes[action.index_fila][action.index_col] = parseInt(
-        action.payLoad
+        action.payLoad.replace(/\D/, "")
       );
       return;
     }

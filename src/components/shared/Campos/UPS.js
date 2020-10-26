@@ -62,7 +62,7 @@ const UPS = (props) => {
                       variant="standard"
                       name="ups-marca"
                       autoComplete="off"
-                      value={ups.brand !== "" ? ups.brand : "NN"}
+                      value={ups.brand !== "" ? ups.brand : ""}
                       onChange={(e) => {
                         dispatch({
                           type: "ups",
@@ -85,7 +85,7 @@ const UPS = (props) => {
                       variant="standard"
                       name="ups-modelo"
                       autoComplete="off"
-                      value={ups.model !== "" ? ups.model : "NN"}
+                      value={ups.model !== "" ? ups.model : ""}
                       onChange={(e) => {
                         dispatch({
                           type: "ups",
@@ -108,7 +108,7 @@ const UPS = (props) => {
                       variant="standard"
                       name="ups-serie"
                       autoComplete="off"
-                      value={ups.serial !== "" ? ups.serial : "NN"}
+                      value={ups.serial !== "" ? ups.serial : ""}
                       onChange={(e) => {
                         dispatch({
                           type: "ups",
@@ -131,7 +131,7 @@ const UPS = (props) => {
                       variant="standard"
                       name="ups-capacidad"
                       autoComplete="off"
-                      value={ups.capacity !== "" ? ups.capacity : "NN"}
+                      value={ups.capacity !== "" ? ups.capacity : ""}
                       onChange={(e) => {
                         dispatch({
                           type: "ups",
@@ -155,7 +155,7 @@ const UPS = (props) => {
                       name="ups-duracion"
                       autoComplete="off"
                       value={
-                        ups.charge_duration !== "" ? ups.charge_duration : "NN"
+                        ups.charge_duration !== "" ? ups.charge_duration : ""
                       }
                       onChange={(e) => {
                         dispatch({

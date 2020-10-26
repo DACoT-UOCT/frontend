@@ -52,6 +52,7 @@ const Siguiente = (props) => {
   const validar_formulario = () => {
     //revisar las variables 1 a una
     dispatch({ type: "reset_errores" });
+    console.log(state);
 
     if (state.vista === 1) {
       var metadata = state.metadata;
@@ -71,6 +72,14 @@ const Siguiente = (props) => {
       //validar modelo valido
       //validar_entrada(state.metadata.controller.model, " Controlador - Modelo");
 
+      var ups = state.ups;
+      if (ups !== undefined) {
+        validar_entrada(ups.brand, "UPS - Marca");
+        validar_entrada(ups.model, "UPS - Modelo");
+        validar_entrada(ups.serial, "UPS - N° Serie");
+        validar_entrada(ups.capacity, "UPS - Capacidad");
+        validar_entrada(ups.charge_duration, "UPS - Duración de carga");
+      }
       //validar que se ingresan los junction por el mapa
       // state.otu.junctions.map((junction, index) => {
       // //  validar_entrada(junction.id, "Junction - Código en Sistema");

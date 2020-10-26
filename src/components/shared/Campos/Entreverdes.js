@@ -63,7 +63,7 @@ const Entreverdes = (props) => {
                             type: "entreverde",
                             index_fila: indice_fila,
                             index_col: indice_col,
-                            payLoad: e.currentTarget.value.replace(/\D/, ""),
+                            payLoad: e.currentTarget.value,
                           })
                         }
                       />

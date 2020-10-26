@@ -71,7 +71,7 @@ const OTU = (props) => {
                   value={
                     otu.metadata.link_owner !== ""
                       ? otu.metadata.link_owner
-                      : "NN"
+                      : ""
                   }
                   onChange={(e) => {
                     dispatch({
@@ -122,9 +122,7 @@ const OTU = (props) => {
                   variant="standard"
                   name="otu-serie"
                   autoComplete="off"
-                  value={
-                    otu.metadata.serial !== "" ? otu.metadata.serial : "NN"
-                  }
+                  value={otu.metadata.serial !== "" ? otu.metadata.serial : ""}
                   onChange={(e) =>
                     dispatch({
                       type: "otu_metadata",
@@ -150,7 +148,7 @@ const OTU = (props) => {
                   value={
                     otu.metadata.ip_address !== ""
                       ? otu.metadata.ip_address
-                      : "NN"
+                      : ""
                   }
                   onChange={(e) =>
                     dispatch({
@@ -167,7 +165,7 @@ const OTU = (props) => {
                   name="otu-netmask"
                   autoComplete="off"
                   value={
-                    otu.metadata.netmask !== "" ? otu.metadata.netmask : "NN"
+                    otu.metadata.netmask !== "" ? otu.metadata.netmask : ""
                   }
                   onChange={(e) =>
                     dispatch({

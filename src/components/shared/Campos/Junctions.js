@@ -61,8 +61,8 @@ const Junctions = (props) => {
                         style={{ width: "550px" }}
                         value={
                           junction.metadata.address_reference !== ""
-                            ? junction.meatadata.address_reference
-                            : "NN"
+                            ? junction.metadata.address_reference
+                            : ""
                         }
                         onChange={(e) =>
                           dispatch({
