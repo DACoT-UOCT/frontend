@@ -4,6 +4,7 @@ import Loading from "../Shared/Loading";
 import DatePicker from "react-datepicker";
 import styles from "./Administracion.module.css";
 import { StateContext } from "../App";
+import { ipAPI } from "../Shared/ipAPI";
 
 import { Label } from "reactstrap";
 import Table from "@material-ui/core/Table";
@@ -15,7 +16,7 @@ import TableRow from "@material-ui/core/TableRow";
 
 import { Button } from "reactstrap";
 import axios from "axios";
-
+import { ImportantDevicesSharp } from "@material-ui/icons";
 
 const RegistroActividad = () => {
   const state = useContext(StateContext);
@@ -49,12 +50,13 @@ const RegistroActividad = () => {
       temp.getFullYear() + "-" + (temp.getMonth() + 1) + "-" + temp.getDate();
 
     const link =
-      "http://34.224.95.239:8080/history" +
+      ipAPI +
+      "actions_log" +
       "?gte=" +
       startString +
       "&lte=" +
       endString +
-      "&user=" +
+      "&user_email=" +
       state.email;
 
     return new Promise((resolve, reject) => {
@@ -144,7 +146,7 @@ const RegistroActividad = () => {
                     <TableCell>{registro.user}</TableCell>
                     <TableCell>{registro.component}</TableCell>
                     <TableCell>
-                      {new Date(registro.date_modified.$date).toLocaleString()}
+                      {new Date(registro.date).toLocaleString()}
                     </TableCell>
                   </TableRow>
                 );

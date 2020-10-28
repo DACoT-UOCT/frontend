@@ -4,6 +4,7 @@ import { Label } from "reactstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Loading from "../Shared/Loading";
+import { ipAPI } from "../Shared/ipAPI";
 
 import {
   Switch,
@@ -221,12 +222,12 @@ const NuevaInstalacion = (props) => {
     if (state.submit === true) {
       //enviar
 
-      var link = "http://34.224.95.239:8080/request?user=" + props.state.email;
+      var link = ipAPI + "request?user=" + props.state.email;
       //console.log(state);
       //console.log(link);
       console.log(state);
       var aux = procesar_json_envio();
-      console.log(aux);
+      console.log(JSON.stringify(aux));
       console.log(procesar_json_recibido(aux));
       return;
 

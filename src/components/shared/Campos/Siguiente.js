@@ -3,19 +3,8 @@ import React from "react";
 import "../../../App.css";
 import { Button } from "reactstrap";
 import ButtonMaterial from "@material-ui/core/Button";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Slide,
-  makeStyles,
-} from "@material-ui/core";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import PopUp from "../PopUp";
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,12 +23,9 @@ const Siguiente = (props) => {
   const state = props.state;
   const dispatch = props.dispatch;
 
-  const [openWarning, setOpen] = React.useState(false);
-  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const classes = useStyles();
 
   const validar_entrada = (str, nombre, expresion = /.+/) => {
     if (!expresion.test(str)) {
@@ -198,29 +184,18 @@ const Siguiente = (props) => {
           {state.vista === 4 ? "Enviar" : "Siguiente"}
         </ButtonMaterial>
       </div>
-      <Dialog
-        open={openWarning}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description">
-        <DialogTitle id="alert-dialog-slide-title">
-          Error en los siguientes campos:
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {state.errors.map((error) => {
-              return <li>{error}</li>;
-            })}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button className="boton-mensaje-error" onClick={handleClose}>
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+      <PopUp
+        title="Error en los siguientes campos:"
+        open={open}
+        setOpen={setOpen}>
+        {state.errors.map((error) => {
+          return <li>{error}</li>;
+        })}
+        <Button className="boton-mensaje-error" onClick={() => setOpen(false)}>
+          OK
+        </Button>
+      </PopUp>
     </>
   );
 };

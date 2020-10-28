@@ -94,7 +94,22 @@ export const initialState = {
     {
       hal: 0,
       led: 0,
-      type: "L4",
+      type: "L3C",
+    },
+    {
+      hal: 0,
+      led: 0,
+      type: "L4A",
+    },
+    {
+      hal: 0,
+      led: 0,
+      type: "L4B",
+    },
+    {
+      hal: 0,
+      led: 0,
+      type: "L4C",
     },
     {
       hal: 0,
@@ -109,12 +124,22 @@ export const initialState = {
     {
       hal: 0,
       led: 0,
-      type: "Peatonal",
+      type: "L7 Peatonal",
     },
     {
       hal: 0,
       led: 0,
-      type: "Ciclista",
+      type: "L8 Biciclos",
+    },
+    {
+      hal: 0,
+      led: 0,
+      type: "L9 Buses",
+    },
+    {
+      hal: 0,
+      led: 0,
+      type: "L10 Repetidora",
     },
   ],
 
@@ -126,7 +151,7 @@ export const initialState = {
   observations: "",
 
   errors: [],
-  vista: 2,
+  vista: 3,
   submit: false,
   isLoading: true,
 };

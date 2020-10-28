@@ -3,6 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { StateContext } from "../App";
+import { ipAPI } from "../Shared/ipAPI";
 
 import { Col, FormGroup, Input, CustomInput } from "reactstrap";
 import { Typography } from "@material-ui/core";
@@ -43,7 +44,8 @@ export default function ProcesarSolicitud(props) {
 
     if (aprobar) {
       link =
-        "http://34.224.95.239:8080/accept-request/" +
+        ipAPI +
+        "accept-request/" +
         state.actualizando.oid +
         "?user=" +
         state.email;
@@ -51,7 +53,8 @@ export default function ProcesarSolicitud(props) {
       console.log(respuesta);
     } else {
       link =
-        "http://34.224.95.239:8080/reject-request/" +
+        ipAPI +
+        "reject-request/" +
         state.actualizando.oid +
         "?user=" +
         state.email;
@@ -86,11 +89,11 @@ export default function ProcesarSolicitud(props) {
               className="grid-item"
               id="formulario"
               style={{
-                'marginTop':'5px',
-                "paddingBottom": "5px",
-                "height": "575px",
+                marginTop: "5px",
+                paddingBottom: "5px",
+                height: "575px",
                 "overflow-y": "auto",
-                "border": "0px",
+                border: "0px",
               }}>
               {submit === false ? (
                 <>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Table } from "reactstrap";
 import { StateContext } from "../App";
-
+import { ipAPI } from "../Shared/ipAPI";
 import axios from "axios";
 
 const ListadoUsuarios = (props) => {
@@ -20,7 +20,7 @@ const ListadoUsuarios = (props) => {
 
   async function getData() {
     //consulta por id al backend
-    const link = "http://34.224.95.239:8080/users" + "?user=" + state.email;
+    const link = ipAPI + "users" + "?user_email=" + state.email;
     return new Promise((resolve, reject) => {
       axios
         .get(link)

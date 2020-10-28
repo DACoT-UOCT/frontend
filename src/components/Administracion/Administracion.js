@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import RegistroActividad from "./RegistroActividad";
 import ListadoUsuarios from "./ListadoUsuarios";
 import styles from "./Administracion.module.css";
+import ListadoComunas from "./ListadoComunas";
 
 const Administracion = (props) => {
   const [vista, setVista] = useState("usuarios");
@@ -30,6 +31,15 @@ const Administracion = (props) => {
             }}>
             <span>Registro de actividad</span>
           </button>
+
+          <button
+            className={vista == "comunas" ? styles.active : null}
+            onClick={() => {
+              setVista("comunas");
+              setTitulo("Información de comunas");
+            }}>
+            <span>Comunas</span>
+          </button>
         </div>
       </div>
       <div
@@ -38,6 +48,7 @@ const Administracion = (props) => {
         }`}>
         {vista === "actividad" && <RegistroActividad />}
         {vista === "usuarios" && <ListadoUsuarios />}
+        {vista === "comunas" && <ListadoComunas />}
       </div>
     </div>
   );

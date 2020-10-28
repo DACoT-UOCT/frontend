@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import PanelInstalacion from "../Shared/PanelInstalacion";
 import { StateContext } from "../App";
 import Loading from "../Shared/Loading";
+import { ipAPI } from "../Shared/ipAPI";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,11 +67,11 @@ const Dashboard = () => {
 
   async function getData() {
     //consulta por id al backend
-    var link; // = "http://34.224.95.239:8080/request" + "?user=" + state.email;
+    var link; // = ipAPI + "request" + "?user=" + state.email;
     if (state.rol === "Empresa") {
-      link = "http://34.224.95.239:8080/otu" + "?user=" + state.email;
+      link = ipAPI + "otu" + "?user=" + state.email;
     } else {
-      link = "http://34.224.95.239:8080/request" + "?user=" + state.email;
+      link = ipAPI + "request" + "?user=" + state.email;
     }
 
     return new Promise((resolve, reject) => {
