@@ -216,26 +216,25 @@ const NuevaInstalacion = (props) => {
 
     //console.log(state_copy);
     // return JSON.stringify(state_copy);
-    return state_copy;
+    return JSON.stringify(state_copy);
   };
   useEffect(() => {
     if (state.submit === true) {
       //enviar
-
       var link = ipAPI + "request?user=" + props.state.email;
       //console.log(state);
       //console.log(link);
-      console.log(state);
-      var aux = procesar_json_envio();
-      console.log(JSON.stringify(aux));
-      console.log(procesar_json_recibido(aux));
-      return;
+      // console.log(state);
+      // var aux = procesar_json_envio();
+      // console.log(JSON.stringify(aux));
+      // console.log(procesar_json_recibido(aux));
 
       axios({
         method: "post",
         url: link,
         data: "request=" + procesar_json_envio(),
         headers: {
+          //'content-type': 'multipart/form-data'
           "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
         },
       })
