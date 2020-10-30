@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 
 import { StateContext } from "../App";
+import styles from "./Administracion.module.css";
 import { ipAPI } from "../Shared/ipAPI";
 import axios from "axios";
 import { Button } from "reactstrap";
@@ -18,7 +19,10 @@ import {
 } from "@material-ui/core";
 
 const Campo = styled(TextField)({
+  width: "100%",
   background: "none",
+  display: "flex",
+  justifyContent: "center",
 });
 
 const UsuarioPopUp = (props) => {
@@ -59,7 +63,7 @@ const UsuarioPopUp = (props) => {
   };
   return (
     <>
-      <TableContainer>
+      <TableContainer className={styles.popup}>
         <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>
@@ -70,7 +74,7 @@ const UsuarioPopUp = (props) => {
               <TableCell align="left">
                 <Campo
                   id="standard"
-                  label="Nombre"
+                  label=""
                   variant="standard"
                   name="otu-serie"
                   autoComplete="off"
@@ -185,7 +189,7 @@ const UsuarioPopUp = (props) => {
                 <Campo
                   id="standard"
                   disabled={props.type === "edit"}
-                  label="correo@gmail.com"
+                  label=""
                   variant="standard"
                   name="otu-serie"
                   autoComplete="off"
@@ -213,19 +217,15 @@ const UsuarioPopUp = (props) => {
                 />
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell>
-                <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
-              </TableCell>
-              <TableCell>
-                <Button onClick={try_submit}>
-                  <span>Guardar</span>
-                </Button>
-              </TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
+      <div className={styles.buttonsGroup}>
+        <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
+        <Button onClick={try_submit}>
+          <span>Guardar</span>
+        </Button>
+      </div>
     </>
   );
 };

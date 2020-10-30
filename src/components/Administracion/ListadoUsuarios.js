@@ -4,6 +4,7 @@ import { StateContext as GlobalContext } from "../App";
 import { ipAPI } from "../Shared/ipAPI";
 import axios from "axios";
 import { Button } from "reactstrap";
+import styles from "./Administracion.module.css";
 import { useImmerReducer } from "use-immer";
 import PopUp from "../Shared/PopUp";
 import { reducer, initialState } from "../Shared/Reducers/UsuariosReducer";
@@ -71,14 +72,14 @@ const ListadoUsuarios = (props) => {
 
   return (
     <>
-      <Button
+      <Button style={{ "float": "right" }} className={styles.mb}
         onClick={() => {
           setNewOpen(true);
           dispatch({ type: "nuevo" });
         }}>
         <span>Agregar nuevo usuario</span>
       </Button>
-      <Table hover responsive>
+      <Table hover responsive className={styles.table}>
         <thead>
           <tr>
             <th>Nombre</th>
@@ -86,7 +87,7 @@ const ListadoUsuarios = (props) => {
             <th>Área/Empresa</th>
             <th>Correo</th>
             <th>Administrador</th>
-            <th></th>
+            <th>Acción</th>
           </tr>
         </thead>
         <tbody>

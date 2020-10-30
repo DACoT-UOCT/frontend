@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 
+import styles from "./Administracion.module.css";
 import { StateContext as GlobalContext } from "../App";
 import { ipAPI } from "../Shared/ipAPI";
 import axios from "axios";
@@ -81,7 +82,7 @@ const ListadoComunas = (props) => {
           {state.loading && <Loading />}
           {!state.loading && state.comunas !== [] && (
             <>
-              <Table hover responsive>
+              <Table hover responsive className={styles.table}>
                 <thead>
                   <tr>
                     <th>Comuna</th>

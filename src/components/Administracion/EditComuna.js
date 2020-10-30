@@ -5,6 +5,7 @@ import { ipAPI } from "../Shared/ipAPI";
 import axios from "axios";
 import { Button } from "reactstrap";
 import Loading from "../Shared/Loading";
+import styles from "./Administracion.module.css";
 import { styled } from "@material-ui/core/styles";
 import {
   Checkbox,
@@ -18,7 +19,10 @@ import {
 } from "@material-ui/core";
 
 const Campo = styled(TextField)({
+  width: "100%",
   background: "none",
+  display: "flex",
+  justifyContent: "center",
 });
 
 const EditComuna = (props) => {
@@ -118,19 +122,15 @@ const EditComuna = (props) => {
                 </Campo>
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell>
-                <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
-              </TableCell>
-              <TableCell>
-                <Button onClick={try_submit}>
-                  <span>Guardar</span>
-                </Button>
-              </TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
+      <div className={styles.buttonsGroup}>
+        <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
+        <Button onClick={try_submit}>
+          <span>Guardar</span>
+        </Button>
+      </div>
     </>
   );
 };
