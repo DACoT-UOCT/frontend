@@ -15,7 +15,6 @@ export const initialState = {
 };
 
 export function reducer(draft, action) {
-  console.log(action.payLoad);
   switch (action.type) {
     case "setComuna":
       draft.name = action.payLoad.name;

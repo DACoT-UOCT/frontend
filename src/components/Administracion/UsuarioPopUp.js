@@ -16,6 +16,7 @@ import {
   TableRow,
   TextField,
 } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 const Campo = styled(TextField)({
   background: "none",
@@ -34,23 +35,71 @@ const UsuarioPopUp = (props) => {
     "Administración",
   ];
 
-  const try_submit = () => {
-    console.log(state);
-    var url = ipAPI + "edit-user" + "?user_email=" + global_state.email;
-    var json = {
-      commune: state.name,
-      company_email: state.maintainer.name,
-    };
+  const eliminar = () => {
+    var url =
+      ipAPI +
+      "delete-user/" +
+      state.email +
+      "?user_email=" +
+      global_state.email;
+
     // "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
-    const config = { headers: { "Content-Type": "application/json" } };
+    // const config = { headers: { "Content-Type": "application/json" } };
+    console.log(url);
     axios
-      .put(url, JSON.stringify(json), config)
+      .delete(url)
       .then((response) => {
-        console.log(response);
+        alert("Usuario eliminado");
+      })
+      .catch((err) => {
+        alert("Error en la operación");
+        console.log(err);
+      });
+
+    props.setOpen(false);
+    dispatch({ type: "consultado", payLoad: false });
+  };
+  const try_submit = () => {
+    var link;
+    var metodo;
+
+    var json = {
+      area: state.area,
+      full_name: state.nombre,
+      is_admin: state.is_admin,
+      rol: state.rol,
+    };
+    if (state.rol === "Empresa") {
+      json.company = { name: state.empresa };
+    }
+
+    if (props.type === "edit") {
+      link =
+        ipAPI +
+        "edit-user/" +
+        state.email +
+        "?user_email=" +
+        global_state.email;
+      metodo = "PUT";
+    } else {
+      //crear usuario
+      link = ipAPI + "users?user_email=" + global_state.email;
+      metodo = "POST";
+      json.email = state.email;
+    }
+
+    console.log(JSON.stringify(json));
+    axios({
+      method: metodo,
+      url: link,
+      data: JSON.stringify(json),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => {
         alert("Cambios guardados");
       })
       .catch((err) => {
-        alert("Error en el envio.");
+        alert("Error en el envio");
         console.log(err);
       });
 
@@ -190,6 +239,12 @@ const UsuarioPopUp = (props) => {
                   name="otu-serie"
                   autoComplete="off"
                   value={state.email}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "email",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }
                 />
               </TableCell>
             </TableRow>
@@ -222,6 +277,13 @@ const UsuarioPopUp = (props) => {
                   <span>Guardar</span>
                 </Button>
               </TableCell>
+              {props.type === "edit" && (
+                <TableCell>
+                  <Button onClick={eliminar}>
+                    <span>Eliminar</span>
+                  </Button>
+                </TableCell>
+              )}
             </TableRow>
           </TableBody>
         </Table>
