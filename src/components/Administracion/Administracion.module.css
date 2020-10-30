@@ -56,12 +56,42 @@
     flex: 1;
     border-radius: 10px;
     border: 2px solid lightgray;
+    overflow: scroll;
+    overflow-x: hidden;
 }
 
 .registro {
     align-items: flex-end ;
+    font-size: 1rem;
 }
 
 .registro button {
-    padding: 2px 10px;
+    padding: 5px 10px;
 }
+
+.table {
+    font-size: 1rem;
+    width: 100%;
+    overflow-x: hidden !important;  
+}
+
+.mb {
+    margin-bottom: 20px;
+}
+
+.popup td {
+    margin-top: 5px;
+}
+
+.buttonsGroup {
+    width: 100%;
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+.buttonsGroup button {
+    margin-right: 50px;
+}
+
+

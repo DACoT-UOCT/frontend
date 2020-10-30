@@ -3,7 +3,7 @@
 }
 
 * {
-  font-size: 20px;
+  font-size: inherit;
 }
 
 * {
@@ -13,6 +13,7 @@
 body {
   background-color: rgb(236, 238, 240);
   font-family: "Averis", sans-serif;
+  font-size: 20px;
 }
 
 @font-face {
@@ -269,7 +270,7 @@ body {
     ". . . . ." 5vh
     ". caja . profile ." 82vh
     ". . . . ." 5vh
-    /15% 64% 2% 17% 2%;
+    /3% 75% 2% 17% 3%;
 }
 
 Label{
