@@ -66,7 +66,7 @@ const NuevaInstalacion = (props) => {
       temp.secuencias[index] = secuencia.fases;
     });
     temp.errors = [];
-    temp.vista = 1;
+    temp.vista = 2;
     temp.submit = false;
     temp.isLoading = true;
     console.log(temp);
@@ -371,7 +371,12 @@ const NuevaInstalacion = (props) => {
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
         <div className="grid-item nuevo-semaforo">
-          <div className={classes.root}>
+          <div className={classes.root}
+            style={{
+              "display":"flex",
+              "flexDirection": "column",
+              "height":"100%",
+            }}>
             <Stepper
               activeStep={state.vista - 1}
               alternativeLabel
@@ -385,13 +390,19 @@ const NuevaInstalacion = (props) => {
                 </Step>
               ))}
             </Stepper>
-            <div>
+            <div
+              style={{
+                "flexGrow" : "1",
+                "overflow-y": "scroll",
+              }}>
               <div
                 className="grid-item"
                 id="formulario"
                 style={{
-                  "max-height": "460px",
-                  "overflow-y": "scroll",
+                  "height": "100%",
+                  "position":"relative",
+                  "display": "flex",
+                  "flexDirection":"column",
                   border: "0px",
                 }}>
                 <Typography className={classes.instructions}>
@@ -399,7 +410,10 @@ const NuevaInstalacion = (props) => {
                 </Typography>
 
                 {state.vista < 5 && (
-                  <Siguiente state={state} dispatch={dispatch} />
+                  <div style={{"flexGrow":"1", "display":"flex", "alignItems": "flex-end", "justifyContent": "center",}}>
+                    <Siguiente 
+                  state={state} dispatch={dispatch} />
+                  </div>
                 )}
               </div>
             </div>
