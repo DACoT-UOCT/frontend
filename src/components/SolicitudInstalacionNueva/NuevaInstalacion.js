@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
-import { Form } from "reactstrap";
+import { Label } from "reactstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Loading from "../Shared/Loading";
+import { ipAPI } from "../Shared/ipAPI";
 
 import {
   Switch,
@@ -17,16 +18,18 @@ import {
   Button,
 } from "@material-ui/core";
 
-import { reducer, initialState } from "../Shared/FormularioReducer";
+import { reducer, initialState } from "../Shared/Reducers/FormularioReducer";
 import Junctions from "../Shared/Campos/Junctions";
 import Siguiente from "../Shared/Campos/Siguiente";
 import UPS from "../Shared/Campos/UPS";
+import General from "../Shared/Campos/General";
 import OTU from "../Shared/Campos/OTU";
 import Verificacion from "../Shared/Campos/Verificacion";
 import Cabezales from "../Shared/Campos/Cabezales";
 import Postes from "../Shared/Campos/Postes";
 import Controlador from "../Shared/Campos/Controlador";
 import Documentacion from "../Shared/Campos/Documentacion";
+import DocumentacionProgramaciones from "../Shared/Campos/DocumentacionProgramaciones";
 import Etapas from "../Shared/Campos/Etapas";
 import Fases from "../Shared/Campos/Fases";
 import Secuencias from "../Shared/Campos/Secuencias";
@@ -53,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 //lag -> pasar parte del estado como prop, usar React.memo( () =>{})
 const NuevaInstalacion = (props) => {
   const location = useLocation();
-  console.log(props.state.actualizando);
+
   var temp = JSON.parse(JSON.stringify(props.state.actualizando));
   if (location.pathname === "/actualizar/instalacion") {
     temp.metadata.installation_date = temp.metadata.installation_date.$date;
@@ -63,17 +66,16 @@ const NuevaInstalacion = (props) => {
       temp.secuencias[index] = secuencia.fases;
     });
     temp.errors = [];
-    temp.vista = 1;
+    temp.vista = 2;
     temp.submit = false;
     temp.isLoading = true;
+    console.log(temp);
   }
-  console.log(temp);
   const [state, dispatch] = useImmerReducer(
     reducer,
     location.pathname === "/actualizar/instalacion" ? temp : initialState
   );
 
-  console.log(state);
   const [checked, setChecked] = React.useState(false);
 
   //STEPPER STEPPER STEPPER STEPPER
@@ -84,58 +86,155 @@ const NuevaInstalacion = (props) => {
     setChecked((prev) => !prev);
   };
 
-  const procesar_json = () => {
-    //procesa el json antes de enviarlo
-    const state_copy = JSON.parse(JSON.stringify(state));
+  const comparar_arrays = (arr1, arr2) => {
+    if (arr1.length !== arr2.length) {
+      return false;
+    }
+    for (var i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) {
+        return false;
+      }
+    }
+    return true;
+  };
 
+  const procesar_json_recibido = (aux) => {
+    //procesa el json consultado para mostrarlo en el formulario
+    // var temp = JSON.parse(JSON.stringify(props.state.actualizando));
+    var temp = aux;
+    var stages = [];
+    var fases = [];
+    var secuencias = [];
+    var entreverdes = [];
+
+    for (var i = 0; i < temp.otu.sequences.length; i++) {
+      var fasesTemp = temp.otu.sequences[i].phases;
+      var seqTemp = [];
+      for (var j = 0; j < fasesTemp.length; j++) {
+        seqTemp.push(fasesTemp[j].phid);
+        var etapasTempList = [];
+        var etapasTemp = fasesTemp[j].stages;
+
+        for (var k = 0; k < etapasTemp.length; k++) {
+          etapasTempList.push(etapasTemp[k].stid);
+          var etapaTemp = [etapasTemp[k].stid, etapasTemp[k].type];
+          if (!stages.some((e) => comparar_arrays(e, etapaTemp))) {
+            stages.push(etapaTemp);
+          }
+        }
+        if (!fases.some((e) => comparar_arrays(e, etapasTempList))) {
+          fases.push(etapasTempList);
+        }
+      }
+      secuencias.push(seqTemp);
+    }
+
+    //entreverdes
+    while (temp.otu.intergreens.length)
+      entreverdes.push(temp.otu.intergreens.splice(0, stages.length));
+
+    //revisar si algun campo esta vacio len = 0
+    //eliminar intergreens sequences
+    delete temp.otu.intergreens;
+    delete temp.otu.sequences;
+
+    temp.otu.stages = stages;
+    temp.otu.fases = fases;
+    temp.otu.secuencias = secuencias;
+    temp.otu.entreverdes = entreverdes;
+    //variables de control
+    temp.errors = [];
+    temp.vista = 1;
+    temp.submit = false;
+    temp.isLoading = true;
+    return temp;
+  };
+
+  const procesar_json_envio = () => {
+    //procesa el json antes de envio
+    const state_copy = JSON.parse(JSON.stringify(state));
     //agregar status_user
     //state_copy.metadata.status_user = props.state.email;
     if (location.pathname === "/nuevo/digitalizacion") {
-      state_copy.metadata.status = "SYSTEM";
+      //state_copy.metadata.status = "SYSTEM";
     }
 
-    //convertir variables a enteros
-    state_copy.metadata.control = parseInt(state_copy.metadata.control);
-    state_copy.metadata.answer = parseInt(state_copy.metadata.answer);
-    state_copy.postes.ganchos = parseInt(state_copy.postes.ganchos);
-    state_copy.postes.vehiculares = parseInt(state_copy.postes.vehiculares);
-    state_copy.postes.peatonales = parseInt(state_copy.postes.peatonales);
-    for (var x in state_copy.cabezales) {
-      state_copy.cabezales[x].hal = parseInt(state_copy.cabezales[x].hal);
-      state_copy.cabezales[x].led = parseInt(state_copy.cabezales[x].led);
-    }
-
-    for (var i = 0; i < state_copy.entreverdes.length; i++) {
-      for (var j = 0; j < state_copy.entreverdes[0].length; j++) {
-        state_copy.entreverdes[i][j] = parseInt(state_copy.entreverdes[i][j]);
+    //crear objeto secuencias
+    const sequences = [];
+    //{ seqid: 1, phases: [{ phid: 1, stages: [{ stid: "A", type: "" }] }] },
+    for (var i = 0; i < state_copy.otu.secuencias.length; i++) {
+      var secuencia = state_copy.otu.secuencias[i];
+      sequences.push({ seqid: i, phases: new Array() });
+      for (var j = 0; j < secuencia.length; j++) {
+        var fase = secuencia[j];
+        sequences[i].phases.push({ phid: parseInt(fase), stages: new Array() });
       }
     }
+
+    sequences.map((secuencia, seqIndex) => {
+      secuencia.phases.map((faseSeq, faseSeqIndex) => {
+        state_copy.otu.fases.map((faseCpy, faseCpyIndex) => {
+          if (faseSeq.phid === faseCpyIndex + 1) {
+            //agregar etapas
+            for (var i = 0; i < faseCpy.length; i++) {
+              for (var j = 0; j < state_copy.otu.stages.length; j++) {
+                if (state_copy.otu.stages[j][0] === faseCpy[i]) {
+                  faseSeq.stages.push({
+                    stid: faseCpy[i][0],
+                    type: state_copy.otu.stages[j][1],
+                  });
+                }
+              }
+            }
+          }
+        });
+      });
+    });
+    state_copy.otu.sequences = sequences;
+
+    //juntar lista entreverdes en intergreens
+    var intergreens = [];
+    for (var i = 0; i < state_copy.otu.entreverdes.length; i++) {
+      var aux = state_copy.otu.entreverdes[i];
+      for (var j = 0; j < aux.length; j++) {
+        intergreens.push(state_copy.otu.entreverdes[i][j]);
+      }
+    }
+    state_copy.otu.intergreens = intergreens;
+
+    //eliminar etapas, fases secuencias de frontend
+    delete state_copy.otu.stages;
+    delete state_copy.otu.fases;
+    delete state_copy.otu.secuencias;
+    delete state_copy.otu.entreverdes;
+
     //eliminar variables de control
     delete state_copy.errors;
     delete state_copy.vista;
     delete state_copy.submit;
     delete state_copy.isLoading;
-    console.log(state_copy);
+
+    //console.log(state_copy);
+    // return JSON.stringify(state_copy);
     return JSON.stringify(state_copy);
   };
   useEffect(() => {
-    console.log(location.pathname);
     if (state.submit === true) {
       //enviar
-
-      var link = "http://34.224.95.239:8080/request?user=" + props.state.email;
-      // if (location.pathname === "/nuevo/instalacion") {
-      //   link = "http://34.224.95.239:8080/request?user=" + props.state.email;
-      // } else if (location.pathname === "/nuevo/digitalizacion") {
-      //   link = "http://34.224.95.239:8080/otu?user=" + props.state.email;
-      // }
-      console.log(link);
+      var link = ipAPI + "request?user=" + props.state.email;
+      //console.log(state);
+      //console.log(link);
+      // console.log(state);
+      // var aux = procesar_json_envio();
+      // console.log(JSON.stringify(aux));
+      // console.log(procesar_json_recibido(aux));
 
       axios({
         method: "post",
         url: link,
-        data: "request=" + procesar_json(),
+        data: "request=" + procesar_json_envio(),
         headers: {
+          //'content-type': 'multipart/form-data'
           "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
         },
       })
@@ -167,27 +266,29 @@ const NuevaInstalacion = (props) => {
       case 1:
         return (
           <>
-            <OTU
-              state={state.metadata}
-              codigo={state.oid}
-              dispatch={dispatch}
-            />
+            <div className="grid-item">
+              <General
+                state={state.metadata}
+                codigo={state.oid}
+                dispatch={dispatch}
+              />
+            </div>
+
+            <hr className="separador"></hr>
+            <OTU state={state.otu} codigo={state.oid} dispatch={dispatch} />
             {/* <Equipamientos
               state={state.metadata.otu.equipamientos}
               dispatch={dispatch}
             /> */}
 
             <hr className="separador"></hr>
-            <Controlador
-              state={state.metadata.controller}
-              dispatch={dispatch}
-            />
+            <Controlador state={state.controller} dispatch={dispatch} />
 
             <hr className="separador"></hr>
-            <Junctions state={state.junctions} dispatch={dispatch} />
+            <Junctions state={state.otu.junctions} dispatch={dispatch} />
 
             <hr className="separador"></hr>
-            <Postes state={state.postes} dispatch={dispatch} />
+            <UPS state={state.ups} dispatch={dispatch} />
 
             <hr className="separador"></hr>
             <FormControlLabel
@@ -195,29 +296,41 @@ const NuevaInstalacion = (props) => {
               label="Campos No Obligatorios"
             />
             <Collapse in={checked}>
-              <Cabezales state={state.cabezales} dispatch={dispatch} />
+              <Postes state={state.poles} dispatch={dispatch} />
 
               <hr className="separador"></hr>
-              <UPS state={state.ups} dispatch={dispatch} />
+              <Cabezales state={state.headers} dispatch={dispatch} />
             </Collapse>
           </>
         );
       case 2:
         return (
-          <Form>
-            <Etapas state={state.stages} dispatch={dispatch} />
+          <>
+            <DocumentacionProgramaciones
+              state={state.metadata.img}
+              dispatch={dispatch}
+            />
+            {state.metadata.img && (
+              <>
+                <Etapas state={state.otu.stages} dispatch={dispatch} />
+
+                <hr className="separador"></hr>
+                <Fases state={state.otu.fases} dispatch={dispatch} />
+
+                <hr className="separador"></hr>
+                <Secuencias state={state.otu.secuencias} dispatch={dispatch} />
+
+                <hr className="separador"></hr>
+                <Entreverdes
+                  entreverdes={state.otu.entreverdes}
+                  stages={state.otu.stages}
+                  dispatch={dispatch}
+                />
+              </>
+            )}
 
             <hr className="separador"></hr>
-            <Fases state={state.fases} dispatch={dispatch} />
-
-            <hr className="separador"></hr>
-            <Secuencias state={state.secuencias} dispatch={dispatch} />
-
-            <hr className="separador"></hr>
-            <Entreverdes state={state} dispatch={dispatch} />
-
-            <hr className="separador"></hr>
-          </Form>
+          </>
         );
       case 3:
         return (
@@ -258,7 +371,12 @@ const NuevaInstalacion = (props) => {
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
         <div className="grid-item nuevo-semaforo">
-          <div className={classes.root}>
+          <div className={classes.root}
+            style={{
+              "display":"flex",
+              "flexDirection": "column",
+              "height":"100%",
+            }}>
             <Stepper
               activeStep={state.vista - 1}
               alternativeLabel
@@ -272,13 +390,19 @@ const NuevaInstalacion = (props) => {
                 </Step>
               ))}
             </Stepper>
-            <div>
+            <div
+              style={{
+                "flexGrow" : "1",
+                "overflow-y": "scroll",
+              }}>
               <div
                 className="grid-item"
                 id="formulario"
                 style={{
-                  "max-height": "460px",
-                  "overflow-y": "scroll",
+                  "height": "100%",
+                  "position":"relative",
+                  "display": "flex",
+                  "flexDirection":"column",
                   border: "0px",
                 }}>
                 <Typography className={classes.instructions}>
@@ -286,7 +410,10 @@ const NuevaInstalacion = (props) => {
                 </Typography>
 
                 {state.vista < 5 && (
-                  <Siguiente state={state} dispatch={dispatch} />
+                  <div style={{"flexGrow":"1", "display":"flex", "alignItems": "flex-end", "justifyContent": "center",}}>
+                    <Siguiente 
+                  state={state} dispatch={dispatch} />
+                  </div>
                 )}
               </div>
             </div>

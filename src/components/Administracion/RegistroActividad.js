@@ -4,18 +4,13 @@ import Loading from "../Shared/Loading";
 import DatePicker from "react-datepicker";
 import styles from "./Administracion.module.css";
 import { StateContext } from "../App";
+import { ipAPI } from "../Shared/ipAPI";
 
-import { Label } from "reactstrap";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import { Table, Label } from "reactstrap";
 
 import { Button } from "reactstrap";
 import axios from "axios";
-
+import { ImportantDevicesSharp } from "@material-ui/icons";
 
 const RegistroActividad = () => {
   const state = useContext(StateContext);
@@ -49,12 +44,13 @@ const RegistroActividad = () => {
       temp.getFullYear() + "-" + (temp.getMonth() + 1) + "-" + temp.getDate();
 
     const link =
-      "http://34.224.95.239:8080/history" +
+      ipAPI +
+      "actions_log" +
       "?gte=" +
       startString +
       "&lte=" +
       endString +
-      "&user=" +
+      "&user_email=" +
       state.email;
 
     return new Promise((resolve, reject) => {
@@ -126,32 +122,30 @@ const RegistroActividad = () => {
       <p>{error}</p>
       {loading && <Loading />}
       {registros.length > 0 ? (
-        <TableContainer style={{ "max-height": "295px" }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell>#</TableCell>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Accion</TableCell>
-                <TableCell>Fecha</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {registros.map((registro) => {
-                return (
-                  <TableRow hover>
-                    <TableCell>1</TableCell>
-                    <TableCell>{registro.user}</TableCell>
-                    <TableCell>{registro.component}</TableCell>
-                    <TableCell>
-                      {new Date(registro.date_modified.$date).toLocaleString()}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Table hover responsive className={styles.table}>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Accion</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            {registros.map((registro) => {
+              return (
+                <tr>
+                  <td>1</td>
+                  <td>{registro.user}</td>
+                  <td>{registro.component}</td>
+                  <td>
+                    {new Date(registro.date).toLocaleString()}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
       ) : (
         <Label>{vacio}</Label>
       )}

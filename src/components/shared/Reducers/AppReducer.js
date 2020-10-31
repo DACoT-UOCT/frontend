@@ -1,11 +1,13 @@
 import { Redirect } from "react-router-dom";
 
 export const initialState = {
-  full_name: "Auter",
-  email: "correoempresa@gmail.com",
+  full_name: "Admin",
+  email: "admin@dacot.uoct.cl",
+  rol: "Personal UOCT",
+  area: "TIC",
+  is_admin: true,
+
   password: "",
-  rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
-  is_admin: false,
   isLoading: false,
   error: "",
   isLoggedIn: true,
@@ -14,29 +16,30 @@ export const initialState = {
 };
 
 const funcionario = {
-  full_name: "Nicolas Grandón",
-  email: "correonicolas@gmail.com",
+  full_name: "Admin",
+  email: "admin@dacot.uoct.cl",
   rol: "Personal UOCT",
-  area: "Administración",
+  area: "TIC",
   is_admin: true,
 };
 
 var empresa = {
-  full_name: "Auter",
-  email: "correoempresa@gmail.com",
+  full_name: "ACME Employee",
+  email: "employee@acmecorp.com",
   rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
-  area: "Contratista",
+  area: "Mantenedora",
   is_admin: false,
 };
 
 export function reducer(draft, action) {
   switch (action.type) {
     case "switch_profile": {
-      if (draft.full_name === "Auter") {
-        draft.full_name = funcionario.full_name;
-        draft.email = funcionario.email;
-        draft.rol = funcionario.rol;
-        draft.is_admin = funcionario.is_admin;
+      console.log(draft.full_name);
+      if (draft.full_name === "Admin") {
+        draft.full_name = empresa.full_name;
+        draft.email = empresa.email;
+        draft.rol = empresa.rol;
+        draft.is_admin = empresa.is_admin;
       } else {
         draft.full_name = initialState.full_name;
         draft.email = initialState.email;

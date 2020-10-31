@@ -5,12 +5,9 @@ import Header from "./Shared/Header";
 import NuevaInstalacion from "./SolicitudInstalacionNueva/NuevaInstalacion";
 import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
 import Login from "./Login/Login";
-import { initialState, reducer } from "./Login/LoginReducer";
+import { initialState, reducer } from "./Shared/Reducers/AppReducer";
 import ProcesarSolicitud from "./ProcesarSolicitud/ProcesarSolicitud";
-import {
-  BrowserRouter as Router,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import NuevaActualizacion from "./SolicitudActualizacionNueva/NuevaActualizacion";
 import Dashboard from "./Dashboards/Dashboard";
 import Administracion from "./Administracion/Administracion";

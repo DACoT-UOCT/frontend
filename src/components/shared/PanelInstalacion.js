@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../Shared/Loading";
+import { ipAPI } from "../Shared/ipAPI";
 
 import { StateContext, DispatchContext } from "../App";
 import { makeStyles } from "@material-ui/core/styles";
@@ -77,8 +78,7 @@ export default function PanelInstalacion(props) {
 
   async function getData() {
     //consulta por id al backend
-    //http://34.224.95.239:8080/request/X123450
-    const link = "http://34.224.95.239:8080/request/" + props.id;
+    const link = ipAPI + "request/" + props.id;
     // state.rol === "Empresa"
     //   ? "linkempresa" + "?user=" + state.email
     //   : "linkfuncionario" + "?user=" + state.email;
