@@ -163,9 +163,8 @@ export default function PanelInstalacion(props) {
                 </Label>
               </div>
               <div>
-                <Label>Fecha de instalacion:</Label>
-                {console.log(otu.metadata.installation_date)}
-                <Label className="AcordeonCol1Inf">FECHA</Label>
+                {/*<Label>Fecha de instalacion:</Label>
+                <Label className="AcordeonCol1Inf">FECHA</Label>*/}
               </div>
             </div>
             <div className={clsx(classes.column2, classes.divider)}>
