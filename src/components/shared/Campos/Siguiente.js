@@ -168,7 +168,7 @@ const Siguiente = (props) => {
 
   return (
     <>
-      <div style={{ textAlign: "center" }}>
+      <div style={{ textAlign: "center", "marginBottom":"15px"}}>
         <ButtonMaterial
           disabled={state.vista === 1}
           variant="contained"
