@@ -36,12 +36,14 @@ const EditComuna = (props) => {
       commune: state.name,
       company_email: state.maintainer.name,
     };
+
     // "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
     const config = { headers: { "Content-Type": "application/json" } };
     axios
       .put(url, JSON.stringify(json), config)
       .then((response) => {
         console.log(response);
+        dispatch({ type: "consultado", payLoad: false });
         alert("Cambios guardados");
       })
       .catch((err) => {
@@ -50,7 +52,6 @@ const EditComuna = (props) => {
       });
 
     props.setOpen(false);
-    dispatch({ type: "consultado", payLoad: false });
   };
   return (
     <>
@@ -82,6 +83,7 @@ const EditComuna = (props) => {
                     })
                   }>
                   <option hidden></option>
+                  <option value="">Sin mantenedor</option>
                   <option value={state.maintainer.name}>
                     {state.maintainer.name}
                   </option>

@@ -11,6 +11,7 @@ export const initialState = {
   loading: false,
   error: "",
   consultado: false,
+  desea_eliminar: false,
   usuarios: [],
 };
 
@@ -32,6 +33,7 @@ export function reducer(draft, action) {
       return;
 
     case "editar":
+      draft.desea_eliminar = false;
       draft.nombre = action.payLoad.full_name;
       draft.rol = action.payLoad.rol;
       draft.area = action.payLoad.area;
@@ -43,6 +45,9 @@ export function reducer(draft, action) {
       return;
 
     default:
+      if (action.type === "rol") {
+        draft.area = "";
+      }
       draft[action.type] = action.payLoad;
       return;
   }

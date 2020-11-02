@@ -164,7 +164,7 @@ const NuevaInstalacion = (props) => {
     //{ seqid: 1, phases: [{ phid: 1, stages: [{ stid: "A", type: "" }] }] },
     for (var i = 0; i < state_copy.otu.secuencias.length; i++) {
       var secuencia = state_copy.otu.secuencias[i];
-      sequences.push({ seqid: i, phases: new Array() });
+      sequences.push({ seqid: i + 1, phases: new Array() });
       for (var j = 0; j < secuencia.length; j++) {
         var fase = secuencia[j];
         sequences[i].phases.push({ phid: parseInt(fase), stages: new Array() });
@@ -221,7 +221,8 @@ const NuevaInstalacion = (props) => {
   useEffect(() => {
     if (state.submit === true) {
       //enviar
-      var link = ipAPI + "request?user=" + props.state.email;
+      // var link = ipAPI + "requests?user_email=" + props.state.email;
+      var link = ipAPI + "requests?user_email=" + "admin@dacot.uoct.cl";
       //console.log(state);
       //console.log(link);
       // console.log(state);
@@ -232,10 +233,10 @@ const NuevaInstalacion = (props) => {
       axios({
         method: "post",
         url: link,
-        data: "request=" + procesar_json_envio(),
+        data: procesar_json_envio(),
         headers: {
           //'content-type': 'multipart/form-data'
-          "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+          "Content-Type": "application/json",
         },
       })
         .then((response) => {
@@ -371,11 +372,12 @@ const NuevaInstalacion = (props) => {
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
         <div className="grid-item nuevo-semaforo">
-          <div className={classes.root}
+          <div
+            className={classes.root}
             style={{
-              "display":"flex",
-              "flexDirection": "column",
-              "height":"100%",
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
             }}>
             <Stepper
               activeStep={state.vista - 1}
@@ -392,17 +394,17 @@ const NuevaInstalacion = (props) => {
             </Stepper>
             <div
               style={{
-                "flexGrow" : "1",
+                flexGrow: "1",
                 "overflow-y": "scroll",
               }}>
               <div
                 className="grid-item"
                 id="formulario"
                 style={{
-                  "height": "100%",
-                  "position":"relative",
-                  "display": "flex",
-                  "flexDirection":"column",
+                  height: "100%",
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
                   border: "0px",
                 }}>
                 <Typography className={classes.instructions}>
@@ -410,9 +412,14 @@ const NuevaInstalacion = (props) => {
                 </Typography>
 
                 {state.vista < 5 && (
-                  <div style={{"flexGrow":"1", "display":"flex", "alignItems": "flex-end", "justifyContent": "center",}}>
-                    <Siguiente 
-                  state={state} dispatch={dispatch} />
+                  <div
+                    style={{
+                      flexGrow: "1",
+                      display: "flex",
+                      alignItems: "flex-end",
+                      justifyContent: "center",
+                    }}>
+                    <Siguiente state={state} dispatch={dispatch} />
                   </div>
                 )}
               </div>

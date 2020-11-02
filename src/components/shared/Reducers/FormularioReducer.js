@@ -151,7 +151,7 @@ export const initialState = {
   observations: "",
 
   errors: [],
-  vista: 3,
+  vista: 2,
   submit: false,
   isLoading: true,
 };

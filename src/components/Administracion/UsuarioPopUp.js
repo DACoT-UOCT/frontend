@@ -18,6 +18,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import PopOver from "../Shared/PopOver";
 
 const Campo = styled(TextField)({
   width: "100%",
@@ -30,15 +31,20 @@ const UsuarioPopUp = (props) => {
   const global_state = useContext(StateContext);
   const state = props.state;
   const dispatch = props.dispatch;
-  const areas_disponibles = [
-    "Ingiería",
-    "Sala de Control",
-    "TIC",
-    "Mantenedora",
-    "Contratista",
-    "Administración",
-  ];
+  const areas_empresas = ["Mantenedora", "Contratista", ,];
+  const areas_UOCT = ["Ingiería", "Sala de Control", "TIC", "Administración"];
 
+  const validar_json = (json) => {
+    var temp = json.area !== "" && json.full_name !== "" && json.rol !== "";
+    if (json.rol === "Empresa") {
+      temp = temp && json.company.name !== "";
+    }
+    var expresion = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/g;
+    if (props.type !== "edit") {
+      temp = temp && expresion.test(json.email);
+    }
+    return temp;
+  };
   const eliminar = () => {
     var url =
       ipAPI +
@@ -54,6 +60,7 @@ const UsuarioPopUp = (props) => {
       .delete(url)
       .then((response) => {
         alert("Usuario eliminado");
+        dispatch({ type: "consultado", payLoad: false });
       })
       .catch((err) => {
         alert("Error en la operación");
@@ -61,7 +68,6 @@ const UsuarioPopUp = (props) => {
       });
 
     props.setOpen(false);
-    dispatch({ type: "consultado", payLoad: false });
   };
   const try_submit = () => {
     var link;
@@ -93,6 +99,12 @@ const UsuarioPopUp = (props) => {
     }
 
     console.log(JSON.stringify(json));
+    console.log(validar_json(json));
+    if (!validar_json(json)) {
+      alert("Error en los campos");
+      return;
+    }
+
     axios({
       method: metodo,
       url: link,
@@ -101,6 +113,7 @@ const UsuarioPopUp = (props) => {
     })
       .then((response) => {
         alert("Cambios guardados");
+        dispatch({ type: "consultado", payLoad: false });
       })
       .catch((err) => {
         alert("Error en el envio");
@@ -108,7 +121,6 @@ const UsuarioPopUp = (props) => {
       });
 
     props.setOpen(false);
-    dispatch({ type: "consultado", payLoad: false });
   };
   return (
     <>
@@ -136,6 +148,7 @@ const UsuarioPopUp = (props) => {
                   }
                 />
               </TableCell>
+              <PopOver mensaje="Mínimo 5 caracteres" />
             </TableRow>
             <TableRow>
               <TableCell>Rol</TableCell>
@@ -143,6 +156,7 @@ const UsuarioPopUp = (props) => {
                 <Campo
                   id="standard-select-currency-native"
                   select
+                  disabled={props.state === "edit"}
                   label=""
                   variant="standard"
                   name=""
@@ -158,12 +172,17 @@ const UsuarioPopUp = (props) => {
                       payLoad: e.currentTarget.value,
                     })
                   }>
-                  <option hidden></option>
-                  {/* <option value={state.rol}>{state.rol}</option> */}
-
-                  <option value="Empresa"> Empresa</option>
-
-                  <option value="Personal UOCT"> Personal UOCT</option>
+                  {props.type !== "edit" ? (
+                    <>
+                      <option hidden></option>
+                      <option value="Empresa"> Empresa</option>
+                      <option value="Personal UOCT"> Personal UOCT</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value={state.rol}>{state.rol}</option>
+                    </>
+                  )}
                 </Campo>
               </TableCell>
             </TableRow>
@@ -189,8 +208,10 @@ const UsuarioPopUp = (props) => {
                         payLoad: e.currentTarget.value,
                       })
                     }>
-                    {state.empresa !== "" && (
+                    {state.empresa !== "" ? (
                       <option value={state.empresa}>{state.empresa}</option>
+                    ) : (
+                      <option hidden></option>
                     )}
                     {state.empresas.map((empresa) => {
                       if (empresa.name !== state.empresa) {
@@ -203,34 +224,40 @@ const UsuarioPopUp = (props) => {
                 </TableCell>
               </TableRow>
             )}
-            <TableRow>
-              <TableCell>Área</TableCell>
-              <TableCell align="left">
-                <Campo
-                  id="standard-select-currency-native"
-                  select
-                  label=""
-                  variant="standard"
-                  name=""
-                  autoComplete="off"
-                  style={{ width: "350px" }}
-                  SelectProps={{
-                    native: true,
-                  }}
-                  value={state.area}
-                  onChange={(e) =>
-                    dispatch({
-                      type: "area",
-                      payLoad: e.currentTarget.value,
-                    })
-                  }>
-                  <option hiden></option>
-                  {areas_disponibles.map((area_d) => {
-                    return <option value={area_d}>{area_d}</option>;
-                  })}
-                </Campo>
-              </TableCell>
-            </TableRow>
+            {state.rol !== "" && (
+              <TableRow>
+                <TableCell>Área</TableCell>
+                <TableCell align="left">
+                  <Campo
+                    id="standard-select-currency-native"
+                    select
+                    label=""
+                    variant="standard"
+                    name=""
+                    autoComplete="off"
+                    style={{ width: "350px" }}
+                    SelectProps={{
+                      native: true,
+                    }}
+                    value={state.area}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "area",
+                        payLoad: e.currentTarget.value,
+                      })
+                    }>
+                    {state.area === "" && <option hiden></option>}
+                    {state.rol === "Empresa"
+                      ? areas_empresas.map((area_d) => {
+                          return <option value={area_d}>{area_d}</option>;
+                        })
+                      : areas_UOCT.map((area_d) => {
+                          return <option value={area_d}>{area_d}</option>;
+                        })}
+                  </Campo>
+                </TableCell>
+              </TableRow>
+            )}
 
             <TableRow>
               <TableCell>Email</TableCell>
@@ -251,6 +278,7 @@ const UsuarioPopUp = (props) => {
                   }
                 />
               </TableCell>
+              <PopOver mensaje="Cuenta de Google Suite" />
             </TableRow>
             <TableRow>
               <TableCell>Permisos de administración</TableCell>
@@ -275,12 +303,39 @@ const UsuarioPopUp = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <div className={styles.buttonsGroup}>
-        <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
-        <Button onClick={try_submit}>
-          <span>Guardar</span>
-        </Button>
-      </div>
+      {state.desea_eliminar ? (
+        <>
+          <div className={styles.buttonsGroup}>
+            <h5>¿Desea eliminar el usuario actual?</h5>
+          </div>
+          <div className={styles.buttonsGroup}>
+            <Button
+              onClick={() =>
+                dispatch({ type: "desea_eliminar", payLoad: false })
+              }>
+              Cancelar
+            </Button>
+            <Button onClick={eliminar}>Confirmar</Button>
+          </div>
+        </>
+      ) : (
+        <div className={styles.buttonsGroup}>
+          <>
+            <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
+            <Button onClick={try_submit}>
+              <span>Guardar</span>
+            </Button>
+            {props.type === "edit" && (
+              <Button
+                onClick={() =>
+                  dispatch({ type: "desea_eliminar", payLoad: true })
+                }>
+                <span>Eliminar usuario</span>
+              </Button>
+            )}
+          </>
+        </div>
+      )}
     </>
   );
 };
