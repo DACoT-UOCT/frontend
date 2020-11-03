@@ -1,6 +1,7 @@
 import React from "react";
 
 import "../../../App.css";
+import styles from "./Campos.module.css";
 import { Label } from "reactstrap";
 import {
   Table,
@@ -24,7 +25,7 @@ const Postes = (props) => {
     <>
       <legend className="seccion">Postes</legend>
 
-      <TableContainer>
+      <TableContainer className={styles.form}>
         <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>
