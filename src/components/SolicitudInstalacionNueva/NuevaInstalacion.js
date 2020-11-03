@@ -53,6 +53,70 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export const comparar_arrays = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+  for (var i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+export const procesar_json_recibido = (aux) => {
+  //procesa el json consultado para mostrarlo en el formulario
+  // var temp = JSON.parse(JSON.stringify(props.state.actualizando));
+  var temp = aux;
+  var stages = [];
+  var fases = [];
+  var secuencias = [];
+  var entreverdes = [];
+
+  for (var i = 0; i < temp.otu.sequences.length; i++) {
+    var fasesTemp = temp.otu.sequences[i].phases;
+    var seqTemp = [];
+    for (var j = 0; j < fasesTemp.length; j++) {
+      seqTemp.push(fasesTemp[j].phid);
+      var etapasTempList = [];
+      var etapasTemp = fasesTemp[j].stages;
+
+      for (var k = 0; k < etapasTemp.length; k++) {
+        etapasTempList.push(etapasTemp[k].stid);
+        var etapaTemp = [etapasTemp[k].stid, etapasTemp[k].type];
+        if (!stages.some((e) => comparar_arrays(e, etapaTemp))) {
+          stages.push(etapaTemp);
+        }
+      }
+      if (!fases.some((e) => comparar_arrays(e, etapasTempList))) {
+        fases.push(etapasTempList);
+      }
+    }
+    secuencias.push(seqTemp);
+  }
+
+  //entreverdes
+  while (temp.otu.intergreens.length)
+    entreverdes.push(temp.otu.intergreens.splice(0, stages.length));
+
+  //revisar si algun campo esta vacio len = 0
+  //eliminar intergreens sequences
+  delete temp.otu.intergreens;
+  delete temp.otu.sequences;
+
+  temp.otu.stages = stages;
+  temp.otu.fases = fases;
+  temp.otu.secuencias = secuencias;
+  temp.otu.entreverdes = entreverdes;
+  //variables de control
+  temp.errors = [];
+  temp.vista = 1;
+  temp.submit = false;
+  temp.isLoading = true;
+  temp.success = false;
+  return temp;
+};
 //lag -> pasar parte del estado como prop, usar React.memo( () =>{})
 const NuevaInstalacion = (props) => {
   const location = useLocation();
@@ -86,70 +150,6 @@ const NuevaInstalacion = (props) => {
     setChecked((prev) => !prev);
   };
 
-  const comparar_arrays = (arr1, arr2) => {
-    if (arr1.length !== arr2.length) {
-      return false;
-    }
-    for (var i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const procesar_json_recibido = (aux) => {
-    //procesa el json consultado para mostrarlo en el formulario
-    // var temp = JSON.parse(JSON.stringify(props.state.actualizando));
-    var temp = aux;
-    var stages = [];
-    var fases = [];
-    var secuencias = [];
-    var entreverdes = [];
-
-    for (var i = 0; i < temp.otu.sequences.length; i++) {
-      var fasesTemp = temp.otu.sequences[i].phases;
-      var seqTemp = [];
-      for (var j = 0; j < fasesTemp.length; j++) {
-        seqTemp.push(fasesTemp[j].phid);
-        var etapasTempList = [];
-        var etapasTemp = fasesTemp[j].stages;
-
-        for (var k = 0; k < etapasTemp.length; k++) {
-          etapasTempList.push(etapasTemp[k].stid);
-          var etapaTemp = [etapasTemp[k].stid, etapasTemp[k].type];
-          if (!stages.some((e) => comparar_arrays(e, etapaTemp))) {
-            stages.push(etapaTemp);
-          }
-        }
-        if (!fases.some((e) => comparar_arrays(e, etapasTempList))) {
-          fases.push(etapasTempList);
-        }
-      }
-      secuencias.push(seqTemp);
-    }
-
-    //entreverdes
-    while (temp.otu.intergreens.length)
-      entreverdes.push(temp.otu.intergreens.splice(0, stages.length));
-
-    //revisar si algun campo esta vacio len = 0
-    //eliminar intergreens sequences
-    delete temp.otu.intergreens;
-    delete temp.otu.sequences;
-
-    temp.otu.stages = stages;
-    temp.otu.fases = fases;
-    temp.otu.secuencias = secuencias;
-    temp.otu.entreverdes = entreverdes;
-    //variables de control
-    temp.errors = [];
-    temp.vista = 1;
-    temp.submit = false;
-    temp.isLoading = true;
-    return temp;
-  };
-
   const procesar_json_envio = () => {
     //procesa el json antes de envio
     const state_copy = JSON.parse(JSON.stringify(state));
@@ -158,6 +158,7 @@ const NuevaInstalacion = (props) => {
     if (location.pathname === "/nuevo/digitalizacion") {
       //state_copy.metadata.status = "SYSTEM";
     }
+    state_copy.metadata.maintainer = "AUTER";
 
     //crear objeto secuencias
     const sequences = [];
@@ -213,6 +214,7 @@ const NuevaInstalacion = (props) => {
     delete state_copy.vista;
     delete state_copy.submit;
     delete state_copy.isLoading;
+    delete state_copy.success;
 
     //console.log(state_copy);
     // return JSON.stringify(state_copy);
@@ -222,7 +224,7 @@ const NuevaInstalacion = (props) => {
     if (state.submit === true) {
       //enviar
       // var link = ipAPI + "requests?user_email=" + props.state.email;
-      var link = ipAPI + "requests?user_email=" + "admin@dacot.uoct.cl";
+      var link = ipAPI + "requests?user_email=" + props.state.email;
       //console.log(state);
       //console.log(link);
       // console.log(state);
@@ -411,7 +413,7 @@ const NuevaInstalacion = (props) => {
                   {getStepContent(state.vista)}
                 </Typography>
 
-                {state.vista < 5 && (
+                {state.vista < 6 && (
                   <div
                     style={{
                       flexGrow: "1",

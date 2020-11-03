@@ -151,9 +151,10 @@ export const initialState = {
   observations: "",
 
   errors: [],
-  vista: 2,
+  vista: 1,
   submit: false,
   isLoading: true,
+  success: false,
 };
 
 const ups = {
@@ -223,6 +224,7 @@ export function reducer(draft, action) {
 
     case "atras": {
       draft.vista -= 1;
+      draft.submit = false;
       document.getElementById("formulario").scrollTop = 0;
       return;
     }

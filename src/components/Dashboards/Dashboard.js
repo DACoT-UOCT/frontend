@@ -68,11 +68,8 @@ const Dashboard = () => {
   async function getData() {
     //consulta por id al backend
     var link; // = ipAPI + "request" + "?user=" + state.email;
-    if (state.rol === "Empresa") {
-      link = ipAPI + "otu" + "?user=" + state.email;
-    } else {
-      link = ipAPI + "request" + "?user=" + state.email;
-    }
+
+    link = ipAPI + "requests" + "?user_email=" + state.email;
 
     return new Promise((resolve, reject) => {
       axios

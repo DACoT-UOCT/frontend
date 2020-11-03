@@ -28,42 +28,16 @@ const getFecha = (date) => {
 
 const modelos_dummy = [
   {
-    company: "Siemens",
+    company: "SIEMENS",
     models: [
       {
-        name: "ST900",
+        name: "ST 900",
         firmware: [
           {
             version: "PB801 v13",
             checksum: "71 3A B4 A0",
             date: {
-              $date: 824824272,
-            },
-          },
-          {
-            version: "PA203 v20",
-            checksum: "11 FF 4D DE",
-            date: {
-              $date: 121262312,
-            },
-          },
-        ],
-      },
-      {
-        name: "ST950",
-        firmware: [
-          {
-            version: "667 ISSUE 16",
-            checksum: "C1D0401A",
-            date: {
-              $date: 185852312,
-            },
-          },
-          {
-            version: "TZ46059 ISSUE 16",
-            checksum: "03CC5C77",
-            date: {
-              $date: 18238122,
+              $date: 1609383600000,
             },
           },
         ],

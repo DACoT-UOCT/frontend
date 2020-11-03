@@ -11,6 +11,15 @@ import ButtonMaterial from "@material-ui/core/Button";
 
 import Verificacion from "../Shared/Campos/Verificacion";
 
+const validar_imagen = (imagen) => {
+  const formatos = ["image/png", "image/jpg", "image/jpeg"];
+  if (formatos.includes(imagen.type)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export default function ProcesarSolicitud(props) {
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,6 +42,7 @@ export default function ProcesarSolicitud(props) {
   const [imagen, setImagen] = useState(null);
   const [correos, setCorreos] = useState([""]);
   const [submit, setSubmit] = useState(false);
+  console.log(JSON.stringify(state.actualizando));
 
   const enviar = (aprobar) => {
     var respuesta = {
@@ -40,32 +50,31 @@ export default function ProcesarSolicitud(props) {
       file: imagen,
       mails: correos,
     };
-    var link = "link"; //link + user + oid
+    var link; //link + user + oid
 
     if (aprobar) {
       link =
         ipAPI +
-        "accept-request/" +
+        "requests/" +
         state.actualizando.oid +
+        "/accept" +
         "?user_email=" +
         state.email;
-      console.log("aprobar");
-      console.log(respuesta);
     } else {
       link =
         ipAPI +
-        "reject-request/" +
+        "requests/" +
         state.actualizando.oid +
+        "/reject" +
         "?user_email=" +
         state.email;
-      console.log("rechazar");
     }
     console.log(link);
 
     axios({
       method: "put",
       url: link,
-      data: "data=" + JSON.stringify(respuesta),
+      data: JSON.stringify(respuesta),
       headers: {
         "Content-Type": "application/json",
       },
@@ -107,7 +116,16 @@ export default function ProcesarSolicitud(props) {
                       type="file"
                       label={"file"}
                       onChange={(e) => {
-                        setImagen(e.target.files[0]);
+                        const file = e.target.files[0];
+                        if (file && validar_imagen(file)) {
+                          const reader = new FileReader();
+                          reader.readAsDataURL(file);
+                          reader.onloadend = function () {
+                            setImagen(reader.result);
+                          };
+                        } else {
+                          alert("Ingrese imagen en formato png/jpg/jpeg");
+                        }
                       }}
                     />
                   </FormGroup>

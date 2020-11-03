@@ -10,6 +10,10 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Button, Label } from "reactstrap";
 import clsx from "clsx";
 import {
+  procesar_json_recibido,
+  comparar_arrays,
+} from "../SolicitudInstalacionNueva/NuevaInstalacion";
+import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -59,7 +63,7 @@ export default function PanelInstalacion(props) {
   const state = useContext(StateContext);
   const classes = useStyles();
 
-  const [otu, setOtu] = useState(null);
+  const [instalacion, setInstalacion] = useState(null);
   const [consultado, setConsultado] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -70,7 +74,7 @@ export default function PanelInstalacion(props) {
       setConsultado(true);
     } else if (consultado && props.expanded !== props.id) {
       setConsultado(false);
-      setOtu(null);
+      setInstalacion(null);
       setError("");
       setLoading(false);
     }
@@ -78,18 +82,16 @@ export default function PanelInstalacion(props) {
 
   async function getData() {
     //consulta por id al backend
-    const link = ipAPI + "request/" + props.id;
-    // state.rol === "Empresa"
-    //   ? "linkempresa" + "?user=" + state.email
-    //   : "linkfuncionario" + "?user=" + state.email;
+    const link = ipAPI + "requests/" + props.id + "?user_email=" + state.email;
+    console.log(link);
 
     return new Promise((resolve, reject) => {
       axios
         .get(link)
         .then((response) => {
           //solicitud exitosa
-          setOtu(response.data);
-          console.log(response.data);
+          setInstalacion(procesar_json_recibido(response.data));
+
           resolve();
         })
         .catch((err) => {
@@ -108,6 +110,7 @@ export default function PanelInstalacion(props) {
       console.log(error);
       setError("Error en la consulta");
     }
+
     setLoading(false);
   };
 
@@ -136,35 +139,37 @@ export default function PanelInstalacion(props) {
             </Typography>
           </div>
         </AccordionSummary>
-        {otu !== null && !loading && (
+        {instalacion !== null && !loading && (
           <AccordionDetails className={classes.details}>
             <div className={classes.column}>
               <legend>Información del Cruce</legend>
               <div>
-                <Label>Codigo OTU:</Label>
-                <Label className="AcordeonCol1Inf">{otu.oid}</Label>
+                <Label>Codigo instalacion:</Label>
+                <Label className="AcordeonCol1Inf">{instalacion.oid}</Label>
               </div>
               <div>
                 <Label>Ubicacion:</Label>
                 <Label className="AcordeonCol1Inf">
-                  {otu.metadata.controller.address_reference}
+                  {instalacion.controller.address_reference}
                 </Label>
               </div>
               <div>
                 <Label>Empresa instaladora:</Label>
                 <Label className="AcordeonCol1Inf">
-                  {otu.metadata.status_user}
+                  {instalacion.metadata.status_user.full_name}
                 </Label>
               </div>
               <div>
                 <Label>Empresa encargada:</Label>
                 <Label className="AcordeonCol1Inf">
-                  {otu.metadata.status_user}
+                  {instalacion.metadata.maintainer.name}
                 </Label>
               </div>
               <div>
-                {/*<Label>Fecha de instalacion:</Label>
-                <Label className="AcordeonCol1Inf">FECHA</Label>*/}
+                <Label>Última modificación controlador:</Label>
+                <Label className="AcordeonCol1Inf">
+                  {instalacion.metadata.installation_date.$date}
+                </Label>
               </div>
             </div>
             <div className={clsx(classes.column2, classes.divider)}>
@@ -172,7 +177,7 @@ export default function PanelInstalacion(props) {
                 style={{ "margin-top": "10px" }}
                 height="320"
                 width="312"
-                src="/logo_transportes.png"
+                src={instalacion.metadata.img}
                 alt="Cruce"
               />
             </div>
@@ -185,7 +190,7 @@ export default function PanelInstalacion(props) {
                     onClick={() => {
                       dispatch({
                         type: "levantar_actualizacion",
-                        payLoad: otu,
+                        payLoad: instalacion,
                       });
                     }}>
                     <div className="linkBoton">Procesar Solicitud</div>
@@ -206,7 +211,7 @@ export default function PanelInstalacion(props) {
                     onClick={() => {
                       dispatch({
                         type: "levantar_actualizacion",
-                        payLoad: otu,
+                        payLoad: instalacion,
                       });
                     }}>
                     <div className="linkBoton">Modificar entrada</div>

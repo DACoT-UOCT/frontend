@@ -18,11 +18,11 @@ const Campo = styled(TextField)({
 const Verificacion = (props) => {
   const state = JSON.parse(JSON.stringify(props.state));
   console.log(state);
-  if (props.procesar) {
-    state.secuencias.map((secuencia, index) => {
-      state.secuencias[index] = secuencia.fases;
-    });
-  }
+  // if (props.procesar) {
+  //   state.secuencias.map((secuencia, index) => {
+  //     state.secuencias[index] = secuencia.fases;
+  //   });
+  // }
 
   const ancho_label = 4;
   const date = new Date(state.metadata.installation_date.$date);
