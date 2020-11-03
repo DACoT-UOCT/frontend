@@ -1,5 +1,6 @@
 import React from "react";
 import "../../../App.css";
+import styles from "./Campos.module.css";
 import { Label } from "reactstrap";
 import { styled } from "@material-ui/core/styles";
 import DatePicker from "react-datepicker";
@@ -26,7 +27,7 @@ const General = (props) => {
     <>
       <legend className="seccion">Información general del proyecto</legend>
 
-      <TableContainer>
+      <TableContainer className={styles.form}>
         <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>

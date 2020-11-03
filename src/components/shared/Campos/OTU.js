@@ -3,6 +3,7 @@ import "../../../App.css";
 import "react-datepicker/dist/react-datepicker.css";
 import PopOver from "../../Shared/PopOver";
 import DatePicker from "react-datepicker";
+import styles from "./Campos.module.css";
 import { Label } from "reactstrap";
 import {
   Checkbox,
@@ -28,7 +29,7 @@ const OTU = (props) => {
     <>
       <legend className="seccion">OTU</legend>
 
-      <TableContainer>
+      <TableContainer className={styles.form}>
         <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>

@@ -25,7 +25,7 @@ const Cabezales = (props) => {
     <>
       <legend className="seccion">Cabezales</legend>
 
-      <TableContainer>
+      <TableContainer style={{"width":"50%", "overflow-x":"hidden"}}>
         <Table size="small" aria-label="simple table">
           <TableBody>
             {headers.map((header, index) => {

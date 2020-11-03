@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./BusquedaReducer";
 import { Form, Row, Button, Input } from "reactstrap";
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
-import { compose, withProps } from "recompose";
 import PreviewInstalacion from "../Shared/PreviewInstalacion";
+import Mapa from "../Shared/Mapa";
 import axios from "axios";
 
 export const StateContext = React.createContext();
@@ -12,24 +11,6 @@ export const DispatchContext = React.createContext();
 
 const ConsultaSemaforo = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
-
-  const MyMapComponent = compose(
-    withProps({
-      googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyC3iH8ViMlMPmTQTty-LE5RUimCVn_lh0Y&v=3.exp&libraries=geometry,drawing,places",
-      loadingElement: <div style={{ height: `100%` }} />,
-      containerElement: <div style={{ height: `400px` }} />,
-      mapElement: <div style={{ height: `100%` }} />,
-    }),
-    withScriptjs,
-    withGoogleMap
-  )((props) =>
-    <GoogleMap
-      defaultZoom={12}
-      defaultCenter={{ lat: -33.447763, lng: -70.645001 }}
-    >
-      {props.isMarkerShown && <Marker position={{ lat: -33.447763, lng: -70.645001 }} />}
-    </GoogleMap>
-  );
 
   const {
     busqueda,
@@ -121,8 +102,8 @@ const ConsultaSemaforo = () => {
               </Row>
             </Form>
           </div>
-
-          <MyMapComponent isMarkerShown />
+          
+          <Mapa/>
 
           {isLoading && <p style={{ "margin-left": "15px" }}>Buscando...</p>}
           {no_encontrado && (

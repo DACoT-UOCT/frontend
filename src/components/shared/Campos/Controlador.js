@@ -3,6 +3,8 @@ import "../../../App.css";
 import { Label } from "reactstrap";
 import { styled } from "@material-ui/core/styles";
 import axios from "axios";
+import styles from "./Campos.module.css";
+
 import Loading from "../Loading";
 import {
   Checkbox,
@@ -103,7 +105,7 @@ const Controlador = (props) => {
           <Loading />
         </>
       ) : (
-        <TableContainer>
+        <TableContainer className={styles.form}>
           <Table size="small" aria-label="simple table">
             <TableBody>
               <TableRow>
