@@ -47,7 +47,7 @@ export default function ProcesarSolicitud(props) {
         ipAPI +
         "accept-request/" +
         state.actualizando.oid +
-        "?user=" +
+        "?user_email=" +
         state.email;
       console.log("aprobar");
       console.log(respuesta);
@@ -56,7 +56,7 @@ export default function ProcesarSolicitud(props) {
         ipAPI +
         "reject-request/" +
         state.actualizando.oid +
-        "?user=" +
+        "?user_email=" +
         state.email;
       console.log("rechazar");
     }
@@ -67,7 +67,7 @@ export default function ProcesarSolicitud(props) {
       url: link,
       data: "data=" + JSON.stringify(respuesta),
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "Content-Type": "application/json",
       },
     })
       .then((response) => {

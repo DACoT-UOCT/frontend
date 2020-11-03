@@ -50,6 +50,7 @@ const PopOver = (props) => {
         onClose={handlePopoverClose}
         disableRestoreFocus>
         <Typography>{props.mensaje}</Typography>
+        {props.children}
       </Popover>
     </>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../App.css";
-import { Col, Row, Label } from "reactstrap";
+import { Col, Row, FormGroup, Label } from "reactstrap";
 import {
   Table,
   TableBody,
@@ -9,6 +9,11 @@ import {
   TableContainer,
   TableRow,
 } from "@material-ui/core";
+import { TextField, styled } from "@material-ui/core";
+
+const Campo = styled(TextField)({
+  background: "none",
+});
 
 const Verificacion = (props) => {
   const state = JSON.parse(JSON.stringify(props.state));
@@ -249,7 +254,7 @@ const Verificacion = (props) => {
       {state.otu.fases.map((fase, index) => {
         return (
           <>
-            <Label>{index + 1}:</Label> <Label>{fase.join(" - ")}</Label>
+            <Label>{index + 1}: </Label> <Label>{fase.join(" - ")}</Label>
             <br></br>
           </>
         );
@@ -264,6 +269,43 @@ const Verificacion = (props) => {
         );
       })}
       <legend className="seccion">Matriz Entreverdes</legend>
+      <FormGroup>
+        <Row>
+          <Col sm={1}> </Col>
+          {state.otu.entreverdes.map((fila, indice_fila) => {
+            return (
+              <Col sm={1}>
+                <Label>{state.otu.stages[indice_fila][0]}</Label>
+              </Col>
+            );
+          })}
+        </Row>
+        {state.otu.entreverdes.map((fila, indice_fila) => {
+          return (
+            <Row>
+              <Col sm={1}>
+                <Label>{state.otu.stages[indice_fila][0]}</Label>
+              </Col>
+
+              {fila.map((col, indice_col) => {
+                return (
+                  <>
+                    <Campo
+                      id="standard"
+                      variant="standard"
+                      style={{ width: "75px" }}
+                      type="number"
+                      name="otu-control"
+                      autoComplete="off"
+                      value={col}
+                    />
+                  </>
+                );
+              })}
+            </Row>
+          );
+        })}
+      </FormGroup>
       <legend className="seccion">Observaciones</legend>
       <Label>
         {state.observations === "" ? "Sin observaciones" : state.observations}

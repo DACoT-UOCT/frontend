@@ -2,6 +2,7 @@ import React from "react";
 
 import "../../../App.css";
 import { Label } from "reactstrap";
+import PopOver from "../PopOver";
 import {
   Table,
   TableBody,
@@ -32,6 +33,11 @@ const Cabezales = (props) => {
                 <TableRow>
                   <TableCell component="th" scope="row">
                     <Label>{header.type}</Label>
+                  </TableCell>
+                  <TableCell component="th" scope="row" align="left">
+                    <PopOver mensaje="">
+                      <img src={"/cabezales/" + header.type + ".png"} alt="" />
+                    </PopOver>
                   </TableCell>
 
                   <TableCell component="th" scope="row">
