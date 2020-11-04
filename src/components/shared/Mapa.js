@@ -1,19 +1,40 @@
-import React from "react";
+import React, {useState} from "react";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import Geocode from "react-geocode";
 import { compose, withProps, withStateHandlers } from "recompose";
 
+Geocode.setApiKey("AIzaSyC3iH8ViMlMPmTQTty-LE5RUimCVn_lh0Y");
+Geocode.setLanguage("sp");
+Geocode.setRegion("cl");
+Geocode.enableDebug();
+
 const Mapa = () => {
+
+  const [isMarkerShown, setMarkerShown] = useState(null);
+  const [markerPosition, setMarkerPosition] = useState(null);
+
+  Geocode.fromLatLng("-33.447763", "-70.645001").then(
+    response => {
+      const address = response.results[0].formatted_address;
+      console.log(address);
+    },
+    error => {
+      console.error(error);
+    }
+  )
 
   const MyMapComponent = compose(
     withStateHandlers(() => ({
       isMarkerShown: false,
-      markerPosition: null
+      markerPosition: null,
+      texto: "",
     }), {
-      onMapClick: ({ isMarkerShown }) => (e) => ({
+      onMapClick: () => (e) => ({
           markerPosition: e.latLng,
-          isMarkerShown: true
+          isMarkerShown: true,
+          texto: e.latLng
       }),
-      onSecondMapClick: ({ isMarkerShown }) => (e) => ({
+      onSecondMapClick: () => (e) => ({
         markerPosition: null,
         isMarkerShown: false
     }),
@@ -25,22 +46,24 @@ const Mapa = () => {
       mapElement: <div style={{ height: `100%` }} />,
     }),
     withScriptjs,
-    withGoogleMap
+    withGoogleMap,
   )
   ((props) =>
     <GoogleMap
-      defaultZoom={14}
+      zoom={14}
       defaultCenter={{ lat: -33.447763, lng: -70.645001 }}
-      onClick={!props.isMarkerShown && props.onMapClick || props.isMarkerShown && props.onSecondMapClick}
+      onClick={props.onMapClick}
     >
-      {props.isMarkerShown && <Marker position={props.markerPosition} />}
-      
+      {props.isMarkerShown && <Marker position={props.markerPosition}/>}
     </GoogleMap>
-    
   );
 
+
   return (
+    <>
     <MyMapComponent/>
+    
+    </>
   );
 };
 
