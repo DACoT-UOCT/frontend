@@ -12,6 +12,8 @@ import NuevaActualizacion from "./SolicitudActualizacionNueva/NuevaActualizacion
 import Dashboard from "./Dashboards/Dashboard";
 import Administracion from "./Administracion/Administracion";
 import Profile from "./Shared/Profile";
+import Verificacion from "./Shared/Campos/Verificacion";
+import Resumen from "./Shared/Resumen";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -79,12 +81,23 @@ const App = () => {
                     path="/nuevo/digitalizacion"
                     component={() => <NuevaInstalacion state={state} />}
                   />
+                  <Route
+                    exact
+                    path="/editar/instalacion"
+                    component={() => <NuevaInstalacion state={state} />}
+                  />
                 </>
               )}
               <Route
                 exact
                 path="/"
                 component={() => <Dashboard id="X001450" rol={rol} />}
+              />
+
+              <Route
+                exact
+                path="/info"
+                component={() => <Resumen instalacion={state.actualizando} />}
               />
 
               <Profile

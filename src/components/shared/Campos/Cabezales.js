@@ -21,6 +21,8 @@ const Cabezales = (props) => {
   const headers = props.state;
   const dispatch = props.dispatch;
 
+  console.log(headers);
+
   return (
     <>
       <legend className="seccion">Cabezales</legend>

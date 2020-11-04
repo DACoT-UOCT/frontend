@@ -1,39 +1,170 @@
 import React, { useEffect, useState, useContext } from "react";
 import styles from "./Dashboard.module.css";
-import Solicitudes from "./Solicitudes.js"
+import { useImmerReducer } from "use-immer";
+import { initialState, reducer } from "../Shared/Reducers/DashboardReducer";
+import Solicitudes from "./Solicitudes.js";
 import { StateContext } from "../App";
+import axios from "axios";
+import { ipAPI } from "../Shared/ipAPI";
+import Loading from "../Shared/Loading";
+import PanelInstalacion from "../Shared/PanelInstalacion";
+import { TablePagination } from "@material-ui/core";
 
 const Dashboard = () => {
-  const state = useContext(StateContext);
-  const [vista, setVista] = useState("Solicitudes");
-  const [titulo, setTitulo] = useState("Solicitudes");
+  const global_state = useContext(StateContext);
+  const [state, dispatch] = useImmerReducer(reducer, initialState);
+  //const [vista, setVista] = useState("Solicitudes");
+  //const [titulo, setTitulo] = useState("Solicitudes");
 
+  useEffect(() => {
+    if (!state.consultado) {
+      consultar();
+      dispatch({ type: "consultado", payLoad: true });
+      //   setConsultado(true);
+    }
+  });
+
+  async function getData() {
+    //consulta por id al backend
+    var link; // = ipAPI + "request" + "?user=" + state.email;
+
+    link = ipAPI + "requests" + "?user_email=" + global_state.email;
+
+    return new Promise((resolve, reject) => {
+      axios
+        .get(link)
+        .then((response) => {
+          //solicitud exitosa
+          dispatch({ type: "listado", payLoad: response.data });
+          //setListado(response.data);
+          //console.log(response.data);
+          resolve();
+        })
+        .catch((err) => {
+          //error
+          reject(err);
+        });
+    });
+  }
+  const consultar = async () => {
+    dispatch({ type: "loading", payLoad: true });
+    dispatch({ type: "error", payLoad: "" });
+    // setLoading(true);
+    // setError("");
+
+    try {
+      await getData();
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: "error", payLoad: "Error en la consulta" });
+      //   setError("Error en la consulta");
+    }
+    dispatch({ type: "loading", payLoad: false });
+  };
+
+  const handleChangePage = (event, newPage) => {
+    // setCurrentPage(newPage);
+    dispatch({ type: "currentPage", payLoad: newPage });
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    // setRowsPerPage(parseInt(event.target.value, 10));
+    dispatch({
+      type: "rowsPerPage",
+      payLoad: parseInt(event.target.value, 10),
+    });
+    // setCurrentPage(0);
+    dispatch({ type: "currentPage", payLoad: 0 });
+  };
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    dispatch({ type: "expanded", payLoad: isExpanded ? panel : false });
+    //setExpanded(isExpanded ? panel : false);
+  };
+
+  const estados = {
+    NEW: "Solicitud de integración",
+    UPDATE: "Solicitud de actualización",
+    APPROVED: "Solicitud aprobada",
+    REJECTED: "Solicitud rechazada",
+    SYSTEM: "Instalación en funcionamiento",
+  };
   return (
     <div className={`grid-item consulta-semaforo ${styles.dashboard}`}>
       <div className={styles.selection}>
-        <h2>{titulo}</h2>
+        <h2>{state.titulo}</h2>
         <div className={styles.options}>
           <button
-            className={vista == "Solicitudes" ? styles.active : null}
+            className={state.vista == "Solicitudes" ? styles.active : null}
             onClick={() => {
-              setVista("Solicitudes");
-              setTitulo("Solicitudes");
+              dispatch({ type: "vista", payLoad: "Solicitudes" });
+              //setVista("Solicitudes");
+              //setTitulo("Solicitudes");
             }}>
             <span>Solicitudes</span>
           </button>
 
           <button
-            className={vista == "Instalaciones" ? styles.active : null}
+            className={state.vista == "Instalaciones" ? styles.active : null}
             onClick={() => {
-              setVista("Instalaciones");
-              setTitulo("Instalaciones");
+              dispatch({ type: "vista", payLoad: "Instalaciones" });
+              //setVista("Instalaciones");
+              //setTitulo("Instalaciones");
             }}>
             <span>Instalaciones</span>
           </button>
         </div>
       </div>
       <div className={`grid-item ${styles.info}`}>
-        {vista === "Solicitudes" && <Solicitudes/>}
+        <>
+          <div>
+            <div className={styles.top}>
+              Página:{" " + (state.currentPage + 1)}
+            </div>
+            <TablePagination
+              className={`${styles.top} ${styles.pagination}`}
+              component="div"
+              count={state.listado.length}
+              page={state.currentPage}
+              onChangePage={handleChangePage}
+              rowsPerPage={state.rowsPerPage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+              labelRowsPerPage={"Elementos por fila"}
+              rowsPerPageOptions={[10, 20, 30, 40, 50, 100, 500]}
+            />
+          </div>
+          {!state.loading ? (
+            <>
+              <p>{state.error}</p>
+              {state.listado
+                .slice(
+                  state.currentPage * state.rowsPerPage,
+                  state.currentPage * state.rowsPerPage + state.rowsPerPage
+                )
+                .map((i) => {
+                  if (
+                    i.metadata.status === "SYSTEM" &&
+                    state.vista === "Instalaciones"
+                  ) {
+                    return (
+                      <>
+                        <PanelInstalacion
+                          expanded={state.expanded}
+                          id={i.oid} //ahi ingresar el X
+                          type={estados[i.metadata.status]}
+                          handleChange={handleChange}
+                        />
+                      </>
+                    );
+                  }
+                })}
+            </>
+          ) : (
+            <>
+              <Loading />
+            </>
+          )}
+        </>
         {/*<TablePagination
           component="div"
           count={listado.length}

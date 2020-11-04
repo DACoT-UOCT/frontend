@@ -48,7 +48,7 @@ const DocumentacionProgramaciones = (props) => {
         }}
       />
       <br></br>
-      {img !== null && (
+      {img !== null && img !== "/no_image.png" && (
         <>
           <hr className="separador"></hr>
           {/* <Label>{img.name}</Label> */}

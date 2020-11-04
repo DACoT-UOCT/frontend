@@ -100,11 +100,114 @@ export const procesar_json_recibido = (aux) => {
   while (temp.otu.intergreens.length)
     entreverdes.push(temp.otu.intergreens.splice(0, stages.length));
 
-  //revisar si algun campo esta vacio len = 0
+  //revisar si algun campo esta vacio
+
   //eliminar intergreens sequences
   delete temp.otu.intergreens;
   delete temp.otu.sequences;
 
+  if (temp.poles === undefined) {
+    temp.poles = {
+      hooks: 0,
+      vehicular: 0,
+      pedestrian: 0,
+    };
+  }
+  temp.metadata.pedestrian_demand =
+    temp.pedestrian_demand === undefined
+      ? false
+      : temp.metadata.pedestrian_demand;
+  temp.metadata.pedestrian_facility =
+    temp.pedestrian_facility === undefined
+      ? false
+      : temp.metadata.pedestrian_facility;
+  temp.metadata.local_detector =
+    temp.local_detector === undefined ? false : temp.metadata.local_detector;
+  temp.metadata.scoot_detector =
+    temp.scoot_detector === undefined ? false : temp.metadata.scoot_detector;
+
+  temp.controller =
+    temp.controller === undefined
+      ? {
+          address_reference: "",
+          gps: false,
+          model: {
+            company: { name: "" },
+            model: "",
+            firmware_version: "",
+            checksum: "",
+            date: { $date: "" },
+          },
+        }
+      : {
+          address_reference:
+            temp.controller.address_reference === undefined
+              ? "Campo no registrado"
+              : temp.controller.address_reference,
+          gps: temp.controller.gps === undefined ? false : temp.comtroller.gps,
+          model:
+            temp.controller.model === undefined
+              ? {
+                  company: { name: "" },
+                  model: "",
+                  firmware_version: "",
+                  checksum: "",
+                  date: { $date: "" },
+                }
+              : temp.controller.model,
+        };
+
+  temp.otu.metadata =
+    temp.otu.metadata === undefined
+      ? {
+          serial: "",
+          ip_address: "",
+          netmask: "",
+          control: 0,
+          answer: 0,
+          link_type: "",
+          link_owner: "",
+        }
+      : {
+          serial:
+            temp.otu.metadata.serial === undefined
+              ? ""
+              : temp.otu.metadata.serial,
+          ip_address:
+            temp.otu.metadata.ip_address === undefined
+              ? ""
+              : temp.otu.metadata.ip_address,
+          netmask:
+            temp.otu.metadata.netmask === undefined
+              ? ""
+              : temp.otu.metadata.netmask,
+          control:
+            temp.otu.metadata.control === undefined
+              ? 0
+              : temp.otu.metadata.control,
+          answer:
+            temp.otu.metadata.answer === undefined
+              ? 0
+              : temp.otu.metadata.answer,
+          link_type:
+            temp.otu.metadata.link_type === undefined
+              ? ""
+              : temp.otu.metadata.link_type,
+          link_owner:
+            temp.otu.metadata.link_owner === undefined
+              ? ""
+              : temp.otu.metadata.link_owner,
+        };
+
+  temp.headers =
+    temp.headers === undefined
+      ? initialState.headers
+      : temp.headers.length === 0
+      ? initialState.headers
+      : temp.headers;
+
+  temp.metadata.img =
+    temp.metadata.img === undefined ? "/no_image.png" : temp.metadata.img;
   temp.otu.stages = stages;
   temp.otu.fases = fases;
   temp.otu.secuencias = secuencias;
@@ -123,12 +226,20 @@ const NuevaInstalacion = (props) => {
 
   const [state, dispatch] = useImmerReducer(
     reducer,
-    location.pathname === "/actualizar/instalacion"
+    ["/actualizar/instalacion", "/editar/instalacion"].includes(
+      location.pathname
+    )
       ? JSON.parse(JSON.stringify(props.state.actualizando))
       : initialState
   );
 
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState(
+    ["/actualizar/instalacion", "/editar/instalacion"].includes(
+      location.pathname
+    )
+      ? true
+      : false
+  );
 
   //STEPPER STEPPER STEPPER STEPPER
   const classes = useStyles();
