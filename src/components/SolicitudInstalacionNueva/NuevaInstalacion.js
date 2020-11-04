@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import { Label } from "reactstrap";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Loading from "../Shared/Loading";
 import { ipAPI } from "../Shared/ipAPI";
 
@@ -117,27 +117,15 @@ export const procesar_json_recibido = (aux) => {
   temp.success = false;
   return temp;
 };
-//lag -> pasar parte del estado como prop, usar React.memo( () =>{})
+
 const NuevaInstalacion = (props) => {
   const location = useLocation();
 
-  var temp = JSON.parse(JSON.stringify(props.state.actualizando));
-  if (location.pathname === "/actualizar/instalacion") {
-    temp.metadata.installation_date = temp.metadata.installation_date.$date;
-    temp.metadata.status_date = temp.metadata.status_date.$date;
-    temp.metadata.status = "UPDATE";
-    temp.secuencias.map((secuencia, index) => {
-      temp.secuencias[index] = secuencia.fases;
-    });
-    temp.errors = [];
-    temp.vista = 2;
-    temp.submit = false;
-    temp.isLoading = true;
-    console.log(temp);
-  }
   const [state, dispatch] = useImmerReducer(
     reducer,
-    location.pathname === "/actualizar/instalacion" ? temp : initialState
+    location.pathname === "/actualizar/instalacion"
+      ? JSON.parse(JSON.stringify(props.state.actualizando))
+      : initialState
   );
 
   const [checked, setChecked] = React.useState(false);
@@ -155,8 +143,8 @@ const NuevaInstalacion = (props) => {
     const state_copy = JSON.parse(JSON.stringify(state));
     //agregar status_user
     //state_copy.metadata.status_user = props.state.email;
-    if (location.pathname === "/nuevo/digitalizacion") {
-      //state_copy.metadata.status = "SYSTEM";
+    if (location.pathname === "/actualizar/instalacion") {
+      state_copy.metadata.status = "UPDATE";
     }
     state_copy.metadata.maintainer = "AUTER";
 
@@ -225,12 +213,6 @@ const NuevaInstalacion = (props) => {
       //enviar
       // var link = ipAPI + "requests?user_email=" + props.state.email;
       var link = ipAPI + "requests?user_email=" + props.state.email;
-      //console.log(state);
-      //console.log(link);
-      // console.log(state);
-      // var aux = procesar_json_envio();
-      // console.log(JSON.stringify(aux));
-      // console.log(procesar_json_recibido(aux));
 
       axios({
         method: "post",

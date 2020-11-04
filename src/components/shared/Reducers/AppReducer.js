@@ -1,11 +1,11 @@
 import { Redirect } from "react-router-dom";
 
 export const initialState = {
-  full_name: "Admin",
-  email: "admin@dacot.uoct.cl",
-  rol: "Personal UOCT",
-  area: "TIC",
-  is_admin: true,
+  full_name: "ACME Employee",
+  email: "employee@acmecorp.com",
+  rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
+  area: "Mantenedora",
+  is_admin: false,
 
   password: "",
   isLoading: false,
@@ -41,10 +41,10 @@ export function reducer(draft, action) {
         draft.rol = empresa.rol;
         draft.is_admin = empresa.is_admin;
       } else {
-        draft.full_name = initialState.full_name;
-        draft.email = initialState.email;
-        draft.rol = initialState.rol;
-        draft.is_admin = initialState.is_admin;
+        draft.full_name = funcionario.full_name;
+        draft.email = funcionario.email;
+        draft.rol = funcionario.rol;
+        draft.is_admin = funcionario.is_admin;
       }
       return;
     }

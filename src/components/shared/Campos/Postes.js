@@ -46,7 +46,9 @@ const Postes = (props) => {
                     dispatch({
                       type: "poles",
                       fieldName: "hooks",
-                      payLoad: parseInt(e.currentTarget.value),
+                      payLoad: parseInt(
+                        e.currentTarget.value.replace(/\D/, "")
+                      ),
                     });
                   }}
                 />
@@ -71,7 +73,9 @@ const Postes = (props) => {
                     dispatch({
                       type: "poles",
                       fieldName: "vehicular",
-                      payLoad: parseInt(e.currentTarget.value),
+                      payLoad: parseInt(
+                        e.currentTarget.value.replace(/\D/, "")
+                      ),
                     });
                   }}
                 />
@@ -96,7 +100,9 @@ const Postes = (props) => {
                     dispatch({
                       type: "poles",
                       fieldName: "pedestrian",
-                      payLoad: parseInt(e.currentTarget.value),
+                      payLoad: parseInt(
+                        e.currentTarget.value.replace(/\D/, "")
+                      ),
                     });
                   }}
                 />

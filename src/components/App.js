@@ -7,7 +7,7 @@ import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
 import Login from "./Login/Login";
 import { initialState, reducer } from "./Shared/Reducers/AppReducer";
 import ProcesarSolicitud from "./ProcesarSolicitud/ProcesarSolicitud";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import NuevaActualizacion from "./SolicitudActualizacionNueva/NuevaActualizacion";
 import Dashboard from "./Dashboards/Dashboard";
 import Administracion from "./Administracion/Administracion";
@@ -53,11 +53,13 @@ const App = () => {
                     path="/nuevo/instalacion"
                     component={() => <NuevaInstalacion state={state} />}
                   />
+
                   <Route
                     exact
                     path="/actualizar/instalacion"
                     component={() => <NuevaInstalacion state={state} />}
                   />
+
                   <Route
                     exact
                     path="/nuevo/actualizacion"

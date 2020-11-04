@@ -25,7 +25,7 @@ const Cabezales = (props) => {
     <>
       <legend className="seccion">Cabezales</legend>
 
-      <TableContainer style={{"width":"50%", "overflow-x":"hidden"}}>
+      <TableContainer style={{ width: "50%", "overflow-x": "hidden" }}>
         <Table size="small" aria-label="simple table">
           <TableBody>
             {headers.map((header, index) => {
@@ -57,7 +57,9 @@ const Cabezales = (props) => {
                           type: "header",
                           index: index,
                           fieldName: "led",
-                          payLoad: parseInt(e.currentTarget.value),
+                          payLoad: parseInt(
+                            e.currentTarget.value.replace(/\D/, "")
+                          ),
                         });
                       }}
                     />
@@ -80,7 +82,9 @@ const Cabezales = (props) => {
                           type: "header",
                           index: index,
                           fieldName: "hal",
-                          payLoad: parseInt(e.currentTarget.value),
+                          payLoad: parseInt(
+                            e.currentTarget.value.replace(/\D/, "")
+                          ),
                         });
                       }}
                     />

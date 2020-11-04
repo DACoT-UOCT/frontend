@@ -175,9 +175,19 @@ export function reducer(draft, action) {
       //CHECK
       for (var i = 0; i < draft.otu.junctions.length; i++) {
         draft.otu.junctions[i].jid =
-          "J" + action.payLoad.slice(1, 6) + (i + 1).toString();
+          "J" +
+          action.payLoad
+            .slice(1, 6)
+            .replace(/\s/g, "")
+            .replace(/[^0-9]/g, "") +
+          (i + 1).toString();
       }
-      draft.otu.oid = "X" + action.payLoad.slice(1, 7);
+      draft.otu.oid =
+        "X" +
+        action.payLoad
+          .slice(1, 7)
+          .replace(/\s/g, "")
+          .replace(/[^0-9]/g, "");
       return;
     }
 

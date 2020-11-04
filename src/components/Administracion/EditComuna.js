@@ -75,17 +75,24 @@ const EditComuna = (props) => {
                   SelectProps={{
                     native: true,
                   }}
-                  value={state.maintainer.name}
+                  value={
+                    state.maintainer.name === ""
+                      ? "Sin mantenedor"
+                      : state.maintainer.name
+                  }
                   onChange={(e) =>
                     dispatch({
                       type: "empresa",
                       payLoad: e.currentTarget.value,
                     })
                   }>
-                  <option hidden></option>
-                  <option value="">Sin mantenedor</option>
+                  {state.maintainer.name !== "" && (
+                    <option value="">Sin mantenedor</option>
+                  )}
                   <option value={state.maintainer.name}>
-                    {state.maintainer.name}
+                    {state.maintainer.name === ""
+                      ? "Sin mantenedor"
+                      : state.maintainer.name}
                   </option>
                   {state.empresas.map((empresa) => {
                     if (empresa.name !== state.maintainer.name) {

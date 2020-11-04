@@ -89,7 +89,7 @@ const Dashboard = () => {
   const consultar = async () => {
     setLoading(true);
     setError("");
-
+    return;
     try {
       await getData();
     } catch (error) {
@@ -110,7 +110,9 @@ const Dashboard = () => {
   const estados = {
     NEW: "Solicitud de integración",
     UPDATE: "Solicitud de actualización",
-    APPROVED: "Instalación en funcionamiento",
+    APPROVED: "Solicitud aprobada",
+    REJECTED: "Solicitud rechazada",
+    SYSTEM: "Instalación en funcionamiento",
   };
 
   return (

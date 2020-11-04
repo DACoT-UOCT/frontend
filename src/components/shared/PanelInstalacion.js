@@ -58,6 +58,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const getFecha = (date) => {
+  var temp = new Date(date);
+  const string =
+    temp.getDate() + "-" + (temp.getMonth() + 1) + "-" + temp.getFullYear();
+  return string;
+};
+
 export default function PanelInstalacion(props) {
   const dispatch = useContext(DispatchContext);
   const state = useContext(StateContext);
@@ -91,7 +98,7 @@ export default function PanelInstalacion(props) {
         .then((response) => {
           //solicitud exitosa
           setInstalacion(procesar_json_recibido(response.data));
-
+          console.log(procesar_json_recibido(response.data));
           resolve();
         })
         .catch((err) => {
@@ -132,6 +139,7 @@ export default function PanelInstalacion(props) {
               {props.type}
             </Typography>
           </div>
+
           {loading && <Loading />}
           <div className={classes.column}>
             <Typography className={classes.secondaryHeading}>
@@ -168,7 +176,7 @@ export default function PanelInstalacion(props) {
               <div>
                 <Label>Última modificación controlador:</Label>
                 <Label className="AcordeonCol1Inf">
-                  {instalacion.metadata.installation_date.$date}
+                  {getFecha(instalacion.metadata.installation_date.$date)}
                 </Label>
               </div>
             </div>
@@ -216,6 +224,10 @@ export default function PanelInstalacion(props) {
                     }}>
                     <div className="linkBoton">Modificar entrada</div>
                   </Link>
+                  {instalacion.metadata.status === "APPROVED" ||
+                    (instalacion.metadata.status === "REJECTED" && (
+                      <Button className="botonDashboard">Hola</Button>
+                    ))}
                 </>
               )}
             </div>

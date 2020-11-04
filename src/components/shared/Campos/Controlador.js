@@ -16,6 +16,7 @@ import {
   TableRow,
   TextField,
 } from "@material-ui/core";
+import { ipAPI } from "../ipAPI";
 
 const Campo = styled(TextField)({
   background: "none",
@@ -27,26 +28,6 @@ const getFecha = (date) => {
     temp.getDate() + "-" + (temp.getMonth() + 1) + "-" + temp.getFullYear();
   return string;
 };
-
-const modelos_dummy = [
-  {
-    company: "SIEMENS",
-    models: [
-      {
-        name: "ST 900",
-        firmware: [
-          {
-            version: "PB801 v13",
-            checksum: "71 3A B4 A0",
-            date: {
-              $date: 1609383600000,
-            },
-          },
-        ],
-      },
-    ],
-  },
-];
 
 const Controlador = (props) => {
   const controller = props.state;
@@ -65,9 +46,8 @@ const Controlador = (props) => {
 
   const consultar = async () => {
     setError("");
-    setModelos(modelos_dummy);
+    //setModelos(modelos_dummy);
 
-    return;
     try {
       await getData();
     } catch (error) {
@@ -78,7 +58,7 @@ const Controlador = (props) => {
 
   async function getData() {
     //consulta por id al backend
-    var link = "";
+    var link = ipAPI + "controller_models";
 
     return new Promise((resolve, reject) => {
       axios
