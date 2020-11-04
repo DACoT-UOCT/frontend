@@ -144,7 +144,7 @@ export default function PanelInstalacion(props) {
           aria-controls="panel1c-content"
           id="panel1c-header">
           <div className={classes.column}>
-            <Typography className={classes.heading}>{props.id}</Typography>
+            <Typography className={classes.heading}><span className={styles.code}>{props.id}</span></Typography>
           </div>
           <div className={classes.column}>
             <Typography className={classes.secondaryHeading}>
@@ -167,23 +167,23 @@ export default function PanelInstalacion(props) {
                 <table>
                   <tbody>
                     <tr>
-                      <td>Codigo instalacion:</td>
+                      <td className="label">Codigo instalacion:</td>
                       <td>{instalacion.oid}</td>
                     </tr>
                     <tr>
-                      <td>Ubicacion:</td>
+                      <td className="label">Ubicacion:</td>
                       <td>{instalacion.controller.address_reference}</td>
                     </tr>
                     <tr>
-                      <td>Empresa instaladora:</td>
+                      <td className="label">Empresa instaladora:</td>
                       <td>{instalacion.metadata.status_user.full_name}</td>
                     </tr>
                     <tr>
-                      <td>Empresa encargada:</td>
+                      <td className="label">Empresa encargada:</td>
                       <td>{instalacion.metadata.maintainer.name}</td>
                     </tr>
                     <tr>
-                      <td>Última modificación controlador:</td>
+                      <td className="label">Última modificación controlador:</td>
                       <td>{instalacion.metadata.installation_date === undefined
                       ? "Sin registro"
                       : getFecha(instalacion.metadata.installation_date.$date)}</td>
