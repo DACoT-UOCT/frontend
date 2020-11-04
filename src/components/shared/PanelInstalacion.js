@@ -5,6 +5,7 @@ import Loading from "../Shared/Loading";
 import { ipAPI } from "../Shared/ipAPI";
 
 import { StateContext, DispatchContext } from "../App";
+import styles from "./PanelInstall.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Button, Label } from "reactstrap";
@@ -36,24 +37,15 @@ const useStyles = makeStyles((theme) => ({
     height: 20,
     width: 20,
   },
-  details: {
-    alignItems: "flex-start",
-  },
   column: {
-    flexBasis: "36%",
+    flexBasis: "60%",
   },
   column2: {
     flexBasis: "40%",
     textAlign: "center",
   },
-  column3: {
-    flexBasis: "24%",
-    marginTop: "10px",
-    padding: theme.spacing(1, 2),
-  },
   divider: {
     borderLeft: `2px solid ${theme.palette.divider}`,
-    borderRight: `2px solid ${theme.palette.divider}`,
     padding: theme.spacing(1, 2),
   },
 }));
@@ -168,50 +160,48 @@ export default function PanelInstalacion(props) {
           </div>
         </AccordionSummary>
         {instalacion !== null && !loading && (
-          <AccordionDetails className={classes.details}>
-            <div className={classes.column}>
-              <legend>Información del Cruce</legend>
-              <div>
-                <Label>Codigo instalacion:</Label>
-                <Label className="AcordeonCol1Inf">{instalacion.oid}</Label>
+          <AccordionDetails className={styles.details}>
+            <div className="row">
+              <div className={classes.column}>
+                <h2>Información del Cruce</h2>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Codigo instalacion:</td>
+                      <td>{instalacion.oid}</td>
+                    </tr>
+                    <tr>
+                      <td>Ubicacion:</td>
+                      <td>{instalacion.controller.address_reference}</td>
+                    </tr>
+                    <tr>
+                      <td>Empresa instaladora:</td>
+                      <td>{instalacion.metadata.status_user.full_name}</td>
+                    </tr>
+                    <tr>
+                      <td>Empresa encargada:</td>
+                      <td>{instalacion.metadata.maintainer.name}</td>
+                    </tr>
+                    <tr>
+                      <td>Última modificación controlador:</td>
+                      <td>{instalacion.metadata.installation_date === undefined
+                      ? "Sin registro"
+                      : getFecha(instalacion.metadata.installation_date.$date)}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div>
-                <Label>Ubicacion:</Label>
-                <Label className="AcordeonCol1Inf">
-                  {instalacion.controller.address_reference}
-                </Label>
-              </div>
-              <div>
-                <Label>Empresa instaladora:</Label>
-                <Label className="AcordeonCol1Inf">
-                  {instalacion.metadata.status_user.full_name}
-                </Label>
-              </div>
-              <div>
-                <Label>Empresa encargada:</Label>
-                <Label className="AcordeonCol1Inf">
-                  {instalacion.metadata.maintainer.name}
-                </Label>
-              </div>
-              <div>
-                <Label>Última modificación controlador:</Label>
-                <Label className="AcordeonCol1Inf">
-                  {instalacion.metadata.installation_date === undefined
-                    ? "Sin registro"
-                    : getFecha(instalacion.metadata.installation_date.$date)}
-                </Label>
+              <div className={clsx(classes.column2, classes.divider)}>
+                <img
+                  style={{ "margin-top": "10px" }}
+                  height="320"
+                  width="312"
+                  src={instalacion.metadata.img}
+                  alt="Cruce"
+                />
               </div>
             </div>
-            <div className={clsx(classes.column2, classes.divider)}>
-              <img
-                style={{ "margin-top": "10px" }}
-                height="320"
-                width="312"
-                src={instalacion.metadata.img}
-                alt="Cruce"
-              />
-            </div>
-            <div className={classes.column3}>
+            <div className="buttons">
               {state.rol === "Personal UOCT" && (
                 <>
                   <Link

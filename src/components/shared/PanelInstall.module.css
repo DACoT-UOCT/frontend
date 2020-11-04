@@ -1,0 +1,39 @@
+.details :global(.row){
+    display: flex;
+    padding: 1rem;
+}
+
+.details :global(.buttons){
+    display: flex;
+    gap: .5rem;
+}
+
+.details :global(.row) button{
+    padding: 1rem !important;
+}
+
+.details {
+    display: block !important;
+}
+
+.details h2 {   
+    font-size: 1.5rem;
+}
+
+.details table {
+    box-sizing: border-box;
+    width: 95%;
+    margin: 1rem;
+    margin-left: 0;
+    font-size: 1rem;
+    border-spacing: 0;
+    border: 1px solid rgb(236, 236, 236);  
+}
+
+.details td {
+    padding: .75rem;
+}
+
+.details tr:nth-child(even) {
+    background-color: rgb(236, 236, 236);
+}
