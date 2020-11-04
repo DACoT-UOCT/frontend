@@ -36,6 +36,9 @@ const Verificacion = (props) => {
   });
 
   const getFecha = (date) => {
+    if (date === undefined) {
+      return "Desconocido";
+    }
     var temp = new Date(date);
     const string =
       temp.getDate() + "-" + (temp.getMonth() + 1) + "-" + temp.getFullYear();
@@ -180,7 +183,7 @@ const Verificacion = (props) => {
               </tr>
               <tr>
                 <td className="label">Fecha del modelo:</td>
-                <td>{state.controller.model.date}</td>
+                <td>{getFecha(state.controller.model.date.$date)}</td>
               </tr>
             </tbody>
           </table>

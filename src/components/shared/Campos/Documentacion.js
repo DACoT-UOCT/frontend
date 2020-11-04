@@ -31,9 +31,6 @@ const Documentacion = (props) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function () {
-              // cuando ya se paso a base64 ...
-              // const b64 = reader.result.replace(/^data:.+;base64,/, "");
-              //console.log(b64); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
               dispatch({
                 type: "upload_PDF",
                 payLoad: reader.result,
