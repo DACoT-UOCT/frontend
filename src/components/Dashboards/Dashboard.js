@@ -62,11 +62,11 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleChangePage = (event, newPage) =>{
+  const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
-  }
+  };
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setCurrentPage(0);
   };
@@ -102,7 +102,7 @@ const Dashboard = () => {
   const consultar = async () => {
     setLoading(true);
     setError("");
-    return;
+
     try {
       await getData();
     } catch (error) {
@@ -139,18 +139,23 @@ const Dashboard = () => {
         {!loading ? (
           <>
             <p>{error}</p>
-            {listado.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage).map((i) => {
-              return (
-                <>
-                  <PanelInstalacion
-                    expanded={expanded}
-                    id={i.oid} //ahi ingresar el X
-                    type={estados[i.metadata.status]}
-                    handleChange={handleChange}
-                  />
-                </>
-              );
-            })}
+            {listado
+              .slice(
+                currentPage * rowsPerPage,
+                currentPage * rowsPerPage + rowsPerPage
+              )
+              .map((i) => {
+                return (
+                  <>
+                    <PanelInstalacion
+                      expanded={expanded}
+                      id={i.oid} //ahi ingresar el X
+                      type={estados[i.metadata.status]}
+                      handleChange={handleChange}
+                    />
+                  </>
+                );
+              })}
           </>
         ) : (
           <>
@@ -158,14 +163,15 @@ const Dashboard = () => {
           </>
         )}
         <TablePagination
-          component="div" 
+          component="div"
           count={listado.length}
           page={currentPage}
-          onChangePage={handleChangePage} 
+          onChangePage={handleChangePage}
           rowsPerPage={rowsPerPage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
           labelRowsPerPage={"Elementos por fila"}
-          rowsPerPageOptions={[10,20,30,40,50,100,500]}/>
+          rowsPerPageOptions={[10, 20, 30, 40, 50, 100, 500]}
+        />
         {/* <Accordion
           expanded={expanded === "panel1"}
           onChange={handleChange("panel1")}

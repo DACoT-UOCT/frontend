@@ -98,7 +98,7 @@ export default function PanelInstalacion(props) {
         .then((response) => {
           //solicitud exitosa
           setInstalacion(procesar_json_recibido(response.data));
-          console.log(procesar_json_recibido(response.data));
+          console.log(response.data);
           resolve();
         })
         .catch((err) => {
@@ -119,6 +119,26 @@ export default function PanelInstalacion(props) {
     }
 
     setLoading(false);
+  };
+
+  const confirmar_solicitud = () => {
+    const link =
+      ipAPI +
+      "requests/" +
+      instalacion.oid +
+      "/delete" +
+      "?user_email=" +
+      state.email;
+    axios
+      .put(link)
+      .then((response) => {
+        //solicitud exitosa
+        alert("Éxito");
+      })
+      .catch((err) => {
+        //error
+        alert("Error en el envío");
+      });
   };
 
   return (
@@ -176,7 +196,9 @@ export default function PanelInstalacion(props) {
               <div>
                 <Label>Última modificación controlador:</Label>
                 <Label className="AcordeonCol1Inf">
-                  {getFecha(instalacion.metadata.installation_date.$date)}
+                  {instalacion.metadata.installation_date === undefined
+                    ? "Sin registro"
+                    : getFecha(instalacion.metadata.installation_date.$date)}
                 </Label>
               </div>
             </div>
@@ -224,10 +246,15 @@ export default function PanelInstalacion(props) {
                     }}>
                     <div className="linkBoton">Modificar entrada</div>
                   </Link>
-                  {instalacion.metadata.status === "APPROVED" ||
-                    (instalacion.metadata.status === "REJECTED" && (
-                      <Button className="botonDashboard">Hola</Button>
-                    ))}
+                  {["APPROVED", "REJECTED"].includes(
+                    instalacion.metadata.status
+                  ) && (
+                    <Button
+                      className="botonDashboard"
+                      onClick={confirmar_solicitud}>
+                      Confirmar
+                    </Button>
+                  )}
                 </>
               )}
             </div>

@@ -44,6 +44,7 @@ const ListadoComunas = (props) => {
         .then((response) => {
           //solicitud exitosa
           dispatch({ type: campo, payLoad: response.data });
+          console.log(response.data);
           // setComunas(response.data);
           resolve();
         })
@@ -96,7 +97,11 @@ const ListadoComunas = (props) => {
                     return (
                       <tr>
                         <td> {comuna.name}</td>
-                        <td> {comuna.maintainer.name}</td>
+                        <td>
+                          {comuna.maintainer === undefined
+                            ? "Sin mantenedor"
+                            : comuna.maintainer.name}
+                        </td>
                         <td> Ingeniero</td>
                         <td>
                           {" "}
