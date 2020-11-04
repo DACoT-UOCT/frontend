@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
+import { TablePagination } from "@material-ui/core";
 import PanelInstalacion from "../Shared/PanelInstalacion";
 import { StateContext } from "../App";
 import Loading from "../Shared/Loading";
@@ -57,6 +58,18 @@ const Dashboard = () => {
   const [consultado, setConsultado] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (event, newPage) =>{
+    setCurrentPage(newPage);
+  }
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPage(0);
+  };
 
   useEffect(() => {
     if (!consultado) {
@@ -126,7 +139,7 @@ const Dashboard = () => {
         {!loading ? (
           <>
             <p>{error}</p>
-            {listado.map((i) => {
+            {listado.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage).map((i) => {
               return (
                 <>
                   <PanelInstalacion
@@ -144,6 +157,15 @@ const Dashboard = () => {
             <Loading />
           </>
         )}
+        <TablePagination
+          component="div" 
+          count={listado.length}
+          page={currentPage}
+          onChangePage={handleChangePage} 
+          rowsPerPage={rowsPerPage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+          labelRowsPerPage={"Elementos por fila"}
+          rowsPerPageOptions={[10,20,30,40,50,100,500]}/>
         {/* <Accordion
           expanded={expanded === "panel1"}
           onChange={handleChange("panel1")}
