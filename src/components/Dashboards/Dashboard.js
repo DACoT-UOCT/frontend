@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import styles from "./Dashboard.module.css";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "../Shared/Reducers/DashboardReducer";
-import Solicitudes from "./Solicitudes.js";
 import { StateContext } from "../App";
 import axios from "axios";
 import { ipAPI } from "../Shared/ipAPI";
