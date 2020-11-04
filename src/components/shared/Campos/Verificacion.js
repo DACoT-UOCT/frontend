@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../App.css";
+import styles from "./Verificacion.module.css";
 import { Col, Row, FormGroup, Label } from "reactstrap";
 import {
   Table,
@@ -10,6 +11,7 @@ import {
   TableRow,
 } from "@material-ui/core";
 import { TextField, styled } from "@material-ui/core";
+import { toDate } from "date-fns";
 
 const Campo = styled(TextField)({
   background: "none",
@@ -42,275 +44,301 @@ const Verificacion = (props) => {
 
   return (
     <>
-      <legend className="seccion">OTU</legend>
-      <img src={state.metadata.img} width="500px" height="500px" alt="" />
-      <Row>
-        <Col>
-          <Label>Código en sistema:</Label> <Label>{state.otu.oid}</Label>
-          <br></br>
-          <Label>Región:</Label> <Label>{state.metadata.region}</Label>
-          <br></br>
-          <Label>Comuna:</Label> <Label> {state.metadata.commune}</Label>
-          <br></br>
-          <Label>Fecha de instalacion:</Label>{" "}
-          <Label>{getFecha(state.metadata.installation_date.$date)}</Label>
-          <br></br>
-          <Label>Tipo de enlace:</Label>{" "}
-          <Label>
-            {state.otu.metadata.link_owner} - {state.otu.metadata.link_type}
-          </Label>
-          <br></br>
-          <Label>Número de serie:</Label>{" "}
-          <Label>{state.otu.metadata.serial}</Label>
-          <br></br>
-          <Label>Dirección IP:</Label>{" "}
-          <Label>{state.otu.metadata.ip_address}</Label>
-          <br></br>
-          <Label>Máscara de red:</Label>{" "}
-          <Label>{state.otu.metadata.netmask}</Label>
-          <br></br>
-        </Col>
-        <Col>
-          <Label>Número palabras de control:</Label>{" "}
-          <Label>{state.otu.metadata.control}</Label>
-          <br></br>
-          <Label>Número palabras de respuesta:</Label>{" "}
-          <Label>{state.otu.metadata.answer}</Label>
-          <br></br>
-          <Label>Detector Scoot:</Label>{" "}
-          <Label>{state.metadata.scoot_detector == false ? "No" : "Si"}</Label>
-          <br></br>
-          <Label>Detector Local:</Label>{" "}
-          <Label>{state.metadata.local_detector == false ? "No" : "Si"}</Label>
-          <br></br>
-          <Label>Demanda Peatonal:</Label>{" "}
-          <Label>
-            {state.metadata.pedestrian_demand == false ? "No" : "Si"}
-          </Label>
-          <br></br>
-          <Label>Facilidad Peatonal:</Label>{" "}
-          <Label>
-            {state.metadata.pedestrian_facility == false ? "No" : "Si"}
-          </Label>
-          <br></br>
-        </Col>
-      </Row>
-      <legend className="seccion">Controlador</legend>
-      <Label>Modelo:</Label> <Label>{state.controller.model.model}</Label>
-      <br></br>
-      <Label>Ubicación:</Label>{" "}
-      <Label>{state.controller.address_reference}</Label>
-      <br></br>
-      <legend className="seccion">Junctions</legend>
-      {state.otu.junctions.map((junction) => {
-        return (
-          <>
-            <Label>Código:</Label> <Label>{junction.jid}</Label>
-            {"  "}
-            <Label>Cruce:</Label>{" "}
-            <Label>{junction.metadata.address_reference}</Label>
-            <br></br>
-          </>
-        );
-      })}
-      <legend className="seccion">Postes</legend>
-      <Label>Postes ganchos:</Label> <Label>{state.poles.hooks}</Label>
-      <br></br>
-      <Label>Postes vehiculares:</Label> <Label>{state.poles.vehicular}</Label>
-      <br></br>
-      <Label>Postes peatonales:</Label> <Label>{state.poles.pedestrian}</Label>
-      <br></br>
-      <legend className="seccion">Cabezales</legend>
-      <TableContainer>
-        <Table size="small" aria-label="simple table">
-          <TableBody>
-            {state.headers.map((header) => {
-              return (
-                <>
-                  <TableRow>
-                    <TableCell align="center">
-                      <Label>{header.type}</Label>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Label>Led</Label>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Label>{header.led}</Label>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Label>Halógeno</Label>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Label>{header.hal}</Label>
-                    </TableCell>
-                  </TableRow>
-                </>
-              );
-            })}
-            {/* <TableRow>
-              <TableCell component="th" scope="row">
-                <Label></Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>Vehiculo L1</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>Vehiculo L2</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>Vehiculo L3-L4</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>Vehiculo L5</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>Vehiculo L6</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>Peatonal</Label>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Halógeno</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.l1.hal}</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.l2.hal}</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.l3_l4.hal}</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.l5.hal}</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.l6.hal}</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.peatonal.hal}</Label>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Led</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.l1.led}</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.l2.led}</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.l3_l4.led}</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.l5.led}</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.l6.led}</Label>
-              </TableCell>
-              <TableCell align="center">
-                <Label>{state.cabezales.peatonal.led}</Label>
-              </TableCell>
-            </TableRow> */}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <legend className="seccion">UPS</legend>
-      {state.ups === undefined ? (
-        <>
-          <Label>UPS</Label> <Label>No</Label>
-        </>
-      ) : (
-        <>
-          <Label>Marca:</Label> <Label>{state.ups.brand}</Label>
-          <br></br>
-          <Label>Modelo:</Label> <Label>{state.ups.model}</Label>
-          <br></br>
-          <Label>Número Serie:</Label> <Label>{state.ups.serial}</Label>
-          <br></br>
-          <Label>Capacidad: </Label> <Label>{state.ups.capacity}</Label>
-          <br></br>
-          <Label>Duración Carga:</Label>{" "}
-          <Label>{state.ups.charge_duration}</Label>
-          <br></br>
-        </>
-      )}
-      <legend className="seccion">Etapas</legend>
-      {state.otu.stages.map((stage) => {
-        return (
-          <>
-            <Label>Id:</Label> <Label>{stage[0]}</Label>
-            {"  "}
-            <Label>Tipo:</Label> <Label>{stage[1]}</Label>
-            <br></br>
-          </>
-        );
-      })}
-      <legend className="seccion">Fases</legend>
-      {state.otu.fases.map((fase, index) => {
-        return (
-          <>
-            <Label>{index + 1}: </Label> <Label>{fase.join(" - ")}</Label>
-            <br></br>
-          </>
-        );
-      })}
-      <legend className="seccion">Secuencias</legend>
-      {state.otu.secuencias.map((secuencia, index) => {
-        return (
-          <>
-            <Label>{index + 1}:</Label> <Label>{secuencia.join(" - ")}</Label>
-            <br></br>
-          </>
-        );
-      })}
-      <legend className="seccion">Matriz Entreverdes</legend>
-      <FormGroup>
-        <Row>
-          <Col sm={1}> </Col>
-          {state.otu.entreverdes.map((fila, indice_fila) => {
-            return (
-              <Col sm={1}>
-                <Label>{state.otu.stages[indice_fila][0]}</Label>
-              </Col>
-            );
-          })}
-        </Row>
-        {state.otu.entreverdes.map((fila, indice_fila) => {
-          return (
-            <Row>
-              <Col sm={1}>
-                <Label>{state.otu.stages[indice_fila][0]}</Label>
-              </Col>
+      <div className={styles.resume}>
+        <div className="section">
+          <h2>OTU</h2>
+          <div className="tables">
+            <table>
+              <tbody>
+                <tr>
+                  <td className="label">Código en sistema:</td>
+                  <td>{state.otu.oid}</td>
+                </tr>
+                <tr>
+                  <td className="label">Región:</td>
+                  <td>{state.metadata.region}</td>
+                </tr>
+                <tr>
+                  <td className="label">Comuna:</td>
+                  <td>{state.metadata.commune}</td>
+                </tr>
+                <tr>
+                  <td className="label">Fecha de instalacion:</td>
+                  <td>{getFecha(state.metadata.installation_date.$date)}</td>
+                </tr>
+                <tr>
+                  <td className="label">Tipo de enlace:</td>
+                  <td>{state.otu.metadata.link_owner} - {state.otu.metadata.link_type}</td>
+                </tr>
+                <tr>
+                  <td className="label">Número de serie:</td>
+                  <td>{state.otu.metadata.serial}</td>
+                </tr>
+                <tr>
+                  <td className="label">Dirección IP:</td>
+                  <td>{state.otu.metadata.ip_address}</td>
+                </tr>
+              </tbody>
+            </table>
+            <table>
+              <tbody>
+                <tr>
+                  <td className="label">Máscara de red:</td>
+                  <td>{state.otu.metadata.netmask}</td>
+                </tr>
+                <tr>
+                  <td className="label">Número palabras de control:</td>
+                  <td>{state.otu.metadata.control}</td>
+                </tr>
+                <tr>
+                  <td className="label">Número palabras de respuesta:</td>
+                  <td>{state.metadata.answer}</td>
+                </tr>
+                <tr>
+                  <td className="label">Detector Scoot:</td>
+                  <td>{state.metadata.scoot_detector == false ? "No" : "Si"}</td>
+                </tr>
+                <tr>
+                  <td className="label">Detector Local:</td>
+                  <td>{state.metadata.local_detector == false ? "No" : "Si"}</td>
+                </tr>
+                <tr>
+                  <td className="label">Demanda Peatonal:</td>
+                  <td>{state.metadata.pedestrian_demand == false ? "No" : "Si"}</td>
+                </tr>
+                <tr>
+                  <td className="label">Facilidad Peatonal:</td>
+                  <td>{state.metadata.pedestrian_facility == false ? "No" : "Si"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-              {fila.map((col, indice_col) => {
+        <div className="image">
+          <h2>Imagen</h2>
+          <img src={state.metadata.img} />
+        </div>
+
+        <div className="section">
+          <h2>Controlador</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td className="label">Modelo:</td>
+                <td>{state.controller.model.model}</td>
+              </tr>
+              <tr>
+                <td className="label">Ubicación:</td>
+                <td>{state.controller.address_reference}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="section">
+          <h2>Junctions</h2>
+          <table>
+            <thead>
+              <th>Código</th>
+              <th>Cruce</th>
+            </thead>
+            <tbody>
+              {state.otu.junctions.map((junction) => {
                 return (
-                  <>
-                    <Campo
-                      id="standard"
-                      variant="standard"
-                      style={{ width: "75px" }}
-                      type="number"
-                      name="otu-control"
-                      autoComplete="off"
-                      value={col}
-                    />
-                  </>
+                  <tr>
+                    <td>{junction.jid}</td>
+                    <td>{junction.metadata.address_reference}</td>
+                  </tr>
                 );
               })}
-            </Row>
-          );
-        })}
-      </FormGroup>
-      <legend className="seccion">Observaciones</legend>
-      <Label>
-        {state.observations === "" ? "Sin observaciones" : state.observations}
-      </Label>
-      <Label>{state.metadata.observations}</Label>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="section">
+          <h2>Postes</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td className="label">Postes ganchos:</td>
+                <td>{state.poles.hooks}</td>
+              </tr>
+              <tr>
+                <td className="label">Postes vehiculares:</td>
+                <td>{state.poles.vehicular}</td>
+              </tr>
+              <tr>
+                <td className="label">Postes peatonales:</td>
+                <td>{state.poles.pedestrian}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div className="section">
+          <h2>Cabezales</h2>
+          <table>
+            <thead>
+              <th>Tipo</th>
+              <th>Led</th>
+              <th>Halógeno</th>
+            </thead>
+            <tbody>
+              {state.headers.map((header) => {
+                  return (
+                    <tr>
+                      <td>{header.type}</td>
+                      <td>{header.led}</td>
+                      <td>{header.hal}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="section">
+          <h2>UPS</h2>
+          {state.ups === undefined ? (
+          <table>
+            <tbody>
+              <tr>
+                <td className="label">UPS:</td>
+                <td>No</td>
+              </tr>
+            </tbody>
+          </table>
+          ) : (
+            <table>
+            <tbody>
+              <tr>
+                <td className="label">Marca:</td>
+                <td>{state.ups.brand}</td>
+              </tr>
+              <tr>
+                <td className="label">Modelo:</td>
+                <td>{state.ups.model}</td>
+              </tr>
+              <tr>
+                <td className="label">Número Serie:</td>
+                <td>{state.ups.serial}</td>
+              </tr>
+              <tr>
+                <td className="label">Capacidad:</td>
+                <td>{state.ups.capacity}</td>
+              </tr>
+              <tr>
+                <td className="label">Duración Carga:</td>
+                <td>{state.ups.charge_duration}</td>
+              </tr>
+            </tbody>
+          </table>
+          )}
+        </div>
+
+        <div className="tables">
+          <div className="section">
+            <h2>Etapas</h2>
+            <table>
+              <thead>
+                <th>Id</th>
+                <th>Tipo</th>
+              </thead>
+              <tbody>
+                {state.otu.stages.map((stage) => {
+                  return (
+                    <tr>
+                      <td>{stage[0]}</td> 
+                      <td>{stage[1]}</td>
+                      <br></br>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="section">
+            <h2>Fases</h2>
+            <table>
+              <tbody>
+                {state.otu.fases.map((fase, index) => {
+                  return (
+                    <tr>
+                      <td className="label">{index + 1}: </td> 
+                      <td>{fase.join(" - ")}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="section">
+            <h2>Secuencias</h2>
+            <table>
+              <tbody>
+                {state.otu.secuencias.map((secuencia, index) => {
+                  return (
+                    <tr>
+                      <td className="label">{index + 1}:</td> 
+                      <td>{secuencia.join(" - ")}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="section">
+          <h2>Matriz Entreverdes</h2>
+          <table className="entreverdes">
+            <thead>
+              <th></th>
+              {state.otu.entreverdes.map((fila, indice_fila) => {
+                return (
+                  <th>{state.otu.stages[indice_fila][0]}</th>
+                );
+              })}
+            </thead>
+            <tbody>
+              {state.otu.entreverdes.map((fila, indice_fila) => {
+                return (
+                  <tr>
+                    <td className="headerLabel">{state.otu.stages[indice_fila][0]}</td>
+                    {fila.map((col, indice_col) => {
+                      return (
+                        <td>
+                          <Campo
+                            id="standard"
+                            variant="standard"
+                            style={{ width: "75px" }}
+                            type="number"
+                            name="otu-control"
+                            autoComplete="off"
+                            value={col}
+                          />
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="section">
+          <h2>Observaciones</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td>{state.observations === "" ? "Sin observaciones" : state.observations}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </>
   );
 };
