@@ -183,21 +183,10 @@ export default function PanelInstalacion(props) {
                       <td>{instalacion.metadata.maintainer.name}</td>
                     </tr>
                     <tr>
-<<<<<<< HEAD
-                      <td>Última modificación controlador:</td>
-                      <td>
-                        {instalacion.metadata.installation_date === undefined
-                          ? "Sin registro"
-                          : getFecha(
-                              instalacion.metadata.installation_date.$date
-                            )}
-                      </td>
-=======
                       <td className="label">Última modificación controlador:</td>
                       <td>{instalacion.metadata.installation_date === undefined
                       ? "Sin registro"
                       : getFecha(instalacion.metadata.installation_date.$date)}</td>
->>>>>>> ef7a900b07d89af671e8847eec195ea5922a6dd3
                     </tr>
                   </tbody>
                 </table>
