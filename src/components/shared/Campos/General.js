@@ -55,6 +55,7 @@ const General = (props) => {
                     })
                   }>
                   <option hidden></option>
+                  <option value={metadata.region}> {metadata.region}</option>
                   {/* <option>Región de Arica y Parinacota</option>
                   <option>Región de Tarapacá</option>
                   <option>Región de Antofagasta</option>
@@ -103,6 +104,7 @@ const General = (props) => {
                     })
                   }>
                   <option hidden></option>
+                  <option value={metadata.commune}>{metadata.commune}</option>
                   <option>Cerrillos</option>
                   <option>Cerro Navia</option>
                   <option>Conchalí</option>
@@ -147,7 +149,11 @@ const General = (props) => {
                 <DatePicker
                   dateFormat="dd/MM/yyyy"
                   withPortal
-                  selected={metadata.installation_date.$date}
+                  selected={
+                    metadata.installation_date === undefined
+                      ? Date.now()
+                      : metadata.installation_date.$date
+                  }
                   onChange={(date) =>
                     dispatch({
                       type: "metadata",
@@ -156,6 +162,9 @@ const General = (props) => {
                     })
                   }
                 />
+                {metadata.installation_date === undefined && (
+                  <p>Campo no ingresado</p>
+                )}
               </TableCell>
             </TableRow>
 

@@ -201,7 +201,7 @@ export function reducer(draft, action) {
     }
     case "metadata": {
       if (action.fieldName === "installation_date") {
-        draft[action.type][action.fieldName].$date = action.payLoad;
+        draft[action.type][action.fieldName] = { $date: action.payLoad };
       } else {
         draft[action.type][action.fieldName] = action.payLoad;
       }
@@ -303,13 +303,13 @@ export function reducer(draft, action) {
         draft.controller.model.model = "";
         draft.controller.model.firmware_version = "";
         draft.controller.model.checksum = "";
-        draft.controller.model.date.$date = "";
+        draft.controller.model.date = { $date: "" };
       } else if (action.fieldName === "date") {
-        draft.controller.model[action.fieldName].$date = action.payLoad;
+        draft.controller.model[action.fieldName] = { $date: action.payLoad };
       } else if (action.fieldName === "model") {
         draft.controller.model[action.fieldName] = action.payLoad;
         draft.controller.model.firmware_version = "";
-        draft.controller.model.date.$date = "";
+        draft.controller.model.date = { $date: "" };
         draft.controller.model.checksum = "";
       } else if (action.fieldName === "firmware_version") {
         draft.controller.model[action.fieldName] = action.payLoad;
@@ -322,7 +322,9 @@ export function reducer(draft, action) {
                     firmware.version === draft.controller.model.firmware_version
                   ) {
                     draft.controller.model.checksum = firmware.checksum;
-                    draft.controller.model.date.$date = firmware.date.$date;
+                    draft.controller.model.date = {
+                      $date: firmware.date.$date,
+                    };
                   }
                 });
             });

@@ -99,7 +99,7 @@ const Verificacion = (props) => {
                 </tr>
                 <tr>
                   <td className="label">Número palabras de respuesta:</td>
-                  <td>{state.metadata.answer}</td>
+                  <td>{state.otu.metadata.answer}</td>
                 </tr>
                 <tr>
                   <td className="label">Detector Scoot:</td>
@@ -132,7 +132,15 @@ const Verificacion = (props) => {
 
         <div className="image">
           <h2>Imagen</h2>
-          <img src={state.metadata.img} />
+          <img
+            height="320"
+            width="312"
+            src={
+              state.metadata.img === undefined
+                ? "/no_image.png"
+                : state.metadata.img
+            }
+          />
         </div>
 
         <div className="section">

@@ -144,7 +144,9 @@ export default function PanelInstalacion(props) {
           aria-controls="panel1c-content"
           id="panel1c-header">
           <div className={classes.column}>
-            <Typography className={classes.heading}><span className={styles.code}>{props.id}</span></Typography>
+            <Typography className={classes.heading}>
+              <span className={styles.code}>{props.id}</span>
+            </Typography>
           </div>
           <div className={classes.column}>
             <Typography className={classes.secondaryHeading}>
@@ -183,10 +185,16 @@ export default function PanelInstalacion(props) {
                       <td>{instalacion.metadata.maintainer.name}</td>
                     </tr>
                     <tr>
-                      <td className="label">Última modificación controlador:</td>
-                      <td>{instalacion.metadata.installation_date === undefined
-                      ? "Sin registro"
-                      : getFecha(instalacion.metadata.installation_date.$date)}</td>
+                      <td className="label">
+                        Última modificación controlador:
+                      </td>
+                      <td>
+                        {instalacion.metadata.installation_date === undefined
+                          ? "Sin registro"
+                          : getFecha(
+                              instalacion.metadata.installation_date.$date
+                            )}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -206,23 +214,52 @@ export default function PanelInstalacion(props) {
               </div>
             </div>
             <div className="buttons">
-              {state.rol === "Personal UOCT" && (
-                <>
-                  <Link
-                    to="/procesar/solicitud"
-                    className="nada"
-                    onClick={() => {
-                      dispatch({
-                        type: "levantar_actualizacion",
-                        payLoad: instalacion,
-                      });
-                    }}>
-                    <div className="linkBoton">Procesar Solicitud</div>
-                  </Link>
-                  <br></br>
-                </>
-              )}
+              {state.rol === "Personal UOCT" &&
+                ["NEW", "UPDATE"].includes(instalacion.metadata.status) && (
+                  <>
+                    <Link
+                      to="/procesar/solicitud"
+                      className="nada"
+                      onClick={() => {
+                        dispatch({
+                          type: "levantar_actualizacion",
+                          payLoad: instalacion,
+                        });
+                      }}>
+                      <div className="linkBoton">Procesar Solicitud</div>
+                    </Link>
+                    <br></br>
+                  </>
+                )}
+              {state.rol === "Personal UOCT" &&
+                instalacion.metadata.status === "SYSTEM" && (
+                  <>
+                    <Link
+                      to="/editar/instalacion"
+                      className="nada"
+                      onClick={() => {
+                        dispatch({
+                          type: "levantar_actualizacion",
+                          payLoad: instalacion,
+                        });
+                      }}>
+                      <div className="linkBoton">Editar información</div>
+                    </Link>
+                    <br></br>
+                  </>
+                )}
               <Button className="botonDashboard">PDF de Respaldo</Button>
+              <Link
+                to="/info"
+                className="nada"
+                onClick={() => {
+                  dispatch({
+                    type: "levantar_actualizacion",
+                    payLoad: instalacion,
+                  });
+                }}>
+                <div className="linkBoton">+ Información</div>
+              </Link>
               {state.rol === "Empresa" && (
                 <>
                   <Button className="botonDashboard">Programaciones</Button>
@@ -240,7 +277,7 @@ export default function PanelInstalacion(props) {
                     }}>
                     <div className="linkBoton">Modificar entrada</div>
                   </Link>
-                  {["APPROVED", "REJECTED"].includes(
+                  {/* {["APPROVED", "REJECTED"].includes(
                     instalacion.metadata.status
                   ) && (
                     <Button
@@ -248,7 +285,7 @@ export default function PanelInstalacion(props) {
                       onClick={confirmar_solicitud}>
                       Confirmar
                     </Button>
-                  )}
+                  )} */}
                 </>
               )}
             </div>
