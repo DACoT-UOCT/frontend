@@ -27,9 +27,9 @@ const Verificacion = (props) => {
   // }
 
   const ancho_label = 4;
-  const date = new Date(state.metadata.installation_date.$date);
-  const fecha =
-    date.getDay() + "-" + date.getMonth() + "-" + date.getFullYear();
+  // const date = new Date(state.metadata.installation_date.$date);
+  // const fecha =
+  //   date.getDay() + "-" + date.getMonth() + "-" + date.getFullYear();
 
   useEffect(() => {
     //alert("Verifique si los datos ingresados son correctos");
@@ -64,11 +64,18 @@ const Verificacion = (props) => {
                 </tr>
                 <tr>
                   <td className="label">Fecha de instalacion:</td>
-                  <td>{getFecha(state.metadata.installation_date.$date)}</td>
+                  <td>
+                    {state.metadata.installation_date === undefined
+                      ? "Sin registro"
+                      : getFecha(state.metadata.installation_date.$date)}
+                  </td>
                 </tr>
                 <tr>
                   <td className="label">Tipo de enlace:</td>
-                  <td>{state.otu.metadata.link_owner} - {state.otu.metadata.link_type}</td>
+                  <td>
+                    {state.otu.metadata.link_owner} -{" "}
+                    {state.otu.metadata.link_type}
+                  </td>
                 </tr>
                 <tr>
                   <td className="label">Número de serie:</td>
@@ -96,19 +103,27 @@ const Verificacion = (props) => {
                 </tr>
                 <tr>
                   <td className="label">Detector Scoot:</td>
-                  <td>{state.metadata.scoot_detector == false ? "No" : "Si"}</td>
+                  <td>
+                    {state.metadata.scoot_detector == false ? "No" : "Si"}
+                  </td>
                 </tr>
                 <tr>
                   <td className="label">Detector Local:</td>
-                  <td>{state.metadata.local_detector == false ? "No" : "Si"}</td>
+                  <td>
+                    {state.metadata.local_detector == false ? "No" : "Si"}
+                  </td>
                 </tr>
                 <tr>
                   <td className="label">Demanda Peatonal:</td>
-                  <td>{state.metadata.pedestrian_demand == false ? "No" : "Si"}</td>
+                  <td>
+                    {state.metadata.pedestrian_demand == false ? "No" : "Si"}
+                  </td>
                 </tr>
                 <tr>
                   <td className="label">Facilidad Peatonal:</td>
-                  <td>{state.metadata.pedestrian_facility == false ? "No" : "Si"}</td>
+                  <td>
+                    {state.metadata.pedestrian_facility == false ? "No" : "Si"}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -126,11 +141,38 @@ const Verificacion = (props) => {
             <tbody>
               <tr>
                 <td className="label">Modelo:</td>
-                <td>{state.controller.model.model}</td>
+                <td>
+                  {state.controller.model.company.name +
+                    " " +
+                    state.controller.model.model}
+                </td>
               </tr>
+
               <tr>
                 <td className="label">Ubicación:</td>
                 <td>{state.controller.address_reference}</td>
+              </tr>
+              <tr>
+                <td className="label">GPS:</td>
+                <td>
+                  {state.controller.gps === undefined
+                    ? "No registrado"
+                    : state.controller.gps
+                    ? "Si"
+                    : "No"}
+                </td>
+              </tr>
+              <tr>
+                <td className="label">Versión de firmware:</td>
+                <td>{state.controller.model.firmware_version}</td>
+              </tr>
+              <tr>
+                <td className="label">Checksum:</td>
+                <td>{state.controller.model.checksum}</td>
+              </tr>
+              <tr>
+                <td className="label">Fecha del modelo:</td>
+                <td>{state.controller.model.date}</td>
               </tr>
             </tbody>
           </table>
@@ -162,20 +204,32 @@ const Verificacion = (props) => {
             <tbody>
               <tr>
                 <td className="label">Postes ganchos:</td>
-                <td>{state.poles.hooks}</td>
+                <td>
+                  {state.poles === undefined
+                    ? "Sin registro"
+                    : state.poles.hooks}
+                </td>
               </tr>
               <tr>
                 <td className="label">Postes vehiculares:</td>
-                <td>{state.poles.vehicular}</td>
+                <td>
+                  {state.poles === undefined
+                    ? "Sin registro"
+                    : state.poles.vehicular}
+                </td>
               </tr>
               <tr>
                 <td className="label">Postes peatonales:</td>
-                <td>{state.poles.pedestrian}</td>
+                <td>
+                  {state.poles === undefined
+                    ? "Sin registro"
+                    : state.poles.pedestrian}
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
-        
+
         <div className="section">
           <h2>Cabezales</h2>
           <table>
@@ -186,14 +240,14 @@ const Verificacion = (props) => {
             </thead>
             <tbody>
               {state.headers.map((header) => {
-                  return (
-                    <tr>
-                      <td>{header.type}</td>
-                      <td>{header.led}</td>
-                      <td>{header.hal}</td>
-                    </tr>
-                  );
-                })}
+                return (
+                  <tr>
+                    <td>{header.type}</td>
+                    <td>{header.led}</td>
+                    <td>{header.hal}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -201,39 +255,39 @@ const Verificacion = (props) => {
         <div className="section">
           <h2>UPS</h2>
           {state.ups === undefined ? (
-          <table>
-            <tbody>
-              <tr>
-                <td className="label">UPS:</td>
-                <td>No</td>
-              </tr>
-            </tbody>
-          </table>
+            <table>
+              <tbody>
+                <tr>
+                  <td className="label">UPS:</td>
+                  <td>No</td>
+                </tr>
+              </tbody>
+            </table>
           ) : (
             <table>
-            <tbody>
-              <tr>
-                <td className="label">Marca:</td>
-                <td>{state.ups.brand}</td>
-              </tr>
-              <tr>
-                <td className="label">Modelo:</td>
-                <td>{state.ups.model}</td>
-              </tr>
-              <tr>
-                <td className="label">Número Serie:</td>
-                <td>{state.ups.serial}</td>
-              </tr>
-              <tr>
-                <td className="label">Capacidad:</td>
-                <td>{state.ups.capacity}</td>
-              </tr>
-              <tr>
-                <td className="label">Duración Carga:</td>
-                <td>{state.ups.charge_duration}</td>
-              </tr>
-            </tbody>
-          </table>
+              <tbody>
+                <tr>
+                  <td className="label">Marca:</td>
+                  <td>{state.ups.brand}</td>
+                </tr>
+                <tr>
+                  <td className="label">Modelo:</td>
+                  <td>{state.ups.model}</td>
+                </tr>
+                <tr>
+                  <td className="label">Número Serie:</td>
+                  <td>{state.ups.serial}</td>
+                </tr>
+                <tr>
+                  <td className="label">Capacidad:</td>
+                  <td>{state.ups.capacity}</td>
+                </tr>
+                <tr>
+                  <td className="label">Duración Carga:</td>
+                  <td>{state.ups.charge_duration}</td>
+                </tr>
+              </tbody>
+            </table>
           )}
         </div>
 
@@ -249,7 +303,7 @@ const Verificacion = (props) => {
                 {state.otu.stages.map((stage) => {
                   return (
                     <tr>
-                      <td>{stage[0]}</td> 
+                      <td>{stage[0]}</td>
                       <td>{stage[1]}</td>
                       <br></br>
                     </tr>
@@ -265,7 +319,7 @@ const Verificacion = (props) => {
                 {state.otu.fases.map((fase, index) => {
                   return (
                     <tr>
-                      <td className="label">{index + 1}: </td> 
+                      <td className="label">{index + 1}: </td>
                       <td>{fase.join(" - ")}</td>
                     </tr>
                   );
@@ -280,7 +334,7 @@ const Verificacion = (props) => {
                 {state.otu.secuencias.map((secuencia, index) => {
                   return (
                     <tr>
-                      <td className="label">{index + 1}:</td> 
+                      <td className="label">{index + 1}:</td>
                       <td>{secuencia.join(" - ")}</td>
                     </tr>
                   );
@@ -296,16 +350,16 @@ const Verificacion = (props) => {
             <thead>
               <th></th>
               {state.otu.entreverdes.map((fila, indice_fila) => {
-                return (
-                  <th>{state.otu.stages[indice_fila][0]}</th>
-                );
+                return <th>{state.otu.stages[indice_fila][0]}</th>;
               })}
             </thead>
             <tbody>
               {state.otu.entreverdes.map((fila, indice_fila) => {
                 return (
                   <tr>
-                    <td className="headerLabel">{state.otu.stages[indice_fila][0]}</td>
+                    <td className="headerLabel">
+                      {state.otu.stages[indice_fila][0]}
+                    </td>
                     {fila.map((col, indice_col) => {
                       return (
                         <td>
@@ -333,7 +387,11 @@ const Verificacion = (props) => {
           <table>
             <tbody>
               <tr>
-                <td>{state.observations === "" ? "Sin observaciones" : state.observations}</td>
+                <td>
+                  {state.observations === ""
+                    ? "Sin observaciones"
+                    : state.observations}
+                </td>
               </tr>
             </tbody>
           </table>

@@ -184,9 +184,13 @@ export default function PanelInstalacion(props) {
                     </tr>
                     <tr>
                       <td>Última modificación controlador:</td>
-                      <td>{instalacion.metadata.installation_date === undefined
-                      ? "Sin registro"
-                      : getFecha(instalacion.metadata.installation_date.$date)}</td>
+                      <td>
+                        {instalacion.metadata.installation_date === undefined
+                          ? "Sin registro"
+                          : getFecha(
+                              instalacion.metadata.installation_date.$date
+                            )}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -196,7 +200,11 @@ export default function PanelInstalacion(props) {
                   style={{ "margin-top": "10px" }}
                   height="320"
                   width="312"
-                  src={instalacion.metadata.img}
+                  src={
+                    instalacion.metadata.img === undefined
+                      ? "/no_image.png"
+                      : instalacion.metadata.img
+                  }
                   alt="Cruce"
                 />
               </div>
