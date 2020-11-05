@@ -76,7 +76,6 @@ const Historial = (props) => {
       "?user_email=" +
       global_state.email;
     console.log(link);
-    return;
 
     return new Promise((resolve, reject) => {
       axios
@@ -108,20 +107,22 @@ const Historial = (props) => {
       dispatch({ type: "error", payLoad: "Error en la consulta" });
       //   setError("Error en la consulta");
     }
-    dispatch({ type: "listado_cambios", payLoad: dummy_request });
+    // dispatch({ type: "listado_cambios", payLoad: dummy_request });
     dispatch({ type: "loading", payLoad: false });
   };
 
   return (
     <>
-      <div style={{"gridGap":"20px"}}className={`grid-item consulta-semaforo`}>
+      <div
+        style={{ gridGap: "20px" }}
+        className={`grid-item consulta-semaforo`}>
         {/* <p>{"Historial" + global_state.actualizando.oid}</p> */}
-        <h3 style={{"padding":"1rem"}}>{"Historial"}</h3>
+        <h3 style={{ padding: "1rem" }}>{"Historial"}</h3>
         {/* {state.error !== "" && <p>{state.error}</p>} */}
         {state.loading ? (
           <Loading />
         ) : (
-          <div style={{"paddingTop":"1rem"}}className="grid-item">
+          <div style={{ paddingTop: "1rem" }} className="grid-item">
             <PanelInstalacion
               expanded={state.expanded}
               id={1} //ahi ingresar el X

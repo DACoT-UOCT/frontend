@@ -207,7 +207,9 @@ export default function PanelInstalacion(props) {
                     </tr>
                     <tr>
                       <td className="label">Última actualización:</td>
-                      <td>{getFecha(state.metadata.status_date.$date)}</td>
+                      <td>
+                        {getFecha(instalacion.metadata.status_date.$date)}
+                      </td>
                     </tr>
                     <tr>
                       <td className="label">Ubicacion:</td>
