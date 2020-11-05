@@ -62,19 +62,34 @@ const Dashboard = () => {
     dispatch({ type: "loading", payLoad: false });
   };
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePageIns = (event, newPage) => {
     // setCurrentPage(newPage);
-    dispatch({ type: "currentPage", payLoad: newPage });
+    dispatch({ type: "currentPageIns", payLoad: newPage });
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangePageSol = (event, newPage) => {
+    // setCurrentPage(newPage);
+    dispatch({ type: "currentPageSol", payLoad: newPage });
+  };
+
+  const handleChangeRowsPerPageIns = (event) => {
     // setRowsPerPage(parseInt(event.target.value, 10));
     dispatch({
-      type: "rowsPerPage",
+      type: "rowsPerPageIns",
       payLoad: parseInt(event.target.value, 10),
     });
     // setCurrentPage(0);
-    dispatch({ type: "currentPage", payLoad: 0 });
+    dispatch({ type: "currentPageIns", payLoad: 0 });
+  };
+
+  const handleChangeRowsPerPageSol = (event) => {
+    // setRowsPerPage(parseInt(event.target.value, 10));
+    dispatch({
+      type: "rowsPerPageSol",
+      payLoad: parseInt(event.target.value, 10),
+    });
+    // setCurrentPage(0);
+    dispatch({ type: "currentPageSol", payLoad: 0 });
   };
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -117,57 +132,105 @@ const Dashboard = () => {
       </div>
       <div className={`grid-item ${styles.info}`}>
         <>
-          <div>
-            <div className={styles.top}>
-              Página:{" " + (state.currentPage + 1)}
-            </div>
-            <TablePagination
-              className={`${styles.top} ${styles.pagination}`}
-              component="div"
-              count={state.listado.length}
-              page={state.currentPage}
-              onChangePage={handleChangePage}
-              rowsPerPage={state.rowsPerPage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              labelRowsPerPage={"Elementos por fila"}
-              rowsPerPageOptions={[10, 20, 30, 40, 50, 100, 500]}
-            />
-          </div>
-          {!state.loading ? (
+          {state.vista === "Instalaciones" ? (
             <>
-              <p>{state.error}</p>
-
-              {state.listado
-                .slice(
-                  state.currentPage * state.rowsPerPage,
-                  state.currentPage * state.rowsPerPage + state.rowsPerPage
-                )
-                .map((i) => {
-                  if (
-                    (i.metadata.status === "SYSTEM" &&
-                      state.vista === "Instalaciones") ||
-                    (i.metadata.status !== "SYSTEM" &&
-                      state.vista === "Solicitudes")
-                  ) {
-                    return (
-                      <>
-                        <PanelInstalacion
-                          expanded={state.expanded}
-                          id={i.oid} //ahi ingresar el X
-                          type={estados[i.metadata.status]}
-                          handleChange={handleChange}
-                        />
-                      </>
-                    );
-                  }
-                })}
+              {!state.loading ? (
+                <>
+                  <div>
+                    <div className={styles.top}>
+                      Página:{" " + (state.currentPageIns + 1)}
+                    </div>
+                    <TablePagination
+                      className={`${styles.top} ${styles.pagination}`}
+                      component="div"
+                      count={state.listado_instalaciones.length}
+                      page={state.currentPageIns}
+                      onChangePage={handleChangePageIns}
+                      rowsPerPage={state.rowsPerPageIns}
+                      onChangeRowsPerPage={handleChangeRowsPerPageIns}
+                      labelRowsPerPage={"Elementos por fila"}
+                      rowsPerPageOptions={[10, 20, 30, 40, 50, 100, 500]}
+                    />
+                  </div>
+                  <p>{state.error}</p>
+                  {state.listado_instalaciones
+                    .slice(
+                      state.currentPageIns * state.rowsPerPageIns,
+                      state.currentPageIns * state.rowsPerPageIns + state.rowsPerPageIns
+                    )
+                    .map((i) => {
+                      return (
+                        <>
+                          <PanelInstalacion
+                            expanded={state.expanded}
+                            id={i.oid} //ahi ingresar el X
+                            type={estados[i.metadata.status]}
+                            handleChange={handleChange}
+                          />
+                        </>
+                      );
+                    })}
+                </>
+              ) : (
+                <>
+                  <Loading />
+                </>
+              )}
             </>
           ) : (
             <>
-              <Loading />
+              {!state.loading ? (
+                <>
+                  <div>
+                    <div className={styles.top}>
+                      Página:{" " + (state.currentPageSol + 1)}
+                    </div>
+                    <TablePagination
+                      className={`${styles.top} ${styles.pagination}`}
+                      component="div"
+                      count={state.listado_solicitudes.length}
+                      page={state.currentPageSol}
+                      onChangePage={handleChangePageSol}
+                      rowsPerPage={state.rowsPerPageSol}
+                      onChangeRowsPerPage={handleChangeRowsPerPageSol}
+                      labelRowsPerPage={"Elementos por fila"}
+                      rowsPerPageOptions={[10, 20, 30, 40, 50, 100, 500]}
+                    />
+                  </div>
+                  <p>{state.error}</p>
+                  {state.listado_solicitudes
+                    .slice(
+                      state.currentPageSol * state.rowsPerPageSol,
+                      state.currentPageSol * state.rowsPerPageSol + state.rowsPerPageSol
+                    )
+                    .map((i) => {
+                      return (
+                        <>
+                          <PanelInstalacion
+                            expanded={state.expanded}
+                            id={i.oid} //ahi ingresar el X
+                            type={estados[i.metadata.status]}
+                            handleChange={handleChange}
+                          />
+                        </>
+                      );
+                    })}
+                </>
+              ) : (
+                <>
+                  <Loading />
+                </>
+              )}
             </>
           )}
         </>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
+
         {/*<TablePagination
           component="div"
           count={listado.length}
@@ -204,9 +267,3 @@ const Dashboard = () => {
             <Loading />
           </>
         )}*/}
-      </div>
-    </div>
-  );
-};
-
-export default Dashboard;

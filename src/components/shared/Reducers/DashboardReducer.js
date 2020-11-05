@@ -7,8 +7,10 @@ export const initialState = {
   consultado: false,
   loading: false,
   error: "",
-  currentPage: 0,
-  rowsPerPage: 10,
+  currentPageSol: 0,
+  currentPageIns: 0,
+  rowsPerPageSol: 10,
+  rowsPerPageIns: 10,
 };
 
 export function reducer(draft, action) {
