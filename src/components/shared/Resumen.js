@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import "../../App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Verificacion from "./Campos/Verificacion";
+import { Button} from "reactstrap";
 
 const Resumen = (props) => {
   const useStyles = makeStyles((theme) => ({
@@ -18,6 +20,7 @@ const Resumen = (props) => {
     },
   }));
   const classes = useStyles();
+  let history = useHistory();
   return (
     <>
       <div className="grid-item nuevo-semaforo">
@@ -29,13 +32,17 @@ const Resumen = (props) => {
               style={{
                 marginTop: "5px",
                 paddingBottom: "5px",
-                height: "575px",
+                height: "550px",
                 "overflow-y": "auto",
                 border: "0px",
               }}>
               <Verificacion state={props.instalacion} procesar={true} />
             </div>
           </div>
+          <Button onClick={() => history.goBack()}
+          style={{"margin":"2rem", "marginTop":".5rem"}} className="botonDashboard">
+            Volver
+          </Button>
         </div>
       </div>
     </>
