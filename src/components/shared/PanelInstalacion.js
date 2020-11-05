@@ -241,7 +241,8 @@ export default function PanelInstalacion(props) {
                   </>
                 )}
               {state.rol === "Personal UOCT" &&
-                instalacion.metadata.status === "SYSTEM" && (
+                instalacion.metadata.status === "SYSTEM" &&
+                !history_panel && (
                   <>
                     <Link
                       to="/editar/instalacion"
@@ -274,17 +275,7 @@ export default function PanelInstalacion(props) {
                   {instalacion.metadata.status === "SYSTEM" && (
                     <>
                       <Button className="botonDashboard">Programaciones</Button>
-                      <Link
-                        to="/historial"
-                        className="nada"
-                        onClick={() => {
-                          dispatch({
-                            type: "levantar_actualizacion",
-                            payLoad: instalacion,
-                          });
-                        }}>
-                        <div className="linkBoton">Historial de cambios</div>
-                      </Link>
+
                       <Link
                         to="/actualizar/instalacion"
                         className="nada"
@@ -308,6 +299,19 @@ export default function PanelInstalacion(props) {
                     </Button>
                   )} */}
                 </>
+              )}
+              {instalacion.metadata.status === "SYSTEM" && !history_panel && (
+                <Link
+                  to="/historial"
+                  className="nada"
+                  onClick={() => {
+                    dispatch({
+                      type: "levantar_actualizacion",
+                      payLoad: instalacion,
+                    });
+                  }}>
+                  <div className="linkBoton">Historial de cambios</div>
+                </Link>
               )}
             </div>
           </AccordionDetails>
