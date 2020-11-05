@@ -1,6 +1,8 @@
 export const initialState = {
   vista: "Solicitudes",
   expanded: false,
+  listado_solicitudes: [],
+  listado_instalaciones: [],
   listado: [],
   consultado: false,
   loading: false,
@@ -11,7 +13,15 @@ export const initialState = {
 
 export function reducer(draft, action) {
   switch (action.type) {
-    case "":
+    case "listado":
+      action.payLoad.map((i) => {
+        if (i.metadata.status === "SYSTEM") {
+          draft.listado_instalaciones.push(i);
+        } else {
+          draft.listado_solicitudes.push(i);
+        }
+        draft.listado.push(i);
+      });
       return;
 
     default:
