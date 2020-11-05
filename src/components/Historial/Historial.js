@@ -69,12 +69,14 @@ const Historial = (props) => {
     //consulta por id al backend
     var link = "";
 
-    // link =
-    //   ipAPI +
-    //   "versions/" +
-    //   global_state.actualizando.oid +
-    //   "?user_email=" +
-    //   global_state.email;
+    link =
+      ipAPI +
+      "versions/" +
+      global_state.actualizando.oid +
+      "?user_email=" +
+      global_state.email;
+    console.log(link);
+    return;
 
     return new Promise((resolve, reject) => {
       axios
@@ -134,6 +136,7 @@ const Historial = (props) => {
                     id={cambioIndex + 2} //ahi ingresar el X
                     type={cambio.message + " : " + getFecha(cambio.date.$date)}
                     handleChange={handleChange}
+                    versionId={cambio.vid}
                   />
                 </>
               );

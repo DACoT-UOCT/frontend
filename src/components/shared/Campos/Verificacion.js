@@ -58,6 +58,10 @@ const Verificacion = (props) => {
                   <td>{state.otu.oid}</td>
                 </tr>
                 <tr>
+                  <td className="label">Última actualización:</td>
+                  <td>{getFecha(state.metadata.status_date.$date)}</td>
+                </tr>
+                <tr>
                   <td className="label">Región:</td>
                   <td>{state.metadata.region}</td>
                 </tr>

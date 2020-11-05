@@ -86,7 +86,31 @@ export default function PanelInstalacion(props) {
     //consulta por id al backend
     var link;
     if (history_panel) {
-      link = "";
+      if (props.type === "Versión vigente") {
+        link =
+          ipAPI +
+          "requests/" +
+          state.actualizando.oid +
+          "?user_email=" +
+          state.email;
+      } else if (props.type === "Primera version") {
+        link =
+          ipAPI +
+          "versions/" +
+          state.actualizando.oid +
+          "/base" +
+          "?user_email=" +
+          state.email;
+      } else {
+        link =
+          ipAPI +
+          "versions/" +
+          state.actualizando.oid +
+          "/" +
+          props.versionId +
+          "?user_email=" +
+          state.email;
+      }
       console.log("consultado historico");
     } else {
       link = ipAPI + "requests/" + props.id + "?user_email=" + state.email;
@@ -180,6 +204,10 @@ export default function PanelInstalacion(props) {
                     <tr>
                       <td className="label">Codigo instalacion:</td>
                       <td>{instalacion.oid}</td>
+                    </tr>
+                    <tr>
+                      <td className="label">Última actualización:</td>
+                      <td>{getFecha(state.metadata.status_date.$date)}</td>
                     </tr>
                     <tr>
                       <td className="label">Ubicacion:</td>
