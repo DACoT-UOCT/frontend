@@ -34,6 +34,7 @@ const Dashboard = () => {
         .get(link)
         .then((response) => {
           //solicitud exitosa
+          console.log(response.data);
           dispatch({ type: "listado", payLoad: response.data });
           //setListado(response.data);
 
@@ -135,6 +136,7 @@ const Dashboard = () => {
           {!state.loading ? (
             <>
               <p>{state.error}</p>
+
               {state.listado
                 .slice(
                   state.currentPage * state.rowsPerPage,
