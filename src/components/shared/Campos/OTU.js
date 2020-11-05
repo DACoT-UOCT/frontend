@@ -5,6 +5,8 @@ import PopOver from "../../Shared/PopOver";
 import DatePicker from "react-datepicker";
 import styles from "./Campos.module.css";
 import { Label } from "reactstrap";
+import { useLocation } from "react-router-dom";
+
 import {
   Checkbox,
   FormControlLabel,
@@ -24,6 +26,7 @@ const Campo = styled(TextField)({
 const OTU = (props) => {
   const otu = props.state;
   const dispatch = props.dispatch;
+  const location = useLocation();
 
   return (
     <>
@@ -40,6 +43,10 @@ const OTU = (props) => {
               <TableCell align="left">
                 <Campo
                   id="standard"
+                  disabled={[
+                    "/actualizar/instalacion",
+                    "/editar/instalacion",
+                  ].includes(location.pathname)}
                   label="Código"
                   name="otu-codigo"
                   autoComplete="off"

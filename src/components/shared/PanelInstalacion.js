@@ -89,8 +89,8 @@ export default function PanelInstalacion(props) {
         .get(link)
         .then((response) => {
           //solicitud exitosa
-          setInstalacion(procesar_json_recibido(response.data));
           console.log(response.data);
+          setInstalacion(procesar_json_recibido(response.data));
           resolve();
         })
         .catch((err) => {
@@ -266,17 +266,19 @@ export default function PanelInstalacion(props) {
                   <Button className="botonDashboard">
                     Historial de Cambios
                   </Button>
-                  <Link
-                    to="/actualizar/instalacion"
-                    className="nada"
-                    onClick={() => {
-                      dispatch({
-                        type: "levantar_actualizacion",
-                        payLoad: instalacion,
-                      });
-                    }}>
-                    <div className="linkBoton">Modificar entrada</div>
-                  </Link>
+                  {instalacion.metadata.status === "SYSTEM" && (
+                    <Link
+                      to="/actualizar/instalacion"
+                      className="nada"
+                      onClick={() => {
+                        dispatch({
+                          type: "levantar_actualizacion",
+                          payLoad: instalacion,
+                        });
+                      }}>
+                      <div className="linkBoton">Modificar entrada</div>
+                    </Link>
+                  )}
                   {/* {["APPROVED", "REJECTED"].includes(
                     instalacion.metadata.status
                   ) && (

@@ -23,6 +23,9 @@ const Campo = styled(TextField)({
 });
 
 const getFecha = (date) => {
+  if (date === undefined) {
+    return "Desconocido";
+  }
   var temp = new Date(date);
   const string =
     temp.getDate() + "-" + (temp.getMonth() + 1) + "-" + temp.getFullYear();
