@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import Geocode from "react-geocode";
+import { useImmerReducer } from "use-immer";
+import { initialState, reducer } from "./Reducers/MapaReducer";
 import { compose, withProps, withStateHandlers } from "recompose";
 
 Geocode.setApiKey("AIzaSyC3iH8ViMlMPmTQTty-LE5RUimCVn_lh0Y");
@@ -9,36 +11,34 @@ Geocode.setRegion("cl");
 Geocode.enableDebug();
 
 const Mapa = () => {
+  const [state, dispatch] = useImmerReducer(reducer, initialState);
 
-  const [isMarkerShown, setMarkerShown] = useState(null);
-  const [markerLat, setMarkerLat] = useState(null);
-  const [markerLng, setMarkerLng] = useState(null);
+  const MyMapComponent = withScriptjs(
+    withGoogleMap(props => (
+      <GoogleMap
+        defaultZoom={state.initialZoom}
+        defaultCenter={state.initialCenter}
+        onClick={onMapClick}
+      >
+        {state.isMarkerShown && <Marker position={{ lat: state.markerLat, lng: state.markerLng }} />}
+      </GoogleMap>
+    ))
+  );
 
-  Geocode.fromLatLng("-33.447763", "-70.645001").then(
-    response => {
-      const address = response.results[0].formatted_address;
-      console.log(address);
-    },
-    error => {
-      console.error(error);
-    }
-  )
-
-  const onMapClick = ({x, y, lat, lng, event}) => {
-    console.log(x, y, lat, lng, event);
-    setMarkerLat(lat);
-    setMarkerLng(lng);
+  const onMapClick = (e) => {
+    dispatch({ type: "isMarkerShown", payLoad: true });
+    dispatch({ type: "markerLat", payLoad: e.latLng.lat() });
+    dispatch({ type: "markerLng", payLoad: e.latLng.lng() });
+    Geocode.fromLatLng(state.markerLat, state.markerLng).then(
+      response => {
+        const address = response.results[0].formatted_address;
+        dispatch({ type: "location", payLoad: address });
+      },
+      error => {
+        console.error(error);
+      }
+    );
   }
-
-  const MyMapComponent = withScriptjs(withGoogleMap((props) =>
-  <GoogleMap
-    defaultZoom={14}
-    defaultCenter={{ lat: -33.447763, lng: -70.645001 }}
-    onClick={onMapClick}
-  >
-    {props.isMarkerShown && <Marker position={{ lat: -33.447763, lng: -70.645001 }} />}
-  </GoogleMap>
-  ))
 
   /*const MyMapComponent = compose(
     withStateHandlers(() => ({
@@ -79,13 +79,16 @@ const Mapa = () => {
 
 
   return (
-    <MyMapComponent
-      isMarkerShown
-      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3iH8ViMlMPmTQTty-LE5RUimCVn_lh0Y&v=3.exp&libraries=geometry,drawing,places"
-      loadingElement={<div style={{ height: `100%` }} />}
-      containerElement={<div style={{ height: `400px` }} />}
-      mapElement={<div style={{ height: `100%` }} />}
-    />
+    <>
+      <MyMapComponent
+        isMarkerShown
+        googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3iH8ViMlMPmTQTty-LE5RUimCVn_lh0Y&v=3.exp&libraries=geometry,drawing,places"
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `400px` }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+      />
+      <h6>{state.location}</h6>
+    </>
   );
 };
 

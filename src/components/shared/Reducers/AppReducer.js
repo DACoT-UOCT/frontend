@@ -27,7 +27,7 @@ const funcionario2 = {
   full_name: "Funcionario",
   email: "funcionario@dacot.uoct.cl",
   rol: "Personal UOCT",
-  area: "TIC",
+  area: "Ingeniería",
   is_admin: false,
 };
 
@@ -47,16 +47,19 @@ export function reducer(draft, action) {
         draft.full_name = empresa.full_name;
         draft.email = empresa.email;
         draft.rol = empresa.rol;
+        draft.area = empresa.area;
         draft.is_admin = empresa.is_admin;
       } else if (draft.full_name === "Funcionario") {
         draft.full_name = funcionario.full_name;
         draft.email = funcionario.email;
         draft.rol = funcionario.rol;
+        draft.area = funcionario.area;
         draft.is_admin = funcionario.is_admin;
       } else {
         draft.full_name = funcionario2.full_name;
         draft.email = funcionario2.email;
         draft.rol = funcionario2.rol;
+        draft.area = funcionario2.area;
         draft.is_admin = funcionario2.is_admin;
       }
       return;

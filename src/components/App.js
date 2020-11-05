@@ -69,6 +69,15 @@ const App = () => {
                   />
                 </>
               )}
+              {state.area === "Ingeniería" && (
+                <>
+                  <Route
+                    exact
+                    path="/editar/instalacion"
+                    component={() => <NuevaInstalacion state={state} />}
+                  />
+                </>
+              )}
               {state.is_admin && (
                 <>
                   <Route
