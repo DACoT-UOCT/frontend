@@ -262,22 +262,24 @@ export default function PanelInstalacion(props) {
               </Link>
               {state.rol === "Empresa" && (
                 <>
-                  <Button className="botonDashboard">Programaciones</Button>
-                  <Button className="botonDashboard">
-                    Historial de Cambios
-                  </Button>
                   {instalacion.metadata.status === "SYSTEM" && (
-                    <Link
-                      to="/actualizar/instalacion"
-                      className="nada"
-                      onClick={() => {
-                        dispatch({
-                          type: "levantar_actualizacion",
-                          payLoad: instalacion,
-                        });
-                      }}>
-                      <div className="linkBoton">Modificar entrada</div>
-                    </Link>
+                    <>
+                      <Button className="botonDashboard">Programaciones</Button>
+                      <Button className="botonDashboard">
+                        Historial de Cambios
+                      </Button>
+                      <Link
+                        to="/actualizar/instalacion"
+                        className="nada"
+                        onClick={() => {
+                          dispatch({
+                            type: "levantar_actualizacion",
+                            payLoad: instalacion,
+                          });
+                        }}>
+                        <div className="linkBoton">Modificar entrada</div>
+                      </Link>
+                    </>
                   )}
                   {/* {["APPROVED", "REJECTED"].includes(
                     instalacion.metadata.status
