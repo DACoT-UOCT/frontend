@@ -36,7 +36,7 @@ const Dashboard = () => {
           //solicitud exitosa
           dispatch({ type: "listado", payLoad: response.data });
           //setListado(response.data);
-          //console.log(response.data);
+
           resolve();
         })
         .catch((err) => {
@@ -142,8 +142,10 @@ const Dashboard = () => {
                 )
                 .map((i) => {
                   if (
-                    /*i.metadata.status === "SYSTEM" &&*/
-                    state.vista === "Instalaciones"
+                    (i.metadata.status === "SYSTEM" &&
+                      state.vista === "Instalaciones") ||
+                    (i.metadata.status !== "SYSTEM" &&
+                      state.vista === "Solicitudes")
                   ) {
                     return (
                       <>

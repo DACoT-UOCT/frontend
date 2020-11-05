@@ -144,7 +144,7 @@ export const procesar_json_recibido = (aux) => {
             temp.controller.address_reference === undefined
               ? "Campo no registrado"
               : temp.controller.address_reference,
-          gps: temp.controller.gps === undefined ? false : temp.comtroller.gps,
+          gps: temp.controller.gps === undefined ? false : temp.controller.gps,
           model:
             temp.controller.model === undefined
               ? {
@@ -255,7 +255,13 @@ const NuevaInstalacion = (props) => {
     //agregar status_user
     //state_copy.metadata.status_user = props.state.email;
     if (location.pathname === "/actualizar/instalacion") {
+      //SI SE ESTA LEVANTANDO UNA SOLICITUD DE ACTUALIZACION
       state_copy.metadata.status = "UPDATE";
+    }
+
+    if (location.pathname === "/editar/instalacion") {
+      //SI EL ADMIN ESTA EDITANDO DIRECTAMENTE
+      state_copy.metadata.status = "SYSTEM";
     }
     state_copy.metadata.maintainer = "AUTER";
 
