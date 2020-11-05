@@ -112,14 +112,14 @@ const Historial = (props) => {
 
   return (
     <>
-      <div className={`grid-item consulta-semaforo`}>
+      <div style={{"gridGap":"20px"}}className={`grid-item consulta-semaforo`}>
         {/* <p>{"Historial" + global_state.actualizando.oid}</p> */}
-        <p>{"Historial"}</p>
-        {state.error !== "" && <p>{state.error}</p>}
+        <h3 style={{"padding":"1rem"}}>{"Historial"}</h3>
+        {/* {state.error !== "" && <p>{state.error}</p>} */}
         {state.loading ? (
           <Loading />
         ) : (
-          <div className="grid-item">
+          <div style={{"paddingTop":"1rem"}}className="grid-item">
             <PanelInstalacion
               expanded={state.expanded}
               id={1} //ahi ingresar el X

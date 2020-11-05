@@ -21,6 +21,8 @@ const Header = () => {
       "Solicitud de actualización para instalaciones operativas",
     "/nuevo/digitalizacion":
       "Digitalización manual para instalaciones operativas",
+    "/historial":
+    "Historial",
   };
 
   useEffect(() => {
