@@ -142,7 +142,7 @@ const Dashboard = () => {
                 )
                 .map((i) => {
                   if (
-                    i.metadata.status === "SYSTEM" &&
+                    /*i.metadata.status === "SYSTEM" &&*/
                     state.vista === "Instalaciones"
                   ) {
                     return (
