@@ -29,16 +29,17 @@ const Mapa = () => {
     dispatch({ type: "isMarkerShown", payLoad: true });
     dispatch({ type: "markerLat", payLoad: e.latLng.lat() });
     dispatch({ type: "markerLng", payLoad: e.latLng.lng() });
-    Geocode.fromLatLng(state.markerLat, state.markerLng).then(
-      response => {
-        const address = response.results[0].formatted_address;
-        dispatch({ type: "location", payLoad: address });
-      },
-      error => {
-        console.error(error);
-      }
-    );
   }
+
+  Geocode.fromLatLng(state.markerLat, state.markerLng).then(
+    response => {
+      const address = response.results[0].formatted_address;
+      dispatch({ type: "location", payLoad: address });
+    },
+    error => {
+      console.error(error);
+    }
+  );
 
   /*const MyMapComponent = compose(
     withStateHandlers(() => ({
