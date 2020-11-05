@@ -156,7 +156,8 @@ const Dashboard = () => {
                   {state.listado_instalaciones
                     .slice(
                       state.currentPageIns * state.rowsPerPageIns,
-                      state.currentPageIns * state.rowsPerPageIns + state.rowsPerPageIns
+                      state.currentPageIns * state.rowsPerPageIns +
+                        state.rowsPerPageIns
                     )
                     .map((i) => {
                       return (
@@ -201,7 +202,8 @@ const Dashboard = () => {
                   {state.listado_solicitudes
                     .slice(
                       state.currentPageSol * state.rowsPerPageSol,
-                      state.currentPageSol * state.rowsPerPageSol + state.rowsPerPageSol
+                      state.currentPageSol * state.rowsPerPageSol +
+                        state.rowsPerPageSol
                     )
                     .map((i) => {
                       return (
@@ -230,40 +232,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-        {/*<TablePagination
-          component="div"
-          count={listado.length}
-          page={currentPage}
-          onChangePage={handleChangePage}
-          rowsPerPage={rowsPerPage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-          labelRowsPerPage={"Elementos por fila"}
-          rowsPerPageOptions={[10, 20, 30, 40, 50, 100, 500]}
-        />
-        {!loading ? (
-          <>
-            <p>{error}</p>
-            {listado
-              .slice(
-                currentPage * rowsPerPage,
-                currentPage * rowsPerPage + rowsPerPage
-              )
-              .map((i) => {
-                return (
-                  <>
-                    <PanelInstalacion
-                      expanded={expanded}
-                      id={i.oid} //ahi ingresar el X
-                      type={estados[i.metadata.status]}
-                      handleChange={handleChange}
-                    />
-                  </>
-                );
-              })}
-          </>
-        ) : (
-          <>
-            <Loading />
-          </>
-        )}*/}

@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import Loading from "../Shared/Loading";
 import { ipAPI } from "../Shared/ipAPI";
+import { useLocation } from "react-router-dom";
 
 import {
   Switch,
@@ -35,7 +36,6 @@ import Fases from "../Shared/Campos/Fases";
 import Secuencias from "../Shared/Campos/Secuencias";
 import Entreverdes from "../Shared/Campos/Entreverdes";
 import Observaciones from "../Shared/Campos/Observaciones";
-import { useLocation } from "react-router-dom";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -212,6 +212,7 @@ export const procesar_json_recibido = (aux) => {
   temp.otu.fases = fases;
   temp.otu.secuencias = secuencias;
   temp.otu.entreverdes = entreverdes;
+  temp.observations = "";
   //variables de control
   temp.errors = [];
   temp.vista = 1;
@@ -261,7 +262,7 @@ const NuevaInstalacion = (props) => {
 
     if (location.pathname === "/editar/instalacion") {
       //SI EL ADMIN ESTA EDITANDO DIRECTAMENTE
-      state_copy.metadata.status = "SYSTEM";
+      state_copy.metadata.status = "UPDATE";
     }
     state_copy.metadata.maintainer = "AUTER";
 

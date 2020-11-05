@@ -4,6 +4,7 @@ import { Label } from "reactstrap";
 import { styled } from "@material-ui/core/styles";
 import axios from "axios";
 import styles from "./Campos.module.css";
+import PopOver from "../PopOver";
 
 import Loading from "../Loading";
 import {
@@ -81,7 +82,10 @@ const Controlador = (props) => {
 
   return (
     <>
-      <legend className="seccion">Controlador</legend>
+      <legend className="seccion">
+        {"Controlador  "}
+        <PopOver mensaje="Si el modelo que está buscando no se encuentra disponible, favor de contactar al administrador para agregarlo"></PopOver>
+      </legend>{" "}
       {modelos === null ? (
         <>
           <p>Consultando modelos disponibles</p>

@@ -14,6 +14,7 @@ import Administracion from "./Administracion/Administracion";
 import Profile from "./Shared/Profile";
 import Verificacion from "./Shared/Campos/Verificacion";
 import Resumen from "./Shared/Resumen";
+import Historial from "./Historial/Historial";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -101,6 +102,12 @@ const App = () => {
                 exact
                 path="/"
                 component={() => <Dashboard id="X001450" rol={rol} />}
+              />
+
+              <Route
+                exact
+                path="/historial"
+                component={() => <Historial state={state} />}
               />
 
               <Route
