@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../Shared/Loading";
 import { ipAPI } from "../Shared/ipAPI";
+import { useLocation } from "react-router-dom";
 
 import { StateContext, DispatchContext } from "../App";
 import styles from "./PanelInstall.module.css";
@@ -61,6 +62,8 @@ export default function PanelInstalacion(props) {
   const dispatch = useContext(DispatchContext);
   const state = useContext(StateContext);
   const classes = useStyles();
+  const location = useLocation();
+  const history_panel = location.pathname === "/historial";
 
   const [instalacion, setInstalacion] = useState(null);
   const [consultado, setConsultado] = useState(false);
@@ -81,7 +84,13 @@ export default function PanelInstalacion(props) {
 
   async function getData() {
     //consulta por id al backend
-    const link = ipAPI + "requests/" + props.id + "?user_email=" + state.email;
+    var link;
+    if (history_panel) {
+      link = "";
+      console.log("consultado historico");
+    } else {
+      link = ipAPI + "requests/" + props.id + "?user_email=" + state.email;
+    }
     console.log(link);
 
     return new Promise((resolve, reject) => {
@@ -265,9 +274,17 @@ export default function PanelInstalacion(props) {
                   {instalacion.metadata.status === "SYSTEM" && (
                     <>
                       <Button className="botonDashboard">Programaciones</Button>
-                      <Button className="botonDashboard">
-                        Historial de Cambios
-                      </Button>
+                      <Link
+                        to="/historial"
+                        className="nada"
+                        onClick={() => {
+                          dispatch({
+                            type: "levantar_actualizacion",
+                            payLoad: instalacion,
+                          });
+                        }}>
+                        <div className="linkBoton">Historial de cambios</div>
+                      </Link>
                       <Link
                         to="/actualizar/instalacion"
                         className="nada"
