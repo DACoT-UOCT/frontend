@@ -32,7 +32,7 @@ const UsuarioPopUp = (props) => {
   const state = props.state;
   const dispatch = props.dispatch;
   const areas_empresas = ["Mantenedora", "Contratista", ,];
-  const areas_UOCT = ["Ingiería", "Sala de Control", "TIC", "Administración"];
+  const areas_UOCT = ["Ingeniería", "Sala de Control", "TIC", "Administración"];
 
   const validar_json = (json) => {
     var temp = json.area !== "" && json.full_name !== "" && json.rol !== "";

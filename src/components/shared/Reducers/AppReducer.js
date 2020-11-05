@@ -23,7 +23,15 @@ const funcionario = {
   is_admin: true,
 };
 
-var empresa = {
+const funcionario2 = {
+  full_name: "Funcionario",
+  email: "funcionario@dacot.uoct.cl",
+  rol: "Personal UOCT",
+  area: "TIC",
+  is_admin: false,
+};
+
+const empresa = {
   full_name: "ACME Employee",
   email: "employee@acmecorp.com",
   rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
@@ -40,11 +48,16 @@ export function reducer(draft, action) {
         draft.email = empresa.email;
         draft.rol = empresa.rol;
         draft.is_admin = empresa.is_admin;
-      } else {
+      } else if (draft.full_name === "Funcionario") {
         draft.full_name = funcionario.full_name;
         draft.email = funcionario.email;
         draft.rol = funcionario.rol;
         draft.is_admin = funcionario.is_admin;
+      } else {
+        draft.full_name = funcionario2.full_name;
+        draft.email = funcionario2.email;
+        draft.rol = funcionario2.rol;
+        draft.is_admin = funcionario2.is_admin;
       }
       return;
     }
