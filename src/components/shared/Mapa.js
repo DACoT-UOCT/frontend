@@ -3,7 +3,6 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-map
 import Geocode from "react-geocode";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./Reducers/MapaReducer";
-import { compose, withProps, withStateHandlers } from "recompose";
 
 Geocode.setApiKey("AIzaSyC3iH8ViMlMPmTQTty-LE5RUimCVn_lh0Y");
 Geocode.setLanguage("sp");
@@ -12,7 +11,6 @@ Geocode.enableDebug();
 
 const Mapa = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
-
   const MyMapComponent = withScriptjs(
     withGoogleMap(props => (
       <GoogleMap
