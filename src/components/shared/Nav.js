@@ -1,14 +1,20 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
 
 import styles from "./Nav.module.css";
 import { StateContext, DispatchContext } from "../App";
+import clientId from "../Login/Login";
 
 export default function Nav() {
   const [show, setShow] = useState(false);
   const dispatch = useContext(DispatchContext);
   const state = useContext(StateContext);
+
+  const logout = () => {
+    dispatch({ type: "logout" });
+  };
 
   return (
     <>
@@ -59,11 +65,19 @@ export default function Nav() {
             </Link>
           </>
         )}
-        <Link onClick={() => setShow(false)} className={styles.link} to="/">
+        {/* <Link onClick={() => setShow(false)} className={styles.link} to="/">
           <button color="inherit" onClick={() => dispatch({ type: "logOut" })}>
             Salir
           </button>
-        </Link>
+        </Link> */}
+        <GoogleLogout
+          clientId={clientId}
+          onLogoutSuccess={() => dispatch({ type: "logout" })}
+          failResponseGoogle={() => alert("Error al salir")}
+          buttonText="Salir"
+          uxMode="redirect"
+          redirectUri="/"
+        />
       </div>
       {show && (
         <div onClick={() => setShow(false)} className={styles.back}></div>

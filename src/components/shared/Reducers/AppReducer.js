@@ -10,9 +10,10 @@ export const initialState = {
   password: "",
   isLoading: false,
   error: "",
-  isLoggedIn: true,
+  isLoggedIn: false,
   first_click_login: false,
   actualizando: "",
+  tokenObj: "",
 };
 
 const funcionario = {
@@ -64,13 +65,19 @@ export function reducer(draft, action) {
       }
       return;
     }
+
+    case "googleLogin": {
+      draft.tokenObj = action.payLoad;
+      return;
+    }
     case "field": {
       draft[action.fieldName] = action.payload;
       return;
     }
     case "login": {
       draft.error = "";
-      draft.isLoading = true;
+      draft.isLoading = false;
+      draft.isLoggedIn = true;
       return;
     }
     case "success": {
@@ -96,7 +103,7 @@ export function reducer(draft, action) {
       draft.password = "";
       return;
     }
-    case "logOut": {
+    case "logout": {
       draft.isLoggedIn = false;
       draft.first_click_login = false;
       return;

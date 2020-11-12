@@ -1,7 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "../../App.css";
 import { Button, Form, Input } from "reactstrap";
 import { DispatchContext, StateContext } from "../App";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { ipAPI } from "../Shared/ipAPI";
+import { RefreshTokenSetup } from "../../utils/RefreshToken";
+import axios from "axios";
 
 // const first_click = true;
 
@@ -76,50 +80,64 @@ const LoginForm = () => {
         </Form>
       </div>
     </div>
-
-    /*<div>
-      <div>
-        <div>
-          <Form className="login-form" onSubmit={submitClick}>
-            {error && <p className="log-error-message">{error}</p>}
-            <p>Please Login!</p>
-            <input
-              type="text"
-              placeholder="username"
-              value={username}
-              onChange={(e) =>
-                dispatch({
-                  type: "field",
-                  fieldName: "username",
-                  payload: e.currentTarget.value,
-                })
-              }
-            />
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? "Logging in..." : "Log In"}
-            </button>
-            <p></p>
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? (
-                <div className="lds-ellipsis">
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                </div>
-              ) : (
-                "Entrar con google"
-              )}
-            </button>
-          </Form>
-        </div>
-      </div>
-    </div>*/
   );
 };
+
+export const clientId =
+  "598748377138-u0bnk3f8elf6gbhkp8ll81trei591tk4.apps.googleusercontent.com";
+
+const validar_usuario = () => {};
 const Login = () => {
   const first_click = useContext(StateContext).first_click_login;
   const dispatch = useContext(DispatchContext);
+
+  const logout = () => {
+    console.log("logout");
+    dispatch({ type: "logout" });
+  };
+
+  const try_login = (response) => {
+    dispatch({ type: "googleLogin", payload: response });
+    var link = ipAPI;
+    console.log("success: ");
+    console.log(response);
+    dispatch({
+      type: "login",
+      payload: response,
+    });
+    RefreshTokenSetup(response);
+
+    return;
+    axios({
+      method: "put",
+      url: link,
+      data: response,
+      headers: {
+        // "Content-Type": "application/json",
+        //authorization
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        dispatch({
+          action: "login",
+          payload: response,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({
+          action: "loginBackendValidationErr",
+          payload: err,
+        });
+      });
+  };
+
+  const failResponseGoogle = (response) => {
+    console.log("error: ");
+    console.log(response);
+  };
+
   return (
     <div
       className={
@@ -136,7 +154,26 @@ const Login = () => {
               alt=""
             />
           </div>
-          <LoginForm />
+          <GoogleLogin
+            clientId={clientId}
+            onSuccess={try_login}
+            onFailure={failResponseGoogle}
+            cookiePolicy={"single_host_origin"}
+            // render={(renderProps) => (
+            //   <button
+            //     onClick={renderProps.onClick}
+            //     disabled={renderProps.disabled}>
+            //     This is my custom Google button
+            //   </button>
+            // )}
+            isSignedIn={false}
+          />
+
+          {/* <GoogleLogout
+            clientId={clientId}
+            buttonText="Logout"
+            onLogoutSuccess={logout}
+            failResponseGoogle={() => alert("Error al salir")}></GoogleLogout> */}
         </>
       ) : (
         <div className="initial-logo grid-item">
