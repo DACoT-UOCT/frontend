@@ -83,8 +83,12 @@ const LoginForm = () => {
   );
 };
 
+<<<<<<< HEAD
 export const clientId =
   "226837255536-1kghlr6q84lc4iroc7dk9ri29v262hs6.apps.googleusercontent.com";
+=======
+export const clientId = "226837255536-1kghlr6q84lc4iroc7dk9ri29v262hs6.apps.googleusercontent.com";
+>>>>>>> 4088391cbf491f7df0a53db5cc1fee1ee9672c5c
 
 const validar_usuario = () => {};
 const Login = () => {
