@@ -84,7 +84,7 @@ const LoginForm = () => {
 };
 
 export const clientId =
-  "598748377138-u0bnk3f8elf6gbhkp8ll81trei591tk4.apps.googleusercontent.com";
+  "226837255536-1kghlr6q84lc4iroc7dk9ri29v262hs6.apps.googleusercontent.com";
 
 const validar_usuario = () => {};
 const Login = () => {
@@ -96,40 +96,45 @@ const Login = () => {
     dispatch({ type: "logout" });
   };
 
+  const test = () => {
+    axios
+      .get("http://dacot.duckdns.org/users/me")
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
   const try_login = (response) => {
     dispatch({ type: "googleLogin", payload: response });
-    var link = ipAPI;
+    var link = ipAPI + "swap_token";
     console.log("success: ");
     console.log(response);
-    dispatch({
-      type: "login",
-      payload: response,
-    });
-    RefreshTokenSetup(response);
 
-    return;
+    //RefreshTokenSetup(response);
+
     axios({
-      method: "put",
+      method: "post",
       url: link,
-      data: response,
+      data: response.tokenId,
       headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-Requested-With": "XMLHttpRequest",
+        "X-Google-OAuth2-Type": "client",
         // "Content-Type": "application/json",
-        //authorization
       },
     })
       .then((response) => {
         console.log(response);
         dispatch({
-          action: "login",
+          type: "login",
           payload: response,
         });
       })
       .catch((err) => {
         console.log(err);
-        dispatch({
-          action: "loginBackendValidationErr",
-          payload: err,
-        });
+        // dispatch({
+        //   action: "loginBackendValidationErr",
+        //   payload: err,
+        // });
       });
   };
 
@@ -168,6 +173,7 @@ const Login = () => {
             // )}
             isSignedIn={false}
           />
+          <button onClick={test}></button>
 
           {/* <GoogleLogout
             clientId={clientId}
