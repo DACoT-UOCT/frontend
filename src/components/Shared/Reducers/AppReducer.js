@@ -66,10 +66,6 @@ export function reducer(draft, action) {
       return;
     }
 
-    case "googleLogin": {
-      draft.tokenObj = action.payLoad;
-      return;
-    }
     case "field": {
       draft[action.fieldName] = action.payload;
       return;
@@ -77,7 +73,8 @@ export function reducer(draft, action) {
     case "login": {
       draft.error = "";
       draft.isLoading = false;
-      draft.isLoggedIn = true;
+      // localStorage.setItem("token", action.payLoad);
+      // draft.isLoggedIn = true;
       return;
     }
     case "success": {

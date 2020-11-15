@@ -25,7 +25,10 @@ const PopUp = (props) => {
         onClose={() => props.setOpen(false)}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description">
-        <DialogTitle id="alert-dialog-slide-title">{props.title}</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">
+          {props.title}{" "}
+          <button onClick={() => props.setOpen(false)}>Cerrar</button>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>{props.children}</DialogContentText>
         </DialogContent>

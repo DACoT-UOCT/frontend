@@ -4,6 +4,7 @@ import RegistroActividad from "./RegistroActividad";
 import ListadoUsuarios from "./ListadoUsuarios";
 import styles from "./Administracion.module.css";
 import ListadoComunas from "./ListadoComunas";
+import ErroresExtraccion from "./ErroresExtraccion";
 
 const Administracion = (props) => {
   const [vista, setVista] = useState("usuarios");
@@ -33,6 +34,15 @@ const Administracion = (props) => {
           </button>
 
           <button
+            className={vista == "errores" ? styles.active : null}
+            onClick={() => {
+              setVista("errores");
+              setTitulo("Errores de extracción automática desde SC");
+            }}>
+            <span>Errores de extracción</span>
+          </button>
+
+          <button
             className={vista == "comunas" ? styles.active : null}
             onClick={() => {
               setVista("comunas");
@@ -49,6 +59,7 @@ const Administracion = (props) => {
         {vista === "actividad" && <RegistroActividad />}
         {vista === "usuarios" && <ListadoUsuarios />}
         {vista === "comunas" && <ListadoComunas />}
+        {vista === "errores" && <ErroresExtraccion />}
       </div>
     </div>
   );
