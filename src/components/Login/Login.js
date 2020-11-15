@@ -83,8 +83,7 @@ const LoginForm = () => {
   );
 };
 
-export const clientId =
-  "598748377138-u0bnk3f8elf6gbhkp8ll81trei591tk4.apps.googleusercontent.com";
+export const clientId = "226837255536-1kghlr6q84lc4iroc7dk9ri29v262hs6.apps.googleusercontent.com";
 
 const validar_usuario = () => {};
 const Login = () => {
