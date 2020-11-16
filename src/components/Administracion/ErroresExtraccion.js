@@ -44,7 +44,7 @@ const ErrorExtraccion = (props) => {
       .then((response) => {
         alert("Registros de errores eliminados");
         props.setOpen(false);
-        props.setConsultado(false);
+        props.setConsultadoFather(false);
       })
       .catch((err) => {
         alert("Error al eliminar los registros");
@@ -218,7 +218,7 @@ const ErroresExtraccion = (props) => {
               id={seleccionado}
               setOpen={setOpen}
               open={open}
-              setConsultado={setConsultado}
+              setConsultadoFather={setConsultado}
             />
           </PopUp>
         </>

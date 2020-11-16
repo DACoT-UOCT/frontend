@@ -291,6 +291,7 @@ export default function PanelInstalacion(props) {
               <Button className="botonDashboard">PDF de Respaldo</Button>
               <Link
                 to="/info"
+                // target="_blank"
                 className="nada"
                 onClick={() => {
                   dispatch({

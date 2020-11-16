@@ -1,117 +1,96 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./BusquedaReducer";
+import { StateContext as GlobalStateContext } from "../App";
 import { Form, Row, Button, Input } from "reactstrap";
 import PreviewInstalacion from "../Shared/PreviewInstalacion";
 import Mapa from "../Shared/Mapa";
 import axios from "axios";
+import { ipAPI } from "../Shared/ipAPI";
+import { procesar_json_recibido } from "../SolicitudInstalacionNueva/NuevaInstalacion";
+import PanelInstalacion from "../Shared/PanelInstalacion";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
+const estados = {
+  NEW: "Solicitud de integración",
+  UPDATE: "Solicitud de actualización",
+  APPROVED: "Solicitud aprobada",
+  REJECTED: "Solicitud rechazada",
+  SYSTEM: "Instalación en funcionamiento",
+};
 
 const ConsultaSemaforo = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
+  const global_state = useContext(GlobalStateContext);
 
-  const {
-    busqueda,
-    isLoading,
-    id_consultado,
-    no_encontrado,
-    data,
-    imagen_cruce,
-  } = state;
+  const handleChange = (panel) => (event, isExpanded) => {
+    dispatch({ type: "expanded", payLoad: isExpanded ? panel : false });
+    //setExpanded(isExpanded ? panel : false);
+  };
 
-  async function getData() {
-    //consulta por id al backend
-    return new Promise((resolve, reject) => {
-      const link =
-        "http://54.224.251.49/intersection/" + state.busqueda.toUpperCase();
-
-      axios
-        .get(link)
-        .then((response) => {
-          //solicitud exitosa
-          dispatch({ type: "loadData", payLoad: response.data });
-          resolve();
-        })
-        .catch((err) => {
-          //error
-          reject(err);
-        });
-    });
-  }
-  const submitClick = async (e) => {
-    e.preventDefault();
+  const buscar = () => {
     dispatch({
       type: "get_preview_data",
     });
 
-    try {
-      await getData();
-      dispatch({ type: "preview_success" });
-    } catch (error) {
-      console.log(error);
-      dispatch({ type: "preview_error" });
+    if (!/^(x|X|j|J)\d{6}$/.test(state.busqueda)) {
+      alert("Formato de búsqueda inválido");
+      return;
     }
 
-    // const link = "http://54.224.251.49/intersection/X001330";
-    // const temp = false;
-
-    // if (!state.data)
-    //   axios
-    //     .get(link)
-    //     .then((response) => {
-    //       //solicitud exitosa
-    //       console.log(response.data);
-
-    //       dispatch({ type: "loadData", payLoad: response.data });
-    //       dispatch({ type: "preview_success" });
-    //     })
-    //     .catch((err) => {
-    //       //error
-    //       console.log(err);
-    //       dispatch({ type: "preview_error" });
-    //     });
+    var link =
+      ipAPI +
+      "requests/" +
+      state.busqueda +
+      "?user_email=" +
+      global_state.email;
+    console.log(link);
+    axios
+      .get(link)
+      .then((response) => {
+        console.log(response.data);
+        dispatch({
+          type: "success_busqueda",
+          payLoad: procesar_json_recibido(response.data),
+        });
+      })
+      .catch(dispatch({ type: "fail_busqueda" }));
   };
-
-  useEffect(() => {
-    if (isLoading) console.log("Solicitando datos del cruce " + busqueda);
-  }, [isLoading]);
 
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
         <div className="grid-item consulta-semaforo">
           <div className="search-container">
-            <Form onSubmit={submitClick}>
-              <Row>
-                <Input
-                  type="text"
-                  placeholder="X000000"
-                  value={busqueda}
-                  onChange={(e) => {
-                    dispatch({
-                      type: "field",
-                      fieldName: "busqueda",
-                      payload: e.currentTarget.value.toUpperCase(),
-                    });
-                  }}
-                />
-                <Button type="submit">Buscar</Button>
-                <Button type="reset">Limpiar</Button>
-              </Row>
-            </Form>
+            <Row>
+              <Input
+                type="text"
+                placeholder="X000000"
+                value={state.busqueda}
+                onChange={(e) => {
+                  dispatch({
+                    type: "field",
+                    fieldName: "busqueda",
+                    payload: e.currentTarget.value.toUpperCase().slice(0, 7),
+                  });
+                }}
+              />
+              <Button onClick={() => buscar()}>Buscar</Button>
+              <Button onClick={() => dispatch({ type: "limpiar" })}>
+                Limpiar
+              </Button>
+            </Row>
           </div>
-          
-          <Mapa/>
-
-          {isLoading && <p style={{ "margin-left": "15px" }}>Buscando...</p>}
-          {no_encontrado && (
-            <div>
-              <p>Entrada no encontrada</p>
-            </div>
+          {state.x_consultado !== null && (
+            <PanelInstalacion
+              expanded={state.expanded}
+              id={state.x_consultado.oid} //ahi ingresar el X
+              type={estados[state.x_consultado.metadata.status]}
+              handleChange={handleChange}
+            />
           )}
-          {state.data != null && <PreviewInstalacion />}
+          <Mapa />
         </div>
       </StateContext.Provider>
     </DispatchContext.Provider>

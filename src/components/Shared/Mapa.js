@@ -1,5 +1,10 @@
-import React, {useState} from "react";
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import React, { useState } from "react";
+import {
+  withScriptjs,
+  withGoogleMap,
+  GoogleMap,
+  Marker,
+} from "react-google-maps";
 import Geocode from "react-geocode";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./Reducers/MapaReducer";
@@ -12,13 +17,14 @@ Geocode.enableDebug();
 const Mapa = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const MyMapComponent = withScriptjs(
-    withGoogleMap(props => (
+    withGoogleMap((props) => (
       <GoogleMap
         defaultZoom={state.initialZoom}
         defaultCenter={state.initialCenter}
-        onClick={onMapClick}
-      >
-        {state.isMarkerShown && <Marker position={{ lat: state.markerLat, lng: state.markerLng }} />}
+        onClick={onMapClick}>
+        {state.isMarkerShown && (
+          <Marker position={{ lat: state.markerLat, lng: state.markerLng }} />
+        )}
       </GoogleMap>
     ))
   );
@@ -27,14 +33,14 @@ const Mapa = () => {
     dispatch({ type: "isMarkerShown", payLoad: true });
     dispatch({ type: "markerLat", payLoad: e.latLng.lat() });
     dispatch({ type: "markerLng", payLoad: e.latLng.lng() });
-  }
+  };
 
   Geocode.fromLatLng(state.markerLat, state.markerLng).then(
-    response => {
+    (response) => {
       const address = response.results[0].formatted_address;
       dispatch({ type: "location", payLoad: address });
     },
-    error => {
+    (error) => {
       console.error(error);
     }
   );
@@ -76,7 +82,6 @@ const Mapa = () => {
     </GoogleMap>
   );*/
 
-
   return (
     <>
       <MyMapComponent
@@ -91,5 +96,4 @@ const Mapa = () => {
   );
 };
 
-
-export default Mapa;
+export default React.memo(Mapa);
