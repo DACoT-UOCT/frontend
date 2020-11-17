@@ -25,7 +25,13 @@ const Login = () => {
   const test = () => {
     axios
       .get(ipAPI + "users/me")
-      .then((res) => console.log(res))
+      .then((response) => {
+        console.log(response);
+        dispatch({
+          type: "login",
+          payLoad: response.data,
+        });
+      })
       .catch((err) => console.log(err));
   };
 
@@ -49,12 +55,9 @@ const Login = () => {
       .then((response) => {
         console.log(response);
         test();
-        dispatch({
-          type: "login",
-          payLoad: response.data.access_token,
-        });
       })
       .catch((err) => {
+        alert("Usuario no autorizado");
         console.log(err);
         // dispatch({
         //   action: "loginBackendValidationErr",
