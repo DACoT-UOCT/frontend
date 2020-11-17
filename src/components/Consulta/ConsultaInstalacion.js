@@ -36,7 +36,7 @@ const ConsultaSemaforo = () => {
     });
 
     if (!/^(x|X|j|J)\d{6}$/.test(state.busqueda)) {
-      alert("Formato de búsqueda inválido");
+      alert("Formato de búsqueda inválido (X000000)");
       return;
     }
 
@@ -81,7 +81,7 @@ const ConsultaSemaforo = () => {
                 <Button onClick={() => buscar()}>Buscar</Button>
                 <Button onClick={() => dispatch({ type: "limpiar" })}>
                   Limpiar
-              </Button>
+                </Button>
               </div>
             </div>
           </div>
