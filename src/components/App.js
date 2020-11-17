@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import "../App.css";
+import axios from "axios";
+import { ipAPI } from "./Shared/ipAPI";
 import Header from "./Shared/Header";
 import NuevaInstalacion from "./SolicitudInstalacionNueva/NuevaInstalacion";
 import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
@@ -30,6 +32,22 @@ const App = () => {
     rol,
     email,
   } = state;
+
+  // useEffect(() => {
+  //   axios
+  //     .get(ipAPI + "users/me")
+  //     .then((response) => {
+  //       console.log(response);
+  //       dispatch({
+  //         type: "login",
+  //         payLoad: response.data,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       window.location.replace("/");
+  //     });
+  // }, []);
 
   return (
     <DispatchContext.Provider value={dispatch}>

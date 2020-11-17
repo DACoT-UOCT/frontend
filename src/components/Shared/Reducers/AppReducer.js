@@ -73,8 +73,13 @@ export function reducer(draft, action) {
     case "login": {
       draft.error = "";
       draft.isLoading = false;
-      // localStorage.setItem("token", action.payLoad);
-      // draft.isLoggedIn = true;
+
+      draft.full_name = action.payLoad.full_name;
+      draft.email = action.payLoad.email;
+      draft.rol = action.payLoad.rol;
+      draft.area = action.payLoad.area;
+      draft.is_admin = action.payLoad.is_admin;
+      draft.isLoggedIn = true;
       return;
     }
     case "success": {
