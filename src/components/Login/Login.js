@@ -24,7 +24,7 @@ const Login = () => {
 
   const test = () => {
     axios
-      .get("http://dacot.duckdns.org/users/me")
+      .get(ipAPI + "users/me")
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
@@ -48,6 +48,7 @@ const Login = () => {
     })
       .then((response) => {
         console.log(response);
+        test();
         dispatch({
           type: "login",
           payLoad: response.data.access_token,
