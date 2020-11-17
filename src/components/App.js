@@ -35,7 +35,7 @@ const App = () => {
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
         <Router>
-          {!isLoggedIn ? (
+          {isLoggedIn ? (
             <Route path="/" exact component={Login} />
           ) : (
             <div className="app-container">

@@ -3,6 +3,8 @@
     padding: 1rem;
     background-color: white;
     border: 1px solid lightgray;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .resume :global(.image){
@@ -51,6 +53,10 @@
 
 .resume tr:nth-child(even) {
     background-color: rgb(236, 236, 236);
+}
+
+.resume :global(.entreverdes) {
+    overflow-y: scroll;
 }
 
 .resume :global(.entreverdes) tr {
