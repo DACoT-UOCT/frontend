@@ -77,6 +77,9 @@ export default function Nav() {
           buttonText="Salir"
           uxMode="redirect"
           redirectUri="/"
+          render={renderProps => (
+            <Link onClick={renderProps.onClick} className={styles.link}><span>Salir</span></Link>
+          )}
         />
       </div>
       {show && (

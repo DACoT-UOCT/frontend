@@ -6,6 +6,7 @@ import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { ipAPI } from "../Shared/ipAPI";
 import { RefreshTokenSetup } from "../../utils/RefreshToken";
 import axios from "axios";
+import styles from "./Login.module.css";
 
 // const first_click = true;
 
@@ -70,31 +71,40 @@ const Login = () => {
   return (
     <div
       className={
-        "grid-item " + (first_click ? "login-form-view" : "welcome-view")
+        first_click ? styles.login : styles.logo
       }
       onClick={() => dispatch({ type: "FIRST CLICK" })}>
       {first_click ? (
         <>
-          <div className="logo-uoct">
-            <img
-              src="/logo_transportes.png"
-              width="150rem"
-              height="150rem"
-              alt=""
-            />
+          <div className={styles.uoct}>
+            <div className={styles.header}>
+              <img
+                src="/logo2.png"
+              />
+              <span className={styles.text}>Datos Abiertos Para el Control de Transito</span>
+              <img
+                src="/logo_transportes.png"
+              />
+            </div>
           </div>
-          <GoogleLogin
-            clientId={clientId}
-            onSuccess={try_login}
-            onFailure={failResponseGoogle}
-            cookiePolicy={"single_host_origin"}
-            isSignedIn={false}
-          />
+          <div className={styles.loginForm}>
+            <span className={styles.title}>Ingreso al sistema</span>
+            <div className={styles.button}>
+              <GoogleLogin
+                clientId={clientId}
+                onSuccess={try_login}
+                onFailure={failResponseGoogle}
+                cookiePolicy={"single_host_origin"}
+                isSignedIn={false}
+                buttonText="Ingresar con Google"
+              />
+            </div>
+            <span className={styles.sub}>DACoT 2020</span>
+          </div>
         </>
       ) : (
-        <div className="initial-logo grid-item">
-          <div className="dacot">DACoT - V1 </div>
-          <div className="uoct">U O C T </div>
+        <div className={styles.init}>
+          <img className={styles.dacot} src="/logo.png" alt=""/>
         </div>
       )}
     </div>
