@@ -23,7 +23,7 @@ const Login = () => {
     dispatch({ type: "logout" });
   };
 
-  const test = () => {
+  const consultar_datos = () => {
     axios
       .get(ipAPI + "users/me")
       .then((response) => {
@@ -55,7 +55,7 @@ const Login = () => {
     })
       .then((response) => {
         console.log(response);
-        test();
+        consultar_datos();
       })
       .catch((err) => {
         alert("Usuario no autorizado");
@@ -74,21 +74,17 @@ const Login = () => {
 
   return (
     <div
-      className={
-        first_click ? styles.login : styles.logo
-      }
+      className={first_click ? styles.login : styles.logo}
       onClick={() => dispatch({ type: "FIRST CLICK" })}>
       {first_click ? (
         <>
           <div className={styles.uoct}>
             <div className={styles.header}>
-              <img
-                src="/logo2.png"
-              />
-              <span className={styles.text}>Datos Abiertos Para el Control de Transito</span>
-              <img
-                src="/logo_transportes.png"
-              />
+              <img src="/logo2.png" />
+              <span className={styles.text}>
+                Datos Abiertos Para el Control de Transito
+              </span>
+              <img src="/logo_transportes.png" />
             </div>
           </div>
           <div className={styles.loginForm}>
@@ -108,7 +104,7 @@ const Login = () => {
         </>
       ) : (
         <div className={styles.init}>
-          <img className={styles.dacot} src="/logo.png" alt=""/>
+          <img className={styles.dacot} src="/logo.png" alt="" />
         </div>
       )}
     </div>
