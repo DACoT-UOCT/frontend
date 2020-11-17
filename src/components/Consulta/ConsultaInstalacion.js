@@ -56,7 +56,10 @@ const ConsultaSemaforo = () => {
           payLoad: procesar_json_recibido(response.data),
         });
       })
-      .catch(dispatch({ type: "fail_busqueda" }));
+      .catch(() => {
+        alert("Error en la consulta");
+        dispatch({ type: "fail_busqueda" });
+      });
   };
 
   return (

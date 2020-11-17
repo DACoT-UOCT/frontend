@@ -299,7 +299,7 @@ export default function PanelInstalacion(props) {
                     payLoad: instalacion,
                   });
                 }}>
-                <div className="linkBoton">Información de programaciones</div>
+                <div className="linkBoton">Información detallada</div>
               </Link>
               {state.rol === "Empresa" && (
                 <>
