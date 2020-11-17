@@ -5,6 +5,7 @@ import { StateContext as GlobalStateContext } from "../App";
 import { Form, Row, Button, Input } from "reactstrap";
 import PreviewInstalacion from "../Shared/PreviewInstalacion";
 import Mapa from "../Shared/Mapa";
+import styles from "./Consulta.module.css";
 import axios from "axios";
 import { ipAPI } from "../Shared/ipAPI";
 import { procesar_json_recibido } from "../SolicitudInstalacionNueva/NuevaInstalacion";
@@ -63,7 +64,7 @@ const ConsultaSemaforo = () => {
       <StateContext.Provider value={state}>
         <div className="grid-item consulta-semaforo">
           <div className="search-container">
-            <Row>
+            <div className={styles.row}>
               <Input
                 type="text"
                 placeholder="X000000"
@@ -76,11 +77,13 @@ const ConsultaSemaforo = () => {
                   });
                 }}
               />
-              <Button onClick={() => buscar()}>Buscar</Button>
-              <Button onClick={() => dispatch({ type: "limpiar" })}>
-                Limpiar
+              <div className={styles.buttons}>
+                <Button onClick={() => buscar()}>Buscar</Button>
+                <Button onClick={() => dispatch({ type: "limpiar" })}>
+                  Limpiar
               </Button>
-            </Row>
+              </div>
+            </div>
           </div>
           {state.x_consultado !== null && (
             <PanelInstalacion

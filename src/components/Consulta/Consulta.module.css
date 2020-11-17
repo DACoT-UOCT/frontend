@@ -1,0 +1,20 @@
+.buttons {
+    display: flex;
+ 
+}
+
+.buttons button{
+    height: 3.1rem;
+    margin-right: 1rem;
+    font-size: 1rem !important;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+
+.row input {
+    margin: 0 !important;
+    margin-right: 1rem !important;
+}

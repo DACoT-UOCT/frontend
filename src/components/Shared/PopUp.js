@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import "../../App.css";
+import styles from "./PopUp.module.css";
 
 import {
   Dialog,
@@ -26,8 +27,10 @@ const PopUp = (props) => {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description">
         <DialogTitle id="alert-dialog-slide-title">
-          {props.title}{" "}
-          <button onClick={() => props.setOpen(false)}>Cerrar</button>
+          <div className={styles.row}>
+            {props.title}{" "}
+            <button onClick={() => props.setOpen(false)}>x</button>
+          </div>
         </DialogTitle>
         <DialogContent>
           <DialogContentText>{props.children}</DialogContentText>
