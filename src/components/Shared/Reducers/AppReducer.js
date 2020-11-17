@@ -10,7 +10,7 @@ export const initialState = {
   password: "",
   isLoading: false,
   error: "",
-  isLoggedIn: true,
+  isLoggedIn: false,
   first_click_login: false,
   actualizando: "",
   tokenObj: "",
