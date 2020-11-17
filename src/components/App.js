@@ -54,7 +54,10 @@ const App = () => {
       <StateContext.Provider value={state}>
         <Router>
           {!isLoggedIn ? (
-            <Route path="/" exact component={Login} />
+            <>
+              <Redirect to="/" />
+              <Route path="/" exact component={Login} />
+            </>
           ) : (
             <div className="app-container">
               <Header />

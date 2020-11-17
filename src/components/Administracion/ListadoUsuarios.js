@@ -72,7 +72,9 @@ const ListadoUsuarios = (props) => {
 
   return (
     <>
-      <Button style={{ "float": "right" }} className={styles.mb}
+      <Button
+        style={{ float: "right" }}
+        className={styles.mb}
         onClick={() => {
           setNewOpen(true);
           dispatch({ type: "nuevo" });
@@ -84,7 +86,7 @@ const ListadoUsuarios = (props) => {
           <tr>
             <th>Nombre</th>
             <th>Rol en sistema</th>
-            <th>Área/Empresa</th>
+            <th>Empresa/Área</th>
             <th>Correo</th>
             <th>Administrador</th>
             <th>Acción</th>

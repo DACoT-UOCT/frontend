@@ -39,9 +39,6 @@ const Login = () => {
   const try_login = (response) => {
     var link = ipAPI + "swap_token";
     console.log("success: ");
-
-    //RefreshTokenSetup(response);
-
     axios({
       method: "post",
       url: link,
@@ -54,7 +51,6 @@ const Login = () => {
       },
     })
       .then((response) => {
-        console.log(response);
         consultar_datos();
       })
       .catch((err) => {

@@ -1,11 +1,11 @@
 import { Redirect } from "react-router-dom";
 
 export const initialState = {
-  full_name: "ACME Employee",
-  email: "employee@acmecorp.com",
-  rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
-  area: "Mantenedora",
-  is_admin: false,
+  // full_name: "ACME Employee",
+  // email: "employee@acmecorp.com",
+  // rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
+  // area: "Mantenedora",
+  // is_admin: false,
 
   password: "",
   isLoading: false,
@@ -106,6 +106,12 @@ export function reducer(draft, action) {
       return;
     }
     case "logout": {
+      draft.full_name = "";
+      draft.email = "";
+      draft.rol = "";
+      draft.area = "";
+      draft.is_admin = "";
+
       draft.isLoggedIn = false;
       draft.first_click_login = false;
       return;

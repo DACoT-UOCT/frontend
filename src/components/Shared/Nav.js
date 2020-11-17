@@ -1,11 +1,14 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { ipAPI } from "./ipAPI";
 import MenuIcon from "@material-ui/icons/Menu";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 
 import styles from "./Nav.module.css";
 import { StateContext, DispatchContext } from "../App";
 import clientId from "../Login/Login";
+import Axios from "axios";
 
 export default function Nav() {
   const [show, setShow] = useState(false);
@@ -13,7 +16,12 @@ export default function Nav() {
   const state = useContext(StateContext);
 
   const logout = () => {
-    dispatch({ type: "logout" });
+    axios
+      .get(ipAPI + "logout")
+      .then((response) => {
+        dispatch({ type: "logout" });
+      })
+      .catch(() => console.log("Error al salir"));
   };
 
   return (
@@ -70,17 +78,10 @@ export default function Nav() {
             Salir
           </button>
         </Link> */}
-        <GoogleLogout
-          clientId={clientId}
-          onLogoutSuccess={() => dispatch({ type: "logout" })}
-          failResponseGoogle={() => alert("Error al salir")}
-          buttonText="Salir"
-          uxMode="redirect"
-          redirectUri="/"
-          render={renderProps => (
-            <Link onClick={renderProps.onClick} className={styles.link}><span>Salir</span></Link>
-          )}
-        />
+
+        <Link onClick={logout} className={styles.link}>
+          <span>Salir</span>
+        </Link>
       </div>
       {show && (
         <div onClick={() => setShow(false)} className={styles.back}></div>

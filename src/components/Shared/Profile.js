@@ -31,9 +31,9 @@ function Profile({ user, email, rol, dispatch }) {
         </span>
         <span className={styles.admin_mail}>admin@uoct.cl</span>
       </div>
-      {/* <Button onClick={() => dispatch({ type: "switch_profile" })}>
+      <Button onClick={() => dispatch({ type: "switch_profile" })}>
         <span>Switch profile</span>
-      </Button> */}
+      </Button>
       <span className={styles.footer}>Dacot 2020</span>
     </div>
   );
