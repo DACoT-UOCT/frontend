@@ -4,6 +4,7 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { StateContext } from "../App";
 import { ipAPI } from "../Shared/ipAPI";
+import PopOver from "../Shared/PopOver";
 
 import { Col, FormGroup, Input, CustomInput } from "reactstrap";
 import { Typography } from "@material-ui/core";
@@ -42,7 +43,7 @@ export default function ProcesarSolicitud(props) {
   const [imagen, setImagen] = useState(null);
   const [correos, setCorreos] = useState([""]);
   const [submit, setSubmit] = useState(false);
-  console.log(JSON.stringify(state.actualizando));
+  // console.log(JSON.stringify(state.actualizando));
 
   const enviar = (aprobar) => {
     var respuesta = {
@@ -81,6 +82,9 @@ export default function ProcesarSolicitud(props) {
     })
       .then((response) => {
         console.log(response);
+        alert(
+          "Solicitud procesada, el remitente de la solicitud ha sido notificado por correo electrónico"
+        );
         setSubmit("ok");
       })
       .catch((err) => {
@@ -108,8 +112,24 @@ export default function ProcesarSolicitud(props) {
                 <>
                   <Verificacion state={state.actualizando} procesar={true} />
                   <hr className="separador"></hr>
-                  <h2>Procesar solicitud</h2>
-                  <legend>Imagen complementaria</legend>
+                  <h2>
+                    {"Procesar solicitud "}
+                    <PopOver mensaje="Puede adjuntar una imagen y/o comentario antes de procesar la solicitud. Estas serán enviadas a la empresa emisora junto con la resolución seleccionada." />
+                  </h2>
+                  <legend>Comentarios adicionales (opcional)</legend>
+                  <FormGroup>
+                    <Col sm={10}>
+                      <Input
+                        className="observaciones"
+                        bsSize="sm"
+                        type="textarea"
+                        placeholder=""
+                        value={comentario}
+                        onChange={(e) => setComentario(e.currentTarget.value)}
+                      />
+                    </Col>
+                  </FormGroup>
+                  <legend>Imagen adjunta (opcional)</legend>
                   <FormGroup>
                     <CustomInput
                       className="boton-file"
@@ -129,20 +149,7 @@ export default function ProcesarSolicitud(props) {
                       }}
                     />
                   </FormGroup>
-                  <legend>Comentarios adicionales</legend>
-                  <FormGroup>
-                    <Col sm={10}>
-                      <Input
-                        className="observaciones"
-                        bsSize="sm"
-                        type="textarea"
-                        placeholder=""
-                        value={comentario}
-                        onChange={(e) => setComentario(e.currentTarget.value)}
-                      />
-                    </Col>
-                  </FormGroup>
-                  <legend>Correo adicional</legend>
+                  {/* <legend>Correo adicional <PopOver mensaje = "La imagen y comentario añadido será enviado junto a la respuesta de "/></legend>
                   <FormGroup>
                     <Col sm={10}>
                       <Input
@@ -154,7 +161,7 @@ export default function ProcesarSolicitud(props) {
                         onChange={(e) => setCorreos([e.currentTarget.value])}
                       />
                     </Col>
-                  </FormGroup>
+                  </FormGroup> */}
                   <div style={{ textAlign: "center" }}>
                     <ButtonMaterial
                       variant="contained"

@@ -6,7 +6,7 @@ import { Button } from "reactstrap";
 
 import styles from "./Profile.module.css";
 
-function Profile({ user, email, rol, dispatch }) {
+function Profile({ user, email, rol, state, dispatch }) {
   return (
     <div className={styles.profile}>
       <div className={styles.info}>
@@ -31,9 +31,11 @@ function Profile({ user, email, rol, dispatch }) {
         </span>
         <span className={styles.admin_mail}>admin@uoct.cl</span>
       </div>
-      {/* <Button onClick={() => dispatch({ type: "switch_profile" })}>
-        <span>Switch profile</span>
-      </Button> */}
+      {state.debug && (
+        <Button onClick={() => dispatch({ type: "switch_profile" })}>
+          <span>Switch profile</span>
+        </Button>
+      )}
       <span className={styles.footer}>Dacot 2020</span>
     </div>
   );

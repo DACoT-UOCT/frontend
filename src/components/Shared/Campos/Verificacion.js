@@ -359,7 +359,7 @@ const Verificacion = (props) => {
           </div>
         </div>
 
-        <div className="section">
+        {/* <div className="section">
           <h2>Matriz Entreverdes</h2>
           <table className="entreverdes">
             <thead>
@@ -395,7 +395,7 @@ const Verificacion = (props) => {
               })}
             </tbody>
           </table>
-        </div>
+        </div> */}
 
         <div className="section">
           <h2>Observaciones</h2>

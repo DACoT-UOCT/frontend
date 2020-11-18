@@ -14,6 +14,7 @@ export const initialState = {
   first_click_login: false,
   actualizando: "",
   tokenObj: "",
+  debug: false,
 };
 
 const funcionario = {
@@ -43,7 +44,7 @@ const empresa = {
 export function reducer(draft, action) {
   switch (action.type) {
     case "switch_profile": {
-      console.log(draft.full_name);
+      draft.isLoggedIn = true;
       if (draft.full_name === "Admin") {
         draft.full_name = empresa.full_name;
         draft.email = empresa.email;

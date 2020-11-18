@@ -122,7 +122,7 @@ export default function PanelInstalacion(props) {
         .get(link)
         .then((response) => {
           //solicitud exitosa
-          console.log(response.data);
+          console.log(response);
           setInstalacion(procesar_json_recibido(response.data));
           resolve();
         })

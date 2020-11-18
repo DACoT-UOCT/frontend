@@ -68,6 +68,7 @@ export const comparar_arrays = (arr1, arr2) => {
 export const procesar_json_recibido = (aux) => {
   //procesa el json consultado para mostrarlo en el formulario
   // var temp = JSON.parse(JSON.stringify(props.state.actualizando));
+  console.log(aux);
   var temp = aux;
   var stages = [];
   var fases = [];
@@ -322,7 +323,7 @@ const NuevaInstalacion = (props) => {
     delete state_copy.isLoading;
     delete state_copy.success;
 
-    //console.log(state_copy);
+    console.log(state_copy);
     // return JSON.stringify(state_copy);
     return JSON.stringify(state_copy);
   };

@@ -33,6 +33,12 @@ const App = () => {
     email,
   } = state;
 
+  useEffect(() => {
+    if (state.debug && !state.isLoggedIn) {
+      dispatch({ type: "switch_profile" });
+    }
+  }, []);
+
   // useEffect(() => {
   //   axios
   //     .get(ipAPI + "users/me")
@@ -141,6 +147,7 @@ const App = () => {
                 user={state.full_name}
                 email={state.email}
                 rol={state.rol}
+                state={state}
                 dispatch={dispatch}
               />
             </div>
