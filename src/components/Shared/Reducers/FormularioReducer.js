@@ -7,7 +7,7 @@ export const initialState = {
     status_user: "",
     installation_date: { $date: Date.now() },
     commune: "",
-    region: "",
+    region: "Región Metropolitana de Santiago",
     img: null,
     pdf_data: null,
     pedestrian_demand: false,

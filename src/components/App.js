@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import "../App.css";
-import axios from "axios";
+
 import { ipAPI } from "./Shared/ipAPI";
 import Header from "./Shared/Header";
 import NuevaInstalacion from "./SolicitudInstalacionNueva/NuevaInstalacion";
 import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
 import Login from "./Login/Login";
+import Logout from "./Login/Logout";
 import { initialState, reducer } from "./Shared/Reducers/AppReducer";
 import ProcesarSolicitud from "./ProcesarSolicitud/ProcesarSolicitud";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
@@ -17,12 +18,16 @@ import Profile from "./Shared/Profile";
 import Verificacion from "./Shared/Campos/Verificacion";
 import Resumen from "./Shared/Resumen";
 import Historial from "./Historial/Historial";
+import { createBrowserHistory } from "history";
+import usePersistentState from "./Shared/Utils/usePersistentState";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
+const history = createBrowserHistory();
 
 const App = () => {
-  const [state, dispatch] = useImmerReducer(reducer, initialState);
+  //const [state, dispatch] = useImmerReducer(reducer, initialState);
+  const [state, dispatch] = usePersistentState(reducer, initialState);
   const {
     full_name,
     password,
@@ -39,26 +44,10 @@ const App = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   axios
-  //     .get(ipAPI + "users/me")
-  //     .then((response) => {
-  //       console.log(response);
-  //       dispatch({
-  //         type: "login",
-  //         payLoad: response.data,
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       window.location.replace("/");
-  //     });
-  // }, []);
-
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
-        <Router>
+        <Router history={history}>
           {!isLoggedIn ? (
             <>
               <Redirect to="/" />
@@ -67,7 +56,11 @@ const App = () => {
           ) : (
             <div className="app-container">
               <Header />
-
+              <Route
+                exact
+                path="/logout"
+                component={() => <Logout dispatch={dispatch} />}
+              />
               <Route exact path="/consulta" component={ConsultaSemaforo} />
               <Route
                 exact

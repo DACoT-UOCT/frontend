@@ -7,14 +7,13 @@ export const initialState = {
   // area: "Mantenedora",
   // is_admin: false,
 
-  password: "",
   isLoading: false,
   error: "",
-  isLoggedIn: false,
+  isLoggedIn: true,
   first_click_login: false,
   actualizando: "",
   tokenObj: "",
-  debug: false,
+  debug: true,
 };
 
 const funcionario = {
@@ -86,7 +85,6 @@ export function reducer(draft, action) {
     case "success": {
       draft.isLoggedIn = true;
       draft.isLoading = false;
-      draft.password = "";
       if (draft.username == "empresa") draft.rol = "empresa";
       else draft.rol = "otro";
       draft.username = "";
@@ -103,7 +101,6 @@ export function reducer(draft, action) {
       draft.isLoggedIn = false;
       draft.isLoading = false;
       draft.username = "";
-      draft.password = "";
       return;
     }
     case "logout": {
@@ -112,6 +109,7 @@ export function reducer(draft, action) {
       draft.rol = "";
       draft.area = "";
       draft.is_admin = "";
+      draft.actualizando = "";
 
       draft.isLoggedIn = false;
       draft.first_click_login = false;

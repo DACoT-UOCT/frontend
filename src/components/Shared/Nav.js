@@ -15,14 +15,14 @@ export default function Nav() {
   const dispatch = useContext(DispatchContext);
   const state = useContext(StateContext);
 
-  const logout = () => {
-    axios
-      .get(ipAPI + "logout")
-      .then((response) => {
-        dispatch({ type: "logout" });
-      })
-      .catch(() => console.log("Error al salir"));
-  };
+  // const logout = () => {
+  //   axios
+  //     .get(ipAPI + "logout")
+  //     .then((response) => {
+  //       dispatch({ type: "logout" });
+  //     })
+  //     .catch(() => console.log("Error al salir"));
+  // };
 
   return (
     <>
@@ -79,7 +79,7 @@ export default function Nav() {
           </button>
         </Link> */}
 
-        <Link onClick={logout} className={styles.link}>
+        <Link to="/logout" className={styles.link}>
           <span>Salir</span>
         </Link>
       </div>
