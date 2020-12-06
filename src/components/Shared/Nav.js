@@ -49,14 +49,7 @@ export default function Nav() {
             <span>Solicitud integración nuevo proyecto</span>
           </Link>
         )}
-        {state.rol === "Empresa" && (
-          <Link
-            onClick={() => setShow(false)}
-            className={styles.link}
-            to="/nuevo/actualizacion">
-            <span>Solicitud actualizacion</span>
-          </Link>
-        )}
+
         {state.is_admin && (
           <>
             <Link

@@ -11,7 +11,6 @@ import Logout from "./Login/Logout";
 import { initialState, reducer } from "./Shared/Reducers/AppReducer";
 import ProcesarSolicitud from "./ProcesarSolicitud/ProcesarSolicitud";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
-import NuevaActualizacion from "./SolicitudActualizacionNueva/NuevaActualizacion";
 import Dashboard from "./Dashboards/Dashboard";
 import Administracion from "./Administracion/Administracion";
 import Profile from "./Shared/Profile";
@@ -81,12 +80,6 @@ const App = () => {
                     exact
                     path="/actualizar/instalacion"
                     component={() => <NuevaInstalacion state={state} />}
-                  />
-
-                  <Route
-                    exact
-                    path="/nuevo/actualizacion"
-                    component={() => <NuevaActualizacion id="X001450" />}
                   />
                 </>
               )}

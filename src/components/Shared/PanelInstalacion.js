@@ -316,7 +316,7 @@ export default function PanelInstalacion(props) {
                             payLoad: instalacion,
                           });
                         }}>
-                        <div className="linkBoton">Modificar entrada</div>
+                        <div className="linkBoton">Editar información</div>
                       </Link>
                     </>
                   )}
