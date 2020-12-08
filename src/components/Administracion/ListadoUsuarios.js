@@ -52,9 +52,8 @@ const ListadoUsuarios = (props) => {
   const consultar_usuarios = async () => {
     dispatch({ type: "loading", payLoad: true });
     dispatch({ type: "error", payLoad: "" });
-    const link_usuarios = ipAPI + "users" + "?user_email=" + global_state.email;
-    const link_empresas =
-      ipAPI + "companies" + "?user_email=" + global_state.email;
+    const link_usuarios = ipAPI + "users";
+    const link_empresas = ipAPI + "companies";
     // setLoading(true);
     // setError("");
 

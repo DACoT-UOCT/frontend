@@ -44,14 +44,7 @@ const RegistroActividad = () => {
       temp.getFullYear() + "-" + (temp.getMonth() + 1) + "-" + temp.getDate();
 
     const link =
-      ipAPI +
-      "actions_log" +
-      "?gte=" +
-      startString +
-      "&lte=" +
-      endString +
-      "&user_email=" +
-      state.email;
+      ipAPI + "actions_log" + "?gte=" + startString + "&lte=" + endString;
 
     return new Promise((resolve, reject) => {
       axios
@@ -138,9 +131,7 @@ const RegistroActividad = () => {
                   <td>1</td>
                   <td>{registro.user}</td>
                   <td>{registro.component}</td>
-                  <td>
-                    {new Date(registro.date).toLocaleString()}
-                  </td>
+                  <td>{new Date(registro.date).toLocaleString()}</td>
                 </tr>
               );
             })}

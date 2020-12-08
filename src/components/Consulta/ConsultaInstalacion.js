@@ -40,12 +40,7 @@ const ConsultaSemaforo = () => {
       return;
     }
 
-    var link =
-      ipAPI +
-      "requests/" +
-      state.busqueda +
-      "?user_email=" +
-      global_state.email;
+    var link = ipAPI + "requests/" + state.busqueda;
     console.log(link);
     axios
       .get(link)

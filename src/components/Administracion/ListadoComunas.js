@@ -56,11 +56,9 @@ const ListadoComunas = (props) => {
   }
 
   const request = async () => {
-    const link_comunas =
-      ipAPI + "communes" + "?user_email=" + global_state.email;
-    const link_usuarios = ipAPI + "users" + "?user_email=" + global_state.email;
-    const link_empresas =
-      ipAPI + "companies" + "?user_email=" + global_state.email;
+    const link_comunas = ipAPI + "communes";
+    const link_usuarios = ipAPI + "users";
+    const link_empresas = ipAPI + "companies";
     dispatch({ type: "loading", payLoad: true });
     dispatch({ type: "error", payLoad: "" });
 

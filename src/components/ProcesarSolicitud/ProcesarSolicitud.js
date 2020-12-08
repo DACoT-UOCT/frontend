@@ -54,21 +54,9 @@ export default function ProcesarSolicitud(props) {
     var link; //link + user + oid
 
     if (aprobar) {
-      link =
-        ipAPI +
-        "requests/" +
-        state.actualizando.oid +
-        "/accept" +
-        "?user_email=" +
-        state.email;
+      link = ipAPI + "requests/" + state.actualizando.oid + "/accept";
     } else {
-      link =
-        ipAPI +
-        "requests/" +
-        state.actualizando.oid +
-        "/reject" +
-        "?user_email=" +
-        state.email;
+      link = ipAPI + "requests/" + state.actualizando.oid + "/reject";
     }
     console.log(link);
 

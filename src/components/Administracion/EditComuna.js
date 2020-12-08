@@ -31,7 +31,7 @@ const EditComuna = (props) => {
   const dispatch = props.dispatch;
 
   const try_submit = () => {
-    var url = ipAPI + "edit-commune" + "?user_email=" + global_state.email;
+    var url = ipAPI + "edit-commune";
     var json = {
       commune: state.name,
       company_email: state.maintainer.name,

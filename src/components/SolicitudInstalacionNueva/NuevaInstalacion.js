@@ -330,8 +330,7 @@ const NuevaInstalacion = (props) => {
   useEffect(() => {
     if (state.submit === true) {
       //enviar
-      // var link = ipAPI + "requests?user_email=" + props.state.email;
-      var link = ipAPI + "requests?user_email=" + props.state.email;
+      var link = ipAPI + "requests";
 
       axios({
         method: "post",

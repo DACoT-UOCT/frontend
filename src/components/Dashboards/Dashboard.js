@@ -27,7 +27,7 @@ const Dashboard = () => {
     //consulta por id al backend
     var link; // = ipAPI + "request" + "?user=" + state.email;
 
-    link = ipAPI + "requests" + "?user_email=" + global_state.email;
+    link = ipAPI + "requests";
 
     return new Promise((resolve, reject) => {
       axios

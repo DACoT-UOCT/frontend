@@ -87,33 +87,16 @@ export default function PanelInstalacion(props) {
     var link;
     if (history_panel) {
       if (props.type === "Versión vigente") {
-        link =
-          ipAPI +
-          "requests/" +
-          state.actualizando.oid +
-          "?user_email=" +
-          state.email;
+        link = ipAPI + "requests/" + state.actualizando.oid;
       } else if (props.type === "Primera version") {
-        link =
-          ipAPI +
-          "versions/" +
-          state.actualizando.oid +
-          "/base" +
-          "?user_email=" +
-          state.email;
+        link = ipAPI + "versions/" + state.actualizando.oid + "/base";
       } else {
         link =
-          ipAPI +
-          "versions/" +
-          state.actualizando.oid +
-          "/" +
-          props.versionId +
-          "?user_email=" +
-          state.email;
+          ipAPI + "versions/" + state.actualizando.oid + "/" + props.versionId;
       }
       console.log("consultado historico");
     } else {
-      link = ipAPI + "requests/" + props.id + "?user_email=" + state.email;
+      link = ipAPI + "requests/" + props.id;
     }
     console.log(link);
 
@@ -147,13 +130,7 @@ export default function PanelInstalacion(props) {
   };
 
   const confirmar_solicitud = () => {
-    const link =
-      ipAPI +
-      "requests/" +
-      instalacion.oid +
-      "/delete" +
-      "?user_email=" +
-      state.email;
+    const link = ipAPI + "requests/" + instalacion.oid + "/delete";
     axios
       .put(link)
       .then((response) => {

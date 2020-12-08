@@ -38,9 +38,7 @@ const ErrorExtraccion = (props) => {
 
   const eliminar_registros = () => {
     axios
-      .delete(
-        ipAPI + "failed-plans/" + props.id + "?user_email=" + global_state.email
-      )
+      .delete(ipAPI + "failed-plans/" + props.id)
       .then((response) => {
         alert("Registros de errores eliminados");
         props.setOpen(false);
@@ -71,8 +69,7 @@ const ErrorExtraccion = (props) => {
   }
 
   const request = async () => {
-    const link =
-      ipAPI + "failed-plans/" + props.id + "?user_email=" + global_state.email;
+    const link = ipAPI + "failed-plans/" + props.id;
     console.log(link);
     setLoading(true);
     setError("");
@@ -153,7 +150,7 @@ const ErroresExtraccion = (props) => {
   }
 
   const request = async () => {
-    const link = ipAPI + "failed-plans" + "?user_email=" + global_state.email;
+    const link = ipAPI + "failed-plans";
     setLoading(true);
     setError("");
 

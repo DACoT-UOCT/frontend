@@ -46,12 +46,7 @@ const UsuarioPopUp = (props) => {
     return temp;
   };
   const eliminar = () => {
-    var url =
-      ipAPI +
-      "delete-user/" +
-      state.email +
-      "?user_email=" +
-      global_state.email;
+    var url = ipAPI + "delete-user/" + state.email;
 
     // "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
     // const config = { headers: { "Content-Type": "application/json" } };
@@ -84,16 +79,11 @@ const UsuarioPopUp = (props) => {
     }
 
     if (props.type === "edit") {
-      link =
-        ipAPI +
-        "edit-user/" +
-        state.email +
-        "?user_email=" +
-        global_state.email;
+      link = ipAPI + "edit-user/" + state.email;
       metodo = "PUT";
     } else {
       //crear usuario
-      link = ipAPI + "users?user_email=" + global_state.email;
+      link = ipAPI + "users";
       metodo = "POST";
       json.email = state.email;
     }
