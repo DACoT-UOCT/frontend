@@ -13,7 +13,7 @@ export const initialState = {
   first_click_login: false,
   actualizando: "",
   tokenObj: "",
-  debug: true,
+  debug: false,
 };
 
 const funcionario = {
