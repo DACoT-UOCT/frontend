@@ -125,10 +125,10 @@ const RegistroActividad = () => {
             </tr>
           </thead>
           <tbody>
-            {registros.map((registro) => {
+            {registros.map((registro, regIndex) => {
               return (
                 <tr>
-                  <td>1</td>
+                  <td>{regIndex + 1}</td>
                   <td>{registro.user}</td>
                   <td>{registro.component}</td>
                   <td>{new Date(registro.date).toLocaleString()}</td>

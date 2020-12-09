@@ -106,13 +106,16 @@ const ListadoUsuarios = (props) => {
                 <td> {usuario.email}</td>
                 <td>{usuario.is_admin ? "Si" : "No"}</td>
                 <td>
-                  <Button
-                    onClick={() => {
-                      setEditOpen(true);
-                      dispatch({ type: "editar", payLoad: usuario });
-                    }}>
-                    Editar
-                  </Button>
+                  {usuario.email !== "seed@dacot.uoct.cl" &&
+                    usuario.email !== "admin@dacot.uoct.cl" && (
+                      <Button
+                        onClick={() => {
+                          setEditOpen(true);
+                          dispatch({ type: "editar", payLoad: usuario });
+                        }}>
+                        Editar
+                      </Button>
+                    )}
                 </td>
               </tr>
             );
