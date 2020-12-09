@@ -273,6 +273,7 @@ const Controlador = (props) => {
                     variant="standard"
                     name="controlador_ubicacion"
                     autoComplete="off"
+                    style={{ width: "550px" }}
                     value={
                       controller.address_reference !== ""
                         ? controller.address_reference
