@@ -9,11 +9,11 @@ export const initialState = {
 
   isLoading: false,
   error: "",
-  isLoggedIn: false,
+  isLoggedIn: true,
   first_click_login: false,
   actualizando: "",
   tokenObj: "",
-  debug: false,
+  debug: true,
 };
 
 const funcionario = {

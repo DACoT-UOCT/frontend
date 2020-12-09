@@ -14,5 +14,3 @@ export function reducer(draft, action) {
         return;
     }
   }
-
-  

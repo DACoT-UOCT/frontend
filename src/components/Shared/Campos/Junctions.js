@@ -1,6 +1,6 @@
 import React from "react";
-
 import "../../../App.css";
+import Mapa from "../Mapa";
 import { Button } from "reactstrap";
 import {
   Table,
@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableRow,
   TextField,
+  Slide,
   styled,
 } from "@material-ui/core";
 
@@ -19,6 +20,7 @@ const Campo = styled(TextField)({
 const Junctions = (props) => {
   const junctions = props.state;
   const dispatch = props.dispatch;
+  const [openMapa, setOpenMapa] = React.useState(false);
 
   return (
     <>
@@ -40,20 +42,13 @@ const Junctions = (props) => {
                         placeholder="J000000"
                         autoComplete="off"
                         value={junction.jid}
-                        // onChange={(e) =>
-                        //   dispatch({
-                        //     type: "junctions",
-                        //     index: index,
-                        //     fieldName: "jid",
-                        //     payLoad: e.currentTarget.value,
-                        //   })
-                        // }
                       />
                     </TableCell>
                     <TableCell align="left">
                       <Campo
+                        disabled
                         id="standard"
-                        label="Cruce"
+                        label="Definir cruce mediante mapa"
                         variant="standard"
                         name="cruce"
                         placeholder="Calle - Calle"
@@ -64,16 +59,17 @@ const Junctions = (props) => {
                             ? junction.metadata.address_reference
                             : ""
                         }
-                        onChange={(e) =>
-                          dispatch({
-                            type: "junctions",
-                            index: index,
-                            fieldName: "address_reference",
-                            payLoad: e.currentTarget.value,
-                          })
-                        }
                       />
                     </TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => {
+                          setOpenMapa(true);
+                        }}>
+                        Mapa
+                      </Button>
+                    </TableCell>
+                    <Mapa state={junctions} dispatch={dispatch} index={index} open={openMapa} setOpen={setOpenMapa} junction={true}/>
                   </TableRow>
                 </>
               );

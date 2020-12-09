@@ -77,9 +77,6 @@ const ConsultaSemaforo = () => {
               />
               <div className={styles.buttons}>
                 <Button onClick={() => buscar()}>Buscar</Button>
-                <Button onClick={() => dispatch({ type: "limpiar" })}>
-                  Limpiar
-                </Button>
               </div>
             </div>
           </div>
@@ -91,7 +88,7 @@ const ConsultaSemaforo = () => {
               handleChange={handleChange}
             />
           )}
-          <Mapa />
+          {/*<Mapa />*/}
         </div>
       </StateContext.Provider>
     </DispatchContext.Provider>

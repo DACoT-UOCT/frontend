@@ -61,7 +61,7 @@ const RouterComponent = (props) => {
     <>
       {!isLoggedIn ? (
         <>
-          <Redirect to="/" />
+          <Redirect to="/"/>
           <Route path="/" exact component={Login} />
         </>
       ) : (

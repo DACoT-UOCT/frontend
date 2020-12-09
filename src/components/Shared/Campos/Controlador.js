@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "../../../App.css";
-import { Label } from "reactstrap";
+import { Label, Button } from "reactstrap";
 import { styled } from "@material-ui/core/styles";
 import axios from "axios";
 import styles from "./Campos.module.css";
+import Mapa from "../Mapa";
 import PopOver from "../PopOver";
 
 import Loading from "../Loading";
@@ -36,7 +37,8 @@ const getFecha = (date) => {
 const Controlador = (props) => {
   const controller = props.state;
   const dispatch = props.dispatch;
-
+  
+  const [openMapa, setOpenMapa] = React.useState(false);
   const [error, setError] = useState("");
   const [consultado, setConsultado] = useState(false);
   const [modelos, setModelos] = useState(null);
@@ -265,6 +267,7 @@ const Controlador = (props) => {
                 </TableCell>
                 <TableCell align="left">
                   <Campo
+                    disabled
                     id="standard"
                     label="Ubicación"
                     variant="standard"
@@ -275,15 +278,17 @@ const Controlador = (props) => {
                         ? controller.address_reference
                         : ""
                     }
-                    onChange={(e) =>
-                      dispatch({
-                        type: "controller",
-                        fieldName: "address_reference",
-                        payLoad: e.currentTarget.value,
-                      })
-                    }
                   />
                 </TableCell>
+                <TableCell>
+                  <Button
+                    onClick={() => {
+                      setOpenMapa(true);
+                    }}>
+                    Mapa
+                  </Button>
+                </TableCell>
+                <Mapa dispatch={dispatch} index={0} open={openMapa} setOpen={setOpenMapa} junction={false}/>
               </TableRow>
 
               <TableRow>
