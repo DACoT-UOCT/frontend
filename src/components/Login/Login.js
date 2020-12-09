@@ -25,7 +25,7 @@ const Login = () => {
 
   const consultar_datos = () => {
     axios
-      .get(ipAPI + "users/me")
+      .get(ipAPI + "users/me/")
       .then((response) => {
         console.log(response);
         dispatch({

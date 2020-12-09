@@ -46,7 +46,7 @@ const RouterComponent = (props) => {
   useEffect(() => {
     if (!state.debug) {
       axios
-        .get(ipAPI + "users/me")
+        .get(ipAPI + "users/me/")
         .then((response) => {
           console.log(response);
         })
