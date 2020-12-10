@@ -27,6 +27,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const MapaConsulta = (props) => {
   const [stateMapa, dispatchMapa] = useImmerReducer(Mapareducer, MapainitialState);
+  const [centro, setCentro] = useState({ lat: -33.447763, lng: -70.645001 });
+  let ref;
   const [junctions, setJunctions] = useState([
     {
       coordinates: [-33.429978, -70.622176],
@@ -43,6 +45,7 @@ const MapaConsulta = (props) => {
   const [isOpen, setIsOpen] = useState("");
 
   const abrirInfo = (jid) => {
+    setCentro(ref.getCenter());
     setIsOpen(jid);
   };
 
@@ -54,8 +57,9 @@ const MapaConsulta = (props) => {
   const MyMapComponent = withScriptjs(
     withGoogleMap((props) => (
       <GoogleMap
+        ref={(mapRef) => ref = mapRef}
         defaultZoom={stateMapa.initialZoom}
-        defaultCenter={stateMapa.initialCenter}
+        center={centro}
       >
         {junctions.map((junction) => {
           return(
