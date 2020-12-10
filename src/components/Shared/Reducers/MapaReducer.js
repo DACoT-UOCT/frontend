@@ -5,6 +5,7 @@ export const initialState = {
     markerLng: null,
     location: null,
     isMarkerShown: false,
+    markers: [],
 };
 
 export function reducer(draft, action) {

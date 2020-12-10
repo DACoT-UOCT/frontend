@@ -60,15 +60,13 @@ const Junctions = (props) => {
                             : ""
                         }
                       />
-                    </TableCell>
-                    <TableCell>
                       <Button
                         onClick={() => {
                           setOpenMapa(true);
                         }}>
                         Mapa
                       </Button>
-                    </TableCell>
+                    </TableCell> 
                     <Mapa state={junctions} dispatch={dispatch} index={index} open={openMapa} setOpen={setOpenMapa} junction={true}/>
                   </TableRow>
                 </>

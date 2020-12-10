@@ -2,9 +2,9 @@ import React, { useEffect, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./BusquedaReducer";
 import { StateContext as GlobalStateContext } from "../App";
-import { Form, Row, Button, Input } from "reactstrap";
+import { Button, Input } from "reactstrap";
 import PreviewInstalacion from "../Shared/PreviewInstalacion";
-import Mapa from "../Shared/Mapa";
+import MapaConsulta from "./MapaConsulta";
 import styles from "./Consulta.module.css";
 import axios from "axios";
 import { ipAPI } from "../Shared/ipAPI";
@@ -24,6 +24,7 @@ const estados = {
 const ConsultaSemaforo = () => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const global_state = useContext(GlobalStateContext);
+  const [openMapa, setOpenMapa] = React.useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
     dispatch({ type: "expanded", payLoad: isExpanded ? panel : false });
@@ -78,6 +79,10 @@ const ConsultaSemaforo = () => {
               <div className={styles.buttons}>
                 <Button onClick={() => buscar()}>Buscar</Button>
               </div>
+              <div className={styles.buttons}>
+                <Button color="info" onClick={() => setOpenMapa(true)}>Usar Mapa</Button>
+              </div>
+              <MapaConsulta state={state} dispatch={dispatch} open={openMapa} setOpen={setOpenMapa}/>
             </div>
           </div>
           {state.x_consultado !== null && (

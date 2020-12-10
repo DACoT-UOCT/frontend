@@ -280,8 +280,6 @@ const Controlador = (props) => {
                         : ""
                     }
                   />
-                </TableCell>
-                <TableCell>
                   <Button
                     onClick={() => {
                       setOpenMapa(true);
