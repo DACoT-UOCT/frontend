@@ -31,7 +31,6 @@ const MapaConsulta = (props) => {
   );
   const [centro, setCentro] = useState({ lat: -33.447763, lng: -70.645001 });
   let ref;
-
   const dispatch = props.dispatch;
   const openMapa = props.open;
   const setOpenMapa = props.setOpen;
