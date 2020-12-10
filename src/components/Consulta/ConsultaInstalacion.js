@@ -103,12 +103,7 @@ const ConsultaSemaforo = (props) => {
               />
               <div className={styles.buttons}>
                 <Button onClick={() => buscar(state.busqueda)}>Buscar</Button>
-              </div>
-              <div className={styles.buttons}>
-                <Button color="info" onClick={() => setOpenMapa(true)}>
-                  Usar Mapa
-                </Button>
-              </div>
+              </div>  
               <MapaConsulta
                 state={state}
                 dispatch={dispatch}
