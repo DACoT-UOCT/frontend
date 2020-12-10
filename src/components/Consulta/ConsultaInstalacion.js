@@ -25,7 +25,24 @@ const ConsultaSemaforo = (props) => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const [openMapa, setOpenMapa] = React.useState(false);
   const global_state = props.state;
-  console.log(global_state);
+  const [consultado, setConsultado] = React.useState(false);
+  const [junctions, setJunctions] = React.useState([]);
+
+  React.useEffect(() => {
+    if (!consultado) {
+      setConsultado(true);
+      axios
+        .get(ipAPI + "junctions/coords")
+        .then((response) => {
+          //solicitud exitosa
+          setJunctions(response.data);
+          // setComunas(response.data);
+        })
+        .catch((err) => {
+          //error
+        });
+    }
+  });
 
   const bienvenidaHandler = (_bool) => {
     console.log("entrando");
@@ -36,17 +53,17 @@ const ConsultaSemaforo = (props) => {
     //setExpanded(isExpanded ? panel : false);
   };
 
-  const buscar = () => {
+  const buscar = (id_consultado) => {
     dispatch({
       type: "get_preview_data",
     });
 
-    if (!/^(x|X|j|J)\d{6}$/.test(state.busqueda)) {
+    if (!/^(x|X|j|J)\d{6}$/.test(id_consultado)) {
       alert("Formato de búsqueda inválido (X000000)");
       return;
     }
 
-    var link = ipAPI + "requests/" + state.busqueda;
+    var link = ipAPI + "requests/" + id_consultado;
     console.log(link);
     axios
       .get(link)
@@ -85,9 +102,21 @@ const ConsultaSemaforo = (props) => {
                 }}
               />
               <div className={styles.buttons}>
-                <Button onClick={() => buscar()}>Buscar</Button>
+                <Button onClick={() => buscar(state.busqueda)}>Buscar</Button>
               </div>
-              <MapaConsulta state={state} dispatch={dispatch} open={openMapa} setOpen={setOpenMapa}/>
+              <div className={styles.buttons}>
+                <Button color="info" onClick={() => setOpenMapa(true)}>
+                  Usar Mapa
+                </Button>
+              </div>
+              <MapaConsulta
+                state={state}
+                dispatch={dispatch}
+                open={openMapa}
+                setOpen={setOpenMapa}
+                buscar={buscar}
+                junctions={junctions}
+              />
             </div>
           </div>
           {state.x_consultado !== null && (
@@ -104,7 +133,12 @@ const ConsultaSemaforo = (props) => {
             title="Bienvenido a DACoT"
             open={global_state.popup_inicial}
             setOpen={bienvenidaHandler}>
-            <p>Hola</p>
+            <p>
+              Este sistema se encuentra en desarrollo y constante mejora. En el
+              podrás acceder a los datos semafóricos de la Región Metropolitana
+              e ingresar solicitudes de actualización al Centro de Control de la
+              UOCT.
+            </p>
           </PopUp>
         </div>
       </StateContext.Provider>
