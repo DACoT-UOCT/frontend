@@ -38,8 +38,8 @@ export default function Nav() {
         <Link
           onClick={() => setShow(false)}
           className={styles.link}
-          to="/consulta">
-          <span>Consultar instalación</span>
+          to="/solicitudes">
+          <span>Mis solicitudes</span>
         </Link>
         {state.rol === "Empresa" && (
           <Link

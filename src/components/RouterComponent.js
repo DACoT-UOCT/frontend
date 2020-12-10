@@ -61,7 +61,7 @@ const RouterComponent = (props) => {
     <>
       {!isLoggedIn ? (
         <>
-          <Redirect to="/"/>
+          <Redirect to="/" />
           <Route path="/" exact component={Login} />
         </>
       ) : (
@@ -72,7 +72,13 @@ const RouterComponent = (props) => {
             path="/logout"
             component={() => <Logout dispatch={dispatch} />}
           />
-          <Route exact path="/consulta" component={ConsultaSemaforo} />
+          <Route
+            exact
+            path="/"
+            component={() => (
+              <ConsultaSemaforo state={state} dispatch={dispatch} />
+            )}
+          />
           <Route
             exact
             path="/procesar/solicitud"
@@ -119,8 +125,8 @@ const RouterComponent = (props) => {
           )}
           <Route
             exact
-            path="/"
-            component={() => <Dashboard id="X001450" rol={rol} />}
+            path="/solicitudes"
+            component={() => <Dashboard dispatch={dispatch} />}
           />
 
           <Route

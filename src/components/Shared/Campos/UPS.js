@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { DispatchContext } from "../../SolicitudInstalacionNueva/NuevaInstalacion";
 import "../../../App.css";
 import { Label } from "reactstrap";
+import PopOver from "../PopOver";
 import {
   Checkbox,
   FormControlLabel,
@@ -145,7 +146,8 @@ const UPS = (props) => {
 
                 <TableRow>
                   <TableCell component="th" scope="row">
-                    <Label>Duración Carga</Label>
+                    <Label>Duración Carga </Label>{" "}
+                    <PopOver mensaje="En unidades [kWh]" />
                   </TableCell>
                   <TableCell align="left">
                     <Campo

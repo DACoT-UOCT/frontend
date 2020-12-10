@@ -10,6 +10,7 @@ import PanelInstalacion from "../Shared/PanelInstalacion";
 import { TablePagination } from "@material-ui/core";
 
 const Dashboard = () => {
+  //solicitudes
   const global_state = useContext(StateContext);
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   //const [vista, setVista] = useState("Solicitudes");

@@ -32,7 +32,6 @@ const history = createBrowserHistory();
 
 const App = () => {
   const [state, dispatch] = usePersistentState(reducer, initialState);
-
   //let location = useLocation();
 
   // useEffect(() => {
