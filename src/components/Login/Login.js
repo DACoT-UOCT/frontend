@@ -88,6 +88,13 @@ const Login = () => {
             <div className={styles.button}>
               <GoogleLogin
                 clientId={clientId}
+                render = {renderProps => (
+                  <button className={styles.gugul} onClick={renderProps.onClick}>
+                    <img src="/google.png"></img>
+                    <span>Ingresar con Google</span>
+                  </button>
+                )
+                }
                 onSuccess={try_login}
                 onFailure={failResponseGoogle}
                 cookiePolicy={"single_host_origin"}
@@ -97,6 +104,11 @@ const Login = () => {
             </div>
             <span className={styles.sub}>DACoT 2020</span>
           </div>
+          <footer className={styles.footer}>
+            <span>¿Necesitas acceder a los datos semafóricos de Santiago? 
+              <a className={styles.link} href="https://dacot.duckdns.org/api/v1/docs#/Junctions"> ¡Utiliza nuestra API!</a>
+            </span>
+          </footer>
         </>
       ) : (
         <div className={styles.init}>
