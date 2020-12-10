@@ -2,7 +2,8 @@ import React, { useEffect, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "./BusquedaReducer";
 import { StateContext as GlobalStateContext } from "../App";
-import { Button, Input } from "reactstrap";
+import PopUp from "../Shared/PopUp";
+import { Form, Row, Button, Input } from "reactstrap";
 import PreviewInstalacion from "../Shared/PreviewInstalacion";
 import MapaConsulta from "./MapaConsulta";
 import styles from "./Consulta.module.css";
@@ -20,12 +21,16 @@ const estados = {
   REJECTED: "Solicitud rechazada",
   SYSTEM: "Instalación en funcionamiento",
 };
-
-const ConsultaSemaforo = () => {
+const ConsultaSemaforo = (props) => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
-  const global_state = useContext(GlobalStateContext);
   const [openMapa, setOpenMapa] = React.useState(false);
+  const global_state = props.state;
+  console.log(global_state);
 
+  const bienvenidaHandler = (_bool) => {
+    console.log("entrando");
+    props.dispatch({ type: "cerrar_bienvenida", payload: _bool });
+  };
   const handleChange = (panel) => (event, isExpanded) => {
     dispatch({ type: "expanded", payLoad: isExpanded ? panel : false });
     //setExpanded(isExpanded ? panel : false);
@@ -94,6 +99,13 @@ const ConsultaSemaforo = () => {
             />
           )}
           {/*<Mapa />*/}
+
+          <PopUp
+            title="Bienvenido a DACoT"
+            open={global_state.popup_inicial}
+            setOpen={bienvenidaHandler}>
+            <p>Hola</p>
+          </PopUp>
         </div>
       </StateContext.Provider>
     </DispatchContext.Provider>

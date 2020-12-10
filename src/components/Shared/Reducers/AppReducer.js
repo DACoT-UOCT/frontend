@@ -1,12 +1,13 @@
 import { Redirect } from "react-router-dom";
 
-export const initialState = {
-  // full_name: "ACME Employee",
-  // email: "employee@acmecorp.com",
-  // rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
-  // area: "Mantenedora",
-  // is_admin: false,
+// full_name: "ACME Employee",
+// email: "employee@acmecorp.com",
+// rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
+// area: "Mantenedora",
+// is_admin: false,
 
+export const initialState = {
+  popup_inicial: true,
   isLoading: false,
   error: "",
   isLoggedIn: true,
@@ -41,6 +42,7 @@ const empresa = {
 };
 
 export function reducer(draft, action) {
+  console.log(action.type);
   switch (action.type) {
     case "switch_profile": {
       draft.isLoggedIn = true;
@@ -80,6 +82,7 @@ export function reducer(draft, action) {
       draft.area = action.payLoad.area;
       draft.is_admin = action.payLoad.is_admin;
       draft.isLoggedIn = true;
+      draft.popup_inicial = true;
       return;
     }
     case "success": {
@@ -96,6 +99,9 @@ export function reducer(draft, action) {
       draft.actualizando = action.payLoad;
       return;
 
+    case "cerrar_bienvenida":
+      draft.popup_inicial = action.payLoad;
+      return;
     case "error": {
       draft.error = "usuario o contraseña incorrecto";
       draft.isLoggedIn = false;

@@ -188,7 +188,8 @@ const OTU = (props) => {
 
             <TableRow>
               <TableCell component="th" scope="row">
-                <Label>Bits de control y respuesta</Label>
+                <Label>Bits de control y respuesta</Label>{" "}
+                <PopOver mensaje="Ingresar cantidad de bits" />
               </TableCell>
               <TableCell align="left">
                 <Campo
