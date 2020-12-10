@@ -4,10 +4,12 @@ import {
   withGoogleMap,
   GoogleMap,
   Marker,
+  InfoWindow,
 } from "react-google-maps";
 import Geocode from "react-geocode";
 import { useImmerReducer } from "use-immer";
 import { initialState as MapainitialState, reducer as Mapareducer } from "../Shared/Reducers/MapaReducer";
+import { Button } from "reactstrap";
 import {
   Dialog,
   DialogContent,
@@ -25,19 +27,51 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const MapaConsulta = (props) => {
   const [stateMapa, dispatchMapa] = useImmerReducer(Mapareducer, MapainitialState);
+  const [junctions, setJunctions] = useState([
+    {
+      coordinates: [-33.429978, -70.622176],
+      jid: "J001111",
+    },
+    {
+      coordinates: [-33.429758, -70.622356],
+      jid: "J001234",
+    },
+  ]);
   const dispatch = props.dispatch;
   const openMapa = props.open;
   const setOpenMapa = props.setOpen;
+  const [isOpen, setIsOpen] = useState("");
+
+  const abrirInfo = (jid) => {
+    setIsOpen(jid);
+  };
+
+  const buscar = (id) => {
+    setOpenMapa(false);
+    setIsOpen("");
+  }
   
   const MyMapComponent = withScriptjs(
     withGoogleMap((props) => (
       <GoogleMap
         defaultZoom={stateMapa.initialZoom}
         defaultCenter={stateMapa.initialCenter}
-        onClick={onMapClick}>
-        {stateMapa.isMarkerShown && (
-          <Marker position={{ lat: stateMapa.markerLat, lng: stateMapa.markerLng }} />
-        )}
+      >
+        {junctions.map((junction) => {
+          return(
+            <Marker 
+              position={{ lat: junction.coordinates[0], lng: junction.coordinates[1]}}
+              onClick={() => abrirInfo(junction.jid)}
+            >
+              {isOpen === junction.jid && <InfoWindow onCloseClick={() => setIsOpen("")}>
+                <>
+                <div>{junction.jid}</div>
+                <Button onClick={() => buscar(junction.jid)}>Buscar</Button>
+                </>
+              </InfoWindow>}
+            </Marker>
+          )
+        })}
       </GoogleMap>
     ))
   );
@@ -66,7 +100,7 @@ const MapaConsulta = (props) => {
         fullWidth={true}
         TransitionComponent={Transition}
         keepMounted
-        onClose={() => setOpenMapa(false)}>
+        onClose={() => {setOpenMapa(false); setIsOpen("");}}>
         <DialogContent>
           <MyMapComponent
             isMarkerShown
