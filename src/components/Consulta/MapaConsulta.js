@@ -42,7 +42,8 @@ const MapaConsulta = (props) => {
   const buscar = (id) => {
     setOpenMapa(false);
     setIsOpen("");
-    props.buscar("X" + id.slice(1, -1) + "0");
+    const aux = "X" + id.slice(1, -1) + "0";
+    props.buscar(aux);
   };
 
   const MyMapComponent = withScriptjs(
