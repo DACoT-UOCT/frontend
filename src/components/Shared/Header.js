@@ -12,7 +12,7 @@ const Header = () => {
   const location = useLocation();
 
   const sections = {
-    "/": "Inicio",
+    "/": "Consultar información",
     "/consulta": "Consultar Semáforo",
     "/nuevo/instalacion":
       "Solicitud de integración para proyectos de nuevos semáforos",
@@ -21,8 +21,8 @@ const Header = () => {
       "Solicitud de actualización para instalaciones operativas",
     "/nuevo/digitalizacion":
       "Digitalización manual para instalaciones operativas",
-    "/historial":
-    "Historial",
+    "/historial": "Historial",
+    "/solicitudes": "Mis Solicitudes",
   };
 
   useEffect(() => {

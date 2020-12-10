@@ -106,7 +106,7 @@ const Login = () => {
           </div>
           <footer className={styles.footer}>
             <span>¿Necesitas acceder a los datos semafóricos de Santiago? 
-              <a className={styles.link} href="https://dacot.duckdns.org/api/v1/docs#/Junctions"> ¡Utiliza nuestra API!</a>
+              <a target="_blank" className={styles.link} href="https://dacot.duckdns.org/api/v1/docs#/Junctions"> ¡Utiliza nuestra API!</a>
             </span>
           </footer>
         </>
