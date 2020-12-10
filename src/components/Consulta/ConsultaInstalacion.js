@@ -67,8 +67,11 @@ const ConsultaSemaforo = (props) => {
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
         <div className="grid-item consulta-semaforo">
-          <div className="search-container">
+          <div className={`${styles.container} ${"search-container"}`}>
             <div className={styles.row}>
+              <div style = {{marginRight:"auto"}} className={styles.buttons}>
+                <Button color="info" onClick={() => setOpenMapa(true)}>Usar Mapa</Button>
+              </div>
               <Input
                 type="text"
                 placeholder="X000000"
@@ -83,9 +86,6 @@ const ConsultaSemaforo = (props) => {
               />
               <div className={styles.buttons}>
                 <Button onClick={() => buscar()}>Buscar</Button>
-              </div>
-              <div className={styles.buttons}>
-                <Button color="info" onClick={() => setOpenMapa(true)}>Usar Mapa</Button>
               </div>
               <MapaConsulta state={state} dispatch={dispatch} open={openMapa} setOpen={setOpenMapa}/>
             </div>
