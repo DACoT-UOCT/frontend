@@ -32,7 +32,7 @@ const ConsultaSemaforo = (props) => {
     if (!consultado) {
       setConsultado(true);
       axios
-        .get(ipAPI + "junctions/coords")
+        .get(ipAPI + "coordinates")
         .then((response) => {
           //solicitud exitosa
           setJunctions(response.data);

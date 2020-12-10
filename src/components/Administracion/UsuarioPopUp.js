@@ -33,6 +33,7 @@ const UsuarioPopUp = (props) => {
   const dispatch = props.dispatch;
   const areas_empresas = ["Mantenedora", "Contratista", ,];
   const areas_UOCT = ["Ingeniería", "Sala de Control", "TIC", "Administración"];
+  dispatch({ type: "desea_eliminar", payLoad: false });
 
   const validar_json = (json) => {
     var temp = json.area !== "" && json.full_name !== "" && json.rol !== "";
