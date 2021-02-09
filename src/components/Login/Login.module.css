@@ -1,0 +1,149 @@
+.logo {
+    background: #034472;
+    width: 100%;
+    height: 100vh;
+    transition: all .4s;
+}
+
+.login {
+    background: linear-gradient(180deg, rgba(3,68,114,1) 0%, rgba(75,118,148,1) 100%);
+    width: 100%;
+    height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header img {
+    width: 80px;
+    margin: 2rem;
+}
+
+.loginForm {
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    box-shadow: 0px 10px 10px -2px rgba(0,0,0,0.32);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: #034472;
+}
+
+.text {
+    padding: 1.6rem;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.button {
+    width: 85%;
+    display: flex;
+    justify-content: center;
+}
+
+.gugul {
+    border: none;
+    padding: 15px 25px;
+    background-color: rgb(241, 241, 241);
+    display: flex;
+    align-items: center;
+    border-radius: 200px;
+}
+
+.gugul:active {
+    border: none;
+    outline: none;
+}
+
+.gugul:focus {
+    border: none;
+    outline: none;
+}
+
+.gugul:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+.gugul img {
+    width: 20px;
+    margin-right: 25px;
+}
+
+.gugul span {
+    font-size: .9rem;
+    font-weight: bold;
+    color: #4C8BF5;
+}
+
+.title {
+    text-transform: uppercase;
+    padding: 1rem;
+    font-weight: bold;
+}
+
+.sub {
+    font-size: .8rem;
+    margin-bottom: 1rem;
+}
+
+.init {
+    width: 20%;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: grayscale(100%);
+    transition: all .2s;
+}
+
+.init:hover{
+    filter: none;
+    transform: translate(-50%, -50%) scale(1.1);
+    cursor: pointer;;
+}
+
+.dacot {
+    width: 100%
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    color: white;
+}
+
+.link {
+    color: skyblue;
+    text-decoration: none;
+    display: inline-block;
+    transition: .2s all;
+    margin-left: 12px;
+}
+
+.link:hover {
+    text-decoration: none;
+    color: skyblue;
+    transform: scale(1.05);
+}
+
+.link:visited {
+    text-decoration: none;
+    color: skyblue;
+    display: inline-block;
+    transition: .2s all;
+    margin-left: 12px;
+}
+

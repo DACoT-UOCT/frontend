@@ -1,0 +1,59 @@
+.profile {
+    background-color: red;
+    grid-area: profile;
+    width: 100%;
+    border: 1px solid gray;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.profile img {
+    width: 40%;
+    margin: 30px;
+    margin-bottom: 10px;
+    border-radius: 100%;
+    position: relative;
+}
+
+.info {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.icon {
+    display: inline-block;
+    color: gray;
+    margin-right: 5px;
+}
+
+.username {
+    font-weight: 700;
+}
+
+.email, .rol, .footer, .admin_mail{
+    font-size: 0.8rem;
+    color: gray
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 15px;
+}
+
+.admin {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background-color: rgb(233, 231, 231);
+}
+
+.contact {
+    font-size: 0.8rem;
+    font-weight: 700;
+}

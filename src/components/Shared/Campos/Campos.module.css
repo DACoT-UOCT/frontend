@@ -1,0 +1,12 @@
+
+.form th {
+    vertical-align: middle;
+}
+
+.form label {
+    margin-bottom: 0 !important;
+}
+
+.form td {
+    vertical-align: middle;
+}
