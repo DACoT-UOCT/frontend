@@ -37,7 +37,7 @@ const getFecha = (date) => {
 const Controlador = (props) => {
   const controller = props.state;
   const dispatch = props.dispatch;
-  
+
   const [openMapa, setOpenMapa] = React.useState(false);
   const [error, setError] = useState("");
   const [consultado, setConsultado] = useState(false);
@@ -86,7 +86,7 @@ const Controlador = (props) => {
     <>
       <legend className="seccion">
         {"Controlador  "}
-        <PopOver mensaje="Si el modelo que está buscando no se encuentra disponible, favor de contactar al administrador para agregarlo"></PopOver>
+        <PopOver mensaje="Si el modelo que está buscando no se encuentra disponible, favor de contactar al administrador para registrarlo"></PopOver>
       </legend>{" "}
       {modelos === null ? (
         <>
@@ -287,7 +287,13 @@ const Controlador = (props) => {
                     Mapa
                   </Button>
                 </TableCell>
-                <Mapa dispatch={dispatch} index={0} open={openMapa} setOpen={setOpenMapa} junction={false}/>
+                <Mapa
+                  dispatch={dispatch}
+                  index={0}
+                  open={openMapa}
+                  setOpen={setOpenMapa}
+                  junction={false}
+                />
               </TableRow>
 
               <TableRow>

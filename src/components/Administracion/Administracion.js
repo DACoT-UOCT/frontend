@@ -5,9 +5,10 @@ import ListadoUsuarios from "./ListadoUsuarios";
 import styles from "./Administracion.module.css";
 import ListadoComunas from "./ListadoComunas";
 import ErroresExtraccion from "./ErroresExtraccion";
+import CrudControladores from "./CrudControladores";
 
 const Administracion = (props) => {
-  const [vista, setVista] = useState("usuarios");
+  const [vista, setVista] = useState("controladores");
   const [titulo, setTitulo] = useState("Usuarios registrados en sistema");
 
   return (
@@ -50,6 +51,15 @@ const Administracion = (props) => {
             }}>
             <span>Comunas</span>
           </button>
+
+          <button
+            className={vista == "controladores" ? styles.active : null}
+            onClick={() => {
+              setVista("controladores");
+              setTitulo("Registro de controladores");
+            }}>
+            <span>Controladores</span>
+          </button>
         </div>
       </div>
       <div
@@ -60,6 +70,7 @@ const Administracion = (props) => {
         {vista === "usuarios" && <ListadoUsuarios />}
         {vista === "comunas" && <ListadoComunas />}
         {vista === "errores" && <ErroresExtraccion />}
+        {vista === "controladores" && <CrudControladores />}
       </div>
     </div>
   );

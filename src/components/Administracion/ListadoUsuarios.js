@@ -78,7 +78,7 @@ const ListadoUsuarios = (props) => {
           setNewOpen(true);
           dispatch({ type: "nuevo" });
         }}>
-        <span>Agregar nuevo usuario</span>
+        <span>Registrar nuevo usuario</span>
       </Button>
       <Table hover responsive className={styles.table}>
         <thead>
