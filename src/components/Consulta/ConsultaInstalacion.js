@@ -9,7 +9,7 @@ import MapaConsulta from "./MapaConsulta";
 import styles from "./Consulta.module.css";
 import axios from "axios";
 import { ipAPI } from "../Shared/ipAPI";
-import { procesar_json_recibido } from "../SolicitudInstalacionNueva/NuevaInstalacion";
+import { procesar_json_recibido } from "../Formularios/NuevaInstalacion";
 import PanelInstalacion from "../Shared/PanelInstalacion";
 
 export const StateContext = React.createContext();
@@ -86,8 +86,10 @@ const ConsultaSemaforo = (props) => {
         <div className="grid-item consulta-semaforo">
           <div className={`${styles.container} ${"search-container"}`}>
             <div className={styles.row}>
-              <div style = {{marginRight:"auto"}} className={styles.buttons}>
-                <Button color="info" onClick={() => setOpenMapa(true)}>Usar Mapa</Button>
+              <div style={{ marginRight: "auto" }} className={styles.buttons}>
+                <Button color="info" onClick={() => setOpenMapa(true)}>
+                  Usar Mapa
+                </Button>
               </div>
               <Input
                 type="text"
@@ -103,7 +105,7 @@ const ConsultaSemaforo = (props) => {
               />
               <div className={styles.buttons}>
                 <Button onClick={() => buscar(state.busqueda)}>Buscar</Button>
-              </div>  
+              </div>
               <MapaConsulta
                 state={state}
                 dispatch={dispatch}

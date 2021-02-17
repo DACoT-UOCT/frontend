@@ -5,7 +5,8 @@ import axios from "axios";
 
 import { ipAPI } from "./Shared/ipAPI";
 import Header from "./Shared/Header";
-import NuevaInstalacion from "./SolicitudInstalacionNueva/NuevaInstalacion";
+import NuevaInstalacion from "./Formularios/NuevaInstalacion";
+import ActualizarProgramacion from "./Formularios/ActualizarProgramacion";
 import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
 import Login from "./Login/Login";
 import Logout from "./Login/Logout";
@@ -84,7 +85,7 @@ const RouterComponent = (props) => {
             path="/procesar/solicitud"
             component={() => <ProcesarSolicitud state={state.actualizando} />}
           />
-          {state.rol === "Empresa" && (
+          {state.rol === "Empresa" ? (
             <>
               <Route
                 exact
@@ -98,19 +99,14 @@ const RouterComponent = (props) => {
                 component={() => <NuevaInstalacion state={state} />}
               />
             </>
-          )}
-          {state.area === "Ingeniería" && (
+          ) : (
+            // FUNCIONARIO UOCT
             <>
               <Route
                 exact
                 path="/editar/instalacion"
                 component={() => <NuevaInstalacion state={state} />}
               />
-            </>
-          )}
-          {state.is_admin && (
-            <>
-              <Route exact path="/administracion" component={Administracion} />
               <Route
                 exact
                 path="/nuevo/digitalizacion"
@@ -118,9 +114,14 @@ const RouterComponent = (props) => {
               />
               <Route
                 exact
-                path="/editar/instalacion"
-                component={() => <NuevaInstalacion state={state} />}
+                path="/editar/programacion"
+                component={() => <ActualizarProgramacion state={state} />}
               />
+            </>
+          )}
+          {state.is_admin && (
+            <>
+              <Route exact path="/administracion" component={Administracion} />
             </>
           )}
           <Route

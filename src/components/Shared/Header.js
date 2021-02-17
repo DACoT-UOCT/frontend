@@ -23,6 +23,7 @@ const Header = () => {
       "Digitalización manual para instalaciones operativas",
     "/historial": "Historial",
     "/solicitudes": "Mis Solicitudes",
+    "/editar/programacion": "Editar información de programaciones",
   };
 
   useEffect(() => {

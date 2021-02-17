@@ -223,6 +223,83 @@ export const procesar_json_recibido = (aux) => {
   return temp;
 };
 
+export const procesar_json_envio = (state_copy, url) => {
+  //procesa el json antes de envio
+  // const state_copy = JSON.parse(JSON.stringify(state));
+  //agregar status_user
+  //state_copy.metadata.status_user = props.state.email;
+  if (url === "/actualizar/instalacion") {
+    //SI SE ESTA LEVANTANDO UNA SOLICITUD DE ACTUALIZACION
+    state_copy.metadata.status = "UPDATE";
+  }
+
+  if (url === "/editar/instalacion") {
+    //SI EL ADMIN ESTA EDITANDO DIRECTAMENTE
+    state_copy.metadata.status = "UPDATE";
+  }
+  state_copy.metadata.maintainer = "AUTER";
+
+  //crear objeto secuencias
+  const sequences = [];
+  //{ seqid: 1, phases: [{ phid: 1, stages: [{ stid: "A", type: "" }] }] },
+  for (var i = 0; i < state_copy.otu.secuencias.length; i++) {
+    var secuencia = state_copy.otu.secuencias[i];
+    sequences.push({ seqid: i + 1, phases: new Array() });
+    for (var j = 0; j < secuencia.length; j++) {
+      var fase = secuencia[j];
+      sequences[i].phases.push({ phid: parseInt(fase), stages: new Array() });
+    }
+  }
+
+  sequences.map((secuencia, seqIndex) => {
+    secuencia.phases.map((faseSeq, faseSeqIndex) => {
+      state_copy.otu.fases.map((faseCpy, faseCpyIndex) => {
+        if (faseSeq.phid === faseCpyIndex + 1) {
+          //agregar etapas
+          for (var i = 0; i < faseCpy.length; i++) {
+            for (var j = 0; j < state_copy.otu.stages.length; j++) {
+              if (state_copy.otu.stages[j][0] === faseCpy[i]) {
+                faseSeq.stages.push({
+                  stid: faseCpy[i][0],
+                  type: state_copy.otu.stages[j][1],
+                });
+              }
+            }
+          }
+        }
+      });
+    });
+  });
+  state_copy.otu.sequences = sequences;
+
+  //juntar lista entreverdes en intergreens
+  var intergreens = [];
+  for (var i = 0; i < state_copy.otu.entreverdes.length; i++) {
+    var aux = state_copy.otu.entreverdes[i];
+    for (var j = 0; j < aux.length; j++) {
+      intergreens.push(state_copy.otu.entreverdes[i][j]);
+    }
+  }
+  state_copy.otu.intergreens = intergreens;
+
+  //eliminar etapas, fases secuencias de frontend
+  delete state_copy.otu.stages;
+  delete state_copy.otu.fases;
+  delete state_copy.otu.secuencias;
+  delete state_copy.otu.entreverdes;
+
+  //eliminar variables de control
+  delete state_copy.errors;
+  delete state_copy.vista;
+  delete state_copy.submit;
+  delete state_copy.isLoading;
+  delete state_copy.success;
+
+  console.log(state_copy);
+  // return JSON.stringify(state_copy);
+  return JSON.stringify(state_copy);
+};
+
 const NuevaInstalacion = (props) => {
   const location = useLocation();
 
@@ -251,82 +328,6 @@ const NuevaInstalacion = (props) => {
     setChecked((prev) => !prev);
   };
 
-  const procesar_json_envio = () => {
-    //procesa el json antes de envio
-    const state_copy = JSON.parse(JSON.stringify(state));
-    //agregar status_user
-    //state_copy.metadata.status_user = props.state.email;
-    if (location.pathname === "/actualizar/instalacion") {
-      //SI SE ESTA LEVANTANDO UNA SOLICITUD DE ACTUALIZACION
-      state_copy.metadata.status = "UPDATE";
-    }
-
-    if (location.pathname === "/editar/instalacion") {
-      //SI EL ADMIN ESTA EDITANDO DIRECTAMENTE
-      state_copy.metadata.status = "UPDATE";
-    }
-    state_copy.metadata.maintainer = "AUTER";
-
-    //crear objeto secuencias
-    const sequences = [];
-    //{ seqid: 1, phases: [{ phid: 1, stages: [{ stid: "A", type: "" }] }] },
-    for (var i = 0; i < state_copy.otu.secuencias.length; i++) {
-      var secuencia = state_copy.otu.secuencias[i];
-      sequences.push({ seqid: i + 1, phases: new Array() });
-      for (var j = 0; j < secuencia.length; j++) {
-        var fase = secuencia[j];
-        sequences[i].phases.push({ phid: parseInt(fase), stages: new Array() });
-      }
-    }
-
-    sequences.map((secuencia, seqIndex) => {
-      secuencia.phases.map((faseSeq, faseSeqIndex) => {
-        state_copy.otu.fases.map((faseCpy, faseCpyIndex) => {
-          if (faseSeq.phid === faseCpyIndex + 1) {
-            //agregar etapas
-            for (var i = 0; i < faseCpy.length; i++) {
-              for (var j = 0; j < state_copy.otu.stages.length; j++) {
-                if (state_copy.otu.stages[j][0] === faseCpy[i]) {
-                  faseSeq.stages.push({
-                    stid: faseCpy[i][0],
-                    type: state_copy.otu.stages[j][1],
-                  });
-                }
-              }
-            }
-          }
-        });
-      });
-    });
-    state_copy.otu.sequences = sequences;
-
-    //juntar lista entreverdes en intergreens
-    var intergreens = [];
-    for (var i = 0; i < state_copy.otu.entreverdes.length; i++) {
-      var aux = state_copy.otu.entreverdes[i];
-      for (var j = 0; j < aux.length; j++) {
-        intergreens.push(state_copy.otu.entreverdes[i][j]);
-      }
-    }
-    state_copy.otu.intergreens = intergreens;
-
-    //eliminar etapas, fases secuencias de frontend
-    delete state_copy.otu.stages;
-    delete state_copy.otu.fases;
-    delete state_copy.otu.secuencias;
-    delete state_copy.otu.entreverdes;
-
-    //eliminar variables de control
-    delete state_copy.errors;
-    delete state_copy.vista;
-    delete state_copy.submit;
-    delete state_copy.isLoading;
-    delete state_copy.success;
-
-    console.log(state_copy);
-    // return JSON.stringify(state_copy);
-    return JSON.stringify(state_copy);
-  };
   useEffect(() => {
     if (state.submit === true) {
       //enviar
@@ -335,7 +336,10 @@ const NuevaInstalacion = (props) => {
       axios({
         method: "post",
         url: link,
-        data: procesar_json_envio(),
+        data: procesar_json_envio(
+          JSON.parse(JSON.stringify(state)),
+          location.pathname
+        ),
         headers: {
           //'content-type': 'multipart/form-data'
           "Content-Type": "application/json",

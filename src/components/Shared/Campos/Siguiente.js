@@ -5,6 +5,7 @@ import { Button } from "reactstrap";
 import ButtonMaterial from "@material-ui/core/Button";
 import PopUp from "../PopUp";
 import { makeStyles } from "@material-ui/core";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 const Siguiente = (props) => {
   const state = props.state;
   const dispatch = props.dispatch;
+  const location = useLocation();
 
   const [open, setOpen] = React.useState(false);
 
@@ -35,13 +37,102 @@ const Siguiente = (props) => {
     }
   };
 
+  const validar_vista2 = () => {
+    //VALIDA IMAGEN, ETAPAS, FASES, SECUENCIAS, MATRIZ DE ENTREVERDES
+    const comprobacionEtapas = [];
+    const cantFases = state.otu.fases.length;
+    var ignorarEnMatriz = 0;
+    var i = 0;
+    var j = 0;
+
+    state.otu.stages.map((etapa, index) => {
+      validar_entrada(etapa[0], "Etapa " + (index + 1) + "- Identificador");
+      if (comprobacionEtapas.includes(etapa[0])) {
+        setOpen(true);
+        dispatch({
+          type: "error",
+          payLoad: "Etapa " + (index + 1) + "- Ya existe",
+        });
+      } else {
+        comprobacionEtapas.push(etapa[0]);
+        validar_entrada(etapa[1], "Etapa " + (index + 1) + "- Tipo");
+      }
+    });
+
+    //VALIDAR FASES
+    state.otu.fases.map((fase, indexFase) => {
+      //validar si hay input
+      if (fase.length === 0) {
+        setOpen(true);
+        dispatch({
+          type: "error",
+          payLoad: "Fases " + (indexFase + 1) + "- Etapas no asignadas",
+        });
+      }
+
+      //validar si el input esta en las etapas
+      fase.map((etapa, index) => {
+        if (!comprobacionEtapas.includes(etapa)) {
+          setOpen(true);
+          dispatch({
+            type: "error",
+            payLoad: "Fases " + (indexFase + 1) + "- Etapas (No existe etapa)",
+          });
+        }
+      });
+    });
+
+    state.otu.secuencias.map((secuencia, index) => {
+      //validar si hay input
+      secuencia = secuencia.map(Number);
+      if (secuencia.length === 0) {
+        setOpen(true);
+        dispatch({
+          type: "error",
+          payLoad: "Secuencia " + (index + 1) + "- Fases no asignadas",
+        });
+      }
+      //validar si el input esta en las fases
+      secuencia.map((fase) => {
+        if (!(0 < fase && fase <= cantFases)) {
+          setOpen(true);
+          dispatch({
+            type: "error",
+            payLoad: "Secuencia " + (index + 1) + "- Fases (No existe fase)",
+          });
+        }
+      });
+    });
+
+    for (i = 0; i < state.otu.entreverdes.length; i++) {
+      for (j = 0; j < state.otu.entreverdes[i].length; j++) {
+        if (j != ignorarEnMatriz)
+          validar_entrada(state.otu.entreverdes[i][j], "Matriz Entreverdes");
+      }
+      ignorarEnMatriz = ignorarEnMatriz + 1;
+    }
+  };
+
   const validar_formulario = () => {
     //revisar las variables 1 a una
     dispatch({ type: "reset_errores" });
     console.log(state);
+    var metadata = state.metadata;
 
-    if (state.vista === 1) {
-      var metadata = state.metadata;
+    if (["/editar/programacion"].includes(location.pathname)) {
+      //VALIDAR FORMULARIO DE PROGRAMACIONES
+      validar_entrada(metadata.commune, "Comuna");
+      if (state.metadata.img === null) {
+        setOpen(true);
+        dispatch({
+          type: "error",
+          payLoad: "Ingrese diagrama del cruce",
+        });
+        return;
+      }
+      validar_vista2();
+    } else if (state.vista === 1) {
+      //VALIDAR FORMULARIO DE TODA LA INFORMACION
       validar_entrada(metadata.region, "Región");
       validar_entrada(metadata.commune, "Comuna");
 
@@ -72,87 +163,7 @@ const Siguiente = (props) => {
       //   validar_entrada(junction.metadata., "Junction - Cruce");
       // });
     } else if (state.vista === 2) {
-      if (state.metadata.img === null) {
-        setOpen(true);
-        dispatch({
-          type: "error",
-          payLoad: "Ingrese diagrama del cruce",
-        });
-        return;
-      }
-      const comprobacionEtapas = [];
-      const cantFases = state.otu.fases.length;
-      var ignorarEnMatriz = 0;
-      var i = 0;
-      var j = 0;
-
-      state.otu.stages.map((etapa, index) => {
-        validar_entrada(etapa[0], "Etapa " + (index + 1) + "- Identificador");
-        if (comprobacionEtapas.includes(etapa[0])) {
-          setOpen(true);
-          dispatch({
-            type: "error",
-            payLoad: "Etapa " + (index + 1) + "- Ya existe",
-          });
-        } else {
-          comprobacionEtapas.push(etapa[0]);
-          validar_entrada(etapa[1], "Etapa " + (index + 1) + "- Tipo");
-        }
-      });
-
-      //VALIDAR FASES
-      state.otu.fases.map((fase, indexFase) => {
-        //validar si hay input
-        if (fase.length === 0) {
-          setOpen(true);
-          dispatch({
-            type: "error",
-            payLoad: "Fases " + (indexFase + 1) + "- Etapas no asignadas",
-          });
-        }
-
-        //validar si el input esta en las etapas
-        fase.map((etapa, index) => {
-          if (!comprobacionEtapas.includes(etapa)) {
-            setOpen(true);
-            dispatch({
-              type: "error",
-              payLoad:
-                "Fases " + (indexFase + 1) + "- Etapas (No existe etapa)",
-            });
-          }
-        });
-      });
-
-      state.otu.secuencias.map((secuencia, index) => {
-        //validar si hay input
-        secuencia = secuencia.map(Number);
-        if (secuencia.length === 0) {
-          setOpen(true);
-          dispatch({
-            type: "error",
-            payLoad: "Secuencia " + (index + 1) + "- Fases no asignadas",
-          });
-        }
-        //validar si el input esta en las fases
-        secuencia.map((fase) => {
-          if (!(0 < fase && fase <= cantFases)) {
-            setOpen(true);
-            dispatch({
-              type: "error",
-              payLoad: "Secuencia " + (index + 1) + "- Fases (No existe fase)",
-            });
-          }
-        });
-      });
-
-      for (i = 0; i < state.otu.entreverdes.length; i++) {
-        for (j = 0; j < state.otu.entreverdes[i].length; j++) {
-          if (j != ignorarEnMatriz)
-            validar_entrada(state.otu.entreverdes[i][j], "Matriz Entreverdes");
-        }
-        ignorarEnMatriz = ignorarEnMatriz + 1;
-      }
+      validar_vista2();
     } else if (state.vista === 3) {
       if (state.metadata.pdf_data === null) {
         setOpen(true);
@@ -168,7 +179,7 @@ const Siguiente = (props) => {
 
   return (
     <>
-      <div style={{ textAlign: "center", "marginBottom":"15px"}}>
+      <div style={{ textAlign: "center", marginBottom: "15px" }}>
         <ButtonMaterial
           disabled={state.vista === 1}
           variant="contained"

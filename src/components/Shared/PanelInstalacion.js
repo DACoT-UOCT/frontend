@@ -14,7 +14,7 @@ import clsx from "clsx";
 import {
   procesar_json_recibido,
   comparar_arrays,
-} from "../SolicitudInstalacionNueva/NuevaInstalacion";
+} from "../Formularios/NuevaInstalacion";
 import {
   Accordion,
   AccordionDetails,

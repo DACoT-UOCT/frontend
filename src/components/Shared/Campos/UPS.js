@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { DispatchContext } from "../../SolicitudInstalacionNueva/NuevaInstalacion";
+import { DispatchContext } from "../../Formularios/NuevaInstalacion";
 import "../../../App.css";
 import { Label } from "reactstrap";
 import PopOver from "../PopOver";
