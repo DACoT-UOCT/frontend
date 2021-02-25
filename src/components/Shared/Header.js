@@ -12,7 +12,7 @@ const Header = () => {
   const location = useLocation();
 
   const sections = {
-    "/": "Consultar información",
+    "/": "Inicio",
     "/consulta": "Consultar Semáforo",
     "/nuevo/instalacion":
       "Solicitud de integración para proyectos de nuevos semáforos",

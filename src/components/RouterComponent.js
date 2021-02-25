@@ -7,7 +7,7 @@ import { ipAPI } from "./Shared/ipAPI";
 import Header from "./Shared/Header";
 import NuevaInstalacion from "./Formularios/NuevaInstalacion";
 import ActualizarProgramacion from "./Formularios/ActualizarProgramacion";
-import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
+import Inicio from "./Inicio/Inicio";
 import Login from "./Login/Login";
 import Logout from "./Login/Logout";
 import { initialState, reducer } from "./Shared/Reducers/AppReducer";
@@ -76,9 +76,7 @@ const RouterComponent = (props) => {
           <Route
             exact
             path="/"
-            component={() => (
-              <ConsultaSemaforo state={state} dispatch={dispatch} />
-            )}
+            component={() => <Inicio state={state} dispatch={dispatch} />}
           />
           <Route
             exact

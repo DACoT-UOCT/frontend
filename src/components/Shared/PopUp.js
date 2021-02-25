@@ -25,7 +25,9 @@ const PopUp = (props) => {
         keepMounted
         onClose={() => props.setOpen(false)}
         aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description">
+        aria-describedby="alert-dialog-slide-description"
+        fullWidth
+        maxWidth={props.map != null ? "lg" : "sm"}>
         <DialogTitle id="alert-dialog-slide-title">
           <div className={styles.row}>
             {props.title}{" "}

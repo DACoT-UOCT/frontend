@@ -11,6 +11,7 @@ import {
   TextField,
   styled,
 } from "@material-ui/core";
+import PopOver from "../PopOver";
 
 const Campo = styled(TextField)({
   background: "none",
@@ -22,7 +23,10 @@ const Fases = (props) => {
 
   return (
     <>
-      <legend>Fases</legend>
+      <legend>
+        {"Fases "}
+        <PopOver mensaje="Defina las fases de la instalación a partir de las etapas registradas, para ello coloque las etapas en orden separadas por un guión" />
+      </legend>
       <TableContainer>
         <Table size="small" aria-label="simple table">
           <TableBody>

@@ -1,17 +1,33 @@
+import { useRef } from "react";
 export const initialState = {
-    initialCenter: { lat: -33.447763, lng: -70.645001 },
-    initialZoom: 15,
-    markerLat: null,
-    markerLng: null,
-    location: null,
-    isMarkerShown: false,
-    markers: [],
+  center: { lat: -33.447763, lng: -70.645001 },
+  markerLat: null,
+  markerLng: null,
+  location: null,
+  isMarkerShown: false,
+  markers: [],
 };
 
+export const defaultMapOptions = {
+  fullscreenControl: false,
+  streetViewControl: false,
+  mapTypeControl: true,
+  styles: [
+    {
+      featureType: "poi",
+      elementType: "labels.icon",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+  ],
+};
 export function reducer(draft, action) {
-    switch (action.type) {
-      default:
-        draft[action.type] = action.payLoad;
-        return;
-    }
+  switch (action.type) {
+    default:
+      draft[action.type] = action.payLoad;
+      return;
   }
+}

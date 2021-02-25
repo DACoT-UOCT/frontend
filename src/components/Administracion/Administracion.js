@@ -8,11 +8,11 @@ import ErroresExtraccion from "./ErroresExtraccion";
 import CrudControladores from "./CrudControladores";
 
 const Administracion = (props) => {
-  const [vista, setVista] = useState("controladores");
+  const [vista, setVista] = useState("usuarios");
   const [titulo, setTitulo] = useState("Usuarios registrados en sistema");
 
   return (
-    <div className={`grid-item consulta-semaforo ${styles.admin}`}>
+    <div className={`grid-item header-admin ${styles.admin}`}>
       <div className={styles.selection}>
         <h2>{titulo}</h2>
         <div className={styles.options}>

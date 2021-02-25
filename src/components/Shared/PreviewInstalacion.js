@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import "../../App.css";
-import { DispatchContext, StateContext } from "../Consulta/ConsultaInstalacion";
+import { DispatchContext, StateContext } from "../Inicio/Inicio";
 import { BlobProvider } from "@react-pdf/renderer";
 import PdfConsulta from "./PdfConsulta";
 import { Button } from "reactstrap";

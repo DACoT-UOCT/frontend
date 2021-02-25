@@ -5,7 +5,7 @@ import "../App.css";
 import { ipAPI } from "./Shared/ipAPI";
 import Header from "./Shared/Header";
 import NuevaInstalacion from "./Formularios/NuevaInstalacion";
-import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
+import Inicio from "./Inicio/Inicio";
 import Login from "./Login/Login";
 import Logout from "./Login/Logout";
 import { initialState, reducer } from "./Shared/Reducers/AppReducer";
