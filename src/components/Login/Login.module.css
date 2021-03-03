@@ -1,149 +1,187 @@
 .logo {
-    background: #034472;
-    width: 100%;
-    height: 100vh;
-    transition: all .4s;
+  background: #034472;
+  width: 100%;
+  height: 100vh;
+  transition: all 0.4s;
 }
 
 .login {
-    background: linear-gradient(180deg, rgba(3,68,114,1) 0%, rgba(75,118,148,1) 100%);
-    width: 100%;
-    height: 100vh;
+  background: linear-gradient(
+    180deg,
+    rgb(23, 7, 97) 0%,
+    rgb(71, 124, 161) 100%
+  );
+  width: 100%;
+  height: 100vh;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
-.header img {
-    width: 80px;
-    margin: 2rem;
+.dacotimg {
+  width: 80px;
+  transform: translate(1.5rem, 1.5rem);
+  /* margin: 1.5rem; */
+}
+
+.ministerioimg {
+  width: 7rem;
+  height: 8rem;
+  /* margin: 0rem 3rem; */
+  transform: translate(-3rem, 0);
 }
 
 .loginForm {
-    width: 300px;
-    height: 400px;
-    background-color: white;
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    box-shadow: 0px 10px 10px -2px rgba(0,0,0,0.32);
+  width: 25vw;
+  height: 78%;
+  background-color: white;
+  position: absolute;
+  top: 54%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  box-shadow: 0px 10px 10px -2px rgb(0, 0, 0);
 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    color: #034472;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: #034472;
 }
 
 .text {
-    padding: 1.6rem;
-    color: white;
-    font-size: 1.2rem;
+  padding: 1.6rem;
+  color: white;
+  font-size: 1.1rem;
+  justify-self: center;
 }
 
 .button {
-    width: 85%;
-    display: flex;
-    justify-content: center;
+  width: 85%;
+  display: flex;
+  justify-content: center;
 }
 
 .gugul {
-    border: none;
-    padding: 15px 25px;
-    background-color: rgb(241, 241, 241);
-    display: flex;
-    align-items: center;
-    border-radius: 200px;
+  border: 1px solid rgb(183, 180, 204);
+  padding: 1rem 2rem;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  border-radius: 100px;
 }
 
 .gugul:active {
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
 }
 
 .gugul:focus {
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
 }
 
 .gugul:hover {
-    background-color: rgb(235, 235, 235);
+  background-color: rgb(235, 235, 235);
 }
 
 .gugul img {
-    width: 20px;
-    margin-right: 25px;
+  width: 20px;
+  margin-right: 25px;
 }
 
 .gugul span {
-    font-size: .9rem;
-    font-weight: bold;
-    color: #4C8BF5;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #4c8bf5;
 }
 
 .title {
-    text-transform: uppercase;
-    padding: 1rem;
-    font-weight: bold;
+  text-transform: uppercase;
+  padding: 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
 }
 
 .sub {
-    font-size: .8rem;
-    margin-bottom: 1rem;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
 }
 
 .init {
-    width: 20%;
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    filter: grayscale(100%);
-    transition: all .2s;
+  width: 20%;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: grayscale(100%);
+  transition: all 0.2s;
+  line-height: 3em;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
-.init:hover{
-    filter: none;
-    transform: translate(-50%, -50%) scale(1.1);
-    cursor: pointer;;
+.init:hover {
+  filter: none;
+  transform: translate(-50%, -50%) scale(1.1);
+  cursor: pointer;
 }
 
 .dacot {
-    width: 100%
+  width: 100%;
+}
+
+.accederbutton {
+  margin-top: 0.5em;
+  background-color: transparent;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: "Averis" Arial;
+  font-weight: bold;
+  font-size: 28px;
+  /* padding: 3em 50px; */
+  text-align: center;
+  text-decoration: none;
+}
+/* .accederbutton:hover {
+  background-color: #ff00b3;
+} */
+.accederbutton:active {
+  position: relative;
+  top: 1px;
 }
 
 .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    padding: 15px;
-    color: white;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 15px;
+  color: white;
 }
 
 .link {
-    color: skyblue;
-    text-decoration: none;
-    display: inline-block;
-    transition: .2s all;
-    margin-left: 12px;
+  color: skyblue;
+  text-decoration: none;
+  display: inline-block;
+  transition: 0.2s all;
+  margin-left: 12px;
 }
 
 .link:hover {
-    text-decoration: none;
-    color: skyblue;
-    transform: scale(1.05);
+  text-decoration: none;
+  color: skyblue;
+  transform: scale(1.05);
 }
 
 .link:visited {
-    text-decoration: none;
-    color: skyblue;
-    display: inline-block;
-    transition: .2s all;
-    margin-left: 12px;
+  text-decoration: none;
+  color: skyblue;
+  display: inline-block;
+  transition: 0.2s all;
+  margin-left: 12px;
 }
-

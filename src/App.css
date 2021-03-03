@@ -344,6 +344,11 @@ Label {
   margin-right: 5px;
 }
 
+th {
+  cursor: pointer;
+  margin: 15px 0;
+}
+
 .cluster-marker {
   color: #fff;
   background: rgb(11, 100, 172, 0.5);

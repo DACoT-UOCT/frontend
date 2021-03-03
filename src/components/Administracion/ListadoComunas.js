@@ -13,6 +13,7 @@ import { reducer, initialState } from "../Shared/Reducers/ComunaReducer";
 import { Table } from "reactstrap";
 import EditComuna from "./EditComuna";
 import PopOver from "../Shared/PopOver";
+import sortTable from "../Shared/Utils/SortTable";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -81,12 +82,12 @@ const ListadoComunas = (props) => {
           {state.loading && <Loading />}
           {!state.loading && state.comunas !== [] && (
             <>
-              <Table hover responsive className={styles.table}>
+              <Table id="myTable" hover responsive className={styles.table}>
                 <thead>
                   <tr>
-                    <th>Comuna</th>
-                    <th>Empresa mantenedora</th>
-                    <th>Ingeniero designado</th>
+                    <th onClick={() => sortTable(0)}>Comuna</th>
+                    <th onClick={() => sortTable(1)}>Empresa mantenedora</th>
+                    <th onClick={() => sortTable(2)}>Ingeniero designado</th>
                     <th></th>
                   </tr>
                 </thead>

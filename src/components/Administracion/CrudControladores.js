@@ -3,6 +3,8 @@ import styles from "./Administracion.module.css";
 import { Button, Table } from "reactstrap";
 import PopUp from "../Shared/PopUp";
 import { ipAPI } from "../Shared/ipAPI";
+import "../../App.css";
+import sortTable from "../Shared/Utils/SortTable";
 import {
   reducer,
   initialState,
@@ -81,14 +83,14 @@ const CrudControladores = () => {
         }}>
         <span>Registrar nuevo controlador</span>
       </Button>
-      <Table hover responsive className={styles.table}>
+      <Table id="myTable" hover responsive className={styles.table}>
         <thead>
           <tr>
-            <th>Marca</th>
-            <th>Modelo</th>
-            <th>Versión</th>
-            <th>Checksum</th>
-            <th>Fecha de versión</th>
+            <th onClick={() => sortTable(0)}>Marca</th>
+            <th onClick={() => sortTable(1)}>Modelo</th>
+            <th onClick={() => sortTable(2)}>Versión</th>
+            <th onClick={() => sortTable(3)}>Checksum</th>
+            <th onClick={() => sortTable(4)}>Fecha de versión</th>
             <th> </th>
           </tr>
         </thead>

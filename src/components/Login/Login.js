@@ -7,6 +7,7 @@ import { ipAPI } from "../Shared/ipAPI";
 import { RefreshTokenSetup } from "../../utils/RefreshToken";
 import axios from "axios";
 import styles from "./Login.module.css";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 // const first_click = true;
 
@@ -76,11 +77,18 @@ const Login = () => {
         <>
           <div className={styles.uoct}>
             <div className={styles.header}>
-              <img src="/logo2.png" />
+              <a href="https://dacot.feriadesoftware.cl/">
+                <img className={styles.dacotimg} src="/logo2.png" />
+              </a>
               <span className={styles.text}>
                 Datos Abiertos Para el Control de Transito
               </span>
-              <img src="/logo_transportes.png" />
+              <a href="https://mtt.gob.cl/pyd/uoct">
+                <img
+                  className={styles.ministerioimg}
+                  src="/logo_transportes.png"
+                />
+              </a>
             </div>
           </div>
           <div className={styles.loginForm}>
@@ -88,13 +96,14 @@ const Login = () => {
             <div className={styles.button}>
               <GoogleLogin
                 clientId={clientId}
-                render = {renderProps => (
-                  <button className={styles.gugul} onClick={renderProps.onClick}>
+                render={(renderProps) => (
+                  <button
+                    className={styles.gugul}
+                    onClick={renderProps.onClick}>
                     <img src="/google.png"></img>
                     <span>Ingresar con Google</span>
                   </button>
-                )
-                }
+                )}
                 onSuccess={try_login}
                 onFailure={failResponseGoogle}
                 cookiePolicy={"single_host_origin"}
@@ -102,17 +111,31 @@ const Login = () => {
                 buttonText="Ingresar con Google"
               />
             </div>
-            <span className={styles.sub}>DACoT 2020</span>
+            <span style={{ padding: "2rem", fontSize: ".9rem" }}>
+              {"Si necesita acceso, favor de contactar al administrador "}
+              <a href="mailto:admin@dacot.com?Subect=Solicitud%20de%20acceso.">
+                admin@dacot.cl{" "}
+              </a>
+            </span>
+            <span className={styles.sub}>@DACoT 2020</span>
           </div>
           <footer className={styles.footer}>
-            <span>¿Necesitas acceder a los datos semafóricos de Santiago? 
-              <a target="_blank" className={styles.link} href="https://dacot.duckdns.org/api/v1/docs#/Junctions"> ¡Utiliza nuestra API!</a>
-            </span>
+            {/* <span>
+              ¿Necesitas acceder a los datos semafóricos de Santiago?
+              <a
+                target="_blank"
+                className={styles.link}
+                href="https://dacot.duckdns.org/api/v1/docs#/Junctions">
+                {" "}
+                ¡Utiliza nuestra API! (Beta)
+              </a>
+            </span> */}
           </footer>
         </>
       ) : (
         <div className={styles.init}>
           <img className={styles.dacot} src="/logo.png" alt="" />
+          <div className={styles.accederbutton}> Ingresar</div>
         </div>
       )}
     </div>
