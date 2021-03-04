@@ -169,7 +169,7 @@ body {
   );
   /* border: 1px solid rgb(100, 100, 100); */
   padding-left: 15px;
-  padding-right: 15px;
+  padding-right: 0px;
 }
 
 .welcome-view {
@@ -278,6 +278,7 @@ body {
     " caja . profile ." 82vh
     " . . . ." 5vh
     / 78% 2% 17% 3%;
+  /* overflow-y: auto; */
 }
 
 Label {
@@ -366,9 +367,7 @@ th {
   /* border-bottom-width: 1px; */
   border-bottom: 1px solid black;
   /* height: 75px; */
-  display: grid;
-  justify-content: start;
-  justify-content: end;
+  display: flex;
   align-items: center;
 }
 

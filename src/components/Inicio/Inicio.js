@@ -106,6 +106,11 @@ const Inicio = (props) => {
               e ingresar solicitudes de actualización al Centro de Control de la
               UOCT.
             </p>
+            <div
+              className={styles.entendido}
+              onClick={() => bienvenidaHandler(false)}>
+              Entendido
+            </div>
           </PopUp>
         </div>
       </StateContext.Provider>

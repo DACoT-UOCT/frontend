@@ -497,6 +497,14 @@ export function reducer(draft, action) {
       return;
     }
 
+    case "importar_excel": {
+      draft.otu.stages = action.payLoad.stages;
+      draft.otu.fases = action.payLoad.fases;
+      draft.otu.secuencias = action.payLoad.secuencias;
+      draft.otu.entreverdes = action.payLoad.entreverdes;
+      return;
+    }
+
     default:
       return;
   }

@@ -74,15 +74,28 @@ const CrudControladores = () => {
 
   return (
     <>
-      <Button
-        style={{ float: "right" }}
-        className={styles.mb}
-        onClick={() => {
-          setNewOpen(true);
-          dispatch({ type: "nuevo" });
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "2rem",
+          marginTop: "1rem",
         }}>
-        <span>Registrar nuevo controlador</span>
-      </Button>
+        <p style={{ fontSize: ".95rem  " }}>
+          Listado con controladores vigentes, los cuales pueden ser
+          seleccionados en los formularios de registro. Se recomienda eliminar
+          controladores descontinuados y registrar modelos nuevos
+        </p>
+        <Button
+          style={{ float: "right" }}
+          className={styles.mb}
+          onClick={() => {
+            setNewOpen(true);
+            dispatch({ type: "nuevo" });
+          }}>
+          <span>Registrar nuevo controlador</span>
+        </Button>
+      </div>
       <Table id="myTable" hover responsive className={styles.table}>
         <thead>
           <tr>

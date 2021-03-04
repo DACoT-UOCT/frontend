@@ -14,7 +14,7 @@ export const initialState = {
   first_click_login: false,
   actualizando: "",
   tokenObj: "",
-  debug: false,
+  debug: true,
 };
 
 const funcionario = {
@@ -118,7 +118,7 @@ export function reducer(draft, action) {
       draft.actualizando = "";
 
       draft.isLoggedIn = false;
-      draft.first_click_login = false;
+      draft.first_click_login = true;
       return;
     }
     case "toggleTodoCompleted": {

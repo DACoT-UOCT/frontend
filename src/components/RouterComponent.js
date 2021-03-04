@@ -32,20 +32,12 @@ const RouterComponent = (props) => {
 
   const state = props.state;
   const dispatch = props.dispatch;
-  const {
-    full_name,
-    password,
-    isLoading,
-    error,
-    isLoggedIn,
-    rol,
-    email,
-  } = state;
 
   let location = useLocation();
 
   useEffect(() => {
     if (!state.debug) {
+      console.log("Useeffect logout");
       axios
         .get(ipAPI + "users/me/")
         .then((response) => {
@@ -60,7 +52,7 @@ const RouterComponent = (props) => {
 
   return (
     <>
-      {!isLoggedIn ? (
+      {!state.isLoggedIn ? (
         <>
           <Redirect to="/" />
           <Route path="/" exact component={Login} />

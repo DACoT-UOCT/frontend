@@ -39,7 +39,14 @@ const App = () => {
   // }, [location]);
 
   useEffect(() => {
+    if (state.isLoggedIn === false) {
+      localStorage.clear();
+    }
+  }, [state.isLoggedIn]);
+
+  useEffect(() => {
     if (state.debug && !state.isLoggedIn) {
+      console.log("entrando", state.debug);
       dispatch({ type: "switch_profile" });
     }
   }, []);

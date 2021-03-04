@@ -84,9 +84,13 @@ const RegistroActividad = () => {
 
   return (
     <>
+      <p>
+        Seleccionar fecha de inicio y fin para consultar registro de actividad
+        dentro de la plataforma
+      </p>
       <div className={styles.registro} style={{ display: "flex" }}>
         <div style={{ "padding-left": "10px" }}>
-          <Label>Desde</Label>
+          <Label>Inicio</Label>
           <br></br>
           <DatePicker
             dateFormat="dd/MM/yyyy"
@@ -97,7 +101,7 @@ const RegistroActividad = () => {
         </div>
 
         <div style={{ "padding-left": "10px" }}>
-          <Label>Hasta</Label>
+          <Label>Fin</Label>
           <br></br>
           <DatePicker
             dateFormat="dd/MM/yyyy"

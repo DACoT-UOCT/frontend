@@ -78,6 +78,10 @@ const ListadoComunas = (props) => {
     <>
       <DispatchContext.Provider value={dispatch}>
         <StateContext.Provider value={state}>
+          <p>
+            Listado de comunas con sus respectivos mantenedores y funcionarios
+            UOCT a cargo. Se recomienda mantener actualizados ambos campos
+          </p>
           {state.error !== "" && <p>{state.error}</p>}
           {state.loading && <Loading />}
           {!state.loading && state.comunas !== [] && (
@@ -109,7 +113,7 @@ const ListadoComunas = (props) => {
                               setOpen(true);
                               dispatch({ type: "setComuna", payLoad: comuna });
                             }}>
-                            Editar
+                            Actualizar
                           </Button>
                         </td>
                       </tr>

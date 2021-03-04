@@ -172,7 +172,7 @@ const ErroresExtraccion = (props) => {
           <p>
             Los siguientes planes de programación extraídos desde el sistema de
             control no se han logrado procesar por el modulo extractor de datos
-            del sistema DACoT. (Detalle técnico en la clase UTCPlanParser).
+            del sistema DACoT. (Detalle técnico en la clase UTCPlanParser)
           </p>
           <Table hover responsive className={styles.table}>
             <thead>

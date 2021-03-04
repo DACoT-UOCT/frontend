@@ -5,6 +5,7 @@ import { procesar_json_recibido } from "../Formularios/NuevaInstalacion";
 import { ipAPI } from "../Shared/ipAPI";
 import axios from "axios";
 import { Button } from "reactstrap";
+import PopOver from "../Shared/PopOver";
 
 const BarraBusqueda = (props) => {
   const state = props.state;
@@ -77,22 +78,26 @@ const BarraBusqueda = (props) => {
         <div className={styles.buttons}>
           <Button onClick={() => buscar(state.busqueda)}>Buscar</Button>
         </div>
+        <PopOver mensaje="El formato de busqueda para Junctions es una J seguida de 6 números"></PopOver>
+      </div>
+      <div className={styles.row}>
         <div style={{ marginRight: "auto" }} className={styles.buttons}>
           <Button color="info" onClick={() => setOpenMapa(true)}>
             Buscar con mapa
           </Button>
         </div>
-        {junctions.length > 0 && openMapa && (
-          <MapaConsulta
-            state={state}
-            dispatch={dispatch}
-            open={openMapa}
-            setOpen={setOpenMapa}
-            buscar={buscar}
-            junctions={junctions}
-          />
-        )}
       </div>
+
+      {junctions.length > 0 && openMapa && (
+        <MapaConsulta
+          state={state}
+          dispatch={dispatch}
+          open={openMapa}
+          setOpen={setOpenMapa}
+          buscar={buscar}
+          junctions={junctions}
+        />
+      )}
     </div>
   );
 };

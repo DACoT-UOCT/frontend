@@ -5,6 +5,9 @@ import "../../../App.css";
 import { Button, Label, CustomInput } from "reactstrap";
 import PopOver from "../PopOver";
 import readXlsxFile from "read-excel-file";
+import { Link } from "react-router-dom";
+import { input_excel } from "../Utils/input_excel";
+import { Alert } from "bootstrap";
 
 const validar_imagen = (imagen) => {
   const formatos = ["image/png", "image/jpg", "image/jpeg"];
@@ -15,17 +18,103 @@ const validar_imagen = (imagen) => {
   }
 };
 
-const leer_xlsx = (file) => {
-  readXlsxFile(file).then((rows) => {
-    // `rows` is an array of rows
-    // each row being an array of cells.
-    console.log(rows);
-  });
+const procesar_xlsx = (input) => {
+  console.log(input);
+  var stages;
+  var fases;
+  var secuencias;
+  var entreverdes;
+  try {
+    //Procesar etapas
+    //["A", "Ciclista"]
+    stages = [
+      // "A", "VEH",
+    ];
+    console.log(input[14]);
+    for (var i = 14; i < Object.keys(input).length; i++) {
+      if (input[i][1] != null) {
+        stages.push([input[i][1], input[i][3]]);
+      }
+    }
+    // console.log(stages);
+
+    //Procesar fases
+    //["A", "B"]
+    fases = [];
+    for (var i = 14; i < Object.keys(input).length; i++) {
+      if (input[i][5] != null) {
+        fases.push(
+          String(input[i][6].replace(/\s/g, "")).toUpperCase().split("-")
+        );
+      }
+    }
+    // console.log(fases);
+
+    //Procesar secuencias}
+    //[1, 2]
+    secuencias = []; //[[1,2,3], "J003672"]
+    for (var i = 14; i < Object.keys(input).length; i++) {
+      if (input[i][8] != null) {
+        secuencias.push(
+          String(input[i][9].replace(/\s/g, ""))
+            .split("-")
+            .map((x) => +x)
+        );
+      }
+    }
+    // console.log(secuencias);
+
+    //Procesar entreverdes
+    // [0, 2]
+    // [5, 0]
+    entreverdes = [];
+    for (var i = 0; i < stages.length; i++) {
+      entreverdes.push(new Array(stages.length).fill(0));
+    }
+
+    var from;
+    var to;
+    var value;
+    var stages_names = stages.map((x) => x[0]);
+    for (var i = 14; i < Object.keys(input).length; i++) {
+      if (input[i][11] != null) {
+        from = input[i][11].replace(/\s/g, "");
+        to = input[i][12].replace(/\s/g, "").split(",");
+        value = parseInt(input[i][13].replace(/\s/g, ""));
+        for (var j = 0; j < to.length; j++) {
+          entreverdes[stages_names.indexOf(from)][
+            stages_names.indexOf(to[j])
+          ] = value;
+        }
+      }
+    }
+    // console.log(entreverdes);
+  } catch (error) {
+    alert("Error al procesar formato del archivo");
+    return;
+  }
+
+  const objeto = {
+    stages: stages,
+    fases: fases,
+    secuencias: secuencias,
+    entreverdes: entreverdes,
+  };
+  return objeto;
+  // console.log(objeto.fases);
 };
 
 const DocumentacionProgramaciones = (props) => {
   const img = props.state;
   const dispatch = props.dispatch;
+  const leer_xlsx = (file) => {
+    const input = readXlsxFile(file).then((rows) => {
+      // `rows` is an array of rows
+      // each row being an array of cells.
+      dispatch({ type: "importar_excel", payLoad: procesar_xlsx(rows) });
+    });
+  };
+  // procesar_xlsx(input_excel);
   return (
     <>
       <legend>Información de programaciones</legend>
@@ -71,11 +160,7 @@ const DocumentacionProgramaciones = (props) => {
       {img !== null && img !== "/no_image.png" && (
         <div>
           <br></br>
-          <img
-            src={img}
-            // width="300" height="300"
-            alt=""
-          />
+          <img src={img} width="300" height="300" alt="" />
           <hr className="separador"></hr>
           <legend>Importar XLSX (opcional)</legend>
           <CustomInput
@@ -85,7 +170,13 @@ const DocumentacionProgramaciones = (props) => {
             onChange={(e) => leer_xlsx(e.target.files[0])}
           />{" "}
           <PopOver mensaje="Puede rellenar los siguientes campos a traves de un documento excel con el siguiente formato" />
-          <Button>Descargar plantilla</Button>
+          <Link
+            to="/Plantilla_importacion_programaciones_DACoT.xlsx"
+            target="_blank"
+            download>
+            Descargar plantilla
+          </Link>
+          {/* <Button>Descargar plantilla</Button> */}
           <br></br>
           {/* <Label>{img.name}</Label> */}
           <hr className="separador"></hr>

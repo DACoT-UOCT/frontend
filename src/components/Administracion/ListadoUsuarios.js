@@ -71,15 +71,24 @@ const ListadoUsuarios = (props) => {
 
   return (
     <>
-      <Button
-        style={{ float: "right" }}
-        className={styles.mb}
-        onClick={() => {
-          setNewOpen(true);
-          dispatch({ type: "nuevo" });
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "2rem",
+          marginTop: "1rem",
         }}>
-        <span>Registrar nuevo usuario</span>
-      </Button>
+        <p>Edición, eliminación y registro de usuarios </p>
+        <Button
+          style={{ float: "right" }}
+          className={styles.mb}
+          onClick={() => {
+            setNewOpen(true);
+            dispatch({ type: "nuevo" });
+          }}>
+          <span>Registrar nuevo usuario</span>
+        </Button>
+      </div>
       <Table hover responsive className={styles.table}>
         <thead>
           <tr>
