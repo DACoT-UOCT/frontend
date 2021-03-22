@@ -30,7 +30,7 @@
     "react-scripts": "3.4.1",
     "react-step-progress": "^1.0.3",
     "reactstrap": "^8.5.1",
-    "use-immer": "^0.4.0"
+    "use-immer": "^0.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
