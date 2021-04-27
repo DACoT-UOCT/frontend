@@ -26,6 +26,7 @@ const CustomMarker = (props) => {
   return (
     <div style={{ border: "1px solid black" }}>
       <img
+        style={{ filter: props.gray ? "grayscale(80%)" : "grayscale(0%)" }}
         aria-owns={open ? "mouse-over-popover" : undefined}
         aria-haspopup="true"
         onMouseOver={handlePopoverOpen}

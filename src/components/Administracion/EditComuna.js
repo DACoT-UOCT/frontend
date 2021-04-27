@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 
-import { StateContext } from "../App";
+import { GQLclient, StateContext } from "../App";
 import { ipAPI } from "../Shared/ipAPI";
 import axios from "axios";
 import { Button } from "reactstrap";
 import Loading from "../Shared/Loading";
 import styles from "./Administracion.module.css";
 import { styled } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import {
   Checkbox,
   FormControlLabel,
@@ -17,6 +18,7 @@ import {
   TableRow,
   TextField,
 } from "@material-ui/core";
+import { updateCommune } from "../../GraphQL/Mutations";
 
 const Campo = styled(TextField)({
   width: "100%",
@@ -29,30 +31,51 @@ const EditComuna = (props) => {
   const global_state = useContext(StateContext);
   const state = props.state;
   const dispatch = props.dispatch;
+  const history = useHistory();
 
   const try_submit = () => {
-    var url = ipAPI + "edit-commune";
-    var json = {
-      commune: state.name,
-      company_email: state.maintainer.name,
+    console.log(state);
+    var variables = {
+      communeDetails: {
+        code: state.code,
+        maintainer: state.maintainer.name,
+        userInCharge: state.userInCharge.email,
+      },
     };
 
-    // "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
-    const config = { headers: { "Content-Type": "application/json" } };
-    axios
-      .put(url, JSON.stringify(json), config)
+    GQLclient.request(updateCommune, {
+      communeDetails: {
+        code: state.code,
+        maintainer: state.maintainer.name,
+        userInCharge: state.userInCharge.email,
+      },
+    })
       .then((response) => {
-        console.log(response);
-        dispatch({ type: "consultado", payLoad: false });
-        alert("Cambios guardados");
+        alert("Comuna actualizada");
+        history.go(0);
+        props.setOpen(false);
       })
       .catch((err) => {
-        alert("Error en el envio.");
+        alert("Error en el envio");
         console.log(err);
       });
 
-    props.setOpen(false);
+    // "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+    // const config = { headers: { "Content-Type": "application/json" } };
+    // axios
+    //   .put(url, JSON.stringify(json), config)
+    //   .then((response) => {
+    //     console.log(response);
+    //     dispatch({ type: "consultado", payLoad: false });
+    //     alert("Cambios guardados");
+    //   })
+    //   .catch((err) => {
+    //     alert("Error en el envio.");
+    //     console.log(err);
+    //   });
   };
+
+  console.log("renderinf");
   return (
     <>
       <TableContainer>
@@ -75,11 +98,7 @@ const EditComuna = (props) => {
                   SelectProps={{
                     native: true,
                   }}
-                  value={
-                    state.maintainer.name === ""
-                      ? "Sin mantenedor"
-                      : state.maintainer.name
-                  }
+                  value={state.maintainer.name}
                   onChange={(e) =>
                     dispatch({
                       type: "empresa",
@@ -118,16 +137,40 @@ const EditComuna = (props) => {
                   SelectProps={{
                     native: true,
                   }}
-                  value="Pedro Carrasco"
-                  // onChange={(e) =>
-                  //   dispatch({
-                  //     type: "empresa",
-                  //     payLoad: e.currentTarget.value,
-                  //   })
-                  // }
-                >
-                  {/* <option hidden></option> */}
-                  <option value="Pedro Carrasco">Pedro Carrasco</option>
+                  value={JSON.stringify(state.userInCharge)}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "usuario",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }>
+                  {state.userInCharge.fullName !== "" && (
+                    <option value='{ "fullName": "", "email": "" }'>
+                      Sin encargado
+                    </option>
+                  )}
+                  <option
+                    value={
+                      state.userInCharge.fullName === ""
+                        ? '{ "fullName": "", "email": "" }'
+                        : JSON.stringify(state.userInCharge)
+                    }>
+                    {state.userInCharge.fullName === ""
+                      ? "Sin encargado"
+                      : state.userInCharge.fullName +
+                        " (" +
+                        state.userInCharge.email +
+                        ")"}
+                  </option>
+                  {state.usuarios.map((usuario) => {
+                    if (usuario.fullName !== state.userInCharge.fullName) {
+                      return (
+                        <option value={JSON.stringify(usuario)}>
+                          {usuario.fullName + "  (" + usuario.email + ")"}
+                        </option>
+                      );
+                    }
+                  })}
                 </Campo>
               </TableCell>
             </TableRow>

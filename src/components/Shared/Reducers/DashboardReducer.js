@@ -17,7 +17,7 @@ export function reducer(draft, action) {
   switch (action.type) {
     case "listado":
       action.payLoad.map((i) => {
-        if (i.metadata.status === "SYSTEM") {
+        if (i.metadata.status === "PRODUCTION") {
           draft.listado_instalaciones.push(i);
         } else {
           draft.listado_solicitudes.push(i);

@@ -14,7 +14,7 @@ const Header = () => {
   const sections = {
     "/": "Inicio",
     "/consulta": "Consultar Semáforo",
-    "/nuevo/instalacion":
+    "/nuevo/solicitud-integracion":
       "Solicitud de integración para proyectos de nuevos semáforos",
     "/administracion": "Administración",
     "/nuevo/actualizacion":
@@ -24,6 +24,8 @@ const Header = () => {
     "/historial": "Historial",
     "/solicitudes": "Mis Solicitudes",
     "/editar/programacion": "Editar información de programaciones",
+    "/procesar/solicitud": "Procesar solicitud",
+    "/info": "Información de instalación ",
   };
 
   useEffect(() => {

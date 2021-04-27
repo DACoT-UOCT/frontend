@@ -44,3 +44,27 @@
   position: relative;
   top: 1px;
 }
+
+.details :global(.row) {
+  display: flex;
+  padding: 1rem;
+}
+
+.details :global(.buttons) {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.details :global(.row) button {
+  padding: 1rem !important;
+}
+
+.details {
+  display: block !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.details :global(.label) {
+  font-weight: bold;
+}

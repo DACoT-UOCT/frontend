@@ -9,25 +9,26 @@ import Inicio from "./Inicio/Inicio";
 import Login from "./Login/Login";
 import Logout from "./Login/Logout";
 import { initialState, reducer } from "./Shared/Reducers/AppReducer";
-import ProcesarSolicitud from "./ProcesarSolicitud/ProcesarSolicitud";
+import ProcesarSolicitud from "./Solicitudes/ProcesarSolicitud";
 import {
   BrowserRouter as Router,
   Redirect,
   Route,
   useLocation,
 } from "react-router-dom";
-import Dashboard from "./Dashboards/Dashboard";
+import Solicitudes from "./Solicitudes/Solicitudes";
 import Administracion from "./Administracion/Administracion";
 import Profile from "./Shared/Profile";
-import Verificacion from "./Shared/Campos/Verificacion";
-import Resumen from "./Shared/Resumen";
+
 import Historial from "./Historial/Historial";
 import { createBrowserHistory } from "history";
 import usePersistentState from "./Shared/Utils/usePersistentState";
 import RouterComponent from "./RouterComponent";
+import { request, GraphQLClient } from "graphql-request";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
+export const GQLclient = new GraphQLClient("https://dacot.duckdns.org/api/v2/");
 const history = createBrowserHistory();
 
 const App = () => {

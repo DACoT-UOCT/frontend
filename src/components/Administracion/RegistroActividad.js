@@ -11,76 +11,43 @@ import { Table, Label } from "reactstrap";
 import { Button } from "reactstrap";
 import axios from "axios";
 import { ImportantDevicesSharp } from "@material-ui/icons";
+import { useQuery } from "../../GraphQL/useQuery";
+import { GetLogs } from "../../GraphQL/Queries";
+import { sortFunction } from "../Shared/Utils/general_functions";
 
 const RegistroActividad = () => {
   const state = useContext(StateContext);
+  const dateTemp = new Date();
+  dateTemp.setHours(24, 0, 0, 0);
   const [registros, setRegistro] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [startDate, setStartDate] = useState(
+    // ((d) => new Date(d.setDate(d.getDate() - 1)))(new Date())
+    dateTemp.setDate(dateTemp.getDate() - 1)
+  );
+  const [endDate, setEndDate] = useState(
+    dateTemp.setDate(dateTemp.getDate() + 2)
+  );
+  console.log(new Date(startDate), new Date(endDate));
 
-  const [vacio, setVacio] = useState("");
+  const registrosQuery = useQuery(GetLogs, (data) => {
+    data.actionsLogs.sort(sortFunction);
+    setRegistro(data.actionsLogs);
+  });
 
-  const consultarRegistros = () => {
-    if (startDate <= endDate) {
-      submitClick();
-    } else {
-      setError("Intervalo de fechas no válido");
-      return;
-    }
-  };
-  async function getData() {
-    //consulta por id al backend
-
-    const startString =
-      startDate.getFullYear() +
-      "-" +
-      (startDate.getMonth() + 1) +
-      "-" +
-      startDate.getDate();
-    var temp = new Date(endDate.getTime() + +24 * 60 * 60 * 1000);
-    const endString =
-      temp.getFullYear() + "-" + (temp.getMonth() + 1) + "-" + temp.getDate();
-
-    const link =
-      ipAPI + "actions_log" + "?gte=" + startString + "&lte=" + endString;
-
-    return new Promise((resolve, reject) => {
-      axios
-        .get(link)
-        .then((response) => {
-          //solicitud exitosa
-          console.log(response);
-          setRegistro(response.data);
-          resolve();
-          console.log(registros.length);
-          if (registros.length === 0) {
-            console.log("entre");
-            setVacio("No hay actividad entre el intervalo");
-          }
-        })
-        .catch((err) => {
-          //error
-          reject(err);
-        });
+  const filtrar = (listado) => {
+    //filtra los registros segun la fecha seleccionada
+    return listado.filter(function (registro) {
+      var fechaRegistro = new Date(registro.date);
+      console.log(fechaRegistro <= endDate && fechaRegistro >= startDate);
+      return fechaRegistro <= endDate && fechaRegistro >= startDate;
     });
-  }
-  const submitClick = async () => {
-    setLoading(true);
-    setRegistro([]);
-    setError("");
-    setVacio("");
-
-    try {
-      await getData();
-      console.log(getData());
-    } catch (error) {
-      console.log(error);
-      setError("Error en la consulta");
-    }
-    setLoading(false);
   };
+
+  if (registrosQuery.status === "idle" || registrosQuery.status === "loading") {
+    return <Loading />;
+  } else if (registrosQuery.status === "error") {
+    return <p>Error en la conexión al servidor.</p>;
+  }
 
   return (
     <>
@@ -88,7 +55,9 @@ const RegistroActividad = () => {
         Seleccionar fecha de inicio y fin para consultar registro de actividad
         dentro de la plataforma
       </p>
-      <div className={styles.registro} style={{ display: "flex" }}>
+      <div
+        className={styles.registro}
+        style={{ display: "flex", marginBottom: "2rem" }}>
         <div style={{ "padding-left": "10px" }}>
           <Label>Inicio</Label>
           <br></br>
@@ -110,15 +79,14 @@ const RegistroActividad = () => {
             onChange={(date) => setEndDate(date)}
           />
         </div>
-        <div style={{ "padding-left": "10px" }}>
+        {/* <div style={{ "padding-left": "10px" }}>
           <Button onClick={() => consultarRegistros("usuarios")}>
             <span>Consultar Registros</span>
           </Button>
-        </div>
+        </div> */}
       </div>
-      <p>{error}</p>
-      {loading && <Loading />}
-      {registros.length > 0 ? (
+
+      {filtrar(registros).length > 0 ? (
         <Table hover responsive className={styles.table}>
           <thead>
             <tr>
@@ -129,12 +97,12 @@ const RegistroActividad = () => {
             </tr>
           </thead>
           <tbody>
-            {registros.map((registro, regIndex) => {
+            {filtrar(registros).map((registro, regIndex) => {
               return (
                 <tr>
                   <td>{regIndex + 1}</td>
                   <td>{registro.user}</td>
-                  <td>{registro.component}</td>
+                  <td>{registro.action}</td>
                   <td>{new Date(registro.date).toLocaleString()}</td>
                 </tr>
               );
@@ -142,7 +110,7 @@ const RegistroActividad = () => {
           </tbody>
         </Table>
       ) : (
-        <Label>{vacio}</Label>
+        <Label>No hay registros disponibles</Label>
       )}
     </>
   );

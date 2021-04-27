@@ -1,7 +1,7 @@
 export const initialState = {
   busqueda: "",
   isLoading: false,
-  x_consultado: null,
+  data_consultada: null,
   expanded: false,
   error: false,
   junctions: "",
@@ -21,16 +21,14 @@ export function reducer(draft, action) {
     }
 
     case "success_busqueda": {
-      draft.x_consultado = action.payLoad;
+      draft.data_consultada = action.payLoad;
     }
 
     case "fail_busqueda": {
       draft.error = "Error en la busqueda";
     }
     case "get_preview_data": {
-      draft.no_encontrado = false;
-      draft.isLoading = true;
-      draft.id_consultado = null;
+      draft.data_consultada = null;
       return;
     }
 

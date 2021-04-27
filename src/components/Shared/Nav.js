@@ -7,8 +7,6 @@ import { GoogleLogin, GoogleLogout } from "react-google-login";
 
 import styles from "./Nav.module.css";
 import { StateContext, DispatchContext } from "../App";
-import clientId from "../Login/Login";
-import Axios from "axios";
 
 export default function Nav() {
   const [show, setShow] = useState(false);
@@ -45,7 +43,7 @@ export default function Nav() {
           <Link
             onClick={() => setShow(false)}
             className={styles.link}
-            to="/nuevo/instalacion">
+            to="/nuevo/solicitud-integracion">
             <span>Solicitud integración nuevo proyecto</span>
           </Link>
         )}

@@ -1,25 +1,28 @@
 .row {
-    margin-top: .5rem;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  margin-top: 0.4rem;
+  padding-left: 1rem;
+  padding-right: 0.6rem;
+  padding-bottom: 0;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .row button {
-    border: none;
-    background-color: transparent;
-    font-size: 1.2rem !important;
-    font-weight: bold;
-    padding-bottom: 1rem;
-    color: gray;
-    transition: .2s all;
+  border: none;
+  background-color: transparent;
+  font-size: 1.2rem !important;
+  font-weight: bold;
+  padding-bottom: 1rem;
+  color: gray;
+  transition: 0.2s all;
 }
 
 .row button:focus {
-    outline: none;
+  outline: none;
 }
 
 .row button:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }

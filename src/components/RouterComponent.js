@@ -11,18 +11,18 @@ import Inicio from "./Inicio/Inicio";
 import Login from "./Login/Login";
 import Logout from "./Login/Logout";
 import { initialState, reducer } from "./Shared/Reducers/AppReducer";
-import ProcesarSolicitud from "./ProcesarSolicitud/ProcesarSolicitud";
+import ProcesarSolicitud from "./Solicitudes/ProcesarSolicitud";
 import {
   BrowserRouter as Router,
   Redirect,
   Route,
   useLocation,
 } from "react-router-dom";
-import Dashboard from "./Dashboards/Dashboard";
+import Solicitudes from "./Solicitudes/Solicitudes";
 import Administracion from "./Administracion/Administracion";
 import Profile from "./Shared/Profile";
-import Verificacion from "./Shared/Campos/Verificacion";
-import Resumen from "./Shared/Resumen";
+import ResumenProyecto from "./Formularios/Campos/ResumenProyecto";
+
 import Historial from "./Historial/Historial";
 import { createBrowserHistory } from "history";
 import usePersistentState from "./Shared/Utils/usePersistentState";
@@ -36,7 +36,7 @@ const RouterComponent = (props) => {
   let location = useLocation();
 
   useEffect(() => {
-    if (!state.debug) {
+    if (!state.debug && state.isLoggedIn) {
       console.log("Useeffect logout");
       axios
         .get(ipAPI + "users/me/")
@@ -79,13 +79,13 @@ const RouterComponent = (props) => {
             <>
               <Route
                 exact
-                path="/nuevo/instalacion"
+                path="/nuevo/solicitud-integracion"
                 component={() => <NuevaInstalacion state={state} />}
               />
 
               <Route
                 exact
-                path="/actualizar/instalacion"
+                path="/nuevo/solicitud-actualizacion"
                 component={() => <NuevaInstalacion state={state} />}
               />
             </>
@@ -117,7 +117,7 @@ const RouterComponent = (props) => {
           <Route
             exact
             path="/solicitudes"
-            component={() => <Dashboard dispatch={dispatch} />}
+            component={() => <Solicitudes dispatch={dispatch} />}
           />
 
           <Route
@@ -129,7 +129,9 @@ const RouterComponent = (props) => {
           <Route
             exact
             path="/info"
-            component={() => <Resumen instalacion={state.actualizando} />}
+            component={() => (
+              <ResumenProyecto state={state.actualizando} procesar={true} />
+            )}
           />
 
           <Profile

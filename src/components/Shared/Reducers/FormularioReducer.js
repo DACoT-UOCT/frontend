@@ -1,13 +1,13 @@
 export const initialState = {
   metadata: {
-    version: "base",
+    // version: "base",
     maintainer: "",
-    status: "NEW",
-    status_date: { $date: Date.now() },
-    status_user: "",
-    installation_date: { $date: Date.now() },
+    // status: "NEW",
+    // status_date: Date.now(),
+    // status_user: "",
+    installation_date: Date.now(),
     commune: "",
-    region: "Región Metropolitana de Santiago",
+    // region: "Región Metropolitana de Santiago",
     img: null,
     pdf_data: null,
     pedestrian_demand: false,
@@ -43,7 +43,7 @@ export const initialState = {
     junctions: [
       {
         jid: "",
-        metadata: { location: "pointField", address_reference: "" },
+        metadata: { coordinates: "pointField", address_reference: "" },
         //plans: "",  //se asignan cuando se lee el SC
       },
     ],
@@ -56,7 +56,7 @@ export const initialState = {
       model: "",
       firmware_version: "",
       checksum: "",
-      date: { $date: "" },
+      date: "",
     },
   },
   headers: [
@@ -148,16 +148,16 @@ export const initialState = {
     vehicular: 0,
     pedestrian: 0,
   },
-  observations: "",
+  observation: "",
 
   errors: [],
-  vista: 2,
+  vista: 1,
   submit: false,
   isLoading: true,
   success: false,
 };
 
-const ups = {
+const ups_initial = {
   brand: "",
   model: "",
   serial: "",
@@ -192,19 +192,25 @@ export function reducer(draft, action) {
     }
 
     case "ups_checkbox": {
-      if (draft.ups === undefined) {
-        draft.ups = ups;
+      if (draft.ups == undefined) {
+        if (draft.ups_backup == undefined) draft.ups = ups_initial;
+        else draft.ups = draft.ups_backup;
       } else {
+        draft.ups_backup = JSON.parse(JSON.stringify(draft.ups));
         delete draft["ups"];
       }
       return;
     }
     case "metadata": {
-      if (action.fieldName === "installation_date") {
-        draft[action.type][action.fieldName] = { $date: action.payLoad };
-      } else {
-        draft[action.type][action.fieldName] = action.payLoad;
+      if (action.fieldName === "commune") {
+        console.log(JSON.parse(action.payLoad));
+        let commune_object = JSON.parse(action.payLoad);
+        draft.metadata.commune = commune_object.name;
+        draft.metadata.commune_code = commune_object.code;
+        draft.metadata.maintainer = "SpeeDevs";
+        return;
       }
+      draft[action.type][action.fieldName] = action.payLoad;
       return;
     }
 
@@ -224,7 +230,6 @@ export function reducer(draft, action) {
       if (draft.errors.length === 0) {
         if (draft.vista === 4) {
           draft.submit = true;
-          document.getElementById("formulario").scrollTop = 0;
         }
         draft.vista += 1;
         document.getElementById("formulario").scrollTop = 0;
@@ -262,8 +267,10 @@ export function reducer(draft, action) {
 
     case "junctions": {
       if (action.fieldName === "address_reference") {
-        draft.otu[action.type][action.index].metadata[action.fieldName] =
-          action.payLoad;
+        draft.otu[action.type][action.index].metadata.address_reference =
+          action.address;
+        draft.otu[action.type][action.index].metadata.coordinates =
+          action.coordinates;
       } else {
         draft.otu[action.type][action.index][action.fieldName] = action.payLoad;
       }
@@ -278,7 +285,7 @@ export function reducer(draft, action) {
         (draft.otu.junctions.length + 1).toString();
       const nuevo = {
         jid: name,
-        metadata: { location: "pointField", address_reference: "" },
+        metadata: { coordinates: "pointField", address_reference: "" },
         //plans: "",  //se asignan cuando se lee el SC
       };
       draft.otu.junctions.push(nuevo);
@@ -303,33 +310,28 @@ export function reducer(draft, action) {
         draft.controller.model.model = "";
         draft.controller.model.firmware_version = "";
         draft.controller.model.checksum = "";
-        draft.controller.model.date = { $date: "" };
+        draft.controller.model.date = "";
       } else if (action.fieldName === "date") {
-        draft.controller.model[action.fieldName] = { $date: action.payLoad };
+        draft.controller.model[action.fieldName] = action.payLoad;
       } else if (action.fieldName === "model") {
         draft.controller.model[action.fieldName] = action.payLoad;
         draft.controller.model.firmware_version = "";
-        draft.controller.model.date = { $date: "" };
+        draft.controller.model.date = "";
         draft.controller.model.checksum = "";
       } else if (action.fieldName === "firmware_version") {
         draft.controller.model[action.fieldName] = action.payLoad;
-        action.modelos.map((marca) => {
-          if (marca.company === draft.controller.model.company.name) {
-            marca.models.map((modelo) => {
-              if (modelo.name === draft.controller.model.model)
-                modelo.firmware.map((firmware) => {
-                  if (
-                    firmware.version === draft.controller.model.firmware_version
-                  ) {
-                    draft.controller.model.checksum = firmware.checksum;
-                    draft.controller.model.date = {
-                      $date: firmware.date.$date,
-                    };
-                  }
-                });
-            });
+        for (let i = 0; i < action.controladores.length; i++) {
+          if (
+            draft.controller.model.company.name ===
+              action.controladores[i].company.name &&
+            draft.controller.model.model === action.controladores[i].model &&
+            draft.controller.model.firmware_version ===
+              action.controladores[i].firmware_version
+          ) {
+            draft.controller.model.checksum = action.controladores[i].checksum;
+            draft.controller.model.date = action.controladores[i].date;
           }
-        });
+        }
       }
       return;
     }
@@ -492,8 +494,8 @@ export function reducer(draft, action) {
       return;
     }
 
-    case "observations": {
-      draft.observations = action.payLoad;
+    case "observation": {
+      draft.observation = action.payLoad;
       return;
     }
 

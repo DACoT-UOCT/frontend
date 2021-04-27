@@ -8,11 +8,9 @@ import { RefreshTokenSetup } from "../../utils/RefreshToken";
 import axios from "axios";
 import styles from "./Login.module.css";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { GoogleLoginAPI_KEY } from "../../API_KEYS";
 
 // const first_click = true;
-
-export const clientId =
-  "226837255536-1kghlr6q84lc4iroc7dk9ri29v262hs6.apps.googleusercontent.com";
 
 const validar_usuario = () => {};
 const Login = () => {
@@ -95,7 +93,7 @@ const Login = () => {
             <span className={styles.title}>Ingreso al sistema</span>
             <div className={styles.button}>
               <GoogleLogin
-                clientId={clientId}
+                clientId={GoogleLoginAPI_KEY}
                 render={(renderProps) => (
                   <button
                     className={styles.gugul}
@@ -112,7 +110,7 @@ const Login = () => {
               />
             </div>
             <span style={{ padding: "2rem", fontSize: ".9rem" }}>
-              {"Si necesita acceso, favor de contactar al administrador "}
+              {"Si necesitas acceso contacta al administrador "}
               <a href="mailto:admin@dacot.com?Subect=Solicitud%20de%20acceso.">
                 admin@dacot.cl{" "}
               </a>

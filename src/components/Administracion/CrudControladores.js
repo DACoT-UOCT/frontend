@@ -13,64 +13,32 @@ import {
 import { useImmerReducer } from "use-immer";
 import axios from "axios";
 import NuevoControlador from "./NuevoControlador";
+import { useQuery } from "../../GraphQL/useQuery";
+import { GetControllers } from "../../GraphQL/Queries";
+import Loading from "../Shared/Loading";
+import { getFecha } from "../Shared/Utils/general_functions";
 
 const CrudControladores = () => {
   const [newOpen, setNewOpen] = useState(false);
   const [closeOpen, setCloseOpen] = useState(false);
   const [state, dispatch] = useImmerReducer(reducer, initialState);
 
-  const getFecha = (date) => {
-    var temp = new Date(date);
-    const string =
-      temp.getDate() + "-" + (temp.getMonth() + 1) + "-" + temp.getFullYear();
-    return string;
-  };
-
-  const eliminar_controlador = (id) => {
-    console.log("eliminand " + id);
-  };
-
-  useEffect(() => {
-    if (!state.consultado) {
-      consultar_controladores();
-      dispatch({ type: "consultado", payLoad: true });
-    }
+  const controladoresQuery = useQuery(GetControllers, (data) => {
+    dispatch({ type: "controladores", payLoad: data.controllerModels });
   });
 
-  async function getData(link, campo) {
-    //consulta por id al backend
-    return new Promise((resolve, reject) => {
-      axios
-        .get(link)
-        .then((response) => {
-          //solicitud exitosa
-          dispatch({ type: campo, payLoad: response.data });
-          // setComunas(response.data);
-          resolve();
-        })
-        .catch((err) => {
-          //error
-          reject(err);
-        });
-    });
-  }
-
-  const consultar_controladores = async () => {
-    dispatch({ type: "loading", payLoad: true });
-    dispatch({ type: "error", payLoad: "" });
-    const link_controladores = ipAPI + "controller_models";
-
-    try {
-      await getData(link_controladores, "controladores");
-    } catch (error) {
-      console.log(error);
-      dispatch({ type: "error", payLoad: "Error en la consulta" });
-      // setError("Error en la consulta");
-    }
-    dispatch({ type: "loading", payLoad: false });
-    dispatch({ type: "controladores", payLoad: controladores_dummy });
-    // setLoading(false);
+  const eliminar_controlador = (id) => {
+    console.log("eliminando " + id);
   };
+
+  if (
+    controladoresQuery.status === "idle" ||
+    controladoresQuery.status === "loading"
+  ) {
+    return <Loading />;
+  } else if (controladoresQuery.status === "error") {
+    return <p>Error en la consulta</p>;
+  }
 
   return (
     <>
@@ -87,8 +55,9 @@ const CrudControladores = () => {
           controladores descontinuados y registrar modelos nuevos
         </p>
         <Button
-          style={{ float: "right" }}
+          style={{ float: "right", marginLeft: "4rem" }}
           className={styles.mb}
+          color="success"
           onClick={() => {
             setNewOpen(true);
             dispatch({ type: "nuevo" });
@@ -103,7 +72,7 @@ const CrudControladores = () => {
             <th onClick={() => sortTable(1)}>Modelo</th>
             <th onClick={() => sortTable(2)}>Versión</th>
             <th onClick={() => sortTable(3)}>Checksum</th>
-            <th onClick={() => sortTable(4)}>Fecha de versión</th>
+            <th>Fecha de versión</th>
             <th> </th>
           </tr>
         </thead>
@@ -111,43 +80,31 @@ const CrudControladores = () => {
           {state.controladores.map((controlador) => {
             return (
               <>
-                {controlador.models.map((modelo) => {
-                  return (
-                    <>
-                      {modelo.firmware.map((firmware) => {
-                        return (
-                          <>
-                            <tr>
-                              <td> {controlador.company}</td>
-                              <td>{modelo.name}</td>
-                              <td>{firmware.version}</td>
-                              <td>{firmware.checksum}</td>
-                              <td>{getFecha(firmware.date.$date)}</td>
-                              <td>
-                                <Button
-                                  onClick={() => {
-                                    setCloseOpen(true);
-                                    dispatch({
-                                      type: "delete_backup",
-                                      payLoad: {
-                                        company: controlador.company,
-                                        name: modelo.name,
-                                        firmware: firmware.version,
-                                        checksum: firmware.checksum,
-                                        date: getFecha(firmware.date.$date),
-                                      },
-                                    });
-                                  }}>
-                                  Eliminar
-                                </Button>
-                              </td>
-                            </tr>
-                          </>
-                        );
-                      })}
-                    </>
-                  );
-                })}
+                <tr>
+                  <td> {controlador.company.name}</td>
+                  <td>{controlador.model}</td>
+                  <td>{controlador.firmwareVersion}</td>
+                  <td>{controlador.checksum}</td>
+                  <td>{getFecha(controlador.date)}</td>
+                  <td>
+                    <Button
+                      onClick={() => {
+                        setCloseOpen(true);
+                        dispatch({
+                          type: "delete_backup",
+                          payLoad: {
+                            company: controlador.company,
+                            model: controlador.model,
+                            firmwareVersion: controlador.firmwareVersion,
+                            checksum: controlador.checksum,
+                            date: controlador.date,
+                          },
+                        });
+                      }}>
+                      Eliminar
+                    </Button>
+                  </td>
+                </tr>
               </>
             );
           })}
@@ -158,42 +115,49 @@ const CrudControladores = () => {
           state={state}
           dispatch={dispatch}
           controladores={state.controladores}
+          setOpen={setNewOpen}
         />
       </PopUp>
-
-      <PopUp title="Eliminar" open={closeOpen} setOpen={setCloseOpen}>
-        <p>¿Desea eliminar el controlador?</p>
-        <Table hover responsive className={styles.table}>
-          <thead>
-            <tr>
-              <th>Marca</th>
-              <th>Modelo</th>
-              <th>Versión</th>
-              <th>Checksum</th>
-              <th>Fecha de versión</th>
-            </tr>
-          </thead>
-          <tbody>
-            <td> {state.delete_backup.company}</td>
-            <td>{state.delete_backup.name}</td>
-            <td>{state.delete_backup.firmware}</td>
-            <td>{state.delete_backup.checksum}</td>
-            <td>{state.delete_backup.date}</td>
-          </tbody>
-        </Table>
-        <Button
-          onClick={() => {
-            setCloseOpen(false);
-          }}>
-          Cancelar
-        </Button>
-        <Button
-          onClick={() => {
-            eliminar_controlador(" dx");
-          }}>
-          Eliminar
-        </Button>
-      </PopUp>
+      {state.delete_backup != undefined && (
+        <PopUp
+          title="Eliminar controlador"
+          open={closeOpen}
+          setOpen={setCloseOpen}>
+          <p>¿Desea eliminar el controlador?</p>
+          <Table hover responsive className={styles.table}>
+            <thead>
+              <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Versión</th>
+                <th>Checksum</th>
+                <th>Fecha de versión</th>
+              </tr>
+            </thead>
+            <tbody>
+              <td> {state.delete_backup.company.name}</td>
+              <td>{state.delete_backup.model}</td>
+              <td>{state.delete_backup.firmwareVersion}</td>
+              <td>{state.delete_backup.checksum}</td>
+              <td>{getFecha(state.delete_backup.date)}</td>
+            </tbody>
+          </Table>
+          <div className="eliminar-controlador-buttons">
+            <Button
+              onClick={() => {
+                setCloseOpen(false);
+              }}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={() => {
+                eliminar_controlador(" dx");
+              }}>
+              Eliminar
+            </Button>
+          </div>
+        </PopUp>
+      )}
     </>
   );
 };

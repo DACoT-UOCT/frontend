@@ -8,22 +8,22 @@ import { reducer, initialState } from "../Shared/Reducers/FormularioReducer";
 import procesar_json_envio from "./NuevaInstalacion";
 
 import { Label, CustomInput } from "reactstrap";
-import Junctions from "../Shared/Campos/Junctions";
-import Siguiente from "../Shared/Campos/Siguiente";
-import UPS from "../Shared/Campos/UPS";
-import General from "../Shared/Campos/General";
-import OTU from "../Shared/Campos/OTU";
-import Verificacion from "../Shared/Campos/Verificacion";
-import Cabezales from "../Shared/Campos/Cabezales";
-import Postes from "../Shared/Campos/Postes";
-import Controlador from "../Shared/Campos/Controlador";
-import Documentacion from "../Shared/Campos/Documentacion";
-import DocumentacionProgramaciones from "../Shared/Campos/DocumentacionProgramaciones";
-import Etapas from "../Shared/Campos/Etapas";
-import Fases from "../Shared/Campos/Fases";
-import Secuencias from "../Shared/Campos/Secuencias";
-import Entreverdes from "../Shared/Campos/Entreverdes";
-import Observaciones from "../Shared/Campos/Observaciones";
+import Junctions from "./Campos/Junctions";
+import Siguiente from "./Campos/Siguiente";
+import UPS from "./Campos/UPS";
+import General from "./Campos/General";
+import OTU from "./Campos/OTU";
+import ResumenProyecto from "./Campos/ResumenProyecto";
+import Cabezales from "./Campos/Cabezales";
+import Postes from "./Campos/Postes";
+import Controlador from "./Campos/Controlador";
+import Documentacion from "./Campos/Documentacion";
+import DocumentacionProgramaciones from "./Campos/DocumentacionProgramaciones";
+import Etapas from "./Campos/Etapas";
+import Fases from "./Campos/Fases";
+import Secuencias from "./Campos/Secuencias";
+import Entreverdes from "./Campos/Entreverdes";
+import Observaciones from "./Campos/Observaciones";
 import {
   Switch,
   Collapse,
@@ -78,7 +78,7 @@ const ActualizarProgramacionContenido = (props) => {
           console.log(response);
           alert("Formulario enviado correctamente");
           dispatch({ type: "post_success" });
-          //window.location.replace("/nuevo/instalacion");
+          //window.location.replace("/nuevo/solicitud-integracion");
         })
         .catch((err) => {
           alert("Error en el envio.");

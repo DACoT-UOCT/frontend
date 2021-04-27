@@ -1,0 +1,85 @@
+.resume :global(.section) {
+  margin: 1rem;
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid lightgray;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.resume :global(.image) {
+  margin: 1rem;
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid lightgray;
+  text-align: center;
+}
+
+.resume :global(.tables) :global(.section) {
+  margin: 0;
+  width: 33%;
+}
+
+.resume :global(.tables) :global(.section) table {
+  width: 100%;
+}
+
+.resume :global(.tables) :global(.section):first-child {
+  margin-left: 1rem;
+}
+
+.resume :global(.tables) :global(.section):last-child {
+  margin-right: 1rem;
+}
+
+.resume h2 {
+  border-bottom: 3px solid #034472;
+  /* border-bottom: ; */
+  text-align: left !important;
+}
+
+.resume :global(.tables) {
+  display: flex;
+  gap: 1rem;
+}
+
+.resume table {
+  border-spacing: 0;
+  margin-right: 1rem;
+  border: 1px solid rgb(206, 206, 206);
+}
+
+.resume td {
+  padding: 0.75rem;
+}
+
+.resume tr:nth-child(even) {
+  background-color: rgb(236, 236, 236);
+}
+
+.resume :global(.entreverdes) {
+  overflow-y: scroll;
+}
+
+.resume :global(.entreverdes) tr {
+  background-color: transparent;
+}
+
+.resume :global(.label) {
+  font-weight: bold;
+}
+
+.resume :global(.headerLabel) {
+  font-weight: bold !important;
+  background-color: #034472 !important;
+  color: white;
+}
+
+.resume thead {
+  background-color: #034472;
+}
+
+.resume th {
+  padding: 0.75rem;
+  color: white;
+}

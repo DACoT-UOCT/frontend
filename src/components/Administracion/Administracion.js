@@ -14,7 +14,7 @@ const Administracion = (props) => {
   return (
     <div className={`grid-item header-admin ${styles.admin}`}>
       <div className={styles.selection}>
-        <h2>{titulo}</h2>
+        <h2 style={{ paddingLeft: "2rem" }}>{titulo}</h2>
         <div className={styles.options}>
           <button
             className={vista == "usuarios" ? styles.active : null}
