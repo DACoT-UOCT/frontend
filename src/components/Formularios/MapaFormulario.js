@@ -14,7 +14,8 @@ import {
 import PopUp from "../Shared/PopUp";
 import useSupercluster from "use-supercluster";
 import CustomMarker from "../Shared/CustomMarker";
-import { GoogleMapsAPI_KEY } from "../../API_KEYS.js";
+import { GeocodingAPI_KEY, GoogleMapsAPI_KEY } from "../../API_KEYS.js";
+import axios from "axios";
 
 Geocode.setApiKey(GoogleMapsAPI_KEY);
 Geocode.setLanguage("sp");
@@ -39,15 +40,22 @@ const MapaConsulta = (props) => {
     dispatchMapa({ type: "markerLat", payLoad: e.lat });
     dispatchMapa({ type: "markerLng", payLoad: e.lng });
 
-    //consultar direccion
-    Geocode.fromLatLng(lat, lng).then(
-      (response) => {
-        console.log("geolocating");
-        //encontrar direccion de la ubicacion actual del pin
-        const address = response.results[0].formatted_address;
+    axios
+      .get(
+        "http://www.mapquestapi.com/geocoding/v1/reverse?key=" +
+          GeocodingAPI_KEY +
+          "&location=" +
+          lat +
+          "," +
+          lng +
+          "&includeRoadMetadata=true&includeNearestIntersection=true"
+      )
+      .then((data) => {
+        // console.log(data.data.results[0].locations[0]);
+        let respuesta = data.data.results[0].locations[0];
+        console.log(respuesta);
+        let address = respuesta.street + " - " + respuesta.adminArea5;
         dispatchMapa({ type: "location", payLoad: address });
-
-        //actualizar estado general del formulario
         if (props.junction) {
           dispatch({
             type: "junctions",
@@ -65,28 +73,57 @@ const MapaConsulta = (props) => {
             payLoad: address,
           });
         }
-      },
-      (error) => {
-        if (props.junction) {
-          dispatch({
-            type: "junctions",
-            index: props.index,
-            fieldName: "address_reference",
-            address: "TEST ADDRESS",
-            coordinates: [lat, lng],
-          });
-        }
-        if (props.controlador) {
-          props.setPin([lat, lng]);
-          dispatch({
-            type: "controller",
-            fieldName: "address_reference",
-            payLoad: "TEST ADDRESS",
-          });
-        }
-        console.error("geolocating error" + error);
-      }
-    );
+      })
+      .catch((error) => console.log(error));
+
+    //consultar direccion
+    // Geocode.fromLatLng(lat, lng).then(
+    //   (response) => {
+    //     console.log("geolocating");
+    //     //encontrar direccion de la ubicacion actual del pin
+    //     const address = response.results[0].formatted_address;
+    //     dispatchMapa({ type: "location", payLoad: address });
+
+    //     //actualizar estado general del formulario
+    //     if (props.junction) {
+    //       dispatch({
+    //         type: "junctions",
+    //         index: props.index,
+    //         fieldName: "address_reference",
+    //         address: address,
+    //         coordinates: [lat, lng],
+    //       });
+    //     }
+    //     if (props.controlador) {
+    //       props.setPin([lat, lng]);
+    //       dispatch({
+    //         type: "controller",
+    //         fieldName: "address_reference",
+    //         payLoad: address,
+    //       });
+    //     }
+    //   },
+    //   (error) => {
+    //     if (props.junction) {
+    //       dispatch({
+    //         type: "junctions",
+    //         index: props.index,
+    //         fieldName: "address_reference",
+    //         address: "TEST ADDRESS",
+    //         coordinates: [lat, lng],
+    //       });
+    //     }
+    //     if (props.controlador) {
+    //       props.setPin([lat, lng]);
+    //       dispatch({
+    //         type: "controller",
+    //         fieldName: "address_reference",
+    //         payLoad: "TEST ADDRESS",
+    //       });
+    //     }
+    //     console.error("geolocating error" + error);
+    //   }
+    // );
   };
 
   //CLUSTERS

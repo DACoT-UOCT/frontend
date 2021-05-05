@@ -25,6 +25,7 @@ const BarraBusqueda = (props) => {
   const [previewOpen, setPreviewOpen] = useState(false);
 
   const coordinatesQuery = useQuery(GetCoordinates, (data) => {
+    console.log(data);
     var temp = data.projects.map((proyecto) => {
       console.log("consultando mapa");
       return proyecto.otu.junctions.map((junction) => {
@@ -51,7 +52,7 @@ const BarraBusqueda = (props) => {
     }
 
     id_consultado = "X" + id_consultado.slice(1, -1) + "0";
-    GQLclient.request(GetProject, { oid: id_consultado, status: "PRODUCTION" })
+    GQLclient.request(GetProject, { oid: id_consultado, status: "NEW" })
       .then((response) => {
         if (response.project === null) alert("Instalación no encontrada");
         else {

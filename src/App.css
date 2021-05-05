@@ -902,3 +902,52 @@ Button {
   width: 40%;
   height: 3rem;
 }
+
+.semaforo-marker {
+  position: relative; /* this one is new - used to contain absolute elements */
+  width: 4rem;
+  height: 4rem;
+  /* overflow: hidden; */
+  /* background-color: #cc00ff; */
+  /* border: 2px solid red; */
+}
+
+.semaforo-marker:after {
+  content: "";
+  position: absolute;
+
+  /* margin: -2px; */
+  width: 0.7rem;
+  height: 0.7rem;
+  transform: translateX(-3rem);
+  border-radius: 0.5rem;
+  /* transform: rotate(90deg); */
+  background-color: rgb(255, 0, 0); /* to see where it is */
+}
+
+.arrows-pagination {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding-left: 50%;
+  padding-right: 40%;
+  /* border: 2px solid red; */
+}
+
+.arrows-pagination button {
+  padding: 0.5rem;
+  outline: none;
+  width: 3rem;
+  border-radius: 3rem;
+  border: none;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.arrows-pagination button:hover {
+  background-color: rgb(212, 212, 212);
+}
+.arrows-pagination img {
+  width: 100%;
+  height: auto;
+}

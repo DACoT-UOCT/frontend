@@ -18,47 +18,43 @@ const comparar_arrays = (arr1, arr2) => {
 export const procesar_json_recibido = (aux) => {
   //procesa el json consultado para mostrarlo en el formulario
   // var temp = JSON.parse(JSON.stringify(props.state.actualizando));
-  // console.log(aux);
+  console.log(aux);
   var temp = decamelizeKeysDeep(aux);
   // console.log(temp);
-  var stages = [];
-  var fases = [];
-  var secuencias = [];
-  var entreverdes = [];
 
-  for (var i = 0; i < temp.otu.sequences.length; i++) {
-    var fasesTemp = temp.otu.sequences[i].phases;
-    var seqTemp = [];
-    for (var j = 0; j < fasesTemp.length; j++) {
-      seqTemp.push(fasesTemp[j].phid);
-      var etapasTempList = [];
-      var etapasTemp = fasesTemp[j].stages;
+  // for (var i = 0; i < temp.otu.sequences.length; i++) {
+  //   var fasesTemp = temp.otu.sequences[i].phases;
+  //   var seqTemp = [];
+  //   for (var j = 0; j < fasesTemp.length; j++) {
+  //     seqTemp.push(fasesTemp[j].phid);
+  //     var etapasTempList = [];
+  //     var etapasTemp = fasesTemp[j].stages;
 
-      for (var k = 0; k < etapasTemp.length; k++) {
-        etapasTempList.push(etapasTemp[k].stid);
-        var etapaTemp = [etapasTemp[k].stid, etapasTemp[k].type];
-        if (!stages.some((e) => comparar_arrays(e, etapaTemp))) {
-          stages.push(etapaTemp);
-        }
-      }
-      if (!fases.some((e) => comparar_arrays(e, etapasTempList))) {
-        fases.push(etapasTempList);
-      }
-    }
-    secuencias.push(seqTemp);
-  }
-  if (fases.length == 0) fases = [[]];
-  if (stages.length == 0) stages = ["", ""];
+  //     for (var k = 0; k < etapasTemp.length; k++) {
+  //       etapasTempList.push(etapasTemp[k].stid);
+  //       var etapaTemp = [etapasTemp[k].stid, etapasTemp[k].type];
+  //       if (!stages.some((e) => comparar_arrays(e, etapaTemp))) {
+  //         stages.push(etapaTemp);
+  //       }
+  //     }
+  //     if (!fases.some((e) => comparar_arrays(e, etapasTempList))) {
+  //       fases.push(etapasTempList);
+  //     }
+  //   }
+  //   secuencias.push(seqTemp);
+  // }
+  // if (fases.length == 0) fases = [[]];
+  // if (stages.length == 0) stages = ["", ""];
 
-  //entreverdes
-  while (temp.otu.intergreens.length)
-    entreverdes.push(temp.otu.intergreens.splice(0, stages.length));
+  // //entreverdes
+  // while (temp.otu.intergreens.length)
+  //   entreverdes.push(temp.otu.intergreens.splice(0, stages.length));
 
-  //revisar si algun campo esta vacio
+  // //revisar si algun campo esta vacio
 
-  //eliminar intergreens sequences
-  delete temp.otu.intergreens;
-  delete temp.otu.sequences;
+  // //eliminar intergreens sequences
+  // delete temp.otu.intergreens;
+  // delete temp.otu.sequences;
 
   if (temp.poles == undefined) {
     temp.poles = {
@@ -164,11 +160,12 @@ export const procesar_json_recibido = (aux) => {
   temp.metadata.img =
     temp.metadata.img.data == null ? "/no_image.png" : temp.metadata.img.data;
 
-  temp.otu.stages = stages;
-  temp.otu.fases = fases;
-  temp.otu.secuencias = secuencias;
-  temp.otu.entreverdes = entreverdes;
+  // temp.otu.stages = stages;
+  // temp.otu.fases = fases;
+  // temp.otu.secuencias = secuencias;
+  // temp.otu.entreverdes = entreverdes;
   temp.observation = temp.observation.message;
+
   //variables de control
   temp.errors = [];
   temp.vista = 1;
@@ -251,6 +248,9 @@ export const procesar_json_envio = (state_copy, url) => {
   delete state_copy.metadata.status_user;
   delete state_copy.metadata.status_date;
   delete state_copy.ups_backup;
+  //cambios de modelo otu / junction
+  delete state_copy.otu.intergreens;
+  delete state_copy.otu.sequences;
 
   //eliminar etapas, fases secuencias de frontend
   delete state_copy.otu.stages;

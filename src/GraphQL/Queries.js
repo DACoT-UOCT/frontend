@@ -93,7 +93,20 @@ export const GetProject = gql`
       oid
       metadata {
         status
-        commune
+        commune {
+          code
+          name
+          userInCharge {
+            area
+            email
+            fullName
+            role
+          }
+          maintainer {
+            id
+            name
+          }
+        }
         img {
           data
         }
@@ -122,9 +135,19 @@ export const GetProject = gql`
       }
       otu {
         oid
-        intergreens
+
         junctions {
           jid
+          intergreens {
+            phfrom
+            phto
+            value
+          }
+          sequence {
+            phid
+            phidSystem
+            type
+          }
           metadata {
             addressReference
             location {
@@ -175,16 +198,6 @@ export const GetProject = gql`
           linkType
           netmask
           serial
-        }
-        sequences {
-          seqid
-          phases {
-            phid
-            stages {
-              stid
-              type
-            }
-          }
         }
         programs {
           day
@@ -246,12 +259,33 @@ export const GetCoordinates = gql`
 `;
 
 export const GetRequests = gql`
-  query projects($status: String!) {
-    projects(status: $status) {
-      oid
-      metadata {
-        status
-        statusDate
+  query projects(
+    $first: RangeScalar
+    $after: String
+    $metadata_Status: String!
+    $metadata_Version: String!
+  ) {
+    projects(
+      first: $first
+      after: $after
+      metadata_Status: $metadata_Status
+      metadata_Version: $metadata_Version
+    ) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      edges {
+        cursor
+        node {
+          oid
+          metadata {
+            status
+            statusDate
+          }
+        }
       }
     }
   }
@@ -286,7 +320,20 @@ export const GetVersion = gql`
       oid
       metadata {
         status
-        commune
+        commune {
+          code
+          name
+          userInCharge {
+            area
+            email
+            fullName
+            role
+          }
+          maintainer {
+            id
+            name
+          }
+        }
         img {
           data
         }
@@ -315,9 +362,19 @@ export const GetVersion = gql`
       }
       otu {
         oid
-        intergreens
+
         junctions {
           jid
+          intergreens {
+            phfrom
+            phto
+            value
+          }
+          sequence {
+            phid
+            phidSystem
+            type
+          }
           metadata {
             addressReference
             location {
@@ -368,16 +425,6 @@ export const GetVersion = gql`
           linkType
           netmask
           serial
-        }
-        sequences {
-          seqid
-          phases {
-            phid
-            stages {
-              stid
-              type
-            }
-          }
         }
         programs {
           day

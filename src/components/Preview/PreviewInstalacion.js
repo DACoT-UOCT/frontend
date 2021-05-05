@@ -73,11 +73,9 @@ const PreviewInstalacion = (props) => {
               <tr>
                 <td className="label">Intersecciones / Junctions</td>
                 <td>
-                  {instalacion.otu.junctions
-                    .map((junction) => {
-                      return junction.jid;
-                    })
-                    .concat(" - ")}
+                  {instalacion.otu.junctions.map((junction) => {
+                    return junction.jid + " - ";
+                  })}
                 </td>
               </tr>
               <tr>

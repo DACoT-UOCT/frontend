@@ -1,5 +1,5 @@
 export const initialState = {
-  vista: "Solicitudes",
+  vista: "Integración",
   expanded: false,
   listado_solicitudes: [],
   listado_instalaciones: [],

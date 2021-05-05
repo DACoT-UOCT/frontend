@@ -24,7 +24,7 @@ const CustomMarker = (props) => {
 
   const open = Boolean(anchorEl);
   return (
-    <div style={{ border: "1px solid black" }}>
+    <div className="semaforo-marker">
       <img
         style={{ filter: props.gray ? "grayscale(80%)" : "grayscale(0%)" }}
         aria-owns={open ? "mouse-over-popover" : undefined}
