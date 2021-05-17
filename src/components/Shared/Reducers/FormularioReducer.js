@@ -27,15 +27,15 @@ export const initialState = {
       link_owner: "", //Propio Compartido
     },
     //program: "", asignado al leer desde el SC
-    stages: [
-      ["", ""],
-      // "A", "VEH",
-    ],
+    // stages: [
+    //   ["", ""],
+    //   // "A", "VEH",
+    // ],
 
-    fases: [[]],
+    // fases: [[]],
 
-    secuencias: [[]], //[[1,2,3], "J003672"]
-    entreverdes: [[0]],
+    // secuencias: [[]], //[[1,2,3], "J003672"]
+    // entreverdes: [[0]],
     // sequences: [
     //   { seqid: 1, phases: [{ phid: 1, stages: [{ stid: "A", type: "" }] }] }, //tipos de etapa, 'Vehicular', 'Peatonal', 'Flecha Verde', 'Ciclista', 'No Configurada'
     // ],
@@ -148,7 +148,8 @@ export const initialState = {
     vehicular: 0,
     pedestrian: 0,
   },
-  observation: "",
+  observation:
+    "REGISTRAR OBSERVACIONES DE INTERÉS \nSolicitud de integración ingresada desde el sistema DACoT",
 
   errors: [],
   vista: 1,

@@ -114,7 +114,10 @@ const OTU = (props) => {
                   }}>
                   <option value="" hidden></option>
                   <option value="Digital">Digital</option>
-                  <option value="Analogo">Analogo</option>
+                  <option value="Analogo">Análogo</option>
+                  <option value="3G">3G</option>
+                  <option value="4G">4G</option>
+                  <option value="5G">5G</option>
                 </Campo>
               </TableCell>
             </TableRow>

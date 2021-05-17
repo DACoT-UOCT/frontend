@@ -128,12 +128,12 @@ const DocumentacionProgramaciones = (props) => {
   // procesar_xlsx(input_excel);
   return (
     <>
-      <legend>Programación de semáforos</legend>
+      {/* <legend>Programación de semáforos</legend>
       <h6 style={{ paddingTop: "0" }}>
         Para rellenar los siguientes campos, se debe contar con la información
         de programaciones de los semáforos instalados. Es decir: etapas, fases,
         secuencias y matriz de entreverdes.
-      </h6>
+      </h6> */}
       <legend style={{ marginTop: "2rem" }}> Diagrama de la instalación</legend>
       <h6>
         Adjuntar imagen de la instalación en formato PNG/JPG/JPEG. Esta deberá
@@ -175,49 +175,12 @@ const DocumentacionProgramaciones = (props) => {
       </PopOver>
       {/* <input type="file" id="input" /> */}
       {img !== null && img !== "/no_image.png" && (
-        <div>
+        <div className="imagen-formulario">
           <br></br>
-          <img src={img} width="300" height="300" alt="" />
-          <hr className="separador"></hr>
-          <legend>Importar programaciones </legend>
-          <h6 style={{ marginBottom: "1rem" }}>
-            Opcionalmente, se pueden importar etapas, fases, secuencias y
-            entreverdes desde una planilla excel (.XLSX) con el formato
-            especificado en la plantilla de ejemplo.
-          </h6>
-          <TableContainer className={styles.form}>
-            <Table size="small" aria-label="simple table">
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <CustomInput
-                      className="boton-file"
-                      type="file"
-                      label={"Importar XLSX/Excel (Opcional)"}
-                      onChange={(e) => leer_xlsx(e.target.files[0])}
-                    />{" "}
-                    {/* <PopOver mensaje="Puede rellenar los siguientes campos a traves de un documento excel con el siguiente formato" /> */}
-                  </TableCell>
-                  <TableCell align="left">
-                    <div className={styles.plantilla}>
-                      <Link
-                        to="/Plantilla_importacion_programaciones_DACoT.xlsx"
-                        target="_blank"
-                        download
-                        className={styles.text}>
-                        Descargar plantilla
-                      </Link>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          {/* <Button>Descargar plantilla</Button> */}
+          <img src={img} width="420" height="420" alt="" />
+          {/* <hr className="separador"></hr> */}
           <br></br>
-          {/* <Label>{img.name}</Label> */}
-          <hr className="separador"></hr>
+          {/* <hr className="separador"></hr> */}
         </div>
       )}
     </>

@@ -31,7 +31,7 @@ import ResumenProyecto from "./Campos/ResumenProyecto";
 import Cabezales from "./Campos/Cabezales";
 import Postes from "./Campos/Postes";
 import Controlador from "./Campos/Controlador";
-import Documentacion from "./Campos/Documentacion";
+import DocumentacionPDF from "./Campos/DocumentacionPDF";
 import DocumentacionProgramaciones from "./Campos/DocumentacionProgramaciones";
 import Etapas from "./Campos/Etapas";
 import Fases from "./Campos/Fases";
@@ -117,8 +117,8 @@ const NuevaInstalacion = (props) => {
   function getSteps() {
     return [
       "Información General",
-      "Programaciones",
-      "Documentación",
+      "Junctions",
+      "Complementarios",
       "Verificación",
     ];
   }
@@ -134,6 +134,13 @@ const NuevaInstalacion = (props) => {
               dispatch={dispatch}
             />
 
+            <DocumentacionPDF state={state} dispatch={dispatch} />
+
+            <DocumentacionProgramaciones
+              state={state.metadata.img}
+              dispatch={dispatch}
+            />
+
             <hr className="separador"></hr>
             <OTU state={state.otu} codigo={state.oid} dispatch={dispatch} />
             {/* <Equipamientos
@@ -144,26 +151,23 @@ const NuevaInstalacion = (props) => {
             <hr className="separador"></hr>
             <Controlador state={state.controller} dispatch={dispatch} />
 
-            <hr className="separador"></hr>
-            <Junctions state={state.otu.junctions} dispatch={dispatch} />
-
-            <hr className="separador"></hr>
-            <UPS state={state.ups} dispatch={dispatch} />
-
-            <hr className="separador"></hr>
-            <FormControlLabel
+            {/* <hr className="separador"></hr> */}
+            {/* <FormControlLabel
               control={<Switch checked={checked} onChange={handleChange} />}
               label="Campos No Obligatorios"
-            />
-            <Collapse in={checked}>
-              <Postes state={state.poles} dispatch={dispatch} />
-
-              <hr className="separador"></hr>
-              <Cabezales state={state.headers} dispatch={dispatch} />
-            </Collapse>
+              />
+            <Collapse in={checked}> */}
+            {/* </Collapse> */}
           </>
         );
       case 2:
+        return (
+          <>
+            {/* <hr className="separador"></hr> */}
+            <Junctions state={state.otu.junctions} dispatch={dispatch} />
+          </>
+        );
+        // return;
         return (
           <>
             <DocumentacionProgramaciones
@@ -195,13 +199,23 @@ const NuevaInstalacion = (props) => {
       case 3:
         return (
           <>
-            <Documentacion state={state} dispatch={dispatch} />
+            {/* <hr className="separador"></hr> */}
+            <UPS state={state.ups} dispatch={dispatch} />
+
             <hr className="separador"></hr>
-            <Observaciones state={state} dispatch={dispatch} />
+            <Postes state={state.poles} dispatch={dispatch} />
+
+            <hr className="separador"></hr>
+            <Cabezales state={state.headers} dispatch={dispatch} />
+            {/* <DocumentacionPDF state={state} dispatch={dispatch} />
+            <hr className="separador"></hr>
+            <Observaciones state={state} dispatch={dispatch} /> */}
           </>
         );
       case 4:
-        return <ResumenProyecto state={state} procesar={false} />;
+        return (
+          <ResumenProyecto state={state} dispatch={dispatch} procesar={false} />
+        );
 
       case 5:
         return (

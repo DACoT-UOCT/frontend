@@ -7,11 +7,11 @@ import { Label, CustomInput } from "reactstrap";
 const validar_pdf = (file) => {
   console.log(file.type);
 };
-const Documentacion = (props) => {
+const DocumentacionPDF = (props) => {
   const state = props.state;
   const dispatch = props.dispatch;
   return (
-    <>
+    <div style={{ marginTop: "2rem" }}>
       <legend>PDF de respaldo</legend>
       <Label>
         Favor de adjuntar un PDF con toda la informacion de la instalación, este
@@ -65,8 +65,8 @@ const Documentacion = (props) => {
           }}
         />
       </FormGroup> */}
-    </>
+    </div>
   );
 };
 
-export default Documentacion;
+export default DocumentacionPDF;

@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Siguiente = (props) => {
+  //este componente verifica la coherencia de los campos rellenados en el formulario
+  //cada vez que se presiona siguiente en el mismo
+  //Tambien muestra los errores en caso de haberlos
   const state = props.state;
   const dispatch = props.dispatch;
   const location = useLocation();
@@ -39,6 +42,7 @@ const Siguiente = (props) => {
     }
   };
 
+  const validar_vista1 = () => {};
   const validar_vista2 = () => {
     //VALIDA IMAGEN, ETAPAS, FASES, SECUENCIAS, MATRIZ DE ENTREVERDES
     const comprobacionEtapas = [];
@@ -115,42 +119,49 @@ const Siguiente = (props) => {
     }
   };
 
-  const consultar_oid_existente = () => {
+  const validar_vista3 = () => {};
+
+  async function consultar_oid_existente() {
     if (
       ["/nuevo/solicitud-integracion", "/nuevo/digitalizacion"].includes(
         location.pathname
       )
     ) {
       //consultar si existe oid actual, en cualquiera de los estados
-      GQLclient.request(CheckOtuExists, { oid: state.otu.oid })
-        .then((response) => {
-          console.log(response);
-
-          if (response.checkOtuExists) {
-            setOpen(true);
-            dispatch({
-              type: "error",
-              payLoad:
-                "El identificador " +
-                state.otu.oid +
-                " ya se encuentra registrado",
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+      try {
+        let resultado = await GQLclient.request(CheckOtuExists, {
+          oid: state.otu.oid,
         });
+        if (resultado.checkOtuExists) {
+          setOpen(true);
+          dispatch({
+            type: "error",
+            payLoad:
+              "El identificador " +
+              state.otu.oid +
+              " ya se encuentra registrado",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      // .then((response) => {
+      //   console.log(response);
+      //   )
+      // .catch((err) => {
+      //   console.log(err);
+      // });
     }
-  };
+  }
 
   const validar_formulario = () => {
     //revisar las variables 1 a una dependiendo de la vista
     dispatch({ type: "reset_errores" });
-    console.log(state);
+    // console.log(state);
     var metadata = state.metadata;
 
     if (["/editar/programacion"].includes(location.pathname)) {
-      //VALIDAR FORMULARIO DE PROGRAMACIONES
+      //VALIDAR FORMULARIO DE PROGRAMACIONES ACOTADO, NECESITA REVISION
       validar_entrada(metadata.commune, "Comuna");
       if (state.metadata.img === null) {
         setOpen(true);
@@ -160,11 +171,28 @@ const Siguiente = (props) => {
         });
         return;
       }
-      validar_vista2();
+      // validar_vista2();
     } else if (state.vista === 1) {
       //VALIDAR FORMULARIO DE TODA LA INFORMACION
-      validar_entrada(metadata.region, "Región");
+      // validar_entrada(metadata.region, "Región");
       validar_entrada(metadata.commune, "Comuna");
+      if (state.metadata.pdf_data === null) {
+        setOpen(true);
+        dispatch({
+          type: "error",
+          payLoad: "Ingrese PDF de respaldo",
+        });
+        // return;
+      }
+
+      if (state.metadata.img === null) {
+        setOpen(true);
+        dispatch({
+          type: "error",
+          payLoad: "Ingrese diagrama del cruce",
+        });
+        // return;
+      }
 
       var otu = state.otu;
       validar_entrada(otu.oid, "OTU - Codigo", /^(x|X)\d{5}0$/);
@@ -176,10 +204,26 @@ const Siguiente = (props) => {
       validar_entrada(otu.metadata.link_owner, "OTU - Tipo de enlace");
 
       var controller = state.controller;
-      validar_entrada(controller.address_reference, " Controlador - Ubicación");
+      // validar_entrada(controller.address_reference, " Controlador - Ubicación");
       //validar modelo valido
-      //validar_entrada(state.metadata.controller.model, " Controlador - Modelo");
+      validar_entrada(controller.model.company.name, " Controlador - Marca");
+      validar_entrada(controller.model.model, " Controlador - Modelo");
+      validar_entrada(
+        controller.model.firmware_version,
+        " Controlador - Firmware"
+      );
+    } else if (state.vista === 2) {
+      //validar que se ingresan los junction por el mapa
+      state.otu.junctions.map((junction, index) => {
+        //  validar_entrada(junction.id, "Junction - Código en Sistema");
+        validar_entrada(
+          junction.metadata.address_reference,
+          "Junction " + junction.jid + " - Especificar geolocalización"
+        );
+      });
 
+      // validar_vista2();
+    } else if (state.vista === 3) {
       var ups = state.ups;
       if (ups != undefined) {
         validar_entrada(ups.brand, "UPS - Marca");
@@ -187,25 +231,6 @@ const Siguiente = (props) => {
         validar_entrada(ups.serial, "UPS - N° Serie");
         validar_entrada(ups.capacity, "UPS - Capacidad");
         validar_entrada(ups.charge_duration, "UPS - Duración de carga");
-      }
-      //validar que se ingresan los junction por el mapa
-      state.otu.junctions.map((junction, index) => {
-        //  validar_entrada(junction.id, "Junction - Código en Sistema");
-        validar_entrada(
-          junction.metadata.address_reference,
-          "Junction - Cruce"
-        );
-      });
-    } else if (state.vista === 2) {
-      validar_vista2();
-    } else if (state.vista === 3) {
-      if (state.metadata.pdf_data === null) {
-        setOpen(true);
-        dispatch({
-          type: "error",
-          payLoad: "Ingrese PDF de respaldo",
-        });
-        return;
       }
     }
     dispatch({ type: "siguiente" });

@@ -193,47 +193,47 @@ export const procesar_json_envio = (state_copy, url) => {
   // state_copy.metadata.maintainer = "AUTER";
 
   //crear objeto secuencias
-  const sequences = [];
-  //{ seqid: 1, phases: [{ phid: 1, stages: [{ stid: "A", type: "" }] }] },
-  for (var i = 0; i < state_copy.otu.secuencias.length; i++) {
-    var secuencia = state_copy.otu.secuencias[i];
-    sequences.push({ seqid: i + 1, phases: new Array() });
-    for (var j = 0; j < secuencia.length; j++) {
-      var fase = secuencia[j];
-      sequences[i].phases.push({ phid: parseInt(fase), stages: new Array() });
-    }
-  }
+  // const sequences = [];
+  // //{ seqid: 1, phases: [{ phid: 1, stages: [{ stid: "A", type: "" }] }] },
+  // for (var i = 0; i < state_copy.otu.secuencias.length; i++) {
+  //   var secuencia = state_copy.otu.secuencias[i];
+  //   sequences.push({ seqid: i + 1, phases: new Array() });
+  //   for (var j = 0; j < secuencia.length; j++) {
+  //     var fase = secuencia[j];
+  //     sequences[i].phases.push({ phid: parseInt(fase), stages: new Array() });
+  //   }
+  // }
 
-  sequences.map((secuencia, seqIndex) => {
-    secuencia.phases.map((faseSeq, faseSeqIndex) => {
-      state_copy.otu.fases.map((faseCpy, faseCpyIndex) => {
-        if (faseSeq.phid == faseCpyIndex + 1) {
-          //agregar etapas
-          for (var i = 0; i < faseCpy.length; i++) {
-            for (var j = 0; j < state_copy.otu.stages.length; j++) {
-              if (state_copy.otu.stages[j][0] == faseCpy[i]) {
-                faseSeq.stages.push({
-                  stid: faseCpy[i][0],
-                  type: state_copy.otu.stages[j][1],
-                });
-              }
-            }
-          }
-        }
-      });
-    });
-  });
-  state_copy.otu.sequences = sequences;
+  // sequences.map((secuencia, seqIndex) => {
+  //   secuencia.phases.map((faseSeq, faseSeqIndex) => {
+  //     state_copy.otu.fases.map((faseCpy, faseCpyIndex) => {
+  //       if (faseSeq.phid == faseCpyIndex + 1) {
+  //         //agregar etapas
+  //         for (var i = 0; i < faseCpy.length; i++) {
+  //           for (var j = 0; j < state_copy.otu.stages.length; j++) {
+  //             if (state_copy.otu.stages[j][0] == faseCpy[i]) {
+  //               faseSeq.stages.push({
+  //                 stid: faseCpy[i][0],
+  //                 type: state_copy.otu.stages[j][1],
+  //               });
+  //             }
+  //           }
+  //         }
+  //       }
+  //     });
+  //   });
+  // });
+  // state_copy.otu.sequences = sequences;
 
   //juntar lista entreverdes en intergreens
-  var intergreens = [];
-  for (var i = 0; i < state_copy.otu.entreverdes.length; i++) {
-    var aux = state_copy.otu.entreverdes[i];
-    for (var j = 0; j < aux.length; j++) {
-      intergreens.push(state_copy.otu.entreverdes[i][j]);
-    }
-  }
-  state_copy.otu.intergreens = intergreens;
+  // var intergreens = [];
+  // for (var i = 0; i < state_copy.otu.entreverdes.length; i++) {
+  //   var aux = state_copy.otu.entreverdes[i];
+  //   for (var j = 0; j < aux.length; j++) {
+  //     intergreens.push(state_copy.otu.entreverdes[i][j]);
+  //   }
+  // }
+  // state_copy.otu.intergreens = intergreens;
 
   //detalles graphql mutation
   state_copy.controller.model.company =
@@ -249,8 +249,8 @@ export const procesar_json_envio = (state_copy, url) => {
   delete state_copy.metadata.status_date;
   delete state_copy.ups_backup;
   //cambios de modelo otu / junction
-  delete state_copy.otu.intergreens;
-  delete state_copy.otu.sequences;
+  // delete state_copy.otu.intergreens;
+  // delete state_copy.otu.sequences;
 
   //eliminar etapas, fases secuencias de frontend
   delete state_copy.otu.stages;

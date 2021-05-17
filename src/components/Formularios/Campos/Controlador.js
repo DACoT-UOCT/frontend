@@ -184,7 +184,7 @@ const Controlador = (props) => {
                 {" "}
                 <TableRow>
                   <TableCell component="th" scope="row">
-                    <Label>Versión</Label>
+                    <Label>Versión de firmware</Label>
                   </TableCell>
                   <TableCell align="left">
                     <Campo
@@ -258,7 +258,7 @@ const Controlador = (props) => {
               </>
             )}
 
-            <TableRow>
+            {/* <TableRow>
               <TableCell component="th" scope="row">
                 <Label>Ubicación</Label>
               </TableCell>
@@ -304,7 +304,7 @@ const Controlador = (props) => {
                   ]}
                 />
               )}
-            </TableRow>
+            </TableRow> */}
 
             <TableRow>
               <TableCell component="th" scope="row">
