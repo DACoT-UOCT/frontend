@@ -37,7 +37,7 @@ const MapaConsulta = (props) => {
     properties: { cluster: false, jid: junction.jid },
     geometry: {
       type: "Point",
-      coordinates: [junction.coordinates[1], junction.coordinates[0]],
+      coordinates: [junction.lon, junction.lat],
     },
   }));
 
@@ -73,7 +73,7 @@ const MapaConsulta = (props) => {
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({ map }) => {
               mapRef.current = map;
-              console.log(map);
+              // console.log(map);
             }}
             onChange={(e) => {
               console.log(e.zoom);
@@ -87,10 +87,8 @@ const MapaConsulta = (props) => {
             }}>
             {clusters.map((cluster) => {
               const [longitude, latitude] = cluster.geometry.coordinates;
-              const {
-                cluster: isCluster,
-                point_count: pointCount,
-              } = cluster.properties;
+              const { cluster: isCluster, point_count: pointCount } =
+                cluster.properties;
 
               if (isCluster) {
                 return (

@@ -23,7 +23,7 @@ Geocode.setRegion("cl");
 Geocode.enableDebug();
 
 const Marker = ({ children }) => children;
-const MapaConsulta = (props) => {
+const MapaFormulario = (props) => {
   const [stateMapa, dispatchMapa] = useImmerReducer(
     Mapareducer,
     MapainitialState
@@ -186,10 +186,8 @@ const MapaConsulta = (props) => {
               }}>
               {clusters.map((cluster) => {
                 const [longitude, latitude] = cluster.geometry.coordinates;
-                const {
-                  cluster: isCluster,
-                  point_count: pointCount,
-                } = cluster.properties;
+                const { cluster: isCluster, point_count: pointCount } =
+                  cluster.properties;
                 // console.log(cluster);
 
                 if (isCluster) {
@@ -260,4 +258,4 @@ const MapaConsulta = (props) => {
   );
 };
 
-export default React.memo(MapaConsulta);
+export default React.memo(MapaFormulario);

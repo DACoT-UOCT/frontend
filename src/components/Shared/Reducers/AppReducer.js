@@ -1,5 +1,3 @@
-import { Redirect } from "react-router-dom";
-
 // full_name: "ACME Employee",
 // email: "employee@acmecorp.com",
 // rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'

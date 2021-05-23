@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../../../App.css";
 import { Button } from "reactstrap";
+import styles from "./Verificacion.module.css";
 import {
   Table,
   TableBody,
@@ -14,6 +15,7 @@ import {
   styled,
 } from "@material-ui/core";
 import MapaFormulario from "../MapaFormulario";
+import { RoundedCorner } from "@material-ui/icons";
 
 const Campo = styled(TextField)({
   background: "none",
@@ -26,140 +28,235 @@ const Junctions = (props) => {
   const [openMapa, setOpenMapa] = React.useState(false);
 
   return (
-    <>
+    <div className={styles.resume}>
       <legend className="seccion">Junctions</legend>
       <h6>
-        Identificar y ubicar los junctions presentes en el proyecto. Usar mapa
-        para la localización. Especificar si el cruce tendrá usará el entreverde
-        vehicular por defecto en su programación.(4s) Tambien señalar las fases
-        del cruce
+        Identificar y ubicar los junctions presentes en el proyecto usando el
+        mapa para la localizarlos. Especificar si el cruce usará entreverde
+        vehicular por defecto de 4 segundos para sus programaciones. Tambien
+        señalar las fases del cruce con sus respectivas etapas separadas por un
+        guión (Ej. A-B-C-D).
       </h6>
       <TableContainer>
         <Table size="small" aria-label="simple table">
           <TableBody>
-            {junctions.map((junction, index) => {
+            {junctions.map((junction, junction_index) => {
               return (
                 <>
-                  {/* <TableRow> */}
-                  {/* <TableCell component="th" scope="row">
-                      <Campo
-                      disabled
-                      id="standard"
-                      label="Código en Sistema"
-                      variant="standard"
-                      name="junction"
-                      placeholder="J000000"
-                      autoComplete="off"
-                      value={junction.jid}
-                      />
-                    </TableCell> */}
                   <h2 className="junction-label">
                     {junction.jid ? junction.jid : "Código junction"}
                   </h2>
                   <div className="junction-info">
-                    <TableRow>
-                      <TableCell align="left">
-                        <Campo
-                          disabled
-                          id="standard"
-                          label="Especificar ubicación con el mapa"
-                          variant="standard"
-                          name="cruce"
-                          placeholder="Calle - Calle"
-                          autoComplete="off"
-                          style={{ width: "550px" }}
-                          value={
-                            junction.metadata.address_reference !== ""
-                              ? junction.metadata.address_reference
-                              : ""
-                          }
-                        />
-                      </TableCell>
-                      <TableCell align="left">
-                        <Button
-                          onClick={() => {
-                            setOpenMapa(true);
-                            setIndex(index);
-                          }}>
-                          Mapa
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell align="left">Entreverde vehicular</TableCell>
-                      <TableCell align="left">
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              color="primary"
-                              checked={true}
-                              // onChange={(e) =>
-                              //   dispatch({
-                              //     type: "entreverde_vehicular",
-                              //     fieldName: "scoot_detector",
-                              //     payLoad: !metadata.scoot_detector,
-                              //   })
-                              // }
-                              name="gilad"
-                            />
-                          }
-                        />
-                      </TableCell>
-                    </TableRow>
-                    {[1, 2, 3].map((fase, faseIndex) => {
-                      return (
-                        <>
-                          <TableRow>
-                            <TableCell align="left">{"F" + fase}</TableCell>
-                            <TableCell align="left">
-                              <Campo
-                                id="standard"
-                                label="Definir cruce mediante mapa"
-                                variant="standard"
-                                name="cruce"
-                                placeholder="Calle - Calle"
-                                autoComplete="off"
-                                style={{ width: "550px" }}
-                                value={"A-B-C"}
-                              />
-                            </TableCell>
-                          </TableRow>
-                        </>
-                      );
-                    })}
+                    <div>
+                      {/* <h5> Fases</h5> */}
+                      <table>
+                        <thead>
+                          <th>Fase</th>
+                          <th>Etapas</th>
+                        </thead>
+                        <tbody>
+                          {junction.phases.map((fase, phase_index) => {
+                            return (
+                              <>
+                                <tr>
+                                  <td>{"F " + (phase_index + 1)}</td>
+                                  <td
+                                    style={{
+                                      borderRight: "solid 1px #034472",
+                                    }}>
+                                    <Campo
+                                      id="standard-select-currency-native"
+                                      // defaultValue="No registrado"
+                                      value={fase}
+                                      label="Fase"
+                                      variant="standard"
+                                      name="tipo"
+                                      autoComplete="off"
+                                      placeholder="A-B-C"
+                                      SelectProps={{
+                                        native: true,
+                                      }}
+                                      onChange={(e) => {
+                                        dispatch({
+                                          type: "fase_input",
+                                          junction_index: junction_index,
+                                          phase_index: phase_index,
+                                          payLoad: e.currentTarget.value,
+                                        });
+                                      }}></Campo>
+                                  </td>
+                                </tr>
+                              </>
+                            );
+                          })}
+                          <tr>
+                            <td
+                              style={{ padding: "0", paddingTop: "2px" }}
+                              colSpan={2}>
+                              <Button
+                                style={{ width: "50%" }}
+                                disabled={junction.phases.length == 1}
+                                onClick={() =>
+                                  dispatch({
+                                    type: "eliminar_fase",
+                                    junction_index: junction_index,
+                                  })
+                                }>
+                                Eliminar
+                              </Button>
+                              <Button
+                                color="success"
+                                style={{ width: "50%" }}
+                                onClick={() =>
+                                  dispatch({
+                                    type: "agregar_fase",
+                                    junction_index: junction_index,
+                                  })
+                                }>
+                                Añadir
+                              </Button>
+                            </td>
+                            <td
+                              style={{ padding: "0", paddingTop: "2px" }}></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div>
+                      <TableContainer>
+                        <Table size="small" aria-label="simple table">
+                          <TableBody>
+                            <TableRow>
+                              <TableCell align="left">
+                                Entreverde vehicular 4s
+                              </TableCell>
+                              <TableCell align="left">
+                                <FormControlLabel
+                                  control={
+                                    <Checkbox
+                                      color="primary"
+                                      checked={
+                                        junction.metadata.use_default_vi4
+                                      }
+                                      onChange={(e) =>
+                                        dispatch({
+                                          type: "entreverde_vehicular_default",
+                                          junction_index: junction_index,
+                                          payLoad:
+                                            !junction.metadata.use_default_vi4,
+                                        })
+                                      }
+                                      name="gilad"
+                                    />
+                                  }
+                                />
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell align="left">
+                                Ubicación del cruce
+                              </TableCell>
+                              <TableCell align="left">
+                                <Campo
+                                  // disabled
+                                  id="standard"
+                                  label="Especificar ubicación en el mapa"
+                                  variant="standard"
+                                  name="cruce"
+                                  placeholder="Calle - Calle"
+                                  autoComplete="off"
+                                  InputLabelProps={{ shrink: true }}
+                                  style={{ width: "25rem" }}
+                                  value={
+                                    junction.metadata.address_reference !== ""
+                                      ? junction.metadata.address_reference
+                                      : ""
+                                  }
+                                  onChange={(e) => {
+                                    dispatch({
+                                      type: "junction_address",
+                                      junction_index: junction_index,
+                                      payLoad: e.currentTarget.value,
+                                    });
+                                  }}
+                                />
+                              </TableCell>
+                              {/* <TableCell align="left">
+                                <Button
+                                  onClick={() => {
+                                    setOpenMapa(true);
+                                    setIndex(index);
+                                  }}>
+                                  Mapa
+                                </Button>
+                              </TableCell> */}
+                            </TableRow>
+                            <TableRow>
+                              <TableCell>Coordenadas</TableCell>
+                              <TableCell>
+                                {junction.metadata.location.coordinates !== null
+                                  ? "LAT: " +
+                                    junction.metadata.location.coordinates[0].toFixed(
+                                      5
+                                    ) +
+                                    " / LON: " +
+                                    junction.metadata.location.coordinates[1].toFixed(
+                                      5
+                                    )
+                                  : "Ingrese ubicación usando el mapa"}
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                      <Button
+                        color="info"
+                        onClick={() => {
+                          setOpenMapa(true);
+                          setIndex(junction_index);
+                        }}>
+                        Mapa
+                      </Button>
+                    </div>
                   </div>
                 </>
               );
             })}
-
-            {junctions.length < 9 && (
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  <Button
-                    color="success"
-                    onClick={() => {
-                      dispatch({ type: "agregar_junction" });
-                    }}>
-                    Agregar junction
-                  </Button>
-                </TableCell>
-              </TableRow>
-            )}
-            {junctions.length > 1 && (
-              <>
-                <TableRow>
-                  <TableCell align="left">
-                    <Button
-                      onClick={() => dispatch({ type: "eliminar_junction" })}>
-                      Eliminar
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              </>
-            )}
           </TableBody>
         </Table>
       </TableContainer>
+
+      <div className="junction-buttons">
+        {junctions.length > 1 && (
+          <>
+            {/* <TableRow>
+              <TableCell align="left"> */}
+            <Button
+              size="lg"
+              onClick={() => dispatch({ type: "eliminar_junction" })}>
+              Eliminar
+            </Button>
+            {/* </TableCell>
+            </TableRow> */}
+          </>
+        )}
+        {junctions.length < 9 && (
+          // <TableRow>
+          //   <TableCell component="th" scope="row">
+          <Button
+            size="lg"
+            color="success"
+            onClick={() => {
+              dispatch({ type: "agregar_junction" });
+            }}>
+            Agregar junction
+          </Button>
+          //   </TableCell>
+          // </TableRow>
+        )}
+      </div>
+      <hr className="separador"></hr>
+
       {openMapa && (
         <MapaFormulario
           dispatch={dispatch}
@@ -173,13 +270,13 @@ const Junctions = (props) => {
             .map((junction) => {
               return {
                 jid: junction.jid,
-                coordinates: junction.metadata.coordinates,
+                coordinates: junction.metadata.location.coordinates,
               };
             })
-            .filter((junction) => junction.coordinates !== "pointField")}
+            .filter((junction) => junction.coordinates !== null)}
         />
       )}
-    </>
+    </div>
   );
 };
 

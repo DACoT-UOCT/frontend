@@ -24,22 +24,15 @@ const BarraBusqueda = (props) => {
   const [dataConsultada, setDataConsultada] = useState(null);
   const [previewOpen, setPreviewOpen] = useState(false);
 
-  const coordinatesQuery = useQuery(GetCoordinates, (data) => {
-    console.log(data);
-    var temp = data.projects.map((proyecto) => {
-      console.log("consultando mapa");
-      return proyecto.otu.junctions.map((junction) => {
-        return {
-          jid: junction.jid,
-          coordinates: junction.metadata.location.coordinates,
-        };
-      });
-    });
-    // console.log(data);
-    // console.log([].concat.apply([], temp));
-    setJunctions([].concat.apply([], temp));
-    // console.log(junctions);
-  });
+  const coordinatesQuery = useQuery(
+    GetCoordinates,
+    (data) => {
+      console.log(data.locations);
+      setJunctions(data.locations);
+      // console.log(junctions);
+    },
+    { status: "NEW" }
+  );
 
   const buscar = (id_consultado) => {
     // dispatch({
@@ -100,7 +93,9 @@ const BarraBusqueda = (props) => {
             disabled={coordinatesQuery.status !== "success"}
             color="info"
             onClick={() => setOpenMapa(true)}>
-            Buscar con mapa
+            {coordinatesQuery.status == "success"
+              ? "Buscar con mapa"
+              : "Cargando Mapa"}
           </Button>
         </div>
       </div>

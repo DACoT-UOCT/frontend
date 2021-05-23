@@ -4,6 +4,7 @@ export const initialState = {
   version: "",
   checksum: "",
   fecha: "",
+  id: "",
 
   controladores: [],
   loading: false,

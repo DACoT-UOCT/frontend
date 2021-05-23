@@ -126,7 +126,7 @@ export const GetProject = gql`
         scootDetector
         statusDate
         statusUser {
-          full_name: fullName
+          fullName
         }
         version
       }
@@ -154,7 +154,9 @@ export const GetProject = gql`
               coordinates
             }
             salesId
+            useDefaultVi4
           }
+          phases
           plans {
             cycle
             plid
@@ -242,18 +244,11 @@ export const GetProject = gql`
 `;
 
 export const GetCoordinates = gql`
-  {
-    projects(status: "PRODUCTION") {
-      otu {
-        junctions {
-          jid
-          metadata {
-            location {
-              coordinates
-            }
-          }
-        }
-      }
+  query locations($status: String!) {
+    locations(status: $status) {
+      jid
+      lat
+      lon
     }
   }
 `;
@@ -353,7 +348,7 @@ export const GetVersion = gql`
         scootDetector
         statusDate
         statusUser {
-          full_name: fullName
+          fullName
         }
         version
       }
@@ -381,7 +376,9 @@ export const GetVersion = gql`
               coordinates
             }
             salesId
+            useDefaultVi4
           }
+          phases
           plans {
             cycle
             plid

@@ -22,7 +22,6 @@ import { getFecha } from "../../Shared/Utils/general_functions";
 import { useQuery } from "../../../GraphQL/useQuery";
 import { GetControllers } from "../../../GraphQL/Queries";
 import { getDate } from "date-fns";
-import MapaConsulta from "../../Inicio/MapaConsulta";
 import MapaFormulario from "../MapaFormulario";
 
 Geocode.setApiKey("AIzaSyA1-WTtheQWOcQSW4elD1bgWE_WZsCOous");

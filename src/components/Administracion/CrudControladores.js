@@ -17,18 +17,34 @@ import { useQuery } from "../../GraphQL/useQuery";
 import { GetControllers } from "../../GraphQL/Queries";
 import Loading from "../Shared/Loading";
 import { getFecha } from "../Shared/Utils/general_functions";
+import { GQLclient } from "../App";
+import { deleteController } from "../../GraphQL/Mutations";
+import { useHistory } from "react-router-dom";
 
 const CrudControladores = () => {
   const [newOpen, setNewOpen] = useState(false);
   const [closeOpen, setCloseOpen] = useState(false);
   const [state, dispatch] = useImmerReducer(reducer, initialState);
+  const history = useHistory();
 
   const controladoresQuery = useQuery(GetControllers, (data) => {
     dispatch({ type: "controladores", payLoad: data.controllerModels });
   });
 
-  const eliminar_controlador = (id) => {
-    console.log("eliminando " + id);
+  const eliminar_controlador = (_cid) => {
+    // console.log("eliminando " + id);
+    GQLclient.request(deleteController, {
+      cid: _cid,
+    })
+      .then((response) => {
+        alert("Controlador eliminado");
+        history.go(0);
+        // props.setOpen(false);
+      })
+      .catch((err) => {
+        alert("Error en el envio");
+        console.log(err);
+      });
   };
 
   if (
@@ -93,6 +109,7 @@ const CrudControladores = () => {
                         dispatch({
                           type: "delete_backup",
                           payLoad: {
+                            id: controlador.id,
                             company: controlador.company,
                             model: controlador.model,
                             firmwareVersion: controlador.firmwareVersion,
@@ -151,7 +168,7 @@ const CrudControladores = () => {
             </Button>
             <Button
               onClick={() => {
-                eliminar_controlador(" dx");
+                eliminar_controlador(state.delete_backup.id);
               }}>
               Eliminar
             </Button>

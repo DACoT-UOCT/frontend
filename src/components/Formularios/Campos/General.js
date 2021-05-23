@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../../App.css";
 import styles from "./Campos.module.css";
 import { Label } from "reactstrap";
@@ -17,6 +17,7 @@ import {
 import { useQuery } from "../../../GraphQL/useQuery";
 import { GetCommunes } from "../../../GraphQL/Queries";
 import Loading from "../../Shared/Loading";
+import { StateContext } from "../../App";
 
 const Campo = styled(TextField)({
   background: "none",
@@ -26,6 +27,7 @@ const General = (props) => {
   const metadata = props.state;
   const dispatch = props.dispatch;
   const [comunas, setComunas] = useState([]);
+  const global_context = useContext(StateContext);
   const comunasQuery = useQuery(GetCommunes, (data) => {
     setComunas(data.communes);
   });
@@ -35,9 +37,9 @@ const General = (props) => {
       <legend className="seccion">Información general del proyecto</legend>
       <h6>
         Los siguientes campos son requeridos para el registro de nuevas
-        instalaciones. Para el caso de instalaciones antiguas con información
-        faltante, se recomienda actualizar su información de programaciones en
-        el siguiente formulario.
+        instalaciones.
+        {global_context.rol == "Personal UOCT" &&
+          "Al ingresar los datos con una cuenta UOCT, estos quedarán guardados sin revisiones posteriores. Para instalaciones antiguas con información faltante en este sistema, se recomienda mantener los campos de imagen de cruce, modelo de controlador, etapas y entreverdes vehiculares actualizados."}
       </h6>
       <TableContainer className={styles.form}>
         <Table size="small" aria-label="simple table">

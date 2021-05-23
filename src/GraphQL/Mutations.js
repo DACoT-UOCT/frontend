@@ -65,3 +65,9 @@ export const createProject = gql`
     }
   }
 `;
+
+export const deleteController = gql`
+  mutation deleteController($cid: String!) {
+    deleteController(cid: $cid)
+  }
+`;

@@ -43,7 +43,16 @@ export const initialState = {
     junctions: [
       {
         jid: "",
-        metadata: { coordinates: "pointField", address_reference: "" },
+        metadata: {
+          location: {
+            type: "Point",
+            coordinates: null,
+          },
+          address_reference: "",
+          use_default_vi4: true,
+          sales_id: 0,
+        },
+        phases: ["", ""],
         //plans: "",  //se asignan cuando se lee el SC
       },
     ],
@@ -152,7 +161,7 @@ export const initialState = {
     "REGISTRAR OBSERVACIONES DE INTERÉS \nSolicitud de integración ingresada desde el sistema DACoT",
 
   errors: [],
-  vista: 1,
+  vista: 2,
   submit: false,
   isLoading: true,
   success: false,
@@ -270,7 +279,7 @@ export function reducer(draft, action) {
       if (action.fieldName === "address_reference") {
         draft.otu[action.type][action.index].metadata.address_reference =
           action.address;
-        draft.otu[action.type][action.index].metadata.coordinates =
+        draft.otu[action.type][action.index].metadata.location.coordinates =
           action.coordinates;
       } else {
         draft.otu[action.type][action.index][action.fieldName] = action.payLoad;
@@ -279,16 +288,12 @@ export function reducer(draft, action) {
     }
 
     case "agregar_junction": {
-      //CHECKED
       const name =
         "J" +
         draft.otu.oid.slice(1, 6) +
         (draft.otu.junctions.length + 1).toString();
-      const nuevo = {
-        jid: name,
-        metadata: { coordinates: "pointField", address_reference: "" },
-        //plans: "",  //se asignan cuando se lee el SC
-      };
+      const nuevo = JSON.parse(JSON.stringify(initialState)).otu.junctions[0];
+      nuevo.jid = name;
       draft.otu.junctions.push(nuevo);
       return;
     }
@@ -366,9 +371,9 @@ export function reducer(draft, action) {
 
     case "stage": {
       if (action.fieldName === 0) {
-        draft.otu.stages[action.index][
-          action.fieldName
-        ] = action.payLoad.replace(/\s/g, "").replace(/[^a-zA-Z]/g, "");
+        draft.otu.stages[action.index][action.fieldName] = action.payLoad
+          .replace(/\s/g, "")
+          .replace(/[^a-zA-Z]/g, "");
       } else {
         draft.otu.stages[action.index][action.fieldName] = action.payLoad;
       }
@@ -426,6 +431,7 @@ export function reducer(draft, action) {
       }
       return;
     }
+
     case "fase": {
       const lista = action.payLoad
         .replace(/\s/g, "")
@@ -441,12 +447,30 @@ export function reducer(draft, action) {
     }
 
     case "agregar_fase": {
-      draft.otu.fases.push([]);
+      draft.otu.junctions[action.junction_index].phases.push("");
       return;
     }
 
     case "eliminar_fase": {
-      draft.otu.fases.pop();
+      draft.otu.junctions[action.junction_index].phases.pop();
+      return;
+    }
+
+    case "fase_input": {
+      draft.otu.junctions[action.junction_index].phases[action.phase_index] =
+        action.payLoad;
+      return;
+    }
+
+    case "junction_address": {
+      draft.otu.junctions[action.junction_index].metadata.address_reference =
+        draft.payLoad;
+      return;
+    }
+
+    case "entreverde_vehicular_default": {
+      draft.otu.junctions[action.junction_index].metadata.use_default_vi4 =
+        action.payLoad;
       return;
     }
 
