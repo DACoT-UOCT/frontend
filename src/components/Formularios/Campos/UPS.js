@@ -32,7 +32,7 @@ const UPS = (props) => {
           <TableBody>
             <TableRow>
               <TableCell component="th" scope="row">
-                <Label>¿Aplica?</Label>
+                <Label>¿Aplica a esta instalación?</Label>
               </TableCell>
               <TableCell align="left">
                 <FormControlLabel

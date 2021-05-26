@@ -28,7 +28,7 @@ const Cabezales = (props) => {
       <legend className="seccion">Cabezales</legend>
       <h6>
         Ingresar cantidad de cabezales halógenos y led de cada tipo,
-        considerando toda la instalación
+        considerando el total para todos los junctions.
       </h6>
       <TableContainer style={{ width: "70%", "overflow-x": "hidden" }}>
         <Table size="small" aria-label="simple table">

@@ -464,7 +464,7 @@ export function reducer(draft, action) {
 
     case "junction_address": {
       draft.otu.junctions[action.junction_index].metadata.address_reference =
-        draft.payLoad;
+        action.payLoad;
       return;
     }
 

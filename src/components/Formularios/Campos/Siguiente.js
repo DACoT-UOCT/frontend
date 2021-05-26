@@ -216,10 +216,30 @@ const Siguiente = (props) => {
       //validar que se ingresan los junction por el mapa
       state.otu.junctions.map((junction, index) => {
         //  validar_entrada(junction.id, "Junction - Código en Sistema");
+        console.log(junction.metadata);
         validar_entrada(
           junction.metadata.address_reference,
-          "Junction " + junction.jid + " - Especificar geolocalización"
+          "Junction " + junction.jid + " - Ubicación no válida"
         );
+        if (junction.metadata.location.coordinates == null) {
+          setOpen(true);
+          dispatch({
+            type: "error",
+            payLoad:
+              "Ingrese las coordenadas del cruce " +
+              junction.jid +
+              " a traves del mapa",
+          });
+        }
+        junction.phases.map((phase, phaseIndex) => {
+          validar_entrada(
+            phase,
+            "Especificar etapas de la fase " +
+              (phaseIndex + 1) +
+              " - " +
+              junction.jid
+          );
+        });
       });
 
       // validar_vista2();

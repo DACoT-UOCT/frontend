@@ -33,13 +33,9 @@ import Postes from "./Campos/Postes";
 import Controlador from "./Campos/Controlador";
 import DocumentacionPDF from "./Campos/DocumentacionPDF";
 import DocumentacionProgramaciones from "./Campos/DocumentacionProgramaciones";
-import Etapas from "./Campos/Etapas";
-import Fases from "./Campos/Fases";
-import Secuencias from "./Campos/Secuencias";
-import Entreverdes from "./Campos/Entreverdes";
-import Observaciones from "./Campos/Observaciones";
 import { GQLclient } from "../App";
 import { createProject } from "../../GraphQL/Mutations";
+import Success from "../Shared/Success";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -59,32 +55,23 @@ const useStyles = makeStyles((theme) => ({
 
 const NuevaInstalacion = (props) => {
   const location = useLocation();
-
   const [state, dispatch] = useImmerReducer(
     reducer,
     ["/nuevo/solicitud-actualizacion", "/editar/instalacion"].includes(
       location.pathname
     )
-      ? JSON.parse(JSON.stringify(props.state.actualizando)) //si se esta actualizando
-      : initialState //si se esta rellenando un formulario vacio
-  );
-
-  const [checked, setChecked] = React.useState(
-    //switch campos no obligatorios
-    ["/nuevo/solicitud-actualizacion", "/editar/instalacion"].includes(
-      location.pathname
-    )
-      ? true
-      : false
+      ? JSON.parse(JSON.stringify(props.state.actualizando)) //si se esta actualizando una instalacion existente
+      : initialState //si se esta rellenando un formulario nuevo
   );
 
   //STEPPER
   const classes = useStyles();
-  const steps = getSteps();
-
-  const handleChange = () => {
-    setChecked((prev) => !prev);
-  };
+  const steps = [
+    "Información General",
+    "Junctions",
+    "Complementarios",
+    "Verificación",
+  ];
 
   useEffect(() => {
     if (state.submit === true) {
@@ -114,15 +101,6 @@ const NuevaInstalacion = (props) => {
     }
   }, [state.submit]);
 
-  function getSteps() {
-    return [
-      "Información General",
-      "Junctions",
-      "Complementarios",
-      "Verificación",
-    ];
-  }
-
   function getStepContent(stepIndex) {
     switch (stepIndex) {
       case 1:
@@ -143,21 +121,9 @@ const NuevaInstalacion = (props) => {
 
             <hr className="separador"></hr>
             <OTU state={state.otu} codigo={state.oid} dispatch={dispatch} />
-            {/* <Equipamientos
-              state={state.metadata.otu.equipamientos}
-              dispatch={dispatch}
-            /> */}
 
             <hr className="separador"></hr>
             <Controlador state={state.controller} dispatch={dispatch} />
-
-            {/* <hr className="separador"></hr> */}
-            {/* <FormControlLabel
-              control={<Switch checked={checked} onChange={handleChange} />}
-              label="Campos No Obligatorios"
-              />
-            <Collapse in={checked}> */}
-            {/* </Collapse> */}
           </>
         );
       case 2:
@@ -167,35 +133,7 @@ const NuevaInstalacion = (props) => {
             <Junctions state={state.otu.junctions} dispatch={dispatch} />
           </>
         );
-        // return;
-        return (
-          <>
-            <DocumentacionProgramaciones
-              state={state.metadata.img}
-              dispatch={dispatch}
-            />
-            {state.metadata.img && (
-              <>
-                <Etapas state={state.otu.stages} dispatch={dispatch} />
 
-                <hr className="separador"></hr>
-                <Fases state={state.otu.fases} dispatch={dispatch} />
-
-                <hr className="separador"></hr>
-                <Secuencias state={state.otu.secuencias} dispatch={dispatch} />
-
-                <hr className="separador"></hr>
-                <Entreverdes
-                  entreverdes={state.otu.entreverdes}
-                  stages={state.otu.stages}
-                  dispatch={dispatch}
-                />
-              </>
-            )}
-
-            <hr className="separador"></hr>
-          </>
-        );
       case 3:
         return (
           <>
@@ -207,15 +145,10 @@ const NuevaInstalacion = (props) => {
 
             <hr className="separador"></hr>
             <Cabezales state={state.headers} dispatch={dispatch} />
-            {/* <DocumentacionPDF state={state} dispatch={dispatch} />
-            <hr className="separador"></hr>
-            <Observaciones state={state} dispatch={dispatch} /> */}
           </>
         );
       case 4:
-        return (
-          <ResumenProyecto state={state} dispatch={dispatch} procesar={false} />
-        );
+        return <ResumenProyecto state={state} dispatch={dispatch} />;
 
       case 5:
         return (
@@ -223,16 +156,28 @@ const NuevaInstalacion = (props) => {
             {state.isLoading ? (
               <Loading />
             ) : (
-              <div>
-                <Typography className={classes.instructions}>
-                  {state.success
-                    ? "Formulario enviado con exito"
-                    : "Error de envío del formulario, si el problema persiste contactar con el administrador"}
-                </Typography>
-                <Link to="/">
-                  <span>Volver al inicio</span>
-                </Link>
-              </div>
+              <>
+                <Success
+                  success={state.success}
+                  mensaje={
+                    state.success
+                      ? "Formulario enviado con exito"
+                      : "Error de envío del formulario, si el problema persiste contactar con el administrador"
+                  }
+                />
+                /
+              </>
+              // <Success mensaje="Solicitud ingresada con éxito" />
+              // <div>
+              //   <Typography className={classes.instructions}>
+              //     {state.success
+              //       ? "Formulario enviado con exito"
+              //       : "Error de envío del formulario, si el problema persiste contactar con el administrador"}
+              //   </Typography>
+              //   <Link to="/">
+              //     <span>Volver al inicio</span>
+              //   </Link>
+              // </div>
             )}
           </>
         );
@@ -290,7 +235,7 @@ const NuevaInstalacion = (props) => {
                   {getStepContent(state.vista)}
                 </Typography>
 
-                {state.vista < 6 && (
+                {state.vista < 5 && (
                   <div
                     style={{
                       flexGrow: "1",

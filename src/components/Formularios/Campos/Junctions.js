@@ -127,29 +127,18 @@ const Junctions = (props) => {
                         <Table size="small" aria-label="simple table">
                           <TableBody>
                             <TableRow>
-                              <TableCell align="left">
-                                Entreverde vehicular 4s
-                              </TableCell>
-                              <TableCell align="left">
-                                <FormControlLabel
-                                  control={
-                                    <Checkbox
-                                      color="primary"
-                                      checked={
-                                        junction.metadata.use_default_vi4
-                                      }
-                                      onChange={(e) =>
-                                        dispatch({
-                                          type: "entreverde_vehicular_default",
-                                          junction_index: junction_index,
-                                          payLoad:
-                                            !junction.metadata.use_default_vi4,
-                                        })
-                                      }
-                                      name="gilad"
-                                    />
-                                  }
-                                />
+                              <TableCell>Coordenadas</TableCell>
+                              <TableCell>
+                                {junction.metadata.location.coordinates !== null
+                                  ? "LAT: " +
+                                    junction.metadata.location.coordinates[0].toFixed(
+                                      5
+                                    ) +
+                                    " / LON: " +
+                                    junction.metadata.location.coordinates[1].toFixed(
+                                      5
+                                    )
+                                  : "Ingrese ubicación usando el mapa"}
                               </TableCell>
                             </TableRow>
                             <TableRow>
@@ -160,7 +149,7 @@ const Junctions = (props) => {
                                 <Campo
                                   // disabled
                                   id="standard"
-                                  label="Especificar ubicación en el mapa"
+                                  // label="Especificar ubicación en el mapa"
                                   variant="standard"
                                   name="cruce"
                                   placeholder="Calle - Calle"
@@ -191,19 +180,31 @@ const Junctions = (props) => {
                                 </Button>
                               </TableCell> */}
                             </TableRow>
+
                             <TableRow>
-                              <TableCell>Coordenadas</TableCell>
-                              <TableCell>
-                                {junction.metadata.location.coordinates !== null
-                                  ? "LAT: " +
-                                    junction.metadata.location.coordinates[0].toFixed(
-                                      5
-                                    ) +
-                                    " / LON: " +
-                                    junction.metadata.location.coordinates[1].toFixed(
-                                      5
-                                    )
-                                  : "Ingrese ubicación usando el mapa"}
+                              <TableCell align="left">
+                                Entreverde vehicular default 4s
+                              </TableCell>
+                              <TableCell align="left">
+                                <FormControlLabel
+                                  control={
+                                    <Checkbox
+                                      color="primary"
+                                      checked={
+                                        junction.metadata.use_default_vi4
+                                      }
+                                      onChange={(e) =>
+                                        dispatch({
+                                          type: "entreverde_vehicular_default",
+                                          junction_index: junction_index,
+                                          payLoad:
+                                            !junction.metadata.use_default_vi4,
+                                        })
+                                      }
+                                      name="gilad"
+                                    />
+                                  }
+                                />
                               </TableCell>
                             </TableRow>
                           </TableBody>

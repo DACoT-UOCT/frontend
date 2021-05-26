@@ -19,10 +19,6 @@ import Postes from "./Campos/Postes";
 import Controlador from "./Campos/Controlador";
 import DocumentacionPDF from "./Campos/DocumentacionPDF";
 import DocumentacionProgramaciones from "./Campos/DocumentacionProgramaciones";
-import Etapas from "./Campos/Etapas";
-import Fases from "./Campos/Fases";
-import Secuencias from "./Campos/Secuencias";
-import Entreverdes from "./Campos/Entreverdes";
 import Observaciones from "./Campos/Observaciones";
 import {
   Switch,
@@ -35,8 +31,6 @@ import {
   makeStyles,
   Button,
 } from "@material-ui/core";
-
-import post_body from "./postnuevainstalacion";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -101,7 +95,7 @@ const ActualizarProgramacionContenido = (props) => {
       />
       {state.metadata.img && (
         <>
-          <Etapas state={state.otu.stages} dispatch={dispatch} />
+          {/* <Etapas state={state.otu.stages} dispatch={dispatch} />
 
           <hr className="separador"></hr>
           <Fases state={state.otu.fases} dispatch={dispatch} />
@@ -114,7 +108,7 @@ const ActualizarProgramacionContenido = (props) => {
             entreverdes={state.otu.entreverdes}
             stages={state.otu.stages}
             dispatch={dispatch}
-          />
+          /> */}
         </>
       )}
 
