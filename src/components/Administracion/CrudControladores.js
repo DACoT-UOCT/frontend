@@ -28,7 +28,8 @@ const CrudControladores = () => {
   const history = useHistory();
 
   const controladoresQuery = useQuery(GetControllers, (data) => {
-    dispatch({ type: "controladores", payLoad: data.controllerModels });
+    console.log(data);
+    dispatch({ type: "controladores", payLoad: data.controllers });
   });
 
   const eliminar_controlador = (_cid) => {

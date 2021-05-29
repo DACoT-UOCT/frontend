@@ -50,7 +50,7 @@ const OTU = (props) => {
                   label="Código"
                   name="otu-codigo"
                   autoComplete="off"
-                  value={otu.oid}
+                  value={props.oid}
                   onChange={(e) =>
                     dispatch({
                       type: "oid",

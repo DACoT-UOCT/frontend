@@ -15,7 +15,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import { useQuery } from "../../../GraphQL/useQuery";
-import { GetCommunes } from "../../../GraphQL/Queries";
+import { GetCommunes, GetCompanies } from "../../../GraphQL/Queries";
 import Loading from "../../Shared/Loading";
 import { StateContext } from "../../App";
 
@@ -27,9 +27,18 @@ const General = (props) => {
   const metadata = props.state;
   const dispatch = props.dispatch;
   const [comunas, setComunas] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const global_context = useContext(StateContext);
   const comunasQuery = useQuery(GetCommunes, (data) => {
     setComunas(data.communes);
+  });
+  const empresasQuery = useQuery(GetCompanies, (data) => {
+    console.log(data);
+    setCompanies(
+      data.companies.map((company) => {
+        return company.name;
+      })
+    );
   });
 
   return (
@@ -118,6 +127,44 @@ const General = (props) => {
 
             <TableRow>
               <TableCell component="th" scope="row">
+                <Label>Empresa instaladora</Label>
+              </TableCell>
+              <TableCell align="left">
+                {empresasQuery.status == "success" ? (
+                  <Campo
+                    id="standard-select-currency-native"
+                    select
+                    label="Instalador"
+                    variant="standard"
+                    name="instalador"
+                    autoComplete="off"
+                    SelectProps={{
+                      native: true,
+                    }}
+                    value={metadata.installation_company}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "metadata",
+                        fieldName: "installation_company",
+                        payLoad: e.currentTarget.value,
+                      })
+                    }>
+                    <option hidden></option>
+                    <option value={metadata.installation_company}>
+                      {metadata.installation_company}
+                    </option>
+                    {companies.map((company) => {
+                      return <option value={company}>{company}</option>;
+                    })}
+                  </Campo>
+                ) : (
+                  <Loading />
+                )}
+              </TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell component="th" scope="row">
                 <Label>Última modificación del controlador</Label>
               </TableCell>
               <TableCell align="left">
@@ -133,7 +180,7 @@ const General = (props) => {
                     dispatch({
                       type: "metadata",
                       fieldName: "installation_date",
-                      payLoad: date.getTime(),
+                      payLoad: date,
                     })
                   }
                 />

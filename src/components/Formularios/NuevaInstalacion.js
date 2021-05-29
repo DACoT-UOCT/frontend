@@ -84,7 +84,7 @@ const NuevaInstalacion = (props) => {
       );
 
       GQLclient.request(createProject, {
-        projectDetails: procesar_json_envio(
+        data: procesar_json_envio(
           JSON.parse(JSON.stringify(state)),
           location.pathname
         ),
@@ -120,7 +120,7 @@ const NuevaInstalacion = (props) => {
             />
 
             <hr className="separador"></hr>
-            <OTU state={state.otu} codigo={state.oid} dispatch={dispatch} />
+            <OTU state={state.otu} oid={state.oid} dispatch={dispatch} />
 
             <hr className="separador"></hr>
             <Controlador state={state.controller} dispatch={dispatch} />

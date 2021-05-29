@@ -93,9 +93,8 @@ const procesar_xlsx = (input) => {
         to = input[i][12].replace(/\s/g, "").split(",");
         value = parseInt(input[i][13].replace(/\s/g, ""));
         for (var j = 0; j < to.length; j++) {
-          entreverdes[stages_names.indexOf(from)][
-            stages_names.indexOf(to[j])
-          ] = value;
+          entreverdes[stages_names.indexOf(from)][stages_names.indexOf(to[j])] =
+            value;
         }
       }
     }

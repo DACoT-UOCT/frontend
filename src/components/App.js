@@ -25,6 +25,7 @@ import { createBrowserHistory } from "history";
 import usePersistentState from "./Shared/Utils/usePersistentState";
 import RouterComponent from "./RouterComponent";
 import { request, GraphQLClient } from "graphql-request";
+import { GetCommunes } from "../GraphQL/Queries";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -40,6 +41,7 @@ const App = () => {
   // }, [location]);
 
   useEffect(() => {
+    //limpiar cache si se cierra la sesión, o se engresa por primera vez
     if (state.isLoggedIn === false) {
       localStorage.clear();
     }
@@ -52,6 +54,23 @@ const App = () => {
     }
   }, []);
 
+  useEffect(() => {
+    //guardar cositas en cache
+    console.log(state);
+    if (state.comunas === null) {
+      GQLclient.request(GetCommunes)
+        .then((data) => {
+          let aux = data.communes.map((comuna) => {
+            if (comuna.maintainer === null)
+              comuna.maintainer = "Sin mantenedor";
+            else comuna.maintainer = comuna.maintainer.name;
+            return comuna;
+          });
+          dispatch({ type: "save_comunas", payLoad: aux });
+        })
+        .catch((error) => console.log(error));
+    }
+  }, []);
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>

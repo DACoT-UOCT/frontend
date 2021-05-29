@@ -40,13 +40,35 @@ const encontrarValorEntreverde = (entreverdes, from, to) => {
 
 const Campos = forwardRef((props, ref) => {
   const classes = useStyles();
-  const state = props.state;
+  const [state, setState] = useState(props.state);
   const global_state = useContext(StateContext);
   const location = useLocation();
   const info = location.pathname === "/info";
   const [junctions, setJunctions] = useState(
-    Array(state.otu.junctions.length).fill(true)
+    Array(props.state.otu.junctions.length).fill(true)
   );
+
+  const editVehIntergreen = (junctionIndex, planIndex, indices, _value) => {
+    let aux = JSON.parse(JSON.stringify(state));
+    console.log(aux);
+    let intergreens =
+      aux.otu.junctions[junctionIndex].plans[planIndex].vehicle_intergreen;
+    for (let i = 0; i < intergreens.length; i++) {
+      if (
+        intergreens[i].phfrom === indices.phfrom &&
+        intergreens[i].phto === indices.phto
+      ) {
+        intergreens[i].value = _value;
+      }
+    }
+    aux.otu.junctions[junctionIndex].plans[planIndex].vehicle_intergreen =
+      intergreens;
+    setState(aux);
+  };
+
+  const saveVehIntergreenChanges = () => {
+    console.log("guardando cambios");
+  };
 
   return (
     <>
@@ -118,11 +140,7 @@ const Campos = forwardRef((props, ref) => {
                   </tr>
                   <tr>
                     <td className="label">Empresa mantenedora:</td>
-                    <td>
-                      {state.metadata.commune.maintainer == null
-                        ? "Mantenedor no asignado"
-                        : state.metadata.commune.maintainer.name}
-                    </td>
+                    <td>{state.metadata.commune.maintainer}</td>
                   </tr>
                   <tr>
                     <td className="label">Última actualización:</td>
@@ -243,9 +261,8 @@ const Campos = forwardRef((props, ref) => {
                                 checked={junctions[index]}
                                 onChange={() => {
                                   let junctions_copy = [...junctions];
-                                  junctions_copy[index] = !junctions_copy[
-                                    index
-                                  ];
+                                  junctions_copy[index] =
+                                    !junctions_copy[index];
                                   setJunctions(junctions_copy);
                                 }}
                                 name="gilad"
@@ -265,6 +282,7 @@ const Campos = forwardRef((props, ref) => {
                               ? "Ubicación no registrada"
                               : junction.metadata.address_reference
                           }
+                          disabled={!info}
                           label="Tipo"
                           variant="standard"
                           name="tipo"
@@ -283,8 +301,8 @@ const Campos = forwardRef((props, ref) => {
 
           <div className="image">
             <img
-              height="420"
-              width="420"
+              height="200"
+              width="200"
               src={
                 state.metadata.img == undefined
                   ? "/no_image.png"
@@ -485,8 +503,8 @@ const Campos = forwardRef((props, ref) => {
               </p>
             </div>
           ) : (
-            state.otu.junctions.map((junction, index) => {
-              if (!junctions[index]) return;
+            state.otu.junctions.map((junction, junctionIndex) => {
+              if (!junctions[junctionIndex]) return;
               let fases = junction.sequence.map((aux) => aux.phid);
               return (
                 <div className="section">
@@ -652,7 +670,7 @@ const Campos = forwardRef((props, ref) => {
                         )}
                       </thead>
                       <tbody>
-                        {junction.plans.map((plan) => {
+                        {junction.plans.map((plan, planIndex) => {
                           return (
                             <>
                               <tr>
@@ -682,19 +700,43 @@ const Campos = forwardRef((props, ref) => {
                                   (indices) => {
                                     return (
                                       <>
-                                        <td>
-                                          {plan.vehicle_intergreen.find(
-                                            (obj) =>
-                                              obj.phfrom == indices.phfrom &&
-                                              obj.phto == indices.phto
-                                          )
-                                            ? plan.vehicle_intergreen.find(
+                                        <td
+                                          style={{
+                                            backgroundColor: "#f4ff94",
+                                          }}>
+                                          <Campo
+                                            id="standard-select-currency-native"
+                                            value={
+                                              plan.vehicle_intergreen.find(
                                                 (obj) =>
                                                   obj.phfrom ==
                                                     indices.phfrom &&
                                                   obj.phto == indices.phto
-                                              ).value
-                                            : "-"}
+                                              )
+                                                ? plan.vehicle_intergreen.find(
+                                                    (obj) =>
+                                                      obj.phfrom ==
+                                                        indices.phfrom &&
+                                                      obj.phto == indices.phto
+                                                  ).value
+                                                : "-"
+                                            }
+                                            disabled={!info}
+                                            variant="standard"
+                                            name="tipo"
+                                            autoComplete="off"
+                                            style={{ width: "3rem" }}
+                                            SelectProps={{
+                                              native: true,
+                                            }}
+                                            onChange={(e) =>
+                                              editVehIntergreen(
+                                                junctionIndex,
+                                                planIndex,
+                                                indices,
+                                                e.currentTarget.value
+                                              )
+                                            }></Campo>
                                         </td>
                                       </>
                                     );
@@ -707,6 +749,7 @@ const Campos = forwardRef((props, ref) => {
                       </tbody>
                     </table>
                   )}
+                  <Button> Guardar cambios en entreverdes vehiculares</Button>
                 </div>
               );
             })
@@ -728,10 +771,6 @@ const Campos = forwardRef((props, ref) => {
                     </tr>
 
                     <tr>
-                      <td className="label">Ubicación:</td>
-                      <td>{state.controller.address_reference}</td>
-                    </tr>
-                    <tr>
                       <td className="label">GPS:</td>
                       <td>
                         {state.controller.gps == undefined
@@ -749,10 +788,10 @@ const Campos = forwardRef((props, ref) => {
                       <td className="label">Checksum:</td>
                       <td>{state.controller.model.checksum}</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td className="label">Fecha del modelo:</td>
                       <td>{getFecha(state.controller.model.date)}</td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
               </div>

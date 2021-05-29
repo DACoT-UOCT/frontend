@@ -41,6 +41,7 @@
 }
 
 .resume h2 {
+  font-size: 1.5rem;
   border-bottom: 3px solid #034472;
   /* border-bottom: ; */
   text-align: left !important;
@@ -101,3 +102,7 @@
 .resume Button {
   border-radius: 1px;
 }
+
+/* .resume input {
+  font-size: 16px;
+} */

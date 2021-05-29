@@ -1,11 +1,14 @@
 export const initialState = {
+  oid: "X",
+  status: "NEW",
   metadata: {
     // version: "base",
-    maintainer: "",
+    // maintainer: "",
     // status: "NEW",
     // status_date: Date.now(),
     // status_user: "",
     installation_date: Date.now(),
+    installation_company: "",
     commune: "",
     // region: "Región Metropolitana de Santiago",
     img: null,
@@ -16,7 +19,7 @@ export const initialState = {
     scoot_detector: false,
   },
   otu: {
-    oid: "X",
+    // oid: "X",
     metadata: {
       serial: "",
       ip_address: "",
@@ -26,20 +29,6 @@ export const initialState = {
       link_type: "", //Digital Analogo
       link_owner: "", //Propio Compartido
     },
-    //program: "", asignado al leer desde el SC
-    // stages: [
-    //   ["", ""],
-    //   // "A", "VEH",
-    // ],
-
-    // fases: [[]],
-
-    // secuencias: [[]], //[[1,2,3], "J003672"]
-    // entreverdes: [[0]],
-    // sequences: [
-    //   { seqid: 1, phases: [{ phid: 1, stages: [{ stid: "A", type: "" }] }] }, //tipos de etapa, 'Vehicular', 'Peatonal', 'Flecha Verde', 'Ciclista', 'No Configurada'
-    // ],
-    // intergreens: [], //lista de listas unidimensional
     junctions: [
       {
         jid: "",
@@ -50,7 +39,6 @@ export const initialState = {
           },
           address_reference: "",
           use_default_vi4: true,
-          sales_id: 0,
         },
         phases: ["", ""],
         //plans: "",  //se asignan cuando se lee el SC
@@ -58,14 +46,13 @@ export const initialState = {
     ],
   },
   controller: {
-    address_reference: "",
+    // address_reference: "",
     gps: false,
     model: {
       company: { name: "" },
       model: "",
       firmware_version: "",
       checksum: "",
-      date: "",
     },
   },
   headers: [
@@ -133,22 +120,22 @@ export const initialState = {
     {
       hal: 0,
       led: 0,
-      type: "L7 Peatonal",
+      type: "L7",
     },
     {
       hal: 0,
       led: 0,
-      type: "L8 Biciclos",
+      type: "L8",
     },
     {
       hal: 0,
       led: 0,
-      type: "L9 Buses",
+      type: "L9",
     },
     {
       hal: 0,
       led: 0,
-      type: "L10 Repetidora",
+      type: "L10",
     },
   ],
 
@@ -161,7 +148,7 @@ export const initialState = {
     "REGISTRAR OBSERVACIONES DE INTERÉS \nSolicitud de integración ingresada desde el sistema DACoT",
 
   errors: [],
-  vista: 2,
+  vista: 1,
   submit: false,
   isLoading: true,
   success: false,
@@ -182,7 +169,6 @@ export function reducer(draft, action) {
     }
 
     case "oid": {
-      //CHECK
       for (var i = 0; i < draft.otu.junctions.length; i++) {
         draft.otu.junctions[i].jid =
           "J" +
@@ -192,7 +178,7 @@ export function reducer(draft, action) {
             .replace(/[^0-9]/g, "") +
           (i + 1).toString();
       }
-      draft.otu.oid =
+      draft.oid =
         "X" +
         action.payLoad
           .slice(1, 7)
@@ -213,11 +199,11 @@ export function reducer(draft, action) {
     }
     case "metadata": {
       if (action.fieldName === "commune") {
-        console.log(JSON.parse(action.payLoad));
+        // console.log(JSON.parse(action.payLoad));
         let commune_object = JSON.parse(action.payLoad);
         draft.metadata.commune = commune_object.name;
         draft.metadata.commune_code = commune_object.code;
-        draft.metadata.maintainer = "SpeeDevs";
+        // draft.metadata.maintainer = "SpeeDevs";
         return;
       }
       draft[action.type][action.fieldName] = action.payLoad;
@@ -290,7 +276,7 @@ export function reducer(draft, action) {
     case "agregar_junction": {
       const name =
         "J" +
-        draft.otu.oid.slice(1, 6) +
+        draft.oid.slice(1, 6) +
         (draft.otu.junctions.length + 1).toString();
       const nuevo = JSON.parse(JSON.stringify(initialState)).otu.junctions[0];
       nuevo.jid = name;
@@ -304,7 +290,6 @@ export function reducer(draft, action) {
       return;
     }
 
-    //CORREGIR----------
     case "controller": {
       draft.controller[action.fieldName] = action.payLoad;
       return;
@@ -316,13 +301,13 @@ export function reducer(draft, action) {
         draft.controller.model.model = "";
         draft.controller.model.firmware_version = "";
         draft.controller.model.checksum = "";
-        draft.controller.model.date = "";
-      } else if (action.fieldName === "date") {
-        draft.controller.model[action.fieldName] = action.payLoad;
+        // draft.controller.model.date = "";
+        // } else if (action.fieldName === "date") {
+        //   draft.controller.model[action.fieldName] = action.payLoad;
       } else if (action.fieldName === "model") {
         draft.controller.model[action.fieldName] = action.payLoad;
         draft.controller.model.firmware_version = "";
-        draft.controller.model.date = "";
+        // draft.controller.model.date = "";
         draft.controller.model.checksum = "";
       } else if (action.fieldName === "firmware_version") {
         draft.controller.model[action.fieldName] = action.payLoad;
@@ -335,7 +320,6 @@ export function reducer(draft, action) {
               action.controladores[i].firmware_version
           ) {
             draft.controller.model.checksum = action.controladores[i].checksum;
-            draft.controller.model.date = action.controladores[i].date;
           }
         }
       }

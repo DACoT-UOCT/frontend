@@ -47,82 +47,7 @@ const Junctions = (props) => {
                     {junction.jid ? junction.jid : "Código junction"}
                   </h2>
                   <div className="junction-info">
-                    <div>
-                      {/* <h5> Fases</h5> */}
-                      <table>
-                        <thead>
-                          <th>Fase</th>
-                          <th>Etapas</th>
-                        </thead>
-                        <tbody>
-                          {junction.phases.map((fase, phase_index) => {
-                            return (
-                              <>
-                                <tr>
-                                  <td>{"F " + (phase_index + 1)}</td>
-                                  <td
-                                    style={{
-                                      borderRight: "solid 1px #034472",
-                                    }}>
-                                    <Campo
-                                      id="standard-select-currency-native"
-                                      // defaultValue="No registrado"
-                                      value={fase}
-                                      label="Fase"
-                                      variant="standard"
-                                      name="tipo"
-                                      autoComplete="off"
-                                      placeholder="A-B-C"
-                                      SelectProps={{
-                                        native: true,
-                                      }}
-                                      onChange={(e) => {
-                                        dispatch({
-                                          type: "fase_input",
-                                          junction_index: junction_index,
-                                          phase_index: phase_index,
-                                          payLoad: e.currentTarget.value,
-                                        });
-                                      }}></Campo>
-                                  </td>
-                                </tr>
-                              </>
-                            );
-                          })}
-                          <tr>
-                            <td
-                              style={{ padding: "0", paddingTop: "2px" }}
-                              colSpan={2}>
-                              <Button
-                                style={{ width: "50%" }}
-                                disabled={junction.phases.length == 1}
-                                onClick={() =>
-                                  dispatch({
-                                    type: "eliminar_fase",
-                                    junction_index: junction_index,
-                                  })
-                                }>
-                                Eliminar
-                              </Button>
-                              <Button
-                                color="success"
-                                style={{ width: "50%" }}
-                                onClick={() =>
-                                  dispatch({
-                                    type: "agregar_fase",
-                                    junction_index: junction_index,
-                                  })
-                                }>
-                                Añadir
-                              </Button>
-                            </td>
-                            <td
-                              style={{ padding: "0", paddingTop: "2px" }}></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div>
+                    <div style={{ marginBottom: "3rem" }}>
                       <TableContainer>
                         <Table size="small" aria-label="simple table">
                           <TableBody>
@@ -218,6 +143,81 @@ const Junctions = (props) => {
                         }}>
                         Mapa
                       </Button>
+                    </div>
+                    <div>
+                      {/* <h5> Fases</h5> */}
+                      <table>
+                        <thead>
+                          <th>Fase</th>
+                          <th>Etapas</th>
+                        </thead>
+                        <tbody>
+                          {junction.phases.map((fase, phase_index) => {
+                            return (
+                              <>
+                                <tr>
+                                  <td>{"F " + (phase_index + 1)}</td>
+                                  <td
+                                    style={{
+                                      borderRight: "solid 1px #034472",
+                                    }}>
+                                    <Campo
+                                      id="standard-select-currency-native"
+                                      // defaultValue="No registrado"
+                                      value={fase}
+                                      label="Fase"
+                                      variant="standard"
+                                      name="tipo"
+                                      autoComplete="off"
+                                      placeholder="A-B-C"
+                                      SelectProps={{
+                                        native: true,
+                                      }}
+                                      onChange={(e) => {
+                                        dispatch({
+                                          type: "fase_input",
+                                          junction_index: junction_index,
+                                          phase_index: phase_index,
+                                          payLoad: e.currentTarget.value,
+                                        });
+                                      }}></Campo>
+                                  </td>
+                                </tr>
+                              </>
+                            );
+                          })}
+                          <tr>
+                            <td
+                              style={{ padding: "0", paddingTop: "2px" }}
+                              colSpan={2}>
+                              <Button
+                                style={{ width: "50%" }}
+                                disabled={junction.phases.length == 1}
+                                onClick={() =>
+                                  dispatch({
+                                    type: "eliminar_fase",
+                                    junction_index: junction_index,
+                                  })
+                                }>
+                                Eliminar
+                              </Button>
+                              <Button
+                                color="success"
+                                style={{ width: "50%" }}
+                                onClick={() =>
+                                  dispatch({
+                                    type: "agregar_fase",
+                                    junction_index: junction_index,
+                                  })
+                                }>
+                                Añadir
+                              </Button>
+                            </td>
+                            <td
+                              style={{ padding: "0", paddingTop: "2px" }}></td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </>

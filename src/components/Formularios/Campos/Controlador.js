@@ -24,11 +24,6 @@ import { GetControllers } from "../../../GraphQL/Queries";
 import { getDate } from "date-fns";
 import MapaFormulario from "../MapaFormulario";
 
-Geocode.setApiKey("AIzaSyA1-WTtheQWOcQSW4elD1bgWE_WZsCOous");
-Geocode.setLanguage("sp");
-Geocode.setRegion("cl");
-Geocode.enableDebug();
-
 const Campo = styled(TextField)({
   background: "none",
 });
@@ -45,17 +40,18 @@ const Controlador = (props) => {
 
   const controladoresQuery = useQuery(GetControllers, (data) => {
     //guardar respuesta
-    setControladores(decamelizeKeysDeep(data.controllerModels));
+    console.log(data);
+    setControladores(decamelizeKeysDeep(data.controllers));
     //obtener coordenadas de la posicion actual del controlador
-    Geocode.fromAddress("La moneda, Santiago").then(
-      (response) => {
-        setCoordenadas(response.results[0].geometry.location);
-      },
-      (error) => {
-        setCoordenadas([-33.554039, -70.632627]);
-        console.error("error consiguiendo coordenadas" + error);
-      }
-    );
+    // Geocode.fromAddress("La moneda, Santiago").then(
+    //   (response) => {
+    //     setCoordenadas(response.results[0].geometry.location);
+    //   },
+    //   (error) => {
+    //     setCoordenadas([-33.554039, -70.632627]);
+    //     console.error("error consiguiendo coordenadas" + error);
+    //   }
+    // );
   });
 
   const getMarcas = () => {
@@ -180,7 +176,6 @@ const Controlador = (props) => {
 
             {controller.model.model !== "" && (
               <>
-                {" "}
                 <TableRow>
                   <TableCell component="th" scope="row">
                     <Label>Versión de firmware</Label>
@@ -235,7 +230,7 @@ const Controlador = (props) => {
                       }></Campo>
                   </TableCell>
                 </TableRow>
-                <TableRow>
+                {/* <TableRow>
                   <TableCell component="th" scope="row">
                     <Label>Fecha de versión</Label>
                   </TableCell>
@@ -253,7 +248,7 @@ const Controlador = (props) => {
                           : ""
                       }></Campo>
                   </TableCell>
-                </TableRow>
+                </TableRow> */}
               </>
             )}
 

@@ -39,27 +39,27 @@ export default function ProcesarSolicitud(props) {
 
   const [comentario, setComentario] = useState("");
   const [imagen, setImagen] = useState(null);
-  const [correos, setCorreos] = useState([""]);
+  // const [correos, setCorreos] = useState([""]);
   const [submit, setSubmit] = useState(false);
 
   const enviar = (aprobar) => {
     let respuesta = {
       oid: state.actualizando.oid,
       status: state.actualizando.metadata.status,
-      // comentario: comentario,
-      // file: imagen,
-      // mails: correos,
+      message: comentario,
+      img: imagen,
     };
 
     let mutation = aprobar ? acceptProject : rejectProject;
 
-    GQLclient.request(mutation, { projectDetails: respuesta })
+    GQLclient.request(mutation, { data: respuesta })
       .then((response) => {
         alert("Solicitud " + (aprobar ? "aprobada" : "rechazada"));
         setSubmit("ok");
       })
       .catch((err) => {
         alert("Error en el envio");
+        setSubmit("Error");
         console.log(err);
       });
   };
@@ -67,18 +67,6 @@ export default function ProcesarSolicitud(props) {
   return (
     <>
       <div className="grid-item nuevo-semaforo procesar-solicitud">
-        {/* <div className={classes.root}>
-          <div>
-            <div
-              className="grid-item"
-              id="formulario"
-              style={{
-                marginTop: "5px",
-                paddingBottom: "5px",
-                height: "575px",
-                overflow: "auto",
-                border: "0px",
-              }}> */}
         {submit === false ? (
           <>
             {/* <ResumenProyecto state={state.actualizando} procesar={true} /> */}
@@ -185,9 +173,6 @@ export default function ProcesarSolicitud(props) {
             }
           />
         )}
-        {/* </div>
-          </div>
-        </div> */}
       </div>
     </>
   );

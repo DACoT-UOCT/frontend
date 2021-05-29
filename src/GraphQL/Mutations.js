@@ -39,14 +39,14 @@ export const deleteFailedPlan = gql`
 `;
 
 export const acceptProject = gql`
-  mutation acceptProject($projectDetails: GetProjectInput) {
-    acceptProject(projectDetails: $projectDetails)
+  mutation acceptProject($data: AcceptRejectProjectInput) {
+    acceptProject(data: $data)
   }
 `;
 
 export const rejectProject = gql`
-  mutation rejectProject($projectDetails: GetProjectInput) {
-    rejectProject(projectDetails: $projectDetails)
+  mutation rejectProject($data: AcceptRejectProjectInput) {
+    rejectProject(data: $data)
   }
 `;
 
@@ -59,10 +59,8 @@ export const updateCommune = gql`
 `;
 
 export const createProject = gql`
-  mutation createProject($projectDetails: CreateProjectInput) {
-    createProject(projectDetails: $projectDetails) {
-      oid
-    }
+  mutation createProject($data: CreateProjectInput) {
+    createProject(data: $data)
   }
 `;
 

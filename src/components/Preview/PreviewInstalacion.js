@@ -92,7 +92,7 @@ const PreviewInstalacion = (props) => {
               </tr>
               <tr>
                 <td className="label">Empresa encargada:</td>
-                <td>{instalacion.metadata.maintainer.name}</td>
+                <td>{instalacion.metadata.commune.maintainer}</td>
               </tr>
               {/* <tr>
                 <td className="label">Última modificación controlador:</td>
@@ -155,7 +155,27 @@ const PreviewInstalacion = (props) => {
               <br></br>
             </>
           )}
-        <Button className="botonDashboard">PDF de Respaldo</Button>
+        <Button
+          className="botonDashboard"
+          onClick={() => {
+            var byteCharacters = atob(
+              instalacion.metadata.pdf_data.data.slice(2, -1)
+            );
+            var byteNumbers = new Array(byteCharacters.length);
+            for (var i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            var byteArray = new Uint8Array(byteNumbers);
+            var file = new Blob([byteArray], {
+              type: "application/pdf;base64",
+            });
+            var fileURL = URL.createObjectURL(file);
+            window.open(fileURL);
+          }}>
+          {/* <a download="archivo.pdf" href={instalacion.metadata.pdf_data}>
+          </a> */}
+          PDF de Respaldo
+        </Button>
         <Link
           to="/info"
           target="_blank"

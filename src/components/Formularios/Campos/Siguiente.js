@@ -130,7 +130,7 @@ const Siguiente = (props) => {
       //consultar si existe oid actual, en cualquiera de los estados
       try {
         let resultado = await GQLclient.request(CheckOtuExists, {
-          oid: state.otu.oid,
+          oid: state.oid,
         });
         if (resultado.checkOtuExists) {
           setOpen(true);
@@ -194,8 +194,8 @@ const Siguiente = (props) => {
         // return;
       }
 
+      validar_entrada(state.oid, "OTU - Codigo", /^(x|X)\d{5}0$/);
       var otu = state.otu;
-      validar_entrada(otu.oid, "OTU - Codigo", /^(x|X)\d{5}0$/);
       consultar_oid_existente();
       validar_entrada(otu.metadata.serial, "OTU - N Serie");
       validar_entrada(otu.metadata.ip_address, "OTU - Dirección IP");

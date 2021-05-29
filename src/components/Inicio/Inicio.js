@@ -35,7 +35,7 @@ const Inicio = (props) => {
     props.dispatch({ type: "cerrar_bienvenida", payload: _bool });
   };
 
-  console.log(global_state.is_admin);
+  // console.log(global_state.is_admin);
 
   return (
     <div className="grid-item consulta-semaforo">

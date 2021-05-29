@@ -56,7 +56,7 @@ export const GetCommunes = gql`
 
 export const GetControllers = gql`
   {
-    controllerModels {
+    controllers {
       id
       model
       checksum

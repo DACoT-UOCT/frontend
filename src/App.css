@@ -974,12 +974,13 @@ Button {
   padding-bottom: 4rem;
   padding-top: 0;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
 }
 
 .junction-info Button {
   width: 100%;
+  height: 3rem;
 }
 
 .junction-buttons {
@@ -992,4 +993,8 @@ Button {
 
 .junction-buttons Button {
   width: 100%;
+}
+
+input:disabled {
+  color: black;
 }

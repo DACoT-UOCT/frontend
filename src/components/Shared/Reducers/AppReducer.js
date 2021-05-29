@@ -1,9 +1,3 @@
-// full_name: "ACME Employee",
-// email: "employee@acmecorp.com",
-// rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
-// area: "Mantenedora",
-// is_admin: false,
-
 export const initialState = {
   popup_inicial: true,
   isLoading: false,
@@ -13,6 +7,7 @@ export const initialState = {
   actualizando: "",
   tokenObj: "",
   debug: true,
+  comunas: null,
 };
 
 const funcionario = {
@@ -126,6 +121,11 @@ export function reducer(draft, action) {
     }
     case "FIRST CLICK": {
       draft.first_click_login = true;
+      return;
+    }
+
+    case "save_comunas": {
+      draft.comunas = action.payLoad;
       return;
     }
     default:
