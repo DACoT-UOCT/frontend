@@ -82,13 +82,16 @@ const Campos = forwardRef((props, ref) => {
               marginTop: "1rem",
             }}>
             {info
-              ? "Formulario de programaciones de tiempos de semáforos"
+              ? state.metadata.status == "PRODUCTION"
+                ? "Formulario de programaciones de tiempos de semáforos"
+                : "Información de solicitud para integración/actualización"
               : "Verifique los campos ingresados"}
           </h2>
 
           {info &&
             (global_state.rol === "Personal UOCT" || global_state.is_admin) &&
-            !props.scrolled && (
+            !props.scrolled &&
+            state.metadata.status == "PRODUCTION" && (
               <Button
                 onClick={() => props.scroll()}
                 color="info"
@@ -99,7 +102,7 @@ const Campos = forwardRef((props, ref) => {
             )}
 
           <div className="section">
-            {info && (
+            {info && state.metadata.status == "PRODUCTION" && (
               <div style={{ padding: "1rem", paddingBottom: "0" }}>
                 <p style={{ marginBottom: "0", marginLeft: "1rem" }}>
                   Generado en la plataforma de gestión de datos DACoT.
@@ -125,7 +128,6 @@ const Campos = forwardRef((props, ref) => {
                 </div>
               </div>
             )}
-            {/* <h2>OTU</h2> */}
 
             <div className="tables">
               <table>
@@ -140,7 +142,11 @@ const Campos = forwardRef((props, ref) => {
                   </tr>
                   <tr>
                     <td className="label">Empresa mantenedora:</td>
-                    <td>{state.metadata.commune.maintainer}</td>
+                    <td>
+                      {state.metadata.commune.maintainer
+                        ? state.metadata.commune.maintainer.name
+                        : "Instalación sin mantenedor"}
+                    </td>
                   </tr>
                   <tr>
                     <td className="label">Última actualización:</td>
@@ -187,6 +193,15 @@ const Campos = forwardRef((props, ref) => {
                       {state.controller.model.company.name +
                         " " +
                         state.controller.model.model}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="label">Instalador:</td>
+                    <td>
+                      {state.metadata.installation_company
+                        ? state.metadata.installation_company
+                        : "No registrado"}
                     </td>
                   </tr>
 
@@ -417,7 +432,8 @@ const Campos = forwardRef((props, ref) => {
 
           <div className="section">
             <h2>Periodizacion</h2>
-            {state.otu.programs ? (
+            {state.otu.programs != undefined &&
+            state.otu.programs.length > 0 ? (
               <>
                 <p style={{ fontSize: "12px" }}>
                   L: Lunes a Viernes / S: Sabado / D: Domingo y festivos
@@ -494,15 +510,8 @@ const Campos = forwardRef((props, ref) => {
             )}
           </div>
 
-          {!state.otu.junctions[0].plans ? (
-            <div className="section">
-              <h2>{"Programación "}</h2>
-              <p>
-                Las programaciones de esta instalación no han sido extraidas
-                desde el sistema de control{" "}
-              </p>
-            </div>
-          ) : (
+          {state.otu.junctions[0].plans != null &&
+          state.otu.junctions[0].plans.length > 0 ? (
             state.otu.junctions.map((junction, junctionIndex) => {
               if (!junctions[junctionIndex]) return;
               let fases = junction.sequence.map((aux) => aux.phid);
@@ -753,6 +762,14 @@ const Campos = forwardRef((props, ref) => {
                 </div>
               );
             })
+          ) : (
+            <div className="section">
+              <h2>{"Programación "}</h2>
+              <p>
+                Las programaciones de esta instalación no han sido extraidas
+                desde el sistema de control{" "}
+              </p>
+            </div>
           )}
 
           {props.detalles && (
@@ -1011,7 +1028,9 @@ const ResumenProyecto = (props) => {
   const state = JSON.parse(JSON.stringify(props.state));
   const location = useLocation();
   const info = location.pathname === "/info";
-  const [detalles, setDetalles] = useState(!info);
+  const [detalles, setDetalles] = useState(
+    !info || state.metadata.status == "NEW" || state.metadata.status == "UPDATE"
+  );
   console.log(state);
   const classes = useStyles();
   const componentRef = useRef();

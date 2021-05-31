@@ -7,7 +7,7 @@ import styles from "./Header.module.css";
 
 import Nav from "./Nav";
 
-const Header = () => {
+const Header = (props) => {
   const [section, setSection] = useState("Dashboard Empresa");
   const location = useLocation();
 
@@ -26,6 +26,7 @@ const Header = () => {
     "/editar/programacion": "Editar información de programaciones",
     "/procesar/solicitud": "Procesar solicitud",
     "/info": "Información de instalación ",
+    "/editar/instalacion": "Edición de la instalación " + props.instalacion.oid,
   };
 
   useEffect(() => {

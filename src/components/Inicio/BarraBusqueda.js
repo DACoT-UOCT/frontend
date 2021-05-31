@@ -45,7 +45,7 @@ const BarraBusqueda = (props) => {
     }
 
     id_consultado = "X" + id_consultado.slice(1, -1) + "0";
-    GQLclient.request(GetProject, { oid: id_consultado, status: "NEW" })
+    GQLclient.request(GetProject, { oid: id_consultado, status: "PRODUCTION" })
       .then((response) => {
         if (response.project === null) alert("Instalación no encontrada");
         else {

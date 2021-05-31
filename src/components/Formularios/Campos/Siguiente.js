@@ -127,7 +127,7 @@ const Siguiente = (props) => {
         location.pathname
       )
     ) {
-      //consultar si existe oid actual, en cualquiera de los estados
+      //consultar si existe oid actual en production
       try {
         let resultado = await GQLclient.request(CheckOtuExists, {
           oid: state.oid,
@@ -162,7 +162,7 @@ const Siguiente = (props) => {
 
     if (["/editar/programacion"].includes(location.pathname)) {
       //VALIDAR FORMULARIO DE PROGRAMACIONES ACOTADO, NECESITA REVISION
-      validar_entrada(metadata.commune, "Comuna");
+      validar_entrada(metadata.commune.name, "Comuna");
       if (state.metadata.img === null) {
         setOpen(true);
         dispatch({
@@ -175,7 +175,7 @@ const Siguiente = (props) => {
     } else if (state.vista === 1) {
       //VALIDAR FORMULARIO DE TODA LA INFORMACION
       // validar_entrada(metadata.region, "Región");
-      validar_entrada(metadata.commune, "Comuna");
+      validar_entrada(metadata.commune.name, "Comuna");
       if (state.metadata.pdf_data === null) {
         setOpen(true);
         dispatch({

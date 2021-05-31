@@ -59,7 +59,7 @@ const RouterComponent = (props) => {
         </>
       ) : (
         <div className="app-container">
-          <Header />
+          <Header instalacion={state.actualizando} />
           <Route
             exact
             path="/logout"
@@ -95,18 +95,23 @@ const RouterComponent = (props) => {
               <Route
                 exact
                 path="/editar/instalacion"
-                component={() => <NuevaInstalacion state={state} />}
+                component={() =>
+                  state.actualizando.metadata.status == "PRODUCTION" &&
+                  state.actualizando.metadata.version == "latest" && (
+                    <NuevaInstalacion state={state} />
+                  )
+                }
               />
               <Route
                 exact
                 path="/nuevo/digitalizacion"
                 component={() => <NuevaInstalacion state={state} />}
               />
-              <Route
+              {/* <Route
                 exact
                 path="/editar/programacion"
                 component={() => <ActualizarProgramacion state={state} />}
-              />
+              /> */}
             </>
           )}
           {state.is_admin && (

@@ -51,8 +51,8 @@ export const rejectProject = gql`
 `;
 
 export const updateCommune = gql`
-  mutation updateCommune($communeDetails: UpdateCommuneInput) {
-    updateCommune(communeDetails: $communeDetails) {
+  mutation updateCommune($data: UpdateCommuneInput) {
+    updateCommune(data: $data) {
       id
     }
   }
@@ -67,5 +67,11 @@ export const createProject = gql`
 export const deleteController = gql`
   mutation deleteController($cid: String!) {
     deleteController(cid: $cid)
+  }
+`;
+
+export const updateProject = gql`
+  mutation updateProject($data: CreateProjectInput) {
+    updateProject(data: $data)
   }
 `;

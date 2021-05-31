@@ -29,6 +29,7 @@ const General = (props) => {
   const [comunas, setComunas] = useState([]);
   const [companies, setCompanies] = useState([]);
   const global_context = useContext(StateContext);
+  console.log(metadata);
   const comunasQuery = useQuery(GetCommunes, (data) => {
     setComunas(data.communes);
   });
@@ -40,7 +41,7 @@ const General = (props) => {
       })
     );
   });
-
+  const _align = "right";
   return (
     <>
       <legend className="seccion">Información general del proyecto</legend>
@@ -50,83 +51,13 @@ const General = (props) => {
         {global_context.rol == "Personal UOCT" &&
           "Al ingresar los datos con una cuenta UOCT, estos quedarán guardados sin revisiones posteriores. Para instalaciones antiguas con información faltante en este sistema, se recomienda mantener los campos de imagen de cruce, modelo de controlador, etapas y entreverdes vehiculares actualizados."}
       </h6>
-      <TableContainer className={styles.form}>
+      <TableContainer
+        className={styles.form}
+        style={{ width: "70%", paddingTop: "2rem" }}>
         <Table size="small" aria-label="simple table">
           <TableBody>
-            {/* <TableRow>
-                <TableCell component="th" scope="row">
-                  <Label>Región</Label>
-                </TableCell>
-                <TableCell align="left">
-                  <Campo
-                    id="standard-select-currency-native"
-                    select
-                    disbled
-                    label="Región"
-                    variant="standard"
-                    name="region"
-                    autoComplete="off"
-                    style={{ width: "350px" }}
-                    SelectProps={{
-                      native: true,
-                    }}
-                    value={metadata.region}
-                    onChange={(e) =>
-                      dispatch({
-                        type: "metadata",
-                        fieldName: "region",
-                        payLoad: e.currentTarget.value,
-                      })
-                    }>
-                    <option value="Región Metropolitana de Santiago">
-                      Región Metropolitana de Santiago
-                    </option>
-                  </Campo>
-                </TableCell>
-              </TableRow> */}
-
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Comuna</Label>
-              </TableCell>
-              <TableCell align="left">
-                {comunasQuery.status == "success" ? (
-                  <Campo
-                    id="standard-select-currency-native"
-                    select
-                    label="Comuna"
-                    variant="standard"
-                    name="comuna"
-                    autoComplete="off"
-                    SelectProps={{
-                      native: true,
-                    }}
-                    value={metadata.commune}
-                    onChange={(e) =>
-                      dispatch({
-                        type: "metadata",
-                        fieldName: "commune",
-                        payLoad: e.currentTarget.value,
-                      })
-                    }>
-                    <option hidden></option>
-                    <option value={metadata.commune}>{metadata.commune}</option>
-                    {comunas.map((comuna) => {
-                      return (
-                        <option value={JSON.stringify(comuna)}>
-                          {comuna.name}
-                        </option>
-                      );
-                    })}
-                  </Campo>
-                ) : (
-                  <Loading />
-                )}
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" align={_align}>
                 <Label>Empresa instaladora</Label>
               </TableCell>
               <TableCell align="left">
@@ -134,7 +65,7 @@ const General = (props) => {
                   <Campo
                     id="standard-select-currency-native"
                     select
-                    label="Instalador"
+                    style={{ transform: "translateY(14%)" }}
                     variant="standard"
                     name="instalador"
                     autoComplete="off"
@@ -164,7 +95,74 @@ const General = (props) => {
             </TableRow>
 
             <TableRow>
-              <TableCell component="th" scope="row">
+              <TableCell align={_align}>
+                <Label>Comuna</Label>
+              </TableCell>
+              <TableCell align="left">
+                {comunasQuery.status == "success" ? (
+                  <div className="comuna-input">
+                    <Campo
+                      id="standard-select-currency-native"
+                      select
+                      placeholder="Comuna"
+                      variant="standard"
+                      style={{ transform: "translateY(14%)" }}
+                      name="comuna"
+                      autoComplete="off"
+                      SelectProps={{
+                        native: true,
+                      }}
+                      value={metadata.commune.name}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "metadata",
+                          fieldName: "commune",
+                          payLoad: e.currentTarget.value,
+                        })
+                      }>
+                      {metadata.commune.name == "" && <option hidden></option>}
+                      <option value={JSON.stringify(metadata.commune)}>
+                        {metadata.commune.name}
+                      </option>
+                      {comunas.map((comuna) => {
+                        return (
+                          <option value={JSON.stringify(comuna)}>
+                            {comuna.name}
+                          </option>
+                        );
+                      })}
+                    </Campo>
+                    <Campo
+                      id="standard-select-currency-native"
+                      placeholder="Mantenedor"
+                      label="Mantenedor"
+                      disabled
+                      variant="standard"
+                      style={{
+                        transform: "translateY(-18%)",
+                        paddingLeft: "1rem",
+                      }}
+                      name="comuna"
+                      autoComplete="off"
+                      SelectProps={{
+                        native: true,
+                      }}
+                      value={
+                        metadata.commune.name !== ""
+                          ? metadata.commune.maintainer == null
+                            ? "Comuna sin mantenedor"
+                            : metadata.commune.maintainer.name
+                          : ""
+                      }></Campo>
+                  </div>
+                ) : (
+                  <Loading />
+                )}
+              </TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell component="th" scope="row" align={_align}>
                 <Label>Última modificación del controlador</Label>
               </TableCell>
               <TableCell align="left">
@@ -191,7 +189,7 @@ const General = (props) => {
             </TableRow>
 
             <TableRow>
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" align={_align}>
                 <Label>Detector scoot</Label>
               </TableCell>
               <TableCell align="left">
@@ -215,7 +213,7 @@ const General = (props) => {
             </TableRow>
 
             <TableRow>
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" align={_align}>
                 <Label>Detector local</Label>
               </TableCell>
               <TableCell align="left">
@@ -239,7 +237,7 @@ const General = (props) => {
             </TableRow>
 
             <TableRow>
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" align={_align}>
                 <Label>Facilidad Peatonal</Label>
               </TableCell>
               <TableCell align="left">
@@ -263,7 +261,7 @@ const General = (props) => {
             </TableRow>
 
             <TableRow>
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" align={_align}>
                 <Label>Demanda Peatonal</Label>
               </TableCell>
               <TableCell align="left">

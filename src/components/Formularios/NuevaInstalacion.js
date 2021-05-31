@@ -31,10 +31,10 @@ import ResumenProyecto from "./Campos/ResumenProyecto";
 import Cabezales from "./Campos/Cabezales";
 import Postes from "./Campos/Postes";
 import Controlador from "./Campos/Controlador";
-import DocumentacionPDF from "./Campos/DocumentacionPDF";
+import Documentacion from "./Campos/Documentacion";
 import DocumentacionProgramaciones from "./Campos/DocumentacionProgramaciones";
 import { GQLclient } from "../App";
-import { createProject } from "../../GraphQL/Mutations";
+import { createProject, updateProject } from "../../GraphQL/Mutations";
 import Success from "../Shared/Success";
 
 export const StateContext = React.createContext();
@@ -76,18 +76,19 @@ const NuevaInstalacion = (props) => {
   useEffect(() => {
     if (state.submit === true) {
       //enviar formulario sin errores
-      console.log(
-        procesar_json_envio(
-          JSON.parse(JSON.stringify(state)),
-          location.pathname
-        )
-      );
 
-      GQLclient.request(createProject, {
-        data: procesar_json_envio(
-          JSON.parse(JSON.stringify(state)),
-          location.pathname
-        ),
+      let _data = procesar_json_envio(
+        JSON.parse(JSON.stringify(state)),
+        location.pathname
+      );
+      let mutation;
+      if (location.pathname == "/nuevo/digitalizacion")
+        mutation = createProject;
+      else if (location.pathname == "/editar/instalacion")
+        mutation = updateProject;
+
+      GQLclient.request(mutation, {
+        data: _data,
       })
         .then((response) => {
           console.log(response);
@@ -111,17 +112,9 @@ const NuevaInstalacion = (props) => {
               codigo={state.oid}
               dispatch={dispatch}
             />
-
-            <DocumentacionPDF state={state} dispatch={dispatch} />
-
-            <DocumentacionProgramaciones
-              state={state.metadata.img}
-              dispatch={dispatch}
-            />
-
+            <Documentacion state={state} dispatch={dispatch} />
             <hr className="separador"></hr>
             <OTU state={state.otu} oid={state.oid} dispatch={dispatch} />
-
             <hr className="separador"></hr>
             <Controlador state={state.controller} dispatch={dispatch} />
           </>

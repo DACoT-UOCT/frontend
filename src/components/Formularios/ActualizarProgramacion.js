@@ -17,7 +17,7 @@ import ResumenProyecto from "./Campos/ResumenProyecto";
 import Cabezales from "./Campos/Cabezales";
 import Postes from "./Campos/Postes";
 import Controlador from "./Campos/Controlador";
-import DocumentacionPDF from "./Campos/DocumentacionPDF";
+import Documentacion from "./Campos/Documentacion";
 import DocumentacionProgramaciones from "./Campos/DocumentacionProgramaciones";
 import Observaciones from "./Campos/Observaciones";
 import {

@@ -998,3 +998,10 @@ Button {
 input:disabled {
   color: black;
 }
+
+.comuna-input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}

@@ -84,15 +84,23 @@ const PreviewInstalacion = (props) => {
               </tr>
               <tr>
                 <td className="label">Ubicacion:</td>
-                <td>{instalacion.controller.address_reference}</td>
+                <td>
+                  {instalacion.otu.junctions[0].metadata.address_reference
+                    ? instalacion.otu.junctions[0].metadata.address_reference
+                    : "Sn especificar"}
+                </td>
               </tr>
               <tr>
                 <td className="label">Empresa instaladora:</td>
                 <td>{instalacion.metadata.status_user.full_name}</td>
               </tr>
               <tr>
-                <td className="label">Empresa encargada:</td>
-                <td>{instalacion.metadata.commune.maintainer}</td>
+                <td className="label">Empresa mantenedora:</td>
+                <td>
+                  {instalacion.metadata.commune.maintainer
+                    ? instalacion.metadata.commune.maintainer.name
+                    : "Comuna sin mantendor"}
+                </td>
               </tr>
               {/* <tr>
                 <td className="label">Última modificación controlador:</td>
@@ -110,11 +118,7 @@ const PreviewInstalacion = (props) => {
             style={{ "margin-top": "10px" }}
             height="320"
             width="312"
-            src={
-              instalacion.metadata.img == undefined
-                ? "/no_image.png"
-                : instalacion.metadata.img
-            }
+            src={instalacion.metadata.img}
             alt="Cruce"
           />
         </div>
@@ -143,6 +147,7 @@ const PreviewInstalacion = (props) => {
             <>
               <Link
                 to="/editar/instalacion"
+                target="_blank"
                 className="nada"
                 onClick={() => {
                   dispatch({
@@ -158,9 +163,13 @@ const PreviewInstalacion = (props) => {
         <Button
           className="botonDashboard"
           onClick={() => {
-            var byteCharacters = atob(
-              instalacion.metadata.pdf_data.data.slice(2, -1)
-            );
+            if (instalacion.metadata.pdf_data == null) {
+              alert(
+                "No se ha encontrado un PDF con información de esta instalación"
+              );
+              return;
+            }
+            var byteCharacters = atob(instalacion.metadata.pdf_data);
             var byteNumbers = new Array(byteCharacters.length);
             for (var i = 0; i < byteCharacters.length; i++) {
               byteNumbers[i] = byteCharacters.charCodeAt(i);

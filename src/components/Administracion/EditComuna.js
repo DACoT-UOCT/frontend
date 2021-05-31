@@ -44,7 +44,7 @@ const EditComuna = (props) => {
     };
 
     GQLclient.request(updateCommune, {
-      communeDetails: {
+      data: {
         code: state.code,
         maintainer: state.maintainer.name,
         userInCharge: state.userInCharge.email,

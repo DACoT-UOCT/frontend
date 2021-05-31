@@ -86,160 +86,153 @@ export const GetFailedPlan = gql`
   }
 `;
 
-export const GetProject = gql`
-  query project($oid: String!, $status: String!) {
-    project(oid: $oid, status: $status) {
-      id
-      oid
-      metadata {
-        status
-        commune {
-          code
-          name
-          userInCharge {
-            area
-            email
-            fullName
-            role
-          }
-          maintainer {
-            id
-            name
-          }
-        }
-        img {
-          data
-        }
-        installationCompany {
-          name
-        }
-        installationDate
-        localDetector
-        maintainer {
-          name
-        }
-        pdfData {
-          data
-        }
-        pedestrianDemand
-        pedestrianFacility
-        scootDetector
-        statusDate
-        statusUser {
-          fullName
-        }
-        version
+const project = ` {
+  oid
+  metadata {
+    status
+    commune {
+      code
+      name
+      userInCharge {
+        area
+        email
+        fullName
+        role
       }
-      observation {
-        message
-      }
-      otu {
-        oid
-
-        junctions {
-          jid
-          intergreens {
-            phfrom
-            phto
-            value
-          }
-          sequence {
-            phid
-            phidSystem
-            type
-          }
-          metadata {
-            addressReference
-            location {
-              coordinates
-            }
-            salesId
-            useDefaultVi4
-          }
-          phases
-          plans {
-            cycle
-            plid
-            greenStart {
-              phid
-              value
-            }
-            pedestrianGreen {
-              phid
-              value
-            }
-            phaseStart {
-              phid
-              value
-            }
-            systemStart {
-              phid
-              value
-            }
-            vehicleGreen {
-              phid
-              value
-            }
-            pedestrianIntergreen {
-              phfrom
-              phto
-              value
-            }
-            vehicleIntergreen {
-              phfrom
-              phto
-              value
-            }
-          }
-        }
-        metadata {
-          answer
-          control
-          ipAddress
-          linkOwner
-          linkType
-          netmask
-          serial
-        }
-        programs {
-          day
-          plan
-          time
-        }
-      }
-      controller {
-        addressReference
-        gps
-        model {
-          id
-          checksum
-          company {
-            id
-            name
-          }
-          date
-          firmwareVersion
-          model
-        }
-      }
-      headers {
-        hal
-        led
-        type
-      }
-      poles {
-        hooks
-        pedestrian
-        vehicular
-      }
-      ups {
-        brand
-        capacity
-        chargeDuration
-        model
-        serial
+      maintainer {
+        name
       }
     }
+    img {
+      data
+    }
+    installationCompany {
+      name
+    }
+    installationDate
+    localDetector
+    pdfData {
+      data
+    }
+    pedestrianDemand
+    pedestrianFacility
+    scootDetector
+    statusDate
+    statusUser {
+      fullName
+    }
+    version
+  }
+  observation {
+    message
+  }
+  otu {
+    junctions {
+      jid
+      intergreens {
+        phfrom
+        phto
+        value
+      }
+      sequence {
+        phid
+        phidSystem
+        type
+      }
+      metadata {
+        addressReference
+        location {
+          coordinates
+        }
+        useDefaultVi4
+      }
+      phases
+      plans {
+        cycle
+        plid
+        greenStart {
+          phid
+          value
+        }
+        pedestrianGreen {
+          phid
+          value
+        }
+        phaseStart {
+          phid
+          value
+        }
+        systemStart {
+          phid
+          value
+        }
+        vehicleGreen {
+          phid
+          value
+        }
+        pedestrianIntergreen {
+          phfrom
+          phto
+          value
+        }
+        vehicleIntergreen {
+          phfrom
+          phto
+          value
+        }
+      }
+    }
+    metadata {
+      answer
+      control
+      ipAddress
+      linkOwner
+      linkType
+      netmask
+      serial
+    }
+    programs {
+      day
+      plan
+      time
+    }
+  }
+  controller {
+    gps
+    model {
+      checksum
+      company {
+        name
+      }
+      firmwareVersion
+      model
+    }
+  }
+  headers {
+    hal
+    led
+    type
+  }
+  poles {
+    hooks
+    pedestrian
+    vehicular
+  }
+  ups {
+    brand
+    capacity
+    chargeDuration
+    model
+    serial
+  }
+}`;
+
+export const GetProject =
+  gql`
+  query project($oid: String!, $status: String!) {
+    project(oid: $oid, status: $status)` +
+  project +
+  ` 
   }
 `;
 
@@ -308,159 +301,11 @@ export const GetVersions = gql`
   }
 `;
 
-export const GetVersion = gql`
+export const GetVersion =
+  gql`
   query version($oid: String!, $vid: String!) {
-    version(oid: $oid, vid: $vid) {
-      id
-      oid
-      metadata {
-        status
-        commune {
-          code
-          name
-          userInCharge {
-            area
-            email
-            fullName
-            role
-          }
-          maintainer {
-            id
-            name
-          }
-        }
-        img {
-          data
-        }
-        installationCompany {
-          name
-        }
-        installationDate
-        localDetector
-        maintainer {
-          name
-        }
-        pdfData {
-          data
-        }
-        pedestrianDemand
-        pedestrianFacility
-        scootDetector
-        statusDate
-        statusUser {
-          fullName
-        }
-        version
-      }
-      observation {
-        message
-      }
-      otu {
-        oid
-
-        junctions {
-          jid
-          intergreens {
-            phfrom
-            phto
-            value
-          }
-          sequence {
-            phid
-            phidSystem
-            type
-          }
-          metadata {
-            addressReference
-            location {
-              coordinates
-            }
-            salesId
-            useDefaultVi4
-          }
-          phases
-          plans {
-            cycle
-            plid
-            greenStart {
-              phid
-              value
-            }
-            pedestrianGreen {
-              phid
-              value
-            }
-            phaseStart {
-              phid
-              value
-            }
-            systemStart {
-              phid
-              value
-            }
-            vehicleGreen {
-              phid
-              value
-            }
-            pedestrianIntergreen {
-              phfrom
-              phto
-              value
-            }
-            vehicleIntergreen {
-              phfrom
-              phto
-              value
-            }
-          }
-        }
-        metadata {
-          answer
-          control
-          ipAddress
-          linkOwner
-          linkType
-          netmask
-          serial
-        }
-        programs {
-          day
-          plan
-          time
-        }
-      }
-      controller {
-        addressReference
-        gps
-        model {
-          id
-          checksum
-          company {
-            id
-            name
-          }
-          date
-          firmwareVersion
-          model
-        }
-      }
-      headers {
-        hal
-        led
-        type
-      }
-      poles {
-        hooks
-        pedestrian
-        vehicular
-      }
-      ups {
-        brand
-        capacity
-        chargeDuration
-        model
-        serial
-      }
-    }
+    version(oid: $oid, vid: $vid) ` +
+  project +
+  `
   }
 `;

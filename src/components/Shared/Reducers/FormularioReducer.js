@@ -1,7 +1,7 @@
 export const initialState = {
   oid: "X",
-  status: "NEW",
   metadata: {
+    status: "NEW",
     // version: "base",
     // maintainer: "",
     // status: "NEW",
@@ -9,7 +9,7 @@ export const initialState = {
     // status_user: "",
     installation_date: Date.now(),
     installation_company: "",
-    commune: "",
+    commune: { name: "" },
     // region: "Región Metropolitana de Santiago",
     img: null,
     pdf_data: null,
@@ -29,6 +29,7 @@ export const initialState = {
       link_type: "", //Digital Analogo
       link_owner: "", //Propio Compartido
     },
+
     junctions: [
       {
         jid: "",
@@ -41,9 +42,12 @@ export const initialState = {
           use_default_vi4: true,
         },
         phases: ["", ""],
-        //plans: "",  //se asignan cuando se lee el SC
+        intergreens: [],
+        plans: [],
+        sequence: [],
       },
     ],
+    programs: [],
   },
   controller: {
     // address_reference: "",
@@ -199,11 +203,8 @@ export function reducer(draft, action) {
     }
     case "metadata": {
       if (action.fieldName === "commune") {
-        // console.log(JSON.parse(action.payLoad));
-        let commune_object = JSON.parse(action.payLoad);
-        draft.metadata.commune = commune_object.name;
-        draft.metadata.commune_code = commune_object.code;
-        // draft.metadata.maintainer = "SpeeDevs";
+        console.log(JSON.parse(action.payLoad));
+        draft.metadata.commune = JSON.parse(action.payLoad);
         return;
       }
       draft[action.type][action.fieldName] = action.payLoad;
@@ -217,6 +218,9 @@ export function reducer(draft, action) {
     case "enviar":
       draft.submit = true;
       return;
+
+    case "enviado":
+      draft.submit = false;
 
     case "reset": {
       draft.vista = 1;

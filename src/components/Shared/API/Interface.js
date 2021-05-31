@@ -22,10 +22,26 @@ export const procesar_json_recibido = (aux) => {
   console.log(aux);
   var temp = decamelizeKeysDeep(aux);
 
-  temp.metadata.commune.maintainer =
-    temp.metadata.commune.maintainer == null
-      ? "Comuna sin mantenedor"
-      : temp.metadata.commune.maintainer.name;
+  // temp.metadata.commune.maintainer =
+  //   temp.metadata.commune.maintainer == null
+  //     ? "Comuna sin mantenedor"
+  //     : temp.metadata.commune.maintainer.name;
+  if (temp.ups == null) {
+    delete temp.ups;
+  }
+  temp.metadata.installation_date = temp.metadata.installation_date
+    ? Date.parse(temp.metadata.installation_date)
+    : Date.now();
+
+  temp.metadata.installation_company =
+    temp.metadata.installation_company == null
+      ? ""
+      : temp.metadata.installation_company.name;
+
+  temp.metadata.pdf_data =
+    temp.metadata.pdf_data.data == null
+      ? null
+      : temp.metadata.pdf_data.data.slice(2, -1);
 
   if (temp.poles == undefined) {
     temp.poles = {
@@ -36,37 +52,26 @@ export const procesar_json_recibido = (aux) => {
   }
 
   temp.metadata.pedestrian_demand =
-    temp.pedestrian_demand == undefined
+    temp.metadata.pedestrian_demand == undefined
       ? false
       : temp.metadata.pedestrian_demand;
   temp.metadata.pedestrian_facility =
-    temp.pedestrian_facility == undefined
+    temp.metadata.pedestrian_facility == undefined
       ? false
       : temp.metadata.pedestrian_facility;
   temp.metadata.local_detector =
-    temp.local_detector == undefined ? false : temp.metadata.local_detector;
+    temp.metadata.local_detector == undefined
+      ? false
+      : temp.metadata.local_detector;
   temp.metadata.scoot_detector =
-    temp.scoot_detector == undefined ? false : temp.metadata.scoot_detector;
+    temp.metadata.scoot_detector == undefined
+      ? false
+      : temp.metadata.scoot_detector;
 
   temp.controller = //REVISAR TODO
     temp.controller == undefined
       ? initialState.controller
-      : // {
-        //     address_reference: "",
-        //     gps: false,
-        //     model: {
-        //       company: { name: "" },
-        //       model: "",
-        //       firmware_version: "",
-        //       checksum: "",
-        //       date: "",
-        //     },
-        //   }
-        {
-          // address_reference:
-          //   temp.controller.address_reference == undefined
-          //     ? "Campo no registrado"
-          //     : temp.controller.address_reference,
+      : {
           gps:
             temp.controller.gps == undefined
               ? initialState.controller.gps
@@ -127,7 +132,9 @@ export const procesar_json_recibido = (aux) => {
       : temp.headers;
 
   temp.metadata.img =
-    temp.metadata.img.data == null ? "/no_image.png" : temp.metadata.img.data;
+    temp.metadata.img.data == null
+      ? "/no_image.png"
+      : "data:image/png;base64," + temp.metadata.img.data.slice(2, -1);
 
   temp.observation = temp.observation.message;
 
@@ -142,18 +149,34 @@ export const procesar_json_recibido = (aux) => {
 
 export const procesar_json_envio = (state_copy, url) => {
   //procesa el json antes de envio
-  // const state_copy = JSON.parse(JSON.stringify(state));
-  //agregar status_user
   //state_copy.metadata.status_user = props.state.email;
   // if (url == "/nuevo/solicitud-actualizacion") {
   //   //SI SE ESTA LEVANTANDO UNA SOLICITUD DE ACTUALIZACION
   //   state_copy.metadata.status = "UPDATE";
   // }
 
-  // if (url == "/editar/instalacion") {
-  //   //SI EL ADMIN O UN FUNCIONARIO UOCT ESTA EDITANDO DIRECTAMENTE
-  //   state_copy.metadata.status = "UPDATE";
-  // }
+  if (url == "/editar/instalacion") {
+    //SI EL ADMIN O UN FUNCIONARIO UOCT ESTA EDITANDO DIRECTAMENTE
+    // state_copy.metadata.status = "";
+    state_copy.status = "UPDATE";
+    delete state_copy.metadata.version;
+    delete state_copy.metadata.status_date;
+    delete state_copy.metadata.status_user;
+    if (state_copy.otu.programs.length == 0) {
+      delete state_copy.otu.programs;
+    }
+    for (let i = 0; i < state_copy.otu.junctions.length; i++) {
+      if (state_copy.otu.junctions[i].intergreens.length == 0)
+        delete state_copy.otu.junctions[i].intergreens;
+      if (state_copy.otu.junctions[i].plans.length == 0)
+        delete state_copy.otu.junctions[i].plans;
+      if (state_copy.otu.junctions[i].sequence.length == 0)
+        delete state_copy.otu.junctions[i].sequence;
+    }
+  }
+
+  // state_copy.status = state_copy.metadata.status;
+  delete state_copy.metadata.status;
 
   //detalles graphql mutation
   state_copy.controller.model.company =
@@ -170,8 +193,8 @@ export const procesar_json_envio = (state_copy, url) => {
   // return string;
 
   //SE ENVIA EL CÓDIGO DE LA COMUNA, NO EL NOMBRE
-  state_copy.metadata.commune = state_copy.metadata.commune_code;
-  delete state_copy.metadata.commune_code;
+  state_copy.metadata.commune = state_copy.metadata.commune.code;
+
   // if (state_copy.metadata.maintainer == null) {
   //   state_copy.metadata.maintainer = "SpeeDevs";
   // }
