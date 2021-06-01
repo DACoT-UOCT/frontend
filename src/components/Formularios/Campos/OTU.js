@@ -27,18 +27,26 @@ const OTU = (props) => {
   const otu = props.state;
   const dispatch = props.dispatch;
   const location = useLocation();
+  const _align = "right";
+  const y_offset = "50%";
 
   return (
     <>
       <legend className="seccion">OTU</legend>
+      <p>
+        Ingresar código de 6 dígitos que tendrá la instalación en el sistema,
+        terminando en 0 (ej X123450)
+      </p>
 
-      <TableContainer className={styles.form}>
+      <TableContainer className={styles.form} style={{ width: "80%" }}>
         <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Código en sistema</Label>{" "}
-                <PopOver mensaje="Código de 6 dígitos que tendrá la instalación en el sistema, terminando en 0 (ej X001260)" />
+              <TableCell component="th" scope="row" align={_align}>
+                <Label style={{ transform: "translateY(" + y_offset + ")" }}>
+                  Código en sistema
+                </Label>{" "}
+                {/* <PopOver mensaje="Código de 6 dígitos que tendrá la instalación en el sistema, terminando en 0 (ej X001260)" /> */}
               </TableCell>
               <TableCell align="left">
                 <Campo
@@ -62,8 +70,10 @@ const OTU = (props) => {
             </TableRow>
 
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Tipo de enlace de comunicación</Label>
+              <TableCell component="th" scope="row" align={_align}>
+                <Label style={{ transform: "translateY(" + y_offset + ")" }}>
+                  Tipo de enlace de comunicación
+                </Label>
               </TableCell>
               <TableCell align="left">
                 <Campo
@@ -123,8 +133,10 @@ const OTU = (props) => {
             </TableRow>
 
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Número de serie OTU</Label>
+              <TableCell component="th" scope="row" align={_align}>
+                <Label style={{ transform: "translateY(" + y_offset + ")" }}>
+                  Número de serie OTU
+                </Label>
               </TableCell>
               <TableCell align="left">
                 <Campo
@@ -146,8 +158,10 @@ const OTU = (props) => {
             </TableRow>
 
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Dirección IP - Máscara de red</Label>
+              <TableCell component="th" scope="row" align={_align}>
+                <Label style={{ transform: "translateY(" + y_offset + ")" }}>
+                  Dirección IP - Máscara de red
+                </Label>
               </TableCell>
               <TableCell align="left">
                 <Campo
@@ -190,9 +204,10 @@ const OTU = (props) => {
             </TableRow>
 
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Bits de control y respuesta</Label>{" "}
-                <PopOver mensaje="Ingresar cantidad de bits" />
+              <TableCell component="th" scope="row" align={_align}>
+                <Label style={{ transform: "translateY(" + y_offset + ")" }}>
+                  N° de bits de control y respuesta
+                </Label>{" "}
               </TableCell>
               <TableCell align="left">
                 <Campo
@@ -216,6 +231,7 @@ const OTU = (props) => {
                 <Campo
                   id="standard"
                   label="Respuesta"
+                  placeholder="Respuesta"
                   variant="standard"
                   type="number"
                   name="otu-respuesta"

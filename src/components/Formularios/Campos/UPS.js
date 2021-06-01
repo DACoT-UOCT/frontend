@@ -3,6 +3,7 @@ import { DispatchContext } from "../../Formularios/NuevaInstalacion";
 import "../../../App.css";
 import { Label } from "reactstrap";
 import PopOver from "../../Shared/PopOver";
+import styles from "./Campos.module.css";
 import {
   Checkbox,
   FormControlLabel,
@@ -27,41 +28,40 @@ const UPS = (props) => {
   return (
     <>
       <legend className="seccion">UPS</legend>
-      <TableContainer>
+      <Label style={{ marginRight: "2rem" }}>¿Aplica a esta instalación?</Label>
+      <FormControlLabel
+        control={
+          <Checkbox
+            color="primary"
+            checked={checkbox}
+            onChange={(e) => {
+              dispatch({
+                type: "ups_checkbox",
+              });
+              setCheckbox(!checkbox);
+            }}
+            name="gilad"
+          />
+        }
+      />
+      <TableContainer className={styles.form} style={{ width: "50%" }}>
         <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>¿Aplica a esta instalación?</Label>
-              </TableCell>
-              <TableCell align="left">
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="primary"
-                      checked={checkbox}
-                      onChange={(e) => {
-                        dispatch({
-                          type: "ups_checkbox",
-                        });
-                        setCheckbox(!checkbox);
-                      }}
-                      name="gilad"
-                    />
-                  }
-                />
-              </TableCell>
+              <TableCell component="th" scope="row" align="right"></TableCell>
+              <TableCell align="left"></TableCell>
             </TableRow>
             {checkbox && (
               <>
                 <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Label>Marca</Label>
+                  <TableCell component="th" scope="row" align="right">
+                    <Label style={{ transform: "translateY(-40%)" }}>
+                      Marca
+                    </Label>
                   </TableCell>
                   <TableCell align="left">
                     <Campo
                       id="standard"
-                      label="Marca"
                       variant="standard"
                       name="ups-marca"
                       autoComplete="off"
@@ -78,13 +78,14 @@ const UPS = (props) => {
                 </TableRow>
 
                 <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Label>Modelo</Label>
+                  <TableCell component="th" scope="row" align="right">
+                    <Label style={{ transform: "translateY(-40%)" }}>
+                      Modelo
+                    </Label>
                   </TableCell>
                   <TableCell align="left">
                     <Campo
                       id="standard"
-                      label="Modelo"
                       variant="standard"
                       name="ups-modelo"
                       autoComplete="off"
@@ -101,13 +102,14 @@ const UPS = (props) => {
                 </TableRow>
 
                 <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Label>N° Serie</Label>
+                  <TableCell component="th" scope="row" align="right">
+                    <Label style={{ transform: "translateY(-40%)" }}>
+                      N° Serie
+                    </Label>
                   </TableCell>
                   <TableCell align="left">
                     <Campo
                       id="standard"
-                      label="N° Serie"
                       variant="standard"
                       name="ups-serie"
                       autoComplete="off"
@@ -124,13 +126,14 @@ const UPS = (props) => {
                 </TableRow>
 
                 <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Label>Capacidad</Label>
+                  <TableCell component="th" scope="row" align="right">
+                    <Label style={{ transform: "translateY(-40%)" }}>
+                      Capacidad
+                    </Label>
                   </TableCell>
                   <TableCell align="left">
                     <Campo
                       id="standard"
-                      label="Capacidad"
                       variant="standard"
                       name="ups-capacidad"
                       autoComplete="off"
@@ -147,14 +150,14 @@ const UPS = (props) => {
                 </TableRow>
 
                 <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Label>Duración Carga </Label>{" "}
-                    <PopOver mensaje="En unidades [kWh]" />
+                  <TableCell component="th" scope="row" align="right">
+                    <Label style={{ transform: "translateY(-40%)" }}>
+                      Duración Carga [kWh]
+                    </Label>{" "}
                   </TableCell>
                   <TableCell align="left">
                     <Campo
                       id="standard"
-                      label="Duración Carga"
                       variant="standard"
                       name="ups-duracion"
                       autoComplete="off"

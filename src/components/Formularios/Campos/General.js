@@ -81,9 +81,9 @@ const General = (props) => {
                       })
                     }>
                     <option hidden></option>
-                    <option value={metadata.installation_company}>
+                    {/* <option value={metadata.installation_company}>
                       {metadata.installation_company}
-                    </option>
+                    </option> */}
                     {companies.map((company) => {
                       return <option value={company}>{company}</option>;
                     })}
@@ -106,7 +106,10 @@ const General = (props) => {
                       select
                       placeholder="Comuna"
                       variant="standard"
-                      style={{ transform: "translateY(14%)" }}
+                      style={{
+                        transform: "translateY(14%)",
+                        paddingRight: "2rem",
+                      }}
                       name="comuna"
                       autoComplete="off"
                       SelectProps={{
@@ -140,7 +143,6 @@ const General = (props) => {
                       variant="standard"
                       style={{
                         transform: "translateY(-18%)",
-                        paddingLeft: "1rem",
                       }}
                       name="comuna"
                       autoComplete="off"
@@ -163,7 +165,10 @@ const General = (props) => {
 
             <TableRow>
               <TableCell component="th" scope="row" align={_align}>
-                <Label>Última modificación del controlador</Label>
+                <Label
+                  style={{ paddingTop: "0.8rem", paddingBottom: "0.8rem" }}>
+                  Última modificación del controlador
+                </Label>
               </TableCell>
               <TableCell align="left">
                 <DatePicker

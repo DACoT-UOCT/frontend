@@ -4,6 +4,7 @@
 
 .form label {
   margin-bottom: 0 !important;
+  font-weight: bold;
 }
 
 .form td {

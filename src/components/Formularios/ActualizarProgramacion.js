@@ -18,7 +18,6 @@ import Cabezales from "./Campos/Cabezales";
 import Postes from "./Campos/Postes";
 import Controlador from "./Campos/Controlador";
 import Documentacion from "./Campos/Documentacion";
-import DocumentacionProgramaciones from "./Campos/DocumentacionProgramaciones";
 import Observaciones from "./Campos/Observaciones";
 import {
   Switch,
@@ -89,10 +88,7 @@ const ActualizarProgramacionContenido = (props) => {
       <hr className="separador"></hr>
       <Junctions state={state.otu.junctions} dispatch={dispatch} />
       <hr className="separador"></hr>
-      <DocumentacionProgramaciones
-        state={state.metadata.img}
-        dispatch={dispatch}
-      />
+
       {state.metadata.img && (
         <>
           {/* <Etapas state={state.otu.stages} dispatch={dispatch} />

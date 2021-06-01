@@ -22,10 +22,10 @@ const Documentacion = (props) => {
   const img = state.metadata.img;
   return (
     <div style={{ marginTop: "2rem" }}>
-      <legend>PDF de respaldo</legend>
+      <legend>Documentacion de respaldo</legend>
       <Label>
-        Favor de adjuntar un PDF con toda la informacion de la instalación, este
-        será usado para respaldar y corroborar lo entregado en este formulario.
+        Adjuntar un PDF con toda la informacion de la instalación, este será
+        usado para respaldar y corroborar lo entregado en este formulario.
         Asegurarse de incluir tablas de periodizaciones y programaciones en este
         documento.
       </Label>

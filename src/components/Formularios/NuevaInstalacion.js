@@ -32,7 +32,6 @@ import Cabezales from "./Campos/Cabezales";
 import Postes from "./Campos/Postes";
 import Controlador from "./Campos/Controlador";
 import Documentacion from "./Campos/Documentacion";
-import DocumentacionProgramaciones from "./Campos/DocumentacionProgramaciones";
 import { GQLclient } from "../App";
 import { createProject, updateProject } from "../../GraphQL/Mutations";
 import Success from "../Shared/Success";

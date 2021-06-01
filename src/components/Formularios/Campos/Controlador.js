@@ -37,6 +37,8 @@ const Controlador = (props) => {
   const [consultado, setConsultado] = useState(false);
   const [controladores, setControladores] = useState(null);
   const [coordenadas, setCoordenadas] = useState("");
+  const y_offset = "50%";
+  const _align = "right";
 
   const controladoresQuery = useQuery(GetControllers, (data) => {
     //guardar respuesta
@@ -96,16 +98,19 @@ const Controlador = (props) => {
 
   return (
     <>
-      <legend className="seccion">
-        {"Controlador  "}
-        <PopOver mensaje="Si el modelo que está buscando no se encuentra disponible, favor de contactar al administrador para registrarlo"></PopOver>
-      </legend>{" "}
-      <TableContainer className={styles.form}>
+      <legend className="seccion">{"Controlador  "}</legend>
+      <p>
+        Si el modelo que está buscando no se encuentra disponible, favor de
+        contactar al administrador para registrarlo
+      </p>
+      <TableContainer className={styles.form} style={{ width: "70%" }}>
         <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Marca</Label>
+              <TableCell component="th" scope="row" align={_align}>
+                <Label style={{ transform: "translateY(" + y_offset + ")" }}>
+                  Marca
+                </Label>
               </TableCell>
               <TableCell align="left">
                 <Campo
@@ -139,8 +144,10 @@ const Controlador = (props) => {
             </TableRow>
             {controller.model.company.name !== "" && (
               <TableRow>
-                <TableCell component="th" scope="row">
-                  <Label>Modelo</Label>
+                <TableCell component="th" scope="row" align={_align}>
+                  <Label style={{ transform: "translateY(" + y_offset + ")" }}>
+                    Modelo
+                  </Label>
                 </TableCell>
                 <TableCell align="left">
                   <Campo
@@ -177,8 +184,11 @@ const Controlador = (props) => {
             {controller.model.model !== "" && (
               <>
                 <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Label>Versión de firmware</Label>
+                  <TableCell component="th" scope="row" align={_align}>
+                    <Label
+                      style={{ transform: "translateY(" + y_offset + ")" }}>
+                      Versión de firmware
+                    </Label>
                   </TableCell>
                   <TableCell align="left">
                     <Campo
@@ -212,8 +222,11 @@ const Controlador = (props) => {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Label>Checksum</Label>
+                  <TableCell component="th" scope="row" align={_align}>
+                    <Label
+                      style={{ transform: "translateY(" + y_offset + ")" }}>
+                      Checksum
+                    </Label>
                   </TableCell>
                   <TableCell align="left">
                     <Campo
@@ -230,82 +243,12 @@ const Controlador = (props) => {
                       }></Campo>
                   </TableCell>
                 </TableRow>
-                {/* <TableRow>
-                  <TableCell component="th" scope="row">
-                    <Label>Fecha de versión</Label>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Campo
-                      disabled
-                      id="standard-select-currency-native"
-                      label="Fecha"
-                      variant="standard"
-                      name="modelo"
-                      autoComplete="off"
-                      value={
-                        controller.model.date !== ""
-                          ? getFecha(controller.model.date)
-                          : ""
-                      }></Campo>
-                  </TableCell>
-                </TableRow> */}
               </>
             )}
 
-            {/* <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Ubicación</Label>
-              </TableCell>
-              <TableCell align="left">
-                <Campo
-                  disabled
-                  id="standard"
-                  label="Ubicación"
-                  variant="standard"
-                  name="controlador_ubicacion"
-                  autoComplete="off"
-                  style={{ width: "550px" }}
-                  value={
-                    controller.address_reference !== ""
-                      ? controller.address_reference
-                      : ""
-                  }
-                />
-                <Button
-                  onClick={() => {
-                    setOpenMapa(true);
-                  }}>
-                  Seleccionar ubicación
-                </Button>
-              </TableCell>
-              {openMapa && (
-                <MapaFormulario
-                  dispatch={dispatch}
-                  setPin={(_coordenada) => {
-                    setCoordenadas(_coordenada);
-                  }}
-                  // index={0}
-                  address={controller.address_reference}
-                  open={openMapa}
-                  setOpen={setOpenMapa}
-                  // buscar={() => console.log("Buscando mapa consulta")}
-                  controlador={true}
-                  pins={[
-                    {
-                      jid: "Controlador",
-                      coordinates: coordenadas,
-                    },
-                  ]}
-                />
-              )}
-            </TableRow> */}
-
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>
-                  GPS
-                  <PopOver mensaje="¿Cuenta el controlador con GPS?" />
-                </Label>
+              <TableCell component="th" scope="row" align={_align}>
+                <Label>Instalación con GPS</Label>
               </TableCell>
               <TableCell align="left">
                 <FormControlLabel

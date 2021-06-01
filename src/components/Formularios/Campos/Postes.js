@@ -25,12 +25,12 @@ const Postes = (props) => {
     <>
       <legend className="seccion">Postes</legend>
       <h6>Ingresar cantidad para cada tipo de poste</h6>
-      <TableContainer className={styles.form}>
+      <TableContainer className={styles.form} style={{ width: "50%" }}>
         <Table size="small" aria-label="simple table">
           <TableBody>
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Ganchos</Label>
+              <TableCell component="th" scope="row" align="right">
+                <Label style={{ transform: "translateY(50%)" }}>Ganchos</Label>
               </TableCell>
               <TableCell align="left">
                 <Campo
@@ -56,8 +56,10 @@ const Postes = (props) => {
             </TableRow>
 
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Vehiculares</Label>
+              <TableCell component="th" scope="row" align="right">
+                <Label style={{ transform: "translateY(50%)" }}>
+                  Vehiculares
+                </Label>
               </TableCell>
               <TableCell align="left">
                 <Campo
@@ -83,8 +85,10 @@ const Postes = (props) => {
             </TableRow>
 
             <TableRow>
-              <TableCell component="th" scope="row">
-                <Label>Peatonales</Label>
+              <TableCell component="th" scope="row" align="right">
+                <Label style={{ transform: "translateY(50%)" }}>
+                  Peatonales
+                </Label>
               </TableCell>
               <TableCell align="left">
                 <Campo

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../../../App.css";
 import { Button } from "reactstrap";
+// import styles from "./Campos.module.css";
 import styles from "./Verificacion.module.css";
 import {
   Table,
@@ -44,16 +45,31 @@ const Junctions = (props) => {
               return (
                 <>
                   <h2 className="junction-label">
-                    {junction.jid ? junction.jid : "Código junction"}
+                    {"Datos del cruce "}
+                    {junction.jid
+                      ? junction.jid
+                      : "J00000" + (junction_index + 1)}
                   </h2>
                   <div className="junction-info">
-                    <div style={{ marginBottom: "3rem" }}>
-                      <TableContainer>
+                    <div
+                      className="junction-table"
+                      style={{ marginBottom: "3rem" }}>
+                      <TableContainer
+                        style={{
+                          width: "65%",
+                          boxShadow: "1px 2px 2px #111",
+                        }}
+                        className={styles.form}>
                         <Table size="small" aria-label="simple table">
                           <TableBody>
                             <TableRow>
                               <TableCell>Coordenadas</TableCell>
-                              <TableCell>
+                              <TableCell
+                                onClick={() => {
+                                  setOpenMapa(true);
+                                  setIndex(junction_index);
+                                }}
+                                style={{ cursor: "pointer" }}>
                                 {junction.metadata.location.coordinates !== null
                                   ? "LAT: " +
                                     junction.metadata.location.coordinates[0].toFixed(
@@ -63,7 +79,7 @@ const Junctions = (props) => {
                                     junction.metadata.location.coordinates[1].toFixed(
                                       5
                                     )
-                                  : "Ingrese ubicación usando el mapa"}
+                                  : "Ingresar ubicación usando el mapa"}
                               </TableCell>
                             </TableRow>
                             <TableRow>
@@ -108,9 +124,14 @@ const Junctions = (props) => {
 
                             <TableRow>
                               <TableCell align="left">
-                                Entreverde vehicular default 4s
+                                Entreverde vehicular default (4s)
                               </TableCell>
-                              <TableCell align="left">
+                              <TableCell
+                                align="left"
+                                style={{
+                                  textAlign: "left",
+                                  paddingLeft: "2rem",
+                                }}>
                                 <FormControlLabel
                                   control={
                                     <Checkbox
@@ -135,14 +156,24 @@ const Junctions = (props) => {
                           </TableBody>
                         </Table>
                       </TableContainer>
-                      <Button
-                        color="info"
-                        onClick={() => {
-                          setOpenMapa(true);
-                          setIndex(junction_index);
-                        }}>
-                        Mapa
-                      </Button>
+                      <div className="junction-map-button">
+                        <Button
+                          color="danger"
+                          outline
+                          size="lg"
+                          onClick={() => {
+                            setOpenMapa(true);
+                            setIndex(junction_index);
+                          }}>
+                          <img
+                            // style={{ "margin-top": "10px" }}
+                            height="100"
+                            width="100"
+                            src={"/mapa.png"}
+                            alt="Cruce"
+                          />
+                        </Button>
+                      </div>
                     </div>
                     <div>
                       {/* <h5> Fases</h5> */}
@@ -156,7 +187,13 @@ const Junctions = (props) => {
                             return (
                               <>
                                 <tr>
-                                  <td>{"F " + (phase_index + 1)}</td>
+                                  <td
+                                    style={{
+                                      fontWeight: "bold",
+                                      fontSize: "1rem",
+                                    }}>
+                                    {"F " + (phase_index + 1)}
+                                  </td>
                                   <td
                                     style={{
                                       borderRight: "solid 1px #034472",
@@ -165,7 +202,9 @@ const Junctions = (props) => {
                                       id="standard-select-currency-native"
                                       // defaultValue="No registrado"
                                       value={fase}
-                                      label="Fase"
+                                      label={
+                                        "Etapas de la fase " + (phase_index + 1)
+                                      }
                                       variant="standard"
                                       name="tipo"
                                       autoComplete="off"
@@ -210,7 +249,7 @@ const Junctions = (props) => {
                                     junction_index: junction_index,
                                   })
                                 }>
-                                Añadir
+                                Añadir fase
                               </Button>
                             </td>
                             <td
@@ -235,7 +274,7 @@ const Junctions = (props) => {
             <Button
               size="lg"
               onClick={() => dispatch({ type: "eliminar_junction" })}>
-              Eliminar
+              Eliminar junction
             </Button>
             {/* </TableCell>
             </TableRow> */}
