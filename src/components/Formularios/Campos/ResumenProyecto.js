@@ -1,7 +1,7 @@
 import React, { forwardRef, useRef, useState, useContext } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../App.css";
-import styles from "./Verificacion.module.css";
+import styles from "./Resumen.module.css";
 import ReactToPrint from "react-to-print";
 import { Label, Button, Input } from "reactstrap";
 import { useLocation } from "react-router-dom";
@@ -48,21 +48,33 @@ const Campos = forwardRef((props, ref) => {
     Array(props.state.otu.junctions.length).fill(true)
   );
 
-  const editVehIntergreen = (junctionIndex, planIndex, indices, _value) => {
+  const editVehIntergreen = (junctionIndex, faseFrom, faseTo, _value) => {
     let aux = JSON.parse(JSON.stringify(state));
-    console.log(aux);
-    let intergreens =
-      aux.otu.junctions[junctionIndex].plans[planIndex].vehicle_intergreen;
-    for (let i = 0; i < intergreens.length; i++) {
-      if (
-        intergreens[i].phfrom === indices.phfrom &&
-        intergreens[i].phto === indices.phto
+    // let intergreens =
+    //   aux.otu.junctions[junctionIndex].plans[planIndex].vehicle_intergreen;
+    for (let j = 0; j < aux.otu.junctions[junctionIndex].plans.length; j++) {
+      for (
+        let i = 0;
+        i < aux.otu.junctions[junctionIndex].plans[0].vehicle_intergreen.length;
+        i++
       ) {
-        intergreens[i].value = _value;
+        if (
+          aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[i]
+            .phfrom == faseFrom &&
+          aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[i]
+            .phto == faseTo
+        ) {
+          aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[
+            i
+          ].value = _value
+            .slice(0, 3)
+            .replace(/\s/g, "")
+            .replace(/[^0-9]/g, "");
+        }
       }
     }
-    aux.otu.junctions[junctionIndex].plans[planIndex].vehicle_intergreen =
-      intergreens;
+    // aux.otu.junctions[junctionIndex].plans[planIndex].vehicle_intergreen =
+    //   intergreens;
     setState(aux);
   };
 
@@ -72,14 +84,18 @@ const Campos = forwardRef((props, ref) => {
 
   return (
     <>
-      <title>Formualario</title>
-      <div ref={ref} className="grid-item resumen-container" id="formulario">
+      <div
+        ref={ref}
+        className="resumen-container print-container"
+        id="formulario">
         <div className={styles.resume}>
           <h2
             style={{
               borderBottom: "none",
               marginBottom: "2rem",
               marginTop: "1rem",
+              textJustify: "center",
+              fontWeight: "bold",
             }}>
             {info
               ? state.metadata.status == "PRODUCTION"
@@ -134,7 +150,7 @@ const Campos = forwardRef((props, ref) => {
                 <tbody>
                   <tr>
                     <td className="label">Código en sistema:</td>
-                    <td>{state.otu.oid}</td>
+                    <td>{state.oid}</td>
                   </tr>
                   <tr>
                     <td className="label">Comuna:</td>
@@ -253,22 +269,20 @@ const Campos = forwardRef((props, ref) => {
               </table>
             </div>
 
-            {/* </div>
-
-        <div className="section"> */}
             <h2 style={{ marginTop: "2rem" }}>Junctions</h2>
             <table>
               <thead>
                 {info && <th>Mostrar</th>}
                 <th>Código</th>
                 <th>Ubicación</th>
+                <th>Coordenadas</th>
               </thead>
               <tbody>
                 {state.otu.junctions.map((junction, index) => {
                   return (
                     <tr>
                       {info && (
-                        <td>
+                        <td style={{ padding: "0" }} align="center">
                           <FormControlLabel
                             control={
                               <Checkbox
@@ -286,26 +300,45 @@ const Campos = forwardRef((props, ref) => {
                           />
                         </td>
                       )}
-                      <td style={{ background: "rgb(236, 236, 236)" }}>
+                      <td
+                        style={{
+                          background: "rgb(236, 236, 236)",
+                          fontWeight: "bold",
+                          padding: "0.3rem",
+                          fontSize: "12px",
+                        }}>
                         {junction.jid}
                       </td>
-                      <td style={{ width: "100%", textAlign: "left" }}>
-                        <Campo
-                          id="standard-select-currency-native"
+                      <td
+                        style={{
+                          width: "80%",
+                          textAlign: "left",
+                          padding: "0",
+                        }}>
+                        <input
+                          type="text"
+                          disabled={!info}
                           defaultValue={
                             junction.metadata.address_reference == ""
                               ? "Ubicación no registrada"
                               : junction.metadata.address_reference
                           }
-                          disabled={!info}
-                          label="Tipo"
-                          variant="standard"
-                          name="tipo"
-                          autoComplete="off"
-                          style={{ width: "100%" }}
-                          SelectProps={{
-                            native: true,
-                          }}></Campo>
+                        />
+                      </td>
+                      <td
+                        style={{
+                          width: "20%",
+                          textAlign: "center",
+                          padding: "0",
+                        }}>
+                        {junction.metadata.location.coordinates !== null
+                          ? "LAT: " +
+                            junction.metadata.location.coordinates[0].toFixed(
+                              5
+                            ) +
+                            " / LON: " +
+                            junction.metadata.location.coordinates[1].toFixed(5)
+                          : "Coordenadas no ingresadas"}
                       </td>
                     </tr>
                   );
@@ -326,110 +359,129 @@ const Campos = forwardRef((props, ref) => {
             />
           </div>
 
-          {/* <h2>Información de programaciones</h2> */}
+          {/* fases secuencia entreverdes */}
           {state.otu.junctions.map((junction, index) => {
             if (!junctions[index]) return;
-            return;
+            console.log(junction);
 
-            let fases = junction.sequence.map((aux) => aux.phid);
+            let fasesSC = junction.sequence.map((aux) => aux.phid);
             let fasesSYSTEM = junction.sequence.map((aux) => aux.phid_system);
             // console.log(fases);
             return (
-              <div className="section">
+              <div className="section ">
                 <h2>{junction.jid}</h2>
                 {/* <h5> Etapas</h5> */}
-                <h5> Fases</h5>
-                <table>
-                  <thead>
-                    <th>Fase</th>
-                    <th>Etapas</th>
-                  </thead>
-                  <tbody>
-                    {fases.map((fase) => {
-                      return (
-                        <tr>
-                          <td>{"F" + fase}</td>
-                          <td>
-                            <Campo
-                              id="standard-select-currency-native"
-                              defaultValue="No registrado"
-                              label="Tipo"
-                              variant="standard"
-                              name="tipo"
-                              autoComplete="off"
-                              SelectProps={{
-                                native: true,
-                              }}></Campo>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                    <tr></tr>
-                  </tbody>
-                </table>
-                <h5>Secuencia</h5>
-                <table>
-                  <thead>
-                    <th>Secuencia</th>
-                    <th>Sistema</th>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        {junction.sequence
-                          .map((aux) => {
-                            return "F" + aux.phid;
-                          })
-                          .join(" - ")}
-                      </td>
-
-                      <td>
-                        {junction.sequence
-                          .map((aux) => {
-                            // console.log(aux);
-                            return aux.phid_system;
-                          })
-                          .join(" - ")}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <h5>
-                  <li>Verdes mínimos en sistema</li>
-                </h5>
-                <table>
-                  <thead>
-                    <th>Desde/Hacia</th>
-                    {fases.map((fase) => {
-                      return <th>{"F" + fase}</th>;
-                    })}
-                  </thead>
-                  <tbody>
-                    {fases.map((faseFila, indexFila) => {
-                      return (
-                        <tr>
-                          <td>{"F" + faseFila}</td>
-                          {fases.map((faseCol, indexCol) => {
-                            if (indexFila === indexCol) return <td> -</td>;
+                <div className="tables">
+                  <div>
+                    <h5> Fases</h5>
+                    {junction.phases.length == 0 ? (
+                      <div className="no-fase">
+                        <Button>Registrar fases manualmente</Button>
+                      </div>
+                    ) : (
+                      <table>
+                        <thead>
+                          <th>Fase</th>
+                          <th>Etapas</th>
+                        </thead>
+                        <tbody>
+                          {junction.phases.map((faseValue, faseIndex) => {
                             return (
-                              <td>
-                                {encontrarValorEntreverde(
-                                  junction.intergreens,
-                                  fasesSYSTEM[indexFila],
-                                  fasesSYSTEM[indexCol]
-                                )}
-                              </td>
+                              <tr>
+                                <td>{"F" + (faseIndex + 1)}</td>
+                                <td>
+                                  <input type="text" defaultValue={faseValue} />
+                                </td>
+                              </tr>
                             );
                           })}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                          <tr></tr>
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                  <div>
+                    <h5>Secuencia</h5>
+                    {junction.sequence.length == 0 ? (
+                      <p>
+                        No se ha extraido ninguna secuencia desde el centro de
+                        control para esta intersección
+                      </p>
+                    ) : (
+                      <table>
+                        <thead>
+                          <th>Secuencia</th>
+                          <th>Sistema</th>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              {junction.sequence
+                                .map((aux) => {
+                                  return "F" + aux.phid;
+                                })
+                                .join(" - ")}
+                            </td>
+
+                            <td>
+                              {junction.sequence
+                                .map((aux) => {
+                                  // console.log(aux);
+                                  return aux.phid_system;
+                                })
+                                .join(" - ")}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                  <div>
+                    <h5>Entreverdes peatonales</h5>
+                    {junction.intergreens.length == 0 ? (
+                      <p>
+                        No se ha extraido ninguna tabla de entreverdes desde el
+                        centro de control para esta intersección
+                      </p>
+                    ) : (
+                      <table>
+                        <thead>
+                          <th>Desde/Hacia</th>
+                          {fasesSC.map((fase) => {
+                            return <th>{"F" + fase}</th>;
+                          })}
+                        </thead>
+                        <tbody>
+                          {fasesSC.map((faseFila, indexFila) => {
+                            return (
+                              <tr>
+                                <td>{"F" + faseFila}</td>
+                                {fasesSC.map((faseCol, indexCol) => {
+                                  if (indexFila === indexCol)
+                                    return <td> -</td>;
+                                  return (
+                                    <td>
+                                      {encontrarValorEntreverde(
+                                        junction.intergreens,
+                                        fasesSYSTEM[indexFila],
+                                        fasesSYSTEM[indexCol]
+                                      )}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
               </div>
             );
           })}
 
+          {/* periodizaciones */}
           <div className="section">
             <h2>Periodizacion</h2>
             {state.otu.programs != undefined &&
@@ -513,253 +565,238 @@ const Campos = forwardRef((props, ref) => {
           {state.otu.junctions[0].plans != null &&
           state.otu.junctions[0].plans.length > 0 ? (
             state.otu.junctions.map((junction, junctionIndex) => {
-              if (!junctions[junctionIndex]) return;
-              let fases = junction.sequence.map((aux) => aux.phid);
+              if (!junctions[junctionIndex] || junction.plans.length == 0)
+                return;
+              let fasesSC = junction.sequence.map((aux) => aux.phid); //[1,2,3,4]
+              let fasesSC_from_to = fasesSC
+                .slice(-1)
+                .concat(fasesSC.slice(0, -1)); //[4,1,2,3]
               return (
-                <div className="section">
-                  <h2>{"Programación " + junction.jid}</h2>
-                  <table>
-                    <thead>
-                      <th rowSpan="2">Plan</th>
-                      <th rowSpan="2">Ciclo</th>
-                      <th colSpan={fases.length}>I. sistema</th>
-                      <th colSpan={fases.length}>I. verde</th>
-                      <th colSpan={fases.length}>Tpo. verde peat</th>
-                      <th colSpan={fases.length}>I. fase</th>
-                      <th colSpan={fases.length}>Tpo. verde veh</th>
-                    </thead>
-                    <thead style={{ backgroundColor: "#3f8605" }}>
-                      <th style={{ backgroundColor: "#034472" }}></th>
-                      <th style={{ backgroundColor: "#034472" }}></th>
-                      {fases.map((fase) => {
-                        return <th>{"F" + fase}</th>;
-                      })}
-                      {fases.map((fase) => {
-                        return <th>{"F" + fase}</th>;
-                      })}
-                      {fases.map((fase) => {
-                        return <th>{"F" + fase}</th>;
-                      })}
-                      {fases.map((fase) => {
-                        return <th>{"F" + fase}</th>;
-                      })}
-                      {fases.map((fase) => {
-                        return <th>{"F" + fase}</th>;
-                      })}
-                    </thead>
-                    <tbody>
-                      {junction.plans.map((plan) => {
-                        console.log(plan);
-                        return (
-                          <tr>
-                            <td>{plan.plid}</td>
-                            <td>{plan.cycle}</td>
-                            {fases.map((fase) => {
-                              return (
-                                <>
-                                  <td>
-                                    {plan.system_start.find(
-                                      (obj) => obj.phid == fase
-                                    )
-                                      ? plan.system_start.find(
-                                          (obj) => obj.phid == fase
-                                        ).value
-                                      : "-"}
-                                  </td>
-                                </>
-                              );
-                            })}
-                            {fases.map((fase) => {
-                              return (
-                                <>
-                                  <td>
-                                    {plan.green_start.find(
-                                      (obj) => obj.phid == fase
-                                    )
-                                      ? plan.green_start.find(
-                                          (obj) => obj.phid == fase
-                                        ).value
-                                      : "-"}
-                                  </td>
-                                </>
-                              );
-                            })}
-                            {fases.map((fase) => {
-                              return (
-                                <>
-                                  <td>
-                                    {plan.pedestrian_green.find(
-                                      (obj) => obj.phid == fase
-                                    )
-                                      ? plan.pedestrian_green.find(
-                                          (obj) => obj.phid == fase
-                                        ).value
-                                      : "-"}
-                                  </td>
-                                </>
-                              );
-                            })}
-                            {fases.map((fase) => {
-                              return (
-                                <>
-                                  <td>
-                                    {plan.phase_start.find(
-                                      (obj) => obj.phid == fase
-                                    )
-                                      ? plan.phase_start.find(
-                                          (obj) => obj.phid == fase
-                                        ).value
-                                      : "-"}
-                                  </td>
-                                </>
-                              );
-                            })}
-                            {fases.map((fase) => {
-                              return (
-                                <>
-                                  <td>
-                                    {plan.vehicle_green.find(
-                                      (obj) => obj.phid == fase
-                                    )
-                                      ? plan.vehicle_green.find(
-                                          (obj) => obj.phid == fase
-                                        ).value
-                                      : "-"}
-                                  </td>
-                                </>
-                              );
-                            })}
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                  {junction.plans[0] && (
-                    <table>
-                      <thead>
-                        <th
-                          colSpan={
-                            junction.plans[0].pedestrian_intergreen.length
-                          }>
-                          Ent. peat
-                        </th>
-                        <th
-                          colSpan={
-                            junction.plans[0].pedestrian_intergreen.length
-                          }>
-                          Ent veh
-                        </th>
-                      </thead>
-                      <thead style={{ backgroundColor: "#3f8605" }}>
-                        {junction.plans[0].pedestrian_intergreen.map(
-                          (ped_inter) => {
+                <>
+                  <div className="page-break" />
+                  <div className="section">
+                    <h2>{"Programación " + junction.jid}</h2>
+                    {junction.plans[0] && (
+                      <table>
+                        <thead>
+                          <th rowSpan="2">Plan</th>
+                          <th rowSpan="2">Ciclo</th>
+                          <th colSpan={fasesSC.length}>I. sistema</th>
+                          <th colSpan={fasesSC.length}>I. verde</th>
+                          <th colSpan={fasesSC.length}>Tpo. verde peat</th>
+                          <th colSpan={fasesSC.length}>I. fase</th>
+                          <th colSpan={fasesSC.length}>Tpo. verde veh</th>
+                          <th colSpan={fasesSC.length}>Ent. peat</th>
+                          <th colSpan={fasesSC.length}>Ent veh</th>
+                        </thead>
+                        <thead style={{ backgroundColor: "#3f8605" }}>
+                          <th style={{ backgroundColor: "#034472" }}></th>
+                          <th style={{ backgroundColor: "#034472" }}></th>
+                          {fasesSC.map((fase) => {
+                            return <th>{"F" + fase}</th>;
+                          })}
+                          {fasesSC.map((fase) => {
+                            return <th>{"F" + fase}</th>;
+                          })}
+                          {fasesSC.map((fase) => {
+                            return <th>{"F" + fase}</th>;
+                          })}
+                          {fasesSC.map((fase) => {
+                            return <th>{"F" + fase}</th>;
+                          })}
+                          {fasesSC.map((fase) => {
+                            return <th>{"F" + fase}</th>;
+                          })}
+                          {fasesSC.map((fase, faseIndex) => {})}
+                          {fasesSC_from_to.map((faseFrom, faseFromIndex) => {
+                            let faseTo =
+                              fasesSC_from_to[
+                                (faseFromIndex + 1) % fasesSC_from_to.length
+                              ];
                             return (
-                              <th>
-                                {"F" +
-                                  ped_inter.phfrom +
-                                  " a " +
-                                  "F" +
-                                  ped_inter.phto}
-                              </th>
+                              <th>{"F" + faseFrom + " a " + "F" + faseTo}</th>
                             );
-                          }
-                        )}
-                        {junction.plans[0].vehicle_intergreen.map(
-                          (veh_inter) => {
+                          })}
+                          {fasesSC_from_to.map((faseFrom, faseFromIndex) => {
+                            let faseTo =
+                              fasesSC_from_to[
+                                (faseFromIndex + 1) % fasesSC_from_to.length
+                              ];
                             return (
-                              <th>
-                                {"F" +
-                                  veh_inter.phfrom +
-                                  " a " +
-                                  "F" +
-                                  veh_inter.phto}
-                              </th>
+                              <th>{"F" + faseFrom + " a " + "F" + faseTo}</th>
                             );
-                          }
-                        )}
-                      </thead>
-                      <tbody>
-                        {junction.plans.map((plan, planIndex) => {
-                          return (
-                            <>
-                              <tr>
-                                {junction.plans[0].pedestrian_intergreen.map(
-                                  (indices) => {
+                          })}
+                        </thead>
+                        <tbody>
+                          {junction.plans.map((plan, planIndex) => {
+                            return (
+                              <>
+                                <tr>
+                                  <td>{plan.plid}</td>
+                                  <td>{plan.cycle}</td>
+                                  {fasesSC.map((fase) => {
                                     return (
                                       <>
                                         <td>
-                                          {plan.pedestrian_intergreen.find(
-                                            (obj) =>
-                                              obj.phfrom == indices.phfrom &&
-                                              obj.phto == indices.phto
+                                          {plan.system_start.find(
+                                            (obj) => obj.phid == fase
                                           )
-                                            ? plan.pedestrian_intergreen.find(
-                                                (obj) =>
-                                                  obj.phfrom ==
-                                                    indices.phfrom &&
-                                                  obj.phto == indices.phto
+                                            ? plan.system_start.find(
+                                                (obj) => obj.phid == fase
                                               ).value
                                             : "-"}
                                         </td>
                                       </>
                                     );
-                                  }
-                                )}
-                                {junction.plans[0].pedestrian_intergreen.map(
-                                  (indices) => {
+                                  })}
+                                  {fasesSC.map((fase) => {
                                     return (
                                       <>
-                                        <td
-                                          style={{
-                                            backgroundColor: "#f4ff94",
-                                          }}>
-                                          <Campo
-                                            id="standard-select-currency-native"
-                                            value={
-                                              plan.vehicle_intergreen.find(
-                                                (obj) =>
-                                                  obj.phfrom ==
-                                                    indices.phfrom &&
-                                                  obj.phto == indices.phto
-                                              )
-                                                ? plan.vehicle_intergreen.find(
-                                                    (obj) =>
-                                                      obj.phfrom ==
-                                                        indices.phfrom &&
-                                                      obj.phto == indices.phto
-                                                  ).value
-                                                : "-"
-                                            }
-                                            disabled={!info}
-                                            variant="standard"
-                                            name="tipo"
-                                            autoComplete="off"
-                                            style={{ width: "3rem" }}
-                                            SelectProps={{
-                                              native: true,
-                                            }}
-                                            onChange={(e) =>
-                                              editVehIntergreen(
-                                                junctionIndex,
-                                                planIndex,
-                                                indices,
-                                                e.currentTarget.value
-                                              )
-                                            }></Campo>
+                                        <td>
+                                          {plan.green_start.find(
+                                            (obj) => obj.phid == fase
+                                          )
+                                            ? plan.green_start.find(
+                                                (obj) => obj.phid == fase
+                                              ).value
+                                            : "-"}
                                         </td>
                                       </>
                                     );
-                                  }
-                                )}
-                              </tr>
-                            </>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  )}
-                  <Button> Guardar cambios en entreverdes vehiculares</Button>
-                </div>
+                                  })}
+                                  {fasesSC.map((fase) => {
+                                    return (
+                                      <>
+                                        <td>
+                                          {plan.pedestrian_green.find(
+                                            (obj) => obj.phid == fase
+                                          )
+                                            ? plan.pedestrian_green.find(
+                                                (obj) => obj.phid == fase
+                                              ).value
+                                            : "-"}
+                                        </td>
+                                      </>
+                                    );
+                                  })}
+                                  {fasesSC.map((fase) => {
+                                    return (
+                                      <>
+                                        <td>
+                                          {plan.phase_start.find(
+                                            (obj) => obj.phid == fase
+                                          )
+                                            ? plan.phase_start.find(
+                                                (obj) => obj.phid == fase
+                                              ).value
+                                            : "-"}
+                                        </td>
+                                      </>
+                                    );
+                                  })}
+                                  {fasesSC.map((fase) => {
+                                    return (
+                                      <>
+                                        <td>
+                                          {plan.vehicle_green.find(
+                                            (obj) => obj.phid == fase
+                                          )
+                                            ? plan.vehicle_green.find(
+                                                (obj) => obj.phid == fase
+                                              ).value
+                                            : "-"}
+                                        </td>
+                                      </>
+                                    );
+                                  })}
+                                  {fasesSC_from_to.map(
+                                    (faseFrom, faseFromIndex) => {
+                                      let faseTo =
+                                        fasesSC_from_to[
+                                          (faseFromIndex + 1) %
+                                            fasesSC_from_to.length
+                                        ];
+                                      return (
+                                        <>
+                                          <td>
+                                            {plan.pedestrian_intergreen.find(
+                                              (obj) =>
+                                                obj.phfrom == faseFrom &&
+                                                obj.phto == faseTo
+                                            )
+                                              ? plan.pedestrian_intergreen.find(
+                                                  (obj) =>
+                                                    obj.phfrom == faseFrom &&
+                                                    obj.phto == faseTo
+                                                ).value
+                                              : "-"}
+                                          </td>
+                                        </>
+                                      );
+                                    }
+                                  )}
+
+                                  {fasesSC_from_to.map(
+                                    (faseFrom, faseFromIndex) => {
+                                      let faseTo =
+                                        fasesSC_from_to[
+                                          (faseFromIndex + 1) %
+                                            fasesSC_from_to.length
+                                        ];
+
+                                      return (
+                                        <>
+                                          <td
+                                            style={{
+                                              backgroundColor: "#f4ff94",
+                                            }}>
+                                            <input
+                                              type="text"
+                                              disabled={!info}
+                                              style={{
+                                                width: "1.5rem",
+                                                textAlign: "center",
+                                                padding: "0",
+                                              }}
+                                              onChange={(e) =>
+                                                editVehIntergreen(
+                                                  junctionIndex,
+                                                  faseFrom,
+                                                  faseTo,
+                                                  e.currentTarget.value
+                                                )
+                                              }
+                                              value={
+                                                plan.vehicle_intergreen.find(
+                                                  (obj) =>
+                                                    obj.phfrom == faseFrom &&
+                                                    obj.phto == faseTo
+                                                )
+                                                  ? plan.vehicle_intergreen.find(
+                                                      (obj) =>
+                                                        obj.phfrom ==
+                                                          faseFrom &&
+                                                        obj.phto == faseTo
+                                                    ).value
+                                                  : "-"
+                                              }
+                                            />
+                                          </td>
+                                        </>
+                                      );
+                                    }
+                                  )}
+                                </tr>
+                              </>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    )}
+
+                    <Button> Guardar cambios en entreverdes vehiculares</Button>
+                  </div>
+                </>
               );
             })
           ) : (
@@ -1002,14 +1039,25 @@ const Campos = forwardRef((props, ref) => {
           <div className="section" style={{ whiteSpace: "pre-wrap" }}>
             <h2>Observaciones</h2>
             {info ? (
-              <p>{props.observation}</p>
+              <Input
+                className="observaciones"
+                bsSize="sm"
+                disabled={
+                  global_state.rol !== "Personal UOCT" || !global_state.is_admin
+                }
+                type="textarea"
+                // disabled={info}
+                placeholder=""
+                defaultValue={props.state.observation}
+              />
             ) : (
               <Input
                 className="observaciones"
                 bsSize="sm"
                 type="textarea"
+                // disabled={info}
                 placeholder=""
-                value={state.observation}
+                value={props.state.observation}
                 onChange={(e) =>
                   props.dispatch({
                     type: "observation",
@@ -1018,6 +1066,7 @@ const Campos = forwardRef((props, ref) => {
                 }
               />
             )}
+            )
           </div>
         </div>
       </div>
@@ -1091,17 +1140,17 @@ const ResumenProyecto = (props) => {
                     </tr>
                   </tbody>
                 </table>
-                <Label>
+                {/* <Label>
                   (Opcional) Adjuntar comentarios u observaciones de interés
-                </Label>
-                <Input
+                </Label> */}
+                {/* <Input
                   className="observaciones"
                   bsSize="sm"
                   type="textarea"
                   placeholder=""
                   value={observation}
                   onChange={(e) => setObservation(e.currentTarget.value)}
-                />
+                /> */}
                 <ReactToPrint
                   documentTitle={"UOCT_DACoT_" + state.oid}
                   trigger={() => (

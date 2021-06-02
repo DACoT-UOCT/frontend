@@ -336,7 +336,7 @@ Label {
 .resumen-container {
   margin-top: 5px;
   /* padding-bottom: 5px; */
-  padding: 2rem;
+  padding: 0rem;
   /* height: 60vh; */
   /* height: 550px; */
   overflow-y: visible;
@@ -1027,4 +1027,43 @@ input:disabled {
   transform: translate(50%, -50%);
   height: 8rem;
   box-shadow: 2px 2px 5px #111;
+}
+
+@media all {
+  .page-break {
+    display: none;
+  }
+}
+
+@media print {
+  html,
+  body {
+    height: initial !important;
+    overflow: initial !important;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+@media print {
+  .page-break {
+    margin-top: 1rem;
+    display: block;
+    page-break-before: auto;
+  }
+}
+
+@page {
+  size: auto;
+  margin: 20mm;
+}
+
+.no-fase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.no-fase Button {
+  width: 85%;
+  margin-bottom: 0.5rem;
 }

@@ -137,9 +137,7 @@ const Siguiente = (props) => {
           dispatch({
             type: "error",
             payLoad:
-              "El identificador " +
-              state.otu.oid +
-              " ya se encuentra registrado",
+              "El identificador " + state.oid + " ya se encuentra registrado",
           });
         }
       } catch (error) {

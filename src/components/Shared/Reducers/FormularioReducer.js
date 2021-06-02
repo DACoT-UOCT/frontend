@@ -152,7 +152,7 @@ export const initialState = {
     "REGISTRAR OBSERVACIONES DE INTERÉS \nSolicitud de integración ingresada desde el sistema DACoT",
 
   errors: [],
-  vista: 4,
+  vista: 1,
   submit: false,
   isLoading: true,
   success: false,
