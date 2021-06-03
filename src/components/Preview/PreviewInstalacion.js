@@ -41,6 +41,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export const renderPDF = (instalacion) => {
+  if (instalacion.metadata.pdf_data == null) {
+    alert("No se ha encontrado un PDF con información de esta instalación");
+    return;
+  }
+  var byteCharacters = atob(instalacion.metadata.pdf_data);
+  var byteNumbers = new Array(byteCharacters.length);
+  for (var i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  var byteArray = new Uint8Array(byteNumbers);
+  var file = new Blob([byteArray], {
+    type: "application/pdf;base64",
+  });
+  var fileURL = URL.createObjectURL(file);
+  window.open(fileURL);
+};
+
 const PreviewInstalacion = (props) => {
   const dispatch = useContext(DispatchContext);
   const state = useContext(StateContext);
@@ -48,14 +66,7 @@ const PreviewInstalacion = (props) => {
   const instalacion = props.instalacion;
   const location = useLocation();
   const history_panel = location.pathname === "/historial";
-  console.log(instalacion);
-  const descargar_programaciones = () => {
-    //consultar informacion
-    //generar PDF
-    //abrir PDF en otra pestaña
-    console.log("consultando info");
-    console.log("Abriendo programaciones");
-  };
+
   if (instalacion == null) {
     return <Loading />;
   }
@@ -92,7 +103,7 @@ const PreviewInstalacion = (props) => {
               </tr>
               <tr>
                 <td className="label">Empresa instaladora:</td>
-                <td>{instalacion.metadata.status_user.full_name}</td>
+                <td>{instalacion.metadata.installation_company}</td>
               </tr>
               <tr>
                 <td className="label">Empresa mantenedora:</td>
@@ -124,7 +135,7 @@ const PreviewInstalacion = (props) => {
         </div>
       </div>
       <div className="buttons">
-        {state.rol === "Personal UOCT" &&
+        {(state.rol === "Personal UOCT" || state.is_admin) &&
           ["NEW", "UPDATE"].includes(instalacion.metadata.status) && (
             <>
               <Link
@@ -163,27 +174,9 @@ const PreviewInstalacion = (props) => {
         <Button
           className="botonDashboard"
           onClick={() => {
-            if (instalacion.metadata.pdf_data == null) {
-              alert(
-                "No se ha encontrado un PDF con información de esta instalación"
-              );
-              return;
-            }
-            var byteCharacters = atob(instalacion.metadata.pdf_data);
-            var byteNumbers = new Array(byteCharacters.length);
-            for (var i = 0; i < byteCharacters.length; i++) {
-              byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            var byteArray = new Uint8Array(byteNumbers);
-            var file = new Blob([byteArray], {
-              type: "application/pdf;base64",
-            });
-            var fileURL = URL.createObjectURL(file);
-            window.open(fileURL);
+            renderPDF(instalacion);
           }}>
-          {/* <a download="archivo.pdf" href={instalacion.metadata.pdf_data}>
-          </a> */}
-          PDF de Respaldo
+          Documentación de Respaldo
         </Button>
         <Link
           to="/info"
@@ -201,8 +194,6 @@ const PreviewInstalacion = (props) => {
           <>
             {instalacion.metadata.status === "PRODUCTION" && (
               <>
-                <Button className="botonDashboard">Programaciones</Button>
-
                 <Link
                   to="/nuevo/solicitud-actualizacion"
                   className="nada"
@@ -212,7 +203,7 @@ const PreviewInstalacion = (props) => {
                       payLoad: instalacion,
                     });
                   }}>
-                  <div className="linkBoton">Editar información</div>
+                  <div className="linkBoton">Informar cambios en el cruce</div>
                 </Link>
               </>
             )}

@@ -39,7 +39,7 @@ const Inicio = (props) => {
 
   return (
     <div className="grid-item consulta-semaforo">
-      <BarraBusqueda inputRef={inputRef} />
+      <BarraBusqueda global_state={global_state} inputRef={inputRef} />
       <div className={`${styles.container} ${"home-buttons-container"}`}>
         <div className="home-btn" onClick={onButtonClick}>
           Buscar instalaciones

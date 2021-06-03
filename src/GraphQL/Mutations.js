@@ -75,3 +75,9 @@ export const updateProject = gql`
     updateProject(data: $data)
   }
 `;
+
+export const setVehIntergreen = gql`
+  mutation setDefaultVehIntergreen($data: SetVehicleIntergreenInput) {
+    setDefaultVehIntergreen(data: $data)
+  }
+`;

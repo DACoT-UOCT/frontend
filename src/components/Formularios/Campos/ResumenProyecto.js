@@ -10,7 +10,9 @@ import { TextField, styled } from "@material-ui/core";
 import { getFecha } from "../../Shared/Utils/general_functions";
 import PopOver from "../../Shared/PopOver";
 import { makeStyles } from "@material-ui/core/styles";
-import { StateContext } from "../../App";
+import { GQLclient, StateContext } from "../../App";
+
+import { setVehIntergreen } from "../../../GraphQL/Mutations";
 
 const Campo = styled(TextField)({
   background: "none",
@@ -66,20 +68,41 @@ const Campos = forwardRef((props, ref) => {
         ) {
           aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[
             i
-          ].value = _value
-            .slice(0, 3)
-            .replace(/\s/g, "")
-            .replace(/[^0-9]/g, "");
+          ].value = parseInt(
+            _value
+              .slice(0, 3)
+              .replace(/\s/g, "")
+              .replace(/[^0-9]/g, "")
+          );
         }
       }
     }
-    // aux.otu.junctions[junctionIndex].plans[planIndex].vehicle_intergreen =
-    //   intergreens;
+
     setState(aux);
   };
 
-  const saveVehIntergreenChanges = () => {
-    console.log("guardando cambios");
+  const saveVehIntergreenChanges = (_jid) => {
+    let _phases = state.otu.junctions[_jid].plans[0].vehicle_intergreen.map(
+      (entreverde) => {
+        return {
+          phfrom: entreverde.phfrom.toString(),
+          phto: entreverde.phto.toString(),
+          value: entreverde.value.toString(),
+        };
+      }
+    );
+
+    GQLclient.request(setVehIntergreen, {
+      data: {
+        jid: state.otu.junctions[_jid].jid,
+        status: "PRODUCTION",
+        phases: _phases,
+      },
+    })
+      .then(() => {
+        alert("entreverdes actualizados");
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -117,6 +140,7 @@ const Campos = forwardRef((props, ref) => {
               </Button>
             )}
 
+          {/* datos iniciales */}
           <div className="section">
             {info && state.metadata.status == "PRODUCTION" && (
               <div style={{ padding: "1rem", paddingBottom: "0" }}>
@@ -390,7 +414,11 @@ const Campos = forwardRef((props, ref) => {
                               <tr>
                                 <td>{"F" + (faseIndex + 1)}</td>
                                 <td>
-                                  <input type="text" defaultValue={faseValue} />
+                                  <input
+                                    type="text"
+                                    defaultValue={faseValue}
+                                    disabled={!info}
+                                  />
                                 </td>
                               </tr>
                             );
@@ -436,46 +464,48 @@ const Campos = forwardRef((props, ref) => {
                       </table>
                     )}
                   </div>
-                  <div>
-                    <h5>Entreverdes peatonales</h5>
-                    {junction.intergreens.length == 0 ? (
-                      <p>
-                        No se ha extraido ninguna tabla de entreverdes desde el
-                        centro de control para esta intersección
-                      </p>
-                    ) : (
-                      <table>
-                        <thead>
-                          <th>Desde/Hacia</th>
-                          {fasesSC.map((fase) => {
-                            return <th>{"F" + fase}</th>;
-                          })}
-                        </thead>
-                        <tbody>
-                          {fasesSC.map((faseFila, indexFila) => {
-                            return (
-                              <tr>
-                                <td>{"F" + faseFila}</td>
-                                {fasesSC.map((faseCol, indexCol) => {
-                                  if (indexFila === indexCol)
-                                    return <td> -</td>;
-                                  return (
-                                    <td>
-                                      {encontrarValorEntreverde(
-                                        junction.intergreens,
-                                        fasesSYSTEM[indexFila],
-                                        fasesSYSTEM[indexCol]
-                                      )}
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
+                  {props.detalles && (
+                    <div>
+                      <h5>Entreverdes peatonales</h5>
+                      {junction.intergreens.length == 0 ? (
+                        <p>
+                          No se ha extraido ninguna tabla de entreverdes desde
+                          el centro de control para esta intersección
+                        </p>
+                      ) : (
+                        <table>
+                          <thead>
+                            <th>Desde/Hacia</th>
+                            {fasesSC.map((fase) => {
+                              return <th>{"F" + fase}</th>;
+                            })}
+                          </thead>
+                          <tbody>
+                            {fasesSC.map((faseFila, indexFila) => {
+                              return (
+                                <tr>
+                                  <td>{"F" + faseFila}</td>
+                                  {fasesSC.map((faseCol, indexCol) => {
+                                    if (indexFila === indexCol)
+                                      return <td> -</td>;
+                                    return (
+                                      <td>
+                                        {encontrarValorEntreverde(
+                                          junction.intergreens,
+                                          fasesSYSTEM[indexFila],
+                                          fasesSYSTEM[indexCol]
+                                        )}
+                                      </td>
+                                    );
+                                  })}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -794,7 +824,11 @@ const Campos = forwardRef((props, ref) => {
                       </table>
                     )}
 
-                    <Button> Guardar cambios en entreverdes vehiculares</Button>
+                    <Button
+                      onClick={() => saveVehIntergreenChanges(junctionIndex)}>
+                      {" "}
+                      Guardar cambios en entreverdes vehiculares
+                    </Button>
                   </div>
                 </>
               );

@@ -16,6 +16,7 @@ import "../../App.css";
 const BarraBusqueda = (props) => {
   // const state = props.state;
   // const dispatch = props.dispatch;
+  const global_state = props.global_state;
   const inputRef = props.inputRef;
   const [openMapa, setOpenMapa] = useState(false);
   const [junctions, setJunctions] = useState([]);
@@ -45,20 +46,36 @@ const BarraBusqueda = (props) => {
     }
 
     id_consultado = "X" + id_consultado.slice(1, -1) + "0";
-    GQLclient.request(GetProject, { oid: id_consultado, status: "NEW" })
+    GQLclient.request(GetProject, { oid: id_consultado, status: "PRODUCTION" })
       .then((response) => {
-        if (response.project === null) alert("Instalación no encontrada");
-        else {
+        if (response.project === null) {
+          //SI NO ESTÁ EN PRODUCTION, Y ES UOCT O ADMIN, CONSULTA EN STATUS NEW
+          if (global_state.rol == "Personal UOCT" || global_state.is_admin) {
+            GQLclient.request(GetProject, {
+              oid: id_consultado,
+              status: "NEW",
+            })
+              .then((response) => {
+                if (response.project === null) {
+                  alert("Instalación no encontrada");
+                } else {
+                  console.log(procesar_json_recibido(response.project));
+                  setDataConsultada(procesar_json_recibido(response.project));
+                  setPreviewOpen(true);
+                }
+              })
+              .catch((err) => {
+                alert("Error en la consulta");
+                console.log(err);
+              });
+          } else {
+            alert("Instalación no encontrada");
+          }
+        } else {
           console.log(procesar_json_recibido(response.project));
           setDataConsultada(procesar_json_recibido(response.project));
           setPreviewOpen(true);
         }
-        // dispatch({ type: "consultado", payLoad: false });
-        // dispatch({
-        //   type: "success_busqueda",
-        //   payLoad: procesar_json_recibido(response.data),
-        // });
-        // history.go(0);
       })
       .catch((err) => {
         alert("Error en la consulta");

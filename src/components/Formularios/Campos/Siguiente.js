@@ -139,6 +139,9 @@ const Siguiente = (props) => {
             payLoad:
               "El identificador " + state.oid + " ya se encuentra registrado",
           });
+          dispatch({
+            type: "reset",
+          });
         }
       } catch (error) {
         console.log(error);

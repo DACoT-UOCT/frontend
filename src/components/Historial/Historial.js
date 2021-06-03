@@ -103,7 +103,7 @@ const Historial = (props) => {
               <>
                 <PanelInstalacion
                   expanded={expanded}
-                  id={cambioIndex + 1} //ahi ingresar el X
+                  id={"Versión " + (cambioIndex + 1)} //ahi ingresar el X
                   oid={global_state.actualizando.oid}
                   type={""}
                   date={version.date}

@@ -10,6 +10,7 @@ import ButtonMaterial from "@material-ui/core/Button";
 import { getFecha } from "../Shared/Utils/general_functions";
 import { acceptProject, rejectProject } from "../../GraphQL/Mutations";
 import Success from "../Shared/Success";
+import { renderPDF } from "../Preview/PreviewInstalacion";
 
 const validar_imagen = (imagen) => {
   const formatos = ["image/png", "image/jpg", "image/jpeg"];
@@ -42,12 +43,18 @@ export default function ProcesarSolicitud(props) {
   // const [correos, setCorreos] = useState([""]);
   const [submit, setSubmit] = useState(false);
 
-  const enviar = (aprobar) => {
+  const aprobar_rechazar_solicitud = (
+    _oid,
+    _status,
+    _message = "",
+    _img = null,
+    aprobar = true
+  ) => {
     let respuesta = {
-      oid: state.actualizando.oid,
-      status: state.actualizando.metadata.status,
-      message: comentario,
-      img: imagen,
+      oid: _oid,
+      status: _status,
+      message: _message,
+      img: _img,
     };
 
     let mutation = aprobar ? acceptProject : rejectProject;
@@ -85,7 +92,10 @@ export default function ProcesarSolicitud(props) {
               <Link to="/info" target="_blank">
                 {" datos ingresados "}
               </Link>
-              entregados por la empresa con el documento PDF de la instalación.
+              entregados por la empresa con
+              <Link onClick={() => renderPDF(state.actualizando)}>
+                {" la documentación de la instalación. "}
+              </Link>
               Para solicitudes de actualización, queda a criterio del revisor
               aceptar o rechazar.
             </p>
@@ -148,7 +158,13 @@ export default function ProcesarSolicitud(props) {
                 className={classes.backButton}
                 size="large"
                 onClick={() => {
-                  enviar(false);
+                  aprobar_rechazar_solicitud(
+                    state.actualizando.oid,
+                    state.actualizando.metadata.status,
+                    comentario,
+                    imagen,
+                    false
+                  );
                 }}>
                 Rechazar
               </ButtonMaterial>
@@ -157,7 +173,13 @@ export default function ProcesarSolicitud(props) {
                 color="primary"
                 size="large"
                 onClick={() => {
-                  enviar(true);
+                  aprobar_rechazar_solicitud(
+                    state.actualizando.oid,
+                    state.actualizando.metadata.status,
+                    comentario,
+                    imagen,
+                    true
+                  );
                 }}>
                 Aprobar
               </ButtonMaterial>

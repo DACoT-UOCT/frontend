@@ -6,7 +6,7 @@ import { Label, CustomInput } from "reactstrap";
 import PopOver from "../../Shared/PopOver";
 
 const validar_pdf = (file) => {
-  console.log(file.type);
+  return file.type == "application/pdf";
 };
 const validar_imagen = (imagen) => {
   const formatos = ["image/png", "image/jpg", "image/jpeg"];
@@ -37,7 +37,7 @@ const Documentacion = (props) => {
         onChange={(e) => {
           const file = e.target.files[0];
           console.log(state);
-          if (file) {
+          if (file && validar_pdf(file)) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function () {

@@ -33,7 +33,11 @@ import Postes from "./Campos/Postes";
 import Controlador from "./Campos/Controlador";
 import Documentacion from "./Campos/Documentacion";
 import { GQLclient } from "../App";
-import { createProject, updateProject } from "../../GraphQL/Mutations";
+import {
+  acceptProject,
+  createProject,
+  updateProject,
+} from "../../GraphQL/Mutations";
 import Success from "../Shared/Success";
 
 export const StateContext = React.createContext();
@@ -81,9 +85,15 @@ const NuevaInstalacion = (props) => {
         location.pathname
       );
       let mutation;
-      if (location.pathname == "/nuevo/digitalizacion")
+      if (
+        location.pathname == "/nuevo/digitalizacion" ||
+        location.pathname == "/nuevo/solicitud-integracion"
+      )
         mutation = createProject;
-      else if (location.pathname == "/editar/instalacion")
+      else if (
+        location.pathname == "/editar/instalacion" ||
+        location.pathname == "/nuevo/solicitud-actualizacion"
+      )
         mutation = updateProject;
 
       GQLclient.request(mutation, {
@@ -91,8 +101,27 @@ const NuevaInstalacion = (props) => {
       })
         .then((response) => {
           console.log(response);
-          alert("Formulario enviado correctamente");
-          dispatch({ type: "post_success" });
+          if (location.pathname == "/editar/instalacion") {
+            //SI SE ESTA EDITANDO POR UN FUNCIONARIO UOCT O ADMIN
+            let _data = {
+              oid: state.oid,
+              status: "UPDATE",
+            };
+
+            GQLclient.request(acceptProject, { data: _data })
+              .then((response) => {
+                alert("Actualización realizada con éxito");
+                dispatch({ type: "post_success" });
+              })
+              .catch((err) => {
+                alert("Error en el envio");
+                dispatch({ type: "post_error" });
+                console.log(err);
+              });
+          } else {
+            alert("Formulario enviado correctamente");
+            dispatch({ type: "post_success" });
+          }
         })
         .catch((err) => {
           alert("Error en el envio.");

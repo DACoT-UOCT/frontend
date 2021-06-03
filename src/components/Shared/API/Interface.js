@@ -4,17 +4,6 @@ import camelcaseKeysDeep from "camelcase-keys-deep";
 import { GQLclient } from "../../App";
 
 //Interfaz de comunicacion entre la api y el frontend
-const comparar_arrays = (arr1, arr2) => {
-  if (arr1.length !== arr2.length) {
-    return false;
-  }
-  for (var i = 0; i < arr1.length; i++) {
-    if (arr1[i] !== arr2[i]) {
-      return false;
-    }
-  }
-  return true;
-};
 
 export const procesar_json_recibido = (aux) => {
   //procesa el json consultado para mostrarlo en el formulario
@@ -35,7 +24,7 @@ export const procesar_json_recibido = (aux) => {
 
   temp.metadata.installation_company =
     temp.metadata.installation_company == null
-      ? ""
+      ? "Sin asignar"
       : temp.metadata.installation_company.name;
 
   temp.metadata.pdf_data =
@@ -155,28 +144,34 @@ export const procesar_json_envio = (state_copy, url) => {
   //   state_copy.metadata.status = "UPDATE";
   // }
 
-  if (url == "/editar/instalacion") {
+  if (url == "/editar/instalacion" || url == "/nuevo/solicitud-actualizacion") {
     //SI EL ADMIN O UN FUNCIONARIO UOCT ESTA EDITANDO DIRECTAMENTE
-    // state_copy.metadata.status = "";
+
     state_copy.status = "UPDATE";
-    delete state_copy.metadata.version;
-    delete state_copy.metadata.status_date;
-    delete state_copy.metadata.status_user;
-    if (state_copy.otu.programs.length == 0) {
-      delete state_copy.otu.programs;
-    }
-    for (let i = 0; i < state_copy.otu.junctions.length; i++) {
-      if (state_copy.otu.junctions[i].intergreens.length == 0)
-        delete state_copy.otu.junctions[i].intergreens;
-      if (state_copy.otu.junctions[i].plans.length == 0)
-        delete state_copy.otu.junctions[i].plans;
-      if (state_copy.otu.junctions[i].sequence.length == 0)
-        delete state_copy.otu.junctions[i].sequence;
-    }
+  } else if (
+    url == "/nuevo/digitalizacion" ||
+    url == "/nuevo/solicitud-integracion"
+  ) {
+    state_copy.status = "NEW";
+  }
+
+  if (state_copy.otu.programs.length == 0) {
+    delete state_copy.otu.programs;
+  }
+  for (let i = 0; i < state_copy.otu.junctions.length; i++) {
+    if (state_copy.otu.junctions[i].intergreens.length == 0)
+      delete state_copy.otu.junctions[i].intergreens;
+    if (state_copy.otu.junctions[i].plans.length == 0)
+      delete state_copy.otu.junctions[i].plans;
+    if (state_copy.otu.junctions[i].sequence.length == 0)
+      delete state_copy.otu.junctions[i].sequence;
   }
 
   // state_copy.status = state_copy.metadata.status;
   delete state_copy.metadata.status;
+  delete state_copy.metadata.version;
+  delete state_copy.metadata.status_date;
+  delete state_copy.metadata.status_user;
 
   //detalles graphql mutation
   state_copy.controller.model.company =
@@ -189,7 +184,7 @@ export const procesar_json_envio = (state_copy, url) => {
     "-" +
     ("0" + (temp.getMonth() + 1)).slice(-2) +
     "-" +
-    temp.getDate();
+    ("0" + temp.getDate()).slice(-2);
   // return string;
 
   //SE ENVIA EL CÓDIGO DE LA COMUNA, NO EL NOMBRE

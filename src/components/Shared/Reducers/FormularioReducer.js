@@ -231,8 +231,14 @@ export function reducer(draft, action) {
         if (draft.vista === 4) {
           draft.submit = true;
         }
+        // document.getElementById("formulario").scrollTop = 0;
         draft.vista += 1;
-        document.getElementById("formulario").scrollTop = 0;
+        setTimeout(() => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }, 200);
       }
       return;
     }
