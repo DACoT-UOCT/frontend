@@ -1073,3 +1073,9 @@ input:disabled {
   width: 85%;
   margin-bottom: 0.5rem;
 }
+
+.responsive {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+}

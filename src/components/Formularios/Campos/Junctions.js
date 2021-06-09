@@ -70,16 +70,21 @@ const Junctions = (props) => {
                                   setIndex(junction_index);
                                 }}
                                 style={{ cursor: "pointer" }}>
-                                {junction.metadata.location.coordinates !== null
-                                  ? "LAT: " +
-                                    junction.metadata.location.coordinates[0].toFixed(
-                                      5
-                                    ) +
-                                    " / LON: " +
-                                    junction.metadata.location.coordinates[1].toFixed(
-                                      5
-                                    )
-                                  : "Ingresar ubicación usando el mapa"}
+                                {junction.metadata.location.coordinates !==
+                                null ? (
+                                  "LAT: " +
+                                  junction.metadata.location.coordinates[0].toFixed(
+                                    5
+                                  ) +
+                                  " / LON: " +
+                                  junction.metadata.location.coordinates[1].toFixed(
+                                    5
+                                  )
+                                ) : (
+                                  <p style={{ fontWeight: "bold" }}>
+                                    Ingresar ubicación usando el mapa
+                                  </p>
+                                )}
                               </TableCell>
                             </TableRow>
                             <TableRow>

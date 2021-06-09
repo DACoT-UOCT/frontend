@@ -55,7 +55,7 @@ const NuevoControlador = (props) => {
     console.log("enviando");
 
     GQLclient.request(createController, {
-      controllerDetails: {
+      data: {
         company: state.marca,
         model: state.model,
         firmwareVersion: state.firmwareVersion,

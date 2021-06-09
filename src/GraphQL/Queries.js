@@ -69,11 +69,32 @@ export const GetControllers = gql`
   }
 `;
 
-export const GetFailedPlans = gql`
+export const GetFailedPlans2 = gql`
   {
     failedPlans {
       id
       date
+    }
+  }
+`;
+
+export const GetFailedPlans = gql`
+  query failedPlans($first: Int, $after: String) {
+    failedPlans(first: $first, after: $after) {
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          id
+          date
+          plans
+        }
+      }
     }
   }
 `;

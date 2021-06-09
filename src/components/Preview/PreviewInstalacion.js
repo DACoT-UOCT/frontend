@@ -127,8 +127,7 @@ const PreviewInstalacion = (props) => {
         <div className={clsx(classes.column2, classes.divider)}>
           <img
             style={{ "margin-top": "10px" }}
-            height="320"
-            width="312"
+            className="responsive"
             src={instalacion.metadata.img}
             alt="Cruce"
           />

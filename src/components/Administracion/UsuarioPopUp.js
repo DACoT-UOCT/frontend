@@ -38,7 +38,8 @@ const UsuarioPopUp = (props) => {
     if (json.role === "Empresa") {
       temp = temp && json.company !== "";
     }
-    var expresion = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/g;
+    var expresion =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/g;
     if (props.type !== "edit") {
       temp = temp && expresion.test(json.email);
     }
@@ -47,7 +48,7 @@ const UsuarioPopUp = (props) => {
   };
   const eliminar = () => {
     // var url = ipAPI + "delete-user/" + state.email;
-    GQLclient.request(deleteUser, { userDetails: { email: state.email } })
+    GQLclient.request(deleteUser, { data: { email: state.email } })
       .then((response) => {
         alert("Usuario eliminado");
         dispatch({ type: "consultado", payLoad: false });
@@ -88,7 +89,7 @@ const UsuarioPopUp = (props) => {
       mutation = CreateUser;
     }
 
-    GQLclient.request(mutation, { userDetails: json })
+    GQLclient.request(mutation, { data: json })
       .then((response) => {
         alert("Cambios guardados");
         dispatch({ type: "consultado", payLoad: false });

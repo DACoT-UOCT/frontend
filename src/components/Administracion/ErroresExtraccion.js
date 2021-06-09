@@ -10,27 +10,32 @@ import { useHistory } from "react-router-dom";
 
 import { Table } from "reactstrap";
 import { useQuery } from "../../GraphQL/useQuery";
-import { GetFailedPlan, GetFailedPlans } from "../../GraphQL/Queries";
+import {
+  GetFailedPlan,
+  GetFailedPlans,
+  GetFailedPlans2,
+} from "../../GraphQL/Queries";
 import { deleteFailedPlan } from "../../GraphQL/Mutations";
 import { getFecha } from "../Shared/Utils/general_functions";
+import Paginado from "../Shared/Paginado";
 
 const ErrorExtraccion = (props) => {
   const global_state = useContext(GlobalContext);
   const [registros, setRegistros] = useState([]);
   const history = useHistory();
 
-  const planQuery = useQuery(
-    GetFailedPlan,
-    (data) => {
-      console.log(data);
-      setRegistros(data.failedPlan.plans);
-    },
-    { mid: props.id }
-  );
+  // const planQuery = useQuery(
+  //   GetFailedPlan,
+  //   (data) => {
+  //     console.log(data);
+  //     setRegistros(data.failedPlan.plans);
+  //   },
+  //   { mid: props.id }
+  // );
 
   const eliminar_registros = () => {
     GQLclient.request(deleteFailedPlan, {
-      messageDetails: { mid: props.id },
+      messageDetails: { data: { mid: props.id } },
     })
       .then((response) => {
         alert("Registros eliminados");
@@ -44,18 +49,18 @@ const ErrorExtraccion = (props) => {
     props.setOpen(false);
   };
 
-  if (planQuery.status === "idle" || planQuery.status === "loading") {
-    return <Loading />;
-  } else if (planQuery.status === "error") {
-    return <p>Error en la consulta</p>;
-  }
+  // if (planQuery.status === "idle" || planQuery.status === "loading") {
+  //   return <Loading />;
+  // } else if (planQuery.status === "error") {
+  //   return <p>Error en la consulta</p>;
+  // }
 
   return (
     <>
       <>
         <Table hover responsive className={styles.table}>
           <tbody>
-            {registros.map((registro, indice) => {
+            {props.list.map((registro, indice) => {
               return (
                 <tr>
                   <td>{(indice + 1).toString() + ".-"}</td>
@@ -82,16 +87,31 @@ const ErroresExtraccion = (props) => {
   const [registros, setRegistros] = useState([]);
   const [open, setOpen] = useState(false);
   const [seleccionado, setSeleccionado] = useState(null);
+  const [listSeleccionado, setListSeleccionado] = useState([]);
 
-  const erroresQuery = useQuery(GetFailedPlans, (data) =>
-    setRegistros(data.failedPlans)
-  );
+  // const erroresQuery = useQuery(GetFailedPlans, (data) =>
+  //   setRegistros(data.failedPlans)
+  // );
 
-  if (erroresQuery.status === "idle" || erroresQuery.status === "loading") {
-    return <Loading />;
-  } else if (erroresQuery.status === "error") {
-    return <p>Error en la consulta</p>;
-  }
+  const consultar_errores = (_type, _after = "") => {
+    return GQLclient.request(GetFailedPlans, {
+      first: 50,
+      after: _after,
+    })
+      .then((data) => {
+        return {
+          elements: data.failedPlans.edges.map((edge) => edge.node),
+          pageInfo: data.failedPlans.pageInfo,
+        };
+      })
+      .catch((error) => error);
+  };
+
+  // if (erroresQuery.status === "idle" || erroresQuery.status === "loading") {
+  //   return <Loading />;
+  // } else if (erroresQuery.status === "error") {
+  //   return <p>Error en la consulta</p>;
+  // }
 
   return (
     <>
@@ -111,7 +131,31 @@ const ErroresExtraccion = (props) => {
               </tr>
             </thead>
             <tbody>
-              {registros.map((registro, indice) => {
+              <Paginado
+                render={(registro, indice) => {
+                  return (
+                    <tr>
+                      <td>{(indice + 1).toString() + ".-"}</td>
+                      <td> {getFecha(registro.date)}</td>
+                      <td></td>
+                      <td>
+                        {" "}
+                        <Button
+                          onClick={() => {
+                            setSeleccionado(registro.id);
+                            setListSeleccionado(registro.plans);
+                            setOpen(true);
+                          }}>
+                          Consultar
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                }}
+                tipo="failedPlans"
+                consulta={consultar_errores}
+              />
+              {/* {registros.map((registro, indice) => {
                 return (
                   <tr>
                     <td>{(indice + 1).toString() + ".-"}</td>
@@ -129,7 +173,7 @@ const ErroresExtraccion = (props) => {
                     </td>
                   </tr>
                 );
-              })}
+              })} */}
             </tbody>
           </Table>
 
@@ -137,6 +181,7 @@ const ErroresExtraccion = (props) => {
             <PopUp title={"Planes no extraidos"} open={open} setOpen={setOpen}>
               <ErrorExtraccion
                 id={seleccionado}
+                list={listSeleccionado}
                 setOpen={setOpen}
                 open={open}
               />

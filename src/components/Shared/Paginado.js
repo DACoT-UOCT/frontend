@@ -21,30 +21,16 @@ const Paginado = (props) => {
     props
       .consulta(_after)
       .then((response) => {
+        console.log(response);
         setElements(response.elements);
         setPageInfo(response.pageInfo);
-        // console.log(data.projects.pageInfo);
+
         setStatus("success");
       })
       .catch((err) => {
         setStatus("error");
         console.log(err);
       });
-
-    // let response;
-    // try {
-    //   response = await props.consulta(_after);
-    //   console.log(response);
-    //   setElements(response.elements);
-    //   setPageInfo(response.pageInfo);
-    //   // console.log(data.projects.pageInfo);
-    //   setStatus("success");
-    // } catch (err) {
-    //   setStatus("error");
-    //   console.log(err);
-    // }
-
-    // consulta(setElements, se _after);
   }
 
   useEffect(() => {
@@ -89,49 +75,28 @@ const Paginado = (props) => {
 
   return (
     <>
-      <div className={`grid-item ${styles.info}`}>
-        <div>
-          <div className={styles.top}>{props.titulo}</div>
-        </div>
-        {elements.length > 0 ? (
-          <>
-            {elements
-              // .concat(updateRequests)
-              // .sort(sortFunction)
-              // .slice(0, 10)
-              .map((element) => {
-                return props.render(element);
-              })}
-            <div className="arrows-pagination">
-              {/* <button onClick={handlePrev} disabled={!pageInfo.hasPreviousPage}>
+      {elements != null && elements.length > 0 ? (
+        <>
+          {elements.map((element, index) => {
+            return props.render(element, index);
+          })}
+          <div className="arrows-pagination">
+            <button onClick={handleNext} disabled={!pageInfo.hasNextPage}>
               <img
                 src="/arrow.png"
                 alt=""
                 style={{
-                  transform: "scaleX(-1)",
-                  filter: pageInfo.hasPreviousPage
+                  filter: pageInfo.hasNextPage
                     ? "opacity(100%)"
                     : "opacity(50%)",
                 }}
               />
-            </button> */}
-              <button onClick={handleNext} disabled={!pageInfo.hasNextPage}>
-                <img
-                  src="/arrow.png"
-                  alt=""
-                  style={{
-                    filter: pageInfo.hasNextPage
-                      ? "opacity(100%)"
-                      : "opacity(50%)",
-                  }}
-                />
-              </button>
-            </div>
-          </>
-        ) : (
-          <> Nada por aqui</>
-        )}
-      </div>
+            </button>
+          </div>
+        </>
+      ) : (
+        <> Nada por aqui</>
+      )}
     </>
   );
 };

@@ -46,6 +46,7 @@ const BarraBusqueda = (props) => {
     }
 
     id_consultado = "X" + id_consultado.slice(1, -1) + "0";
+    console.log(global_state);
     GQLclient.request(GetProject, { oid: id_consultado, status: "PRODUCTION" })
       .then((response) => {
         if (response.project === null) {
@@ -57,7 +58,7 @@ const BarraBusqueda = (props) => {
             })
               .then((response) => {
                 if (response.project === null) {
-                  alert("Instalación no encontrada");
+                  alert("Instalación no encontrada, NO NEW NO PRODUCTION");
                 } else {
                   console.log(procesar_json_recibido(response.project));
                   setDataConsultada(procesar_json_recibido(response.project));
@@ -65,11 +66,11 @@ const BarraBusqueda = (props) => {
                 }
               })
               .catch((err) => {
-                alert("Error en la consulta");
+                alert("Error en la consulta NEW");
                 console.log(err);
               });
           } else {
-            alert("Instalación no encontrada");
+            alert("Instalación no encontrada NO PRODUCTION");
           }
         } else {
           console.log(procesar_json_recibido(response.project));
@@ -78,7 +79,7 @@ const BarraBusqueda = (props) => {
         }
       })
       .catch((err) => {
-        alert("Error en la consulta");
+        alert("Error en la consulta PRODUCTION");
         console.log(err);
       });
   };

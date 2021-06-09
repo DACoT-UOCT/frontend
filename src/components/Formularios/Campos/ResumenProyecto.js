@@ -66,14 +66,15 @@ const Campos = forwardRef((props, ref) => {
           aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[i]
             .phto == faseTo
         ) {
-          aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[
-            i
-          ].value = parseInt(
+          let valor = parseInt(
             _value
               .slice(0, 3)
               .replace(/\s/g, "")
               .replace(/[^0-9]/g, "")
           );
+          aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[
+            i
+          ].value = valor === NaN ? 0 : valor;
         }
       }
     }
@@ -844,231 +845,142 @@ const Campos = forwardRef((props, ref) => {
           )}
 
           {props.detalles && (
-            <>
-              <div className="section">
-                <h2>Controlador</h2>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td className="label">Modelo:</td>
-                      <td>
-                        {state.controller.model.company.name +
-                          " " +
-                          state.controller.model.model}
-                      </td>
-                    </tr>
+            <div className="section">
+              <h2>Información complementaria</h2>
+              <div className="tables">
+                <div>
+                  <h5>Cabezales</h5>
+                  <table>
+                    <thead>
+                      <th>Tipo</th>
+                      <th>Led</th>
+                      <th>Halógeno</th>
+                    </thead>
+                    <tbody>
+                      {state.headers.map((header) => {
+                        return (
+                          <tr>
+                            <td>{header.type}</td>
+                            <td>{header.led}</td>
+                            <td>{header.hal}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <h5>Controlador</h5>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="label">Modelo:</td>
+                        <td>
+                          {state.controller.model.company.name +
+                            " " +
+                            state.controller.model.model}
+                        </td>
+                      </tr>
 
-                    <tr>
-                      <td className="label">GPS:</td>
-                      <td>
-                        {state.controller.gps == undefined
-                          ? "No registrado"
-                          : state.controller.gps
-                          ? "Si"
-                          : "No"}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="label">Versión de firmware:</td>
-                      <td>{state.controller.model.firmware_version}</td>
-                    </tr>
-                    <tr>
-                      <td className="label">Checksum:</td>
-                      <td>{state.controller.model.checksum}</td>
-                    </tr>
-                    {/* <tr>
+                      <tr>
+                        <td className="label">GPS:</td>
+                        <td>
+                          {state.controller.gps == undefined
+                            ? "No registrado"
+                            : state.controller.gps
+                            ? "Si"
+                            : "No"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label">Versión de firmware:</td>
+                        <td>{state.controller.model.firmware_version}</td>
+                      </tr>
+                      <tr>
+                        <td className="label">Checksum:</td>
+                        <td>{state.controller.model.checksum}</td>
+                      </tr>
+                      {/* <tr>
                       <td className="label">Fecha del modelo:</td>
                       <td>{getFecha(state.controller.model.date)}</td>
                     </tr> */}
-                  </tbody>
-                </table>
-              </div>
+                    </tbody>
+                  </table>
+                </div>
 
-              <div className="section">
-                <h2>Postes</h2>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td className="label">Postes ganchos:</td>
-                      <td>
-                        {state.poles == undefined
-                          ? "Sin registro"
-                          : state.poles.hooks}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="label">Postes vehiculares:</td>
-                      <td>
-                        {state.poles == undefined
-                          ? "Sin registro"
-                          : state.poles.vehicular}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="label">Postes peatonales:</td>
-                      <td>
-                        {state.poles == undefined
-                          ? "Sin registro"
-                          : state.poles.pedestrian}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="section">
-                <h2>Cabezales</h2>
-                <table>
-                  <thead>
-                    <th>Tipo</th>
-                    <th>Led</th>
-                    <th>Halógeno</th>
-                  </thead>
-                  <tbody>
-                    {state.headers.map((header) => {
-                      return (
-                        <tr>
-                          <td>{header.type}</td>
-                          <td>{header.led}</td>
-                          <td>{header.hal}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="section">
-                <h2>UPS</h2>
-                {state.ups == undefined ? (
+                <div>
+                  <h5>Postes</h5>
                   <table>
                     <tbody>
                       <tr>
-                        <td className="label">UPS:</td>
-                        <td>No</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                ) : (
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td className="label">Marca:</td>
-                        <td>{state.ups.brand}</td>
-                      </tr>
-                      <tr>
-                        <td className="label">Modelo:</td>
-                        <td>{state.ups.model}</td>
-                      </tr>
-                      <tr>
-                        <td className="label">Número Serie:</td>
-                        <td>{state.ups.serial}</td>
-                      </tr>
-                      <tr>
-                        <td className="label">Capacidad:</td>
-                        <td>{state.ups.capacity}</td>
-                      </tr>
-                      <tr>
-                        <td className="label">Duración Carga:</td>
-                        <td>{state.ups.charge_duration}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                )}
-              </div>
-            </>
-          )}
-
-          {/* <div className="tables">
-          <div className="section">
-            <h2>Etapas</h2>
-            <table>
-              <thead>
-                <th>Id</th>
-                <th>Tipo</th>
-              </thead>
-              <tbody>
-                {state.otu.stages.map((stage) => {
-                  return (
-                    <tr>
-                      <td>{stage[0]}</td>
-                      <td>{stage[1]}</td>
-                      <br></br>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <div className="section">
-            <h2>Fases</h2>
-            <table>
-              <tbody>
-                {state.otu.fases.map((fase, index) => {
-                  return (
-                    <tr>
-                      <td className="label">{index + 1}: </td>
-                      <td>{fase.join(" - ")}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <div className="section">
-            <h2>Secuencias</h2>
-            <table>
-              <tbody>
-                {state.otu.secuencias.map((secuencia, index) => {
-                  return (
-                    <tr>
-                      <td className="label">{index + 1}:</td>
-                      <td>{secuencia.join(" - ")}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div> */}
-
-          {/* <div className="section">
-          <h2>Matriz Entreverdes</h2>
-          <table className="entreverdes">
-            <thead>
-              <th></th>
-              {state.otu.entreverdes.map((fila, indice_fila) => {
-                return <th>{state.otu.stages[indice_fila][0]}</th>;
-              })}
-            </thead>
-            <tbody>
-              {state.otu.entreverdes.map((fila, indice_fila) => {
-                return (
-                  <tr>
-                    <td className="headerLabel">
-                      {state.otu.stages[indice_fila][0]}
-                    </td>
-                    {fila.map((col, indice_col) => {
-                      return (
+                        <td className="label">Postes ganchos:</td>
                         <td>
-                          <Campo
-                            id="standard"
-                            variant="standard"
-                            style={{ width: "75px" }}
-                            type="number"
-                            name="otu-control"
-                            autoComplete="off"
-                            value={col}
-                          />
+                          {state.poles == undefined
+                            ? "Sin registro"
+                            : state.poles.hooks}
                         </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div> */}
+                      </tr>
+                      <tr>
+                        <td className="label">Postes vehiculares:</td>
+                        <td>
+                          {state.poles == undefined
+                            ? "Sin registro"
+                            : state.poles.vehicular}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label">Postes peatonales:</td>
+                        <td>
+                          {state.poles == undefined
+                            ? "Sin registro"
+                            : state.poles.pedestrian}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div>
+                  <h5>UPS</h5>
+                  {state.ups == undefined ? (
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td className="label">UPS:</td>
+                          <td>No</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ) : (
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td className="label">Marca:</td>
+                          <td>{state.ups.brand}</td>
+                        </tr>
+                        <tr>
+                          <td className="label">Modelo:</td>
+                          <td>{state.ups.model}</td>
+                        </tr>
+                        <tr>
+                          <td className="label">Número Serie:</td>
+                          <td>{state.ups.serial}</td>
+                        </tr>
+                        <tr>
+                          <td className="label">Capacidad:</td>
+                          <td>{state.ups.capacity}</td>
+                        </tr>
+                        <tr>
+                          <td className="label">Duración Carga:</td>
+                          <td>{state.ups.charge_duration}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="section" style={{ whiteSpace: "pre-wrap" }}>
             <h2>Observaciones</h2>

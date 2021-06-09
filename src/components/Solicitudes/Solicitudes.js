@@ -83,28 +83,35 @@ const Solicitudes = () => {
           </button>
         </div>
       </div>
-      <Paginado
-        titulo={"Solicitudes de " + state.vista.toLowerCase()}
-        render={(request) => {
-          return (
-            <>
-              <PanelInstalacion
-                expanded={expanded}
-                id={request.oid}
-                oid={request.oid}
-                type={estados[request.metadata.status]}
-                status={request.metadata.status}
-                date={request.metadata.statusDate}
-                handleChange={handleChange}
-              />
-            </>
-          );
-        }}
-        tipo={state.vista}
-        consulta={
-          state.vista === "Integración" ? consultar_NEW : consultar_UPDATE
-        }
-      />
+      <div className={`grid-item ${styles.info}`}>
+        <div>
+          <div className={styles.top}>
+            {"Solicitudes de " + state.vista.toLowerCase()}
+          </div>
+        </div>
+        <Paginado
+          titulo={"Solicitudes de " + state.vista.toLowerCase()}
+          render={(request, index) => {
+            return (
+              <>
+                <PanelInstalacion
+                  expanded={expanded}
+                  id={request.oid}
+                  oid={request.oid}
+                  type={estados[request.metadata.status]}
+                  status={request.metadata.status}
+                  date={request.metadata.statusDate}
+                  handleChange={handleChange}
+                />
+              </>
+            );
+          }}
+          tipo={state.vista}
+          consulta={
+            state.vista === "Integración" ? consultar_NEW : consultar_UPDATE
+          }
+        />
+      </div>
     </div>
   );
 };

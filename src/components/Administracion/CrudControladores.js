@@ -141,7 +141,7 @@ const CrudControladores = () => {
           title="Eliminar controlador"
           open={closeOpen}
           setOpen={setCloseOpen}>
-          <p>¿Desea eliminar el controlador?</p>
+          <p>¿Desea eliminar este controlador?</p>
           <Table hover responsive className={styles.table}>
             <thead>
               <tr>
