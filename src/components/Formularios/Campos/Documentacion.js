@@ -4,6 +4,7 @@ import "../../../App.css";
 
 import { Label, CustomInput } from "reactstrap";
 import PopOver from "../../Shared/PopOver";
+import CursorZoom from "react-cursor-zoom";
 
 const validar_pdf = (file) => {
   return file.type == "application/pdf";
@@ -94,7 +95,20 @@ const Documentacion = (props) => {
       {img !== null && img !== "/no_image.png" && (
         <div className="imagen-formulario">
           <br></br>
-          <img src={img} width="420" height="420" alt="" />
+          <CursorZoom
+            image={{
+              src: img,
+              width: 300,
+              height: 300,
+            }}
+            zoomImage={{
+              src: img,
+              width: 500,
+              height: 500,
+            }}
+            size={180}
+          />
+          {/* <img src={img} width="420" height="420" alt="" /> */}
           {/* <hr className="separador"></hr> */}
           <br></br>
           {/* <hr className="separador"></hr> */}

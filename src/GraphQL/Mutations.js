@@ -10,7 +10,9 @@ export const CreateUser = gql`
 
 export const UpdateUser = gql`
   mutation updateUser($data: UpdateUserInput) {
-    updateUser(data: $data)
+    updateUser(data: $data) {
+      id
+    }
   }
 `;
 
@@ -22,7 +24,9 @@ export const deleteUser = gql`
 
 export const createController = gql`
   mutation createController($data: CreateControllerModelInput) {
-    createController(data: $data)
+    createController(data: $data) {
+      id
+    }
   }
 `;
 

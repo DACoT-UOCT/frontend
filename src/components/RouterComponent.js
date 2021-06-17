@@ -6,7 +6,6 @@ import axios from "axios";
 import { ipAPI } from "./Shared/ipAPI";
 import Header from "./Shared/Header";
 import NuevaInstalacion from "./Formularios/NuevaInstalacion";
-import ActualizarProgramacion from "./Formularios/ActualizarProgramacion";
 import Inicio from "./Inicio/Inicio";
 import Login from "./Login/Login";
 import Logout from "./Login/Logout";
@@ -107,11 +106,11 @@ const RouterComponent = (props) => {
                 path="/nuevo/digitalizacion"
                 component={() => <NuevaInstalacion state={state} />}
               />
-              {/* <Route
+              <Route
                 exact
-                path="/editar/programacion"
-                component={() => <ActualizarProgramacion state={state} />}
-              /> */}
+                path="/editar/info-programaciones"
+                component={() => <NuevaInstalacion state={state} />}
+              />
             </>
           )}
           {state.is_admin && (

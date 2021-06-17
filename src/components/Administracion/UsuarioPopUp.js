@@ -316,12 +316,12 @@ const UsuarioPopUp = (props) => {
           <>
             <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
             <Button onClick={try_submit}>
-              <span>Guardar</span>
+              <span>Guardar cambios</span>
             </Button>
             {props.type === "edit" && (
               <Button
+                color="danger"
                 onClick={() => {
-                  console.log("Hola eliminando");
                   dispatch({ type: "desea_eliminar", payLoad: true });
                 }}>
                 <span>Eliminar usuario</span>

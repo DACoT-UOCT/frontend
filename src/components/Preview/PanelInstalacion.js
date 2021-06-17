@@ -107,20 +107,6 @@ export default function PanelInstalacion(props) {
     setLoading(false);
   };
 
-  // const confirmar_solicitud = () => {
-  //   const link = ipAPI + "requests/" + instalacion.oid + "/delete";
-  //   axios
-  //     .put(link)
-  //     .then((response) => {
-  //       //solicitud exitosa
-  //       alert("Éxito");
-  //     })
-  //     .catch((err) => {
-  //       //error
-  //       alert("Error en el envío");
-  //     });
-  // };
-
   return (
     <>
       <Accordion

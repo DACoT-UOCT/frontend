@@ -170,6 +170,14 @@ const Junctions = (props) => {
                             setOpenMapa(true);
                             setIndex(junction_index);
                           }}>
+                          <p
+                            style={{
+                              position: "absolute",
+                              top: "-1.5rem",
+                              fontWeight: "bold",
+                            }}>
+                            Usar Mapa
+                          </p>
                           <img
                             // style={{ "margin-top": "10px" }}
                             height="100"

@@ -144,9 +144,12 @@ export const procesar_json_envio = (state_copy, url) => {
   //   state_copy.metadata.status = "UPDATE";
   // }
 
-  if (url == "/editar/instalacion" || url == "/nuevo/solicitud-actualizacion") {
+  if (
+    url == "/editar/instalacion" ||
+    url == "/nuevo/solicitud-actualizacion" ||
+    url == "/editar/info-programaciones"
+  ) {
     //SI EL ADMIN O UN FUNCIONARIO UOCT ESTA EDITANDO DIRECTAMENTE
-
     state_copy.status = "UPDATE";
   } else if (
     url == "/nuevo/digitalizacion" ||

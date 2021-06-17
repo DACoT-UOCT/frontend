@@ -58,13 +58,16 @@ const useStyles = makeStyles((theme) => ({
 
 const NuevaInstalacion = (props) => {
   const location = useLocation();
+  const NEW_ENTRY = ![
+    "/nuevo/solicitud-actualizacion",
+    "/editar/instalacion",
+    "/editar/info-programaciones",
+  ].includes(location.pathname);
   const [state, dispatch] = useImmerReducer(
     reducer,
-    ["/nuevo/solicitud-actualizacion", "/editar/instalacion"].includes(
-      location.pathname
-    )
-      ? JSON.parse(JSON.stringify(props.state.actualizando)) //si se esta actualizando una instalacion existente
-      : initialState //si se esta rellenando un formulario nuevo
+    NEW_ENTRY
+      ? initialState //si se esta rellenando un formulario nuevo
+      : JSON.parse(JSON.stringify(props.state.actualizando)) //si se esta actualizando una instalacion existente
   );
 
   //STEPPER
@@ -92,7 +95,8 @@ const NuevaInstalacion = (props) => {
         mutation = createProject;
       else if (
         location.pathname == "/editar/instalacion" ||
-        location.pathname == "/nuevo/solicitud-actualizacion"
+        location.pathname == "/nuevo/solicitud-actualizacion" ||
+        location.pathname == "/editar/info-programaciones"
       )
         mutation = updateProject;
 
@@ -101,7 +105,10 @@ const NuevaInstalacion = (props) => {
       })
         .then((response) => {
           console.log(response);
-          if (location.pathname == "/editar/instalacion") {
+          if (
+            location.pathname == "/editar/instalacion" ||
+            location.pathname == "/editar/info-programaciones"
+          ) {
             //SI SE ESTA EDITANDO POR UN FUNCIONARIO UOCT O ADMIN
             let _data = {
               oid: state.oid,
@@ -141,21 +148,39 @@ const NuevaInstalacion = (props) => {
               dispatch={dispatch}
             />
             <Documentacion state={state} dispatch={dispatch} />
-            <hr className="separador"></hr>
-            <OTU state={state.otu} oid={state.oid} dispatch={dispatch} />
-            <hr className="separador"></hr>
-            <Controlador state={state.controller} dispatch={dispatch} />
+            {location.pathname !== "/editar/info-programaciones" ? (
+              <>
+                <hr className="separador"></hr>
+                <OTU state={state.otu} oid={state.oid} dispatch={dispatch} />
+                <hr className="separador"></hr>
+                <Controlador state={state.controller} dispatch={dispatch} />
+              </>
+            ) : (
+              <>
+                <legend className="seccion">
+                  Se ha omitido la información de la OTU y el controlador
+                </legend>
+              </>
+            )}
           </>
         );
       case 2:
         return (
           <>
-            {/* <hr className="separador"></hr> */}
             <Junctions state={state.otu.junctions} dispatch={dispatch} />
           </>
         );
 
       case 3:
+        if (location.pathname === "/editar/info-programaciones") {
+          return (
+            <>
+              <legend className="seccion">
+                La información complementaria se ha omitido
+              </legend>
+            </>
+          );
+        }
         return (
           <>
             {/* <hr className="separador"></hr> */}
@@ -188,17 +213,6 @@ const NuevaInstalacion = (props) => {
                 />
                 /
               </>
-              // <Success mensaje="Solicitud ingresada con éxito" />
-              // <div>
-              //   <Typography className={classes.instructions}>
-              //     {state.success
-              //       ? "Formulario enviado con exito"
-              //       : "Error de envío del formulario, si el problema persiste contactar con el administrador"}
-              //   </Typography>
-              //   <Link to="/">
-              //     <span>Volver al inicio</span>
-              //   </Link>
-              // </div>
             )}
           </>
         );

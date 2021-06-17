@@ -47,7 +47,7 @@ export default function ProcesarSolicitud(props) {
     _oid,
     _status,
     _message = "",
-    _img = null,
+    _img = "",
     aprobar = true
   ) => {
     let respuesta = {
@@ -61,7 +61,9 @@ export default function ProcesarSolicitud(props) {
 
     GQLclient.request(mutation, { data: respuesta })
       .then((response) => {
-        alert("Solicitud " + (aprobar ? "aprobada" : "rechazada"));
+        alert(
+          "Solicitud " + (aprobar ? "aprobada" : "rechazada") + " con éxito"
+        );
         setSubmit("ok");
       })
       .catch((err) => {

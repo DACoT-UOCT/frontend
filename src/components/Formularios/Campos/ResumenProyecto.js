@@ -11,6 +11,8 @@ import { getFecha } from "../../Shared/Utils/general_functions";
 import PopOver from "../../Shared/PopOver";
 import { makeStyles } from "@material-ui/core/styles";
 import { GQLclient, StateContext } from "../../App";
+import CursorZoom from "react-cursor-zoom";
+import { useHistory } from "react-router-dom";
 
 import { setVehIntergreen } from "../../../GraphQL/Mutations";
 
@@ -49,9 +51,11 @@ const Campos = forwardRef((props, ref) => {
   const [junctions, setJunctions] = useState(
     Array(props.state.otu.junctions.length).fill(true)
   );
+  let history = useHistory();
 
   const editVehIntergreen = (junctionIndex, faseFrom, faseTo, _value) => {
     let aux = JSON.parse(JSON.stringify(state));
+    if (!_value) _value = "0";
     // let intergreens =
     //   aux.otu.junctions[junctionIndex].plans[planIndex].vehicle_intergreen;
     for (let j = 0; j < aux.otu.junctions[junctionIndex].plans.length; j++) {
@@ -74,7 +78,7 @@ const Campos = forwardRef((props, ref) => {
           );
           aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[
             i
-          ].value = valor === NaN ? 0 : valor;
+          ].value = valor;
         }
       }
     }
@@ -123,8 +127,10 @@ const Campos = forwardRef((props, ref) => {
             }}>
             {info
               ? state.metadata.status == "PRODUCTION"
-                ? "Formulario de programaciones de tiempos de semáforos"
-                : "Información de solicitud para integración/actualización"
+                ? "Formulario de programaciones de tiempos de semáforos " +
+                  state.oid
+                : "Información de solicitud para integración/actualización " +
+                  state.oid
               : "Verifique los campos ingresados"}
           </h2>
 
@@ -132,22 +138,41 @@ const Campos = forwardRef((props, ref) => {
             (global_state.rol === "Personal UOCT" || global_state.is_admin) &&
             !props.scrolled &&
             state.metadata.status == "PRODUCTION" && (
-              <Button
-                onClick={() => props.scroll()}
-                color="info"
-                size="lg"
-                className="descargar-boton">
-                Descargar Informe
-              </Button>
+              <div className="botones-resumen">
+                <div>
+                  <Button
+                    onClick={() => props.scroll()}
+                    color="info"
+                    size="lg"
+                    className="descargar-boton">
+                    Descargar Informe
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    onClick={() => history.push("/editar/info-programaciones")}
+                    color="info"
+                    size="lg"
+                    className="descargar-boton">
+                    Editar informe de programaciones
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    onClick={() => history.push("/editar/instalacion")}
+                    color="info"
+                    size="lg"
+                    className="descargar-boton">
+                    Editar informe de programaciones + complementaria
+                  </Button>
+                </div>
+              </div>
             )}
 
           {/* datos iniciales */}
           <div className="section">
             {info && state.metadata.status == "PRODUCTION" && (
               <div style={{ padding: "1rem", paddingBottom: "0" }}>
-                <p style={{ marginBottom: "0", marginLeft: "1rem" }}>
-                  Generado en la plataforma de gestión de datos DACoT.
-                </p>
                 <div className="sub-header-informe">
                   <tr>
                     <td>
@@ -182,19 +207,23 @@ const Campos = forwardRef((props, ref) => {
                     <td>{state.metadata.commune.name}</td>
                   </tr>
                   <tr>
-                    <td className="label">Empresa mantenedora:</td>
-                    <td>
-                      {state.metadata.commune.maintainer
-                        ? state.metadata.commune.maintainer.name
-                        : "Instalación sin mantenedor"}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="label">Última actualización:</td>
-                    <td>{getFecha(state.metadata.status_date)}</td>
+                    <td className="label">Fecha de emisión :</td>
+                    <td>{getFecha(new Date())}</td>
                   </tr>
                   {props.detalles && (
                     <>
+                      <tr>
+                        <td className="label">Empresa mantenedora:</td>
+                        <td>
+                          {state.metadata.commune.maintainer
+                            ? state.metadata.commune.maintainer.name
+                            : "Instalación sin mantenedor"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label">Última actualización:</td>
+                        <td>{getFecha(state.metadata.status_date)}</td>
+                      </tr>
                       <tr>
                         <td className="label">Tipo de enlace:</td>
                         <td>
@@ -222,39 +251,36 @@ const Campos = forwardRef((props, ref) => {
                   )}
                 </tbody>
               </table>
-              <table>
-                <tbody>
-                  <tr>
-                    <td className="label">Vigencia :</td>
-                    <td>{getFecha(new Date())}</td>
-                  </tr>
-                  <tr>
-                    <td className="label">Modelo controlador :</td>
-                    <td>
-                      {state.controller.model.company.name +
-                        " " +
-                        state.controller.model.model}
-                    </td>
-                  </tr>
+              {props.detalles && (
+                <table>
+                  <tbody>
+                    <tr>
+                      <td className="label">Modelo controlador :</td>
+                      <td>
+                        {state.controller.model.company.name +
+                          " " +
+                          state.controller.model.model}
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td className="label">Instalador:</td>
-                    <td>
-                      {state.metadata.installation_company
-                        ? state.metadata.installation_company
-                        : "No registrado"}
-                    </td>
-                  </tr>
+                    <tr>
+                      <td className="label">Instalador:</td>
+                      <td>
+                        {state.metadata.installation_company
+                          ? state.metadata.installation_company
+                          : "No registrado"}
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td className="label">Fecha de instalación:</td>
-                    <td>
-                      {state.metadata.installation_date == undefined
-                        ? "Sin registro"
-                        : getFecha(state.metadata.installation_date)}
-                    </td>
-                  </tr>
-                  {props.detalles && (
+                    <tr>
+                      <td className="label">Fecha de instalación:</td>
+                      <td>
+                        {state.metadata.installation_date == undefined
+                          ? "Sin registro"
+                          : getFecha(state.metadata.installation_date)}
+                      </td>
+                    </tr>
+
                     <>
                       <tr>
                         <td className="label">Máscara de red:</td>
@@ -289,9 +315,9 @@ const Campos = forwardRef((props, ref) => {
                         </td>
                       </tr>
                     </>
-                  )}
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              )}
             </div>
 
             <h2 style={{ marginTop: "2rem" }}>Junctions</h2>
@@ -373,7 +399,26 @@ const Campos = forwardRef((props, ref) => {
           </div>
 
           <div className="image">
-            <img
+            <CursorZoom
+              image={{
+                src:
+                  state.metadata.img == undefined
+                    ? "/no_image.png"
+                    : state.metadata.img,
+                width: 300,
+                height: 300,
+              }}
+              zoomImage={{
+                src:
+                  state.metadata.img == undefined
+                    ? "/no_image.png"
+                    : state.metadata.img,
+                width: 500,
+                height: 500,
+              }}
+              size={180}
+            />
+            {/* <img
               height="200"
               width="200"
               src={
@@ -381,7 +426,7 @@ const Campos = forwardRef((props, ref) => {
                   ? "/no_image.png"
                   : state.metadata.img
               }
-            />
+            /> */}
           </div>
 
           {/* fases secuencia entreverdes */}
@@ -1024,9 +1069,12 @@ const ResumenProyecto = (props) => {
   const location = useLocation();
   const info = location.pathname === "/info";
   const [detalles, setDetalles] = useState(
-    !info || state.metadata.status == "NEW" || state.metadata.status == "UPDATE"
+    (!info ||
+      state.metadata.status == "NEW" ||
+      state.metadata.status == "UPDATE") &&
+      location.pathname !== "/editar/info-programaciones"
   );
-  console.log(state);
+  // console.log(state);
   const classes = useStyles();
   const componentRef = useRef();
   const [scrolled, setScrolled] = useState(false);

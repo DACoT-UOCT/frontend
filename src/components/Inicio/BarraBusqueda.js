@@ -35,10 +35,10 @@ const BarraBusqueda = (props) => {
     { status: "NEW" }
   );
 
-  const buscar = (id_consultado) => {
-    // dispatch({
-    //   type: "get_preview_data",
-    // });
+  const buscar_instalacion = (id_consultado) => {
+    //primero se busca si existe como latest en PRODUCTION
+    //Si no, se busca en status NEW o PRODUCTION, pero solo si es personal UOCT
+    setBusquedaInput(id_consultado);
     setDataConsultada(null);
     if (!/^(x|X|j|J)\d{6}$/.test(id_consultado)) {
       alert("Formato de búsqueda inválido (J000000)");
@@ -89,7 +89,7 @@ const BarraBusqueda = (props) => {
       <div className={styles.row}>
         <input
           onKeyDown={(e) => {
-            if (e.key === "Enter") buscar(busquedaInput);
+            if (e.key === "Enter") buscar_instalacion(busquedaInput);
           }}
           ref={inputRef}
           type="text"
@@ -101,7 +101,9 @@ const BarraBusqueda = (props) => {
         />
 
         <div className={styles.buttons}>
-          <Button onClick={() => buscar(busquedaInput)}>Buscar</Button>
+          <Button onClick={() => buscar_instalacion(busquedaInput)}>
+            Buscar instalación
+          </Button>
         </div>
         <PopOver mensaje="El formato de busqueda para Junctions es una J seguida de 6 números"></PopOver>
       </div>
@@ -112,7 +114,7 @@ const BarraBusqueda = (props) => {
             color="info"
             onClick={() => setOpenMapa(true)}>
             {coordinatesQuery.status == "success"
-              ? "Buscar con mapa"
+              ? "Buscar instalación con mapa"
               : "Cargando Mapa"}
           </Button>
         </div>
@@ -133,7 +135,7 @@ const BarraBusqueda = (props) => {
           // dispatch={dispatch}
           open={openMapa}
           setOpen={setOpenMapa}
-          buscar={buscar}
+          buscar={buscar_instalacion}
           junctions={junctions}
         />
       )}

@@ -1033,6 +1033,12 @@ input:disabled {
   transform: translate(50%, -50%);
   height: 8rem;
   box-shadow: 2px 2px 5px #111;
+  color: #141414;
+  font-size: 3rem;
+}
+
+.junction-map-button Button:hover {
+  color: #141414;
 }
 
 @media all {
@@ -1078,4 +1084,9 @@ input:disabled {
   width: 100%;
   max-width: 320px;
   height: auto;
+}
+
+.botones-resumen {
+  display: flexbox;
+  flex-direction: column;
 }

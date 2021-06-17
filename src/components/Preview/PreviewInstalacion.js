@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "../../App.css";
-import { BlobProvider } from "@react-pdf/renderer";
-import PdfConsulta from "../Shared/PdfConsulta";
 import { Button } from "reactstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
+import styles from "./PanelInstall.module.css";
+import CursorZoom from "react-cursor-zoom";
 
 import clsx from "clsx";
 import { StateContext, DispatchContext } from "../App";
@@ -71,7 +71,7 @@ const PreviewInstalacion = (props) => {
     return <Loading />;
   }
   return (
-    <>
+    <div className={styles.details}>
       <div className="row">
         <div className={classes.column}>
           <h2>Información del Cruce</h2>
@@ -124,13 +124,28 @@ const PreviewInstalacion = (props) => {
             </tbody>
           </table>
         </div>
-        <div className={clsx(classes.column2, classes.divider)}>
-          <img
+        <div
+          className={clsx(classes.column2, classes.divider)}
+          style={{ "margin-top": "10px" }}>
+          <CursorZoom
+            image={{
+              src: instalacion.metadata.img,
+              width: 300,
+              height: 300,
+            }}
+            zoomImage={{
+              src: instalacion.metadata.img,
+              width: 500,
+              height: 500,
+            }}
+            size={180}
+          />
+          {/* <img
             style={{ "margin-top": "10px" }}
             className="responsive"
             src={instalacion.metadata.img}
             alt="Cruce"
-          />
+          /> */}
         </div>
       </div>
       <div className="buttons">
@@ -232,7 +247,7 @@ const PreviewInstalacion = (props) => {
           </Link>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

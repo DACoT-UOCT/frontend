@@ -105,6 +105,7 @@ const CrudControladores = () => {
                   <td>{getFecha(controlador.date)}</td>
                   <td>
                     <Button
+                      color="danger"
                       onClick={() => {
                         setCloseOpen(true);
                         dispatch({
@@ -168,6 +169,7 @@ const CrudControladores = () => {
               Cancelar
             </Button>
             <Button
+              color="danger"
               onClick={() => {
                 eliminar_controlador(state.delete_backup.id);
               }}>

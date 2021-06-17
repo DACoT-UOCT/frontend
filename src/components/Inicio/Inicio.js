@@ -41,10 +41,10 @@ const Inicio = (props) => {
     <div className="grid-item consulta-semaforo">
       <BarraBusqueda global_state={global_state} inputRef={inputRef} />
       <div className={`${styles.container} ${"home-buttons-container"}`}>
-        <div className="home-btn" onClick={onButtonClick}>
+        {/* <div className="home-btn" onClick={onButtonClick}>
           Buscar instalaciones
           <img src="/imagenes/buscar.svg" width="100" height="100" />
-        </div>
+        </div> */}
         {global_state.rol === "Personal UOCT" || global_state.is_admin ? (
           <>
             <div
