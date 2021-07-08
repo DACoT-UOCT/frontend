@@ -42,7 +42,6 @@ const Controlador = (props) => {
 
   const controladoresQuery = useQuery(GetControllers, (data) => {
     //guardar respuesta
-    console.log(data);
     setControladores(decamelizeKeysDeep(data.controllers));
     //obtener coordenadas de la posicion actual del controlador
     // Geocode.fromAddress("La moneda, Santiago").then(

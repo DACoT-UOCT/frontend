@@ -13,15 +13,6 @@ export default function Nav() {
   const dispatch = useContext(DispatchContext);
   const state = useContext(StateContext);
 
-  // const logout = () => {
-  //   axios
-  //     .get(ipAPI + "logout")
-  //     .then((response) => {
-  //       dispatch({ type: "logout" });
-  //     })
-  //     .catch(() => console.log("Error al salir"));
-  // };
-
   return (
     <>
       <MenuIcon

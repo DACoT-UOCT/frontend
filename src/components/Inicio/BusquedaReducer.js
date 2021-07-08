@@ -41,7 +41,6 @@ export function reducer(draft, action) {
 
     case "loadData": {
       draft.data = action.payLoad;
-      console.log(draft.data);
       draft.data.junctions.map((junction) => {
         draft.junctions += junction.id + "/ ";
       });

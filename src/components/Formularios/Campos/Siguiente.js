@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 
 import "../../../App.css";
 import { Button } from "reactstrap";
@@ -7,7 +7,8 @@ import PopUp from "../../Shared/PopUp";
 import { makeStyles } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
 import { CheckOtuExists } from "../../../GraphQL/Queries";
-import { GQLclient } from "../../App";
+import { GQLclient, StateContext } from "../../App";
+import { initialState } from "../../Shared/Reducers/FormularioReducer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +29,9 @@ const Siguiente = (props) => {
   //Tambien muestra los errores en caso de haberlos
   const state = props.state;
   const dispatch = props.dispatch;
+  const global_state = useContext(StateContext);
   const location = useLocation();
+  const [consultarComentario, setConsultarComentario] = useState(false);
 
   const [open, setOpen] = React.useState(false);
 
@@ -41,85 +44,6 @@ const Siguiente = (props) => {
       dispatch({ type: "error", payLoad: nombre });
     }
   };
-
-  const validar_vista1 = () => {};
-  const validar_vista2 = () => {
-    //VALIDA IMAGEN, ETAPAS, FASES, SECUENCIAS, MATRIZ DE ENTREVERDES
-    const comprobacionEtapas = [];
-    const cantFases = state.otu.fases.length;
-    var ignorarEnMatriz = 0;
-    var i = 0;
-    var j = 0;
-
-    state.otu.stages.map((etapa, index) => {
-      validar_entrada(etapa[0], "Etapa " + (index + 1) + "- Identificador");
-      if (comprobacionEtapas.includes(etapa[0])) {
-        setOpen(true);
-        dispatch({
-          type: "error",
-          payLoad: "Etapa " + (index + 1) + "- Ya existe",
-        });
-      } else {
-        comprobacionEtapas.push(etapa[0]);
-        validar_entrada(etapa[1], "Etapa " + (index + 1) + "- Tipo");
-      }
-    });
-
-    //VALIDAR FASES
-    state.otu.fases.map((fase, indexFase) => {
-      //validar si hay input
-      if (fase.length === 0) {
-        setOpen(true);
-        dispatch({
-          type: "error",
-          payLoad: "Fases " + (indexFase + 1) + "- Etapas no asignadas",
-        });
-      }
-
-      //validar si el input esta en las etapas
-      fase.map((etapa, index) => {
-        if (!comprobacionEtapas.includes(etapa)) {
-          setOpen(true);
-          dispatch({
-            type: "error",
-            payLoad: "Fases " + (indexFase + 1) + "- Etapas (No existe etapa)",
-          });
-        }
-      });
-    });
-
-    state.otu.secuencias.map((secuencia, index) => {
-      //validar si hay input
-      secuencia = secuencia.map(Number);
-      if (secuencia.length === 0) {
-        setOpen(true);
-        dispatch({
-          type: "error",
-          payLoad: "Secuencia " + (index + 1) + "- Fases no asignadas",
-        });
-      }
-      //validar si el input esta en las fases
-      secuencia.map((fase) => {
-        if (!(0 < fase && fase <= cantFases)) {
-          setOpen(true);
-          dispatch({
-            type: "error",
-            payLoad: "Secuencia " + (index + 1) + "- Fases (No existe fase)",
-          });
-        }
-      });
-    });
-
-    for (i = 0; i < state.otu.entreverdes.length; i++) {
-      for (j = 0; j < state.otu.entreverdes[i].length; j++) {
-        if (j != ignorarEnMatriz)
-          validar_entrada(state.otu.entreverdes[i][j], "Matriz Entreverdes");
-      }
-      ignorarEnMatriz = ignorarEnMatriz + 1;
-    }
-  };
-
-  const validar_vista3 = () => {};
 
   async function consultar_oid_existente() {
     if (
@@ -143,22 +67,13 @@ const Siguiente = (props) => {
             type: "reset",
           });
         }
-      } catch (error) {
-        console.log(error);
-      }
-      // .then((response) => {
-      //   console.log(response);
-      //   )
-      // .catch((err) => {
-      //   console.log(err);
-      // });
+      } catch (error) {}
     }
   }
 
   const validar_formulario = () => {
     //revisar las variables 1 a una dependiendo de la vista
     dispatch({ type: "reset_errores" });
-    // console.log(state);
     var metadata = state.metadata;
 
     if (["/editar/programacion"].includes(location.pathname)) {
@@ -217,7 +132,6 @@ const Siguiente = (props) => {
       //validar que se ingresan los junction por el mapa
       state.otu.junctions.map((junction, index) => {
         //  validar_entrada(junction.id, "Junction - Código en Sistema");
-        console.log(junction.metadata);
         validar_entrada(
           junction.metadata.address_reference,
           "Junction " + junction.jid + " - Ubicación no válida"
@@ -253,6 +167,24 @@ const Siguiente = (props) => {
         validar_entrada(ups.capacity, "UPS - Capacidad");
         validar_entrada(ups.charge_duration, "UPS - Duración de carga");
       }
+    } else if (state.vista === 4) {
+      //Si no se ha editado la observacion, preguntar si se envia sin comentario
+      if (
+        location.pathname === "/nuevo/digitalizacion" ||
+        location.pathname === "/nuevo/solicitud-integracion"
+      ) {
+        if (state.observation === initialState.observation) {
+          setConsultarComentario(true);
+          return;
+        }
+      } else {
+        try {
+          if (state.observation === global_state.actualizando.observation) {
+            setConsultarComentario(true);
+            return;
+          }
+        } catch (error) {}
+      }
     }
     dispatch({ type: "siguiente" });
   };
@@ -275,7 +207,18 @@ const Siguiente = (props) => {
           {state.vista === 4 ? "Enviar" : "Siguiente"}
         </ButtonMaterial>
       </div>
-
+      <PopUp
+        title="¿Desea enviar el formulario sin ninguna observación adicional?"
+        open={consultarComentario}
+        setOpen={setConsultarComentario}>
+        <div className="observacion-consulta">
+          <Button onClick={() => setConsultarComentario(false)}>Volver</Button>
+          <Button color="info" onClick={() => dispatch({ type: "siguiente" })}>
+            Enviar
+          </Button>
+        </div>
+      </PopUp>
+      )
       <PopUp
         title="Error en los siguientes campos:"
         open={open}

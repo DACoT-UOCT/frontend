@@ -29,12 +29,10 @@ const General = (props) => {
   const [comunas, setComunas] = useState([]);
   const [companies, setCompanies] = useState([]);
   const global_context = useContext(StateContext);
-  console.log(metadata);
   const comunasQuery = useQuery(GetCommunes, (data) => {
     setComunas(data.communes);
   });
   const empresasQuery = useQuery(GetCompanies, (data) => {
-    console.log(data);
     setCompanies(
       data.companies.map((company) => {
         return company.name;

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { GQLclient, StateContext } from "../App";
+import { DispatchContext, GQLclient, StateContext } from "../App";
 
 import { Col, FormGroup, Input, CustomInput } from "reactstrap";
 
@@ -11,6 +11,9 @@ import { getFecha } from "../Shared/Utils/general_functions";
 import { acceptProject, rejectProject } from "../../GraphQL/Mutations";
 import Success from "../Shared/Success";
 import { renderPDF } from "../Preview/PreviewInstalacion";
+import { useQuery } from "../../GraphQL/useQuery";
+import { GetProject } from "../../GraphQL/Queries";
+import Loading from "../Shared/Loading";
 
 const validar_imagen = (imagen) => {
   const formatos = ["image/png", "image/jpg", "image/jpeg"];
@@ -35,13 +38,22 @@ export default function ProcesarSolicitud(props) {
     },
   }));
   const classes = useStyles();
-  const state = useContext(StateContext);
+  const global_state = useContext(StateContext);
+  const dispatch = useContext(DispatchContext);
   let history = useHistory();
 
   const [comentario, setComentario] = useState("");
   const [imagen, setImagen] = useState(null);
   // const [correos, setCorreos] = useState([""]);
   const [submit, setSubmit] = useState(false);
+
+  // const updateQuery = useQuery(
+  //   GetProject,
+  //   (data) => {
+  //     dispatch({ type: "levantar_actualizacion", payLoad: data.project });
+  //   },
+  //   { oid: global_state.actualizando.oid, status: "UPDATE" }
+  // );
 
   const aprobar_rechazar_solicitud = (
     _oid,
@@ -69,9 +81,14 @@ export default function ProcesarSolicitud(props) {
       .catch((err) => {
         alert("Error en el envio");
         setSubmit("Error");
-        console.log(err);
       });
   };
+
+  // if (updateQuery.status === "idle" || updateQuery.status === "loading")
+  //   return <Loading />;
+  // else if (updateQuery.status === "error") {
+  //   return <p>Error en la consulta</p>;
+  // }
 
   return (
     <>
@@ -82,9 +99,9 @@ export default function ProcesarSolicitud(props) {
             {/* <hr className="separador"></hr> */}
             <h2 style={{ marginBottom: "2rem", marginTop: "1rem" }}>
               {"Procesar solicitud: " +
-                state.actualizando.oid +
+                global_state.actualizando.oid +
                 " / " +
-                getFecha(state.actualizando.metadata.status_date)}
+                getFecha(global_state.actualizando.metadata.status_date)}
               {/* <PopOver mensaje="Puede adjuntar una imagen y/o comentario antes de procesar la solicitud. Estas serán enviadas a la empresa emisora junto con la resolución seleccionada." /> */}
             </h2>
             <p>
@@ -95,7 +112,7 @@ export default function ProcesarSolicitud(props) {
                 {" datos ingresados "}
               </Link>
               entregados por la empresa con
-              <Link onClick={() => renderPDF(state.actualizando)}>
+              <Link onClick={() => renderPDF(global_state.actualizando)}>
                 {" la documentación de la instalación. "}
               </Link>
               Para solicitudes de actualización, queda a criterio del revisor
@@ -161,8 +178,8 @@ export default function ProcesarSolicitud(props) {
                 size="large"
                 onClick={() => {
                   aprobar_rechazar_solicitud(
-                    state.actualizando.oid,
-                    state.actualizando.metadata.status,
+                    global_state.actualizando.oid,
+                    global_state.actualizando.metadata.status,
                     comentario,
                     imagen,
                     false
@@ -176,8 +193,8 @@ export default function ProcesarSolicitud(props) {
                 size="large"
                 onClick={() => {
                   aprobar_rechazar_solicitud(
-                    state.actualizando.oid,
-                    state.actualizando.metadata.status,
+                    global_state.actualizando.oid,
+                    global_state.actualizando.metadata.status,
                     comentario,
                     imagen,
                     true

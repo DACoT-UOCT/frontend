@@ -28,12 +28,10 @@ const CrudControladores = () => {
   const history = useHistory();
 
   const controladoresQuery = useQuery(GetControllers, (data) => {
-    console.log(data);
     dispatch({ type: "controladores", payLoad: data.controllers });
   });
 
   const eliminar_controlador = (_cid) => {
-    // console.log("eliminando " + id);
     GQLclient.request(deleteController, {
       cid: _cid,
     })
@@ -44,7 +42,6 @@ const CrudControladores = () => {
       })
       .catch((err) => {
         alert("Error en el envio");
-        console.log(err);
       });
   };
 

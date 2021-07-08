@@ -230,7 +230,8 @@ const Junctions = (props) => {
                                           type: "fase_input",
                                           junction_index: junction_index,
                                           phase_index: phase_index,
-                                          payLoad: e.currentTarget.value,
+                                          payLoad:
+                                            e.currentTarget.value.toUpperCase(),
                                         });
                                       }}></Campo>
                                   </td>

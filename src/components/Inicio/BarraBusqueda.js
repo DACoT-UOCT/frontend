@@ -7,7 +7,11 @@ import axios from "axios";
 import { Button } from "reactstrap";
 import PopOver from "../Shared/PopOver";
 import { GQLclient } from "../App";
-import { GetCoordinates, GetProject } from "../../GraphQL/Queries";
+import {
+  CheckUpdates,
+  GetCoordinates,
+  GetProject,
+} from "../../GraphQL/Queries";
 import { useQuery } from "../../GraphQL/useQuery";
 import PopUp from "../Shared/PopUp";
 import PreviewInstalacion from "../Preview/PreviewInstalacion";
@@ -23,19 +27,85 @@ const BarraBusqueda = (props) => {
 
   const [busquedaInput, setBusquedaInput] = useState("");
   const [dataConsultada, setDataConsultada] = useState(null);
+  const [statusConsultado, setStatusConsultado] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
 
   const coordinatesQuery = useQuery(
     GetCoordinates,
     (data) => {
-      console.log(data.locations);
       setJunctions(data.locations);
-      // console.log(junctions);
     },
     { status: "NEW" }
   );
 
-  const buscar_instalacion = (id_consultado) => {
+  const buscarUPDATE = (id_consultado) => {
+    GQLclient.request(CheckUpdates, {
+      oid: id_consultado,
+      status: "UPDATE",
+    })
+      .then((response) => {
+        if (response.project === null) {
+          setStatusConsultado("Operativo");
+        } else {
+          if (global_state.rol === "Personal UOCT" || global_state.is_admin) {
+            //se puede procesar la solicitud
+            setStatusConsultado(
+              "Operativo (solicitud de actualización pendiente)"
+            );
+          } else {
+            //no se puede procesar la solicitud
+            setStatusConsultado("Operativo");
+          }
+        }
+      })
+      .catch((err) => {
+        alert("Error en la consulta UPDATE");
+      })
+      .finally(() => setPreviewOpen(true));
+  };
+
+  const buscarPRODUCTION = (id_consultado) => {
+    GQLclient.request(GetProject, { oid: id_consultado, status: "PRODUCTION" })
+      .then((response) => {
+        if (response.project !== null) {
+          buscarUPDATE(id_consultado);
+          setDataConsultada(procesar_json_recibido(response.project));
+        } else {
+          //SI NO ESTÁ EN PRODUCTION, Y ES UOCT O ADMIN, CONSULTA EN STATUS NEW
+          if (global_state.rol === "Personal UOCT" || global_state.is_admin) {
+            buscarNEW(id_consultado);
+          } else {
+            alert("Instalación no encontrada NO PRODUCTION");
+          }
+        }
+      })
+      .catch((err) => {
+        alert("Error en la consulta PRODUCTION");
+      });
+  };
+
+  const buscarNEW = (id_consultado) => {
+    GQLclient.request(GetProject, {
+      oid: id_consultado,
+      status: "NEW",
+    })
+      .then((response) => {
+        if (response.project === null) {
+          alert("Instalación no encontrada, NO NEW NO PRODUCTION");
+        } else {
+          setStatusConsultado("Solicitud nueva");
+          setDataConsultada(procesar_json_recibido(response.project));
+          setPreviewOpen(true);
+        }
+      })
+      .catch((err) => {
+        alert("Error en la consulta NEW");
+      });
+  };
+
+  const buscarREJECTED = (id_consultado) => {};
+
+  const buscarOnClick = (id_consultado) => {
     //primero se busca si existe como latest en PRODUCTION
     //Si no, se busca en status NEW o PRODUCTION, pero solo si es personal UOCT
     setBusquedaInput(id_consultado);
@@ -46,42 +116,7 @@ const BarraBusqueda = (props) => {
     }
 
     id_consultado = "X" + id_consultado.slice(1, -1) + "0";
-    console.log(global_state);
-    GQLclient.request(GetProject, { oid: id_consultado, status: "PRODUCTION" })
-      .then((response) => {
-        if (response.project === null) {
-          //SI NO ESTÁ EN PRODUCTION, Y ES UOCT O ADMIN, CONSULTA EN STATUS NEW
-          if (global_state.rol == "Personal UOCT" || global_state.is_admin) {
-            GQLclient.request(GetProject, {
-              oid: id_consultado,
-              status: "NEW",
-            })
-              .then((response) => {
-                if (response.project === null) {
-                  alert("Instalación no encontrada, NO NEW NO PRODUCTION");
-                } else {
-                  console.log(procesar_json_recibido(response.project));
-                  setDataConsultada(procesar_json_recibido(response.project));
-                  setPreviewOpen(true);
-                }
-              })
-              .catch((err) => {
-                alert("Error en la consulta NEW");
-                console.log(err);
-              });
-          } else {
-            alert("Instalación no encontrada NO PRODUCTION");
-          }
-        } else {
-          console.log(procesar_json_recibido(response.project));
-          setDataConsultada(procesar_json_recibido(response.project));
-          setPreviewOpen(true);
-        }
-      })
-      .catch((err) => {
-        alert("Error en la consulta PRODUCTION");
-        console.log(err);
-      });
+    buscarPRODUCTION(id_consultado);
   };
 
   return (
@@ -89,7 +124,7 @@ const BarraBusqueda = (props) => {
       <div className={styles.row}>
         <input
           onKeyDown={(e) => {
-            if (e.key === "Enter") buscar_instalacion(busquedaInput);
+            if (e.key === "Enter") buscarOnClick(busquedaInput);
           }}
           ref={inputRef}
           type="text"
@@ -101,7 +136,7 @@ const BarraBusqueda = (props) => {
         />
 
         <div className={styles.buttons}>
-          <Button onClick={() => buscar_instalacion(busquedaInput)}>
+          <Button onClick={() => buscarOnClick(busquedaInput)}>
             Buscar instalación
           </Button>
         </div>
@@ -125,7 +160,10 @@ const BarraBusqueda = (props) => {
         open={previewOpen}
         setOpen={setPreviewOpen}>
         <div className={styles.details}>
-          <PreviewInstalacion instalacion={dataConsultada} />
+          <PreviewInstalacion
+            instalacion={dataConsultada}
+            status={statusConsultado}
+          />
         </div>
       </PopUp>
 
@@ -135,7 +173,7 @@ const BarraBusqueda = (props) => {
           // dispatch={dispatch}
           open={openMapa}
           setOpen={setOpenMapa}
-          buscar={buscar_instalacion}
+          buscar={buscarOnClick}
           junctions={junctions}
         />
       )}

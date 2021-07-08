@@ -34,57 +34,11 @@ const ListadoComunas = (props) => {
     dispatch({ type: "comunas", payLoad: data.communes });
   });
   const usuariosQuery = useQuery(GetUsers, (data) => {
-    // console.log(data);
     dispatch({ type: "usuarios", payLoad: data.users });
   });
   const companiesQuery = useQuery(GetCompanies, (data) => {
     dispatch({ type: "empresas", payLoad: data.companies });
   });
-
-  // useEffect(() => {
-  //   if (!state.consultado) {
-  //     console.log("consultando");
-  //     request();
-  //     dispatch({ type: "consultado", payLoad: true });
-  //   }
-  // }, [state.consultado]);
-
-  // async function getData(link, campo) {
-  //   //consulta por id al backend
-  //   return new Promise((resolve, reject) => {
-  //     axios
-  //       .get(link)
-  //       .then((response) => {
-  //         //solicitud exitosa
-  //         dispatch({ type: campo, payLoad: response.data });
-  //         console.log(response.data);
-  //         // setComunas(response.data);
-  //         resolve();
-  //       })
-  //       .catch((err) => {
-  //         //error
-  //         reject(err);
-  //       });
-  //   });
-  // }
-
-  // const request = async () => {
-  //   const link_comunas = ipAPI + "communes";
-  //   const link_usuarios = ipAPI + "users";
-  //   const link_empresas = ipAPI + "companies";
-  //   dispatch({ type: "loading", payLoad: true });
-  //   dispatch({ type: "error", payLoad: "" });
-
-  //   try {
-  //     await getData(link_comunas, "comunas");
-  //     await getData(link_usuarios, "usuarios");
-  //     await getData(link_empresas, "empresas");
-  //   } catch (error) {
-  //     console.log(error);
-  //     dispatch({ type: "error", payLoad: "Error en la consulta" });
-  //   }
-  //   dispatch({ type: "loading", payLoad: false });
-  // };
 
   if (
     comunasQuery.status === "loading" ||

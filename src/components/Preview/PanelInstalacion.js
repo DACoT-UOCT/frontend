@@ -80,7 +80,6 @@ export default function PanelInstalacion(props) {
     return new Promise((resolve, reject) => {
       GQLclient.request(request, variables)
         .then((response) => {
-          // console.log(response.project);
           if (history_panel) {
             setInstalacion(procesar_json_recibido(response.version));
           } else {
@@ -100,11 +99,23 @@ export default function PanelInstalacion(props) {
     try {
       await getData();
     } catch (error) {
-      console.log(error);
       setError("Error en la consulta");
     }
 
     setLoading(false);
+  };
+
+  const getStatus = () => {
+    //obtiene el status del preview en las vistas de historial y solicitudes
+    if (history_panel) {
+      if (props.vid == "latest") return "Operativa";
+      else return "Versión histórica";
+    } else {
+      if (instalacion.metadata.status == "NEW")
+        return "Solicitud de nueva instalación pendiente";
+      else if (instalacion.metadata.status == "UPDATE")
+        return "Solicitud de actualización pendiente";
+    }
   };
 
   return (
@@ -142,7 +153,11 @@ export default function PanelInstalacion(props) {
         </AccordionSummary>
         {instalacion !== null && !loading && (
           <AccordionDetails className={styles.details}>
-            <PreviewInstalacion instalacion={instalacion} />
+            <PreviewInstalacion
+              instalacion={instalacion}
+              vid={props.vid}
+              status={getStatus()}
+            />
           </AccordionDetails>
         )}
       </Accordion>

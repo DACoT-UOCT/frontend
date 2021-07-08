@@ -31,11 +31,8 @@ const Inicio = (props) => {
   };
 
   const bienvenidaHandler = (_bool) => {
-    console.log("entrando");
     props.dispatch({ type: "cerrar_bienvenida", payload: _bool });
   };
-
-  // console.log(global_state.is_admin);
 
   return (
     <div className="grid-item consulta-semaforo">

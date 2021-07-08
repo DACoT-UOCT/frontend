@@ -56,7 +56,6 @@ const UsuarioPopUp = (props) => {
       })
       .catch((err) => {
         alert("Error en el envio");
-        console.log(err);
       });
 
     props.setOpen(false);
@@ -97,7 +96,6 @@ const UsuarioPopUp = (props) => {
       })
       .catch((err) => {
         alert("Error en el envio");
-        console.log(err);
       });
 
     props.setOpen(false);

@@ -51,9 +51,7 @@ const MapaFormulario = (props) => {
           "&includeRoadMetadata=true&includeNearestIntersection=true"
       )
       .then((data) => {
-        // console.log(data.data.results[0].locations[0]);
         let respuesta = data.data.results[0].locations[0];
-        console.log(respuesta);
         let address = respuesta.street + " - " + respuesta.adminArea5;
         dispatchMapa({ type: "location", payLoad: address });
         if (props.junction) {
@@ -73,61 +71,10 @@ const MapaFormulario = (props) => {
             payLoad: address,
           });
         }
-      })
-      .catch((error) => console.log(error));
-
-    //consultar direccion
-    // Geocode.fromLatLng(lat, lng).then(
-    //   (response) => {
-    //     console.log("geolocating");
-    //     //encontrar direccion de la ubicacion actual del pin
-    //     const address = response.results[0].formatted_address;
-    //     dispatchMapa({ type: "location", payLoad: address });
-
-    //     //actualizar estado general del formulario
-    //     if (props.junction) {
-    //       dispatch({
-    //         type: "junctions",
-    //         index: props.index,
-    //         fieldName: "address_reference",
-    //         address: address,
-    //         coordinates: [lat, lng],
-    //       });
-    //     }
-    //     if (props.controlador) {
-    //       props.setPin([lat, lng]);
-    //       dispatch({
-    //         type: "controller",
-    //         fieldName: "address_reference",
-    //         payLoad: address,
-    //       });
-    //     }
-    //   },
-    //   (error) => {
-    //     if (props.junction) {
-    //       dispatch({
-    //         type: "junctions",
-    //         index: props.index,
-    //         fieldName: "address_reference",
-    //         address: "TEST ADDRESS",
-    //         coordinates: [lat, lng],
-    //       });
-    //     }
-    //     if (props.controlador) {
-    //       props.setPin([lat, lng]);
-    //       dispatch({
-    //         type: "controller",
-    //         fieldName: "address_reference",
-    //         payLoad: "TEST ADDRESS",
-    //       });
-    //     }
-    //     console.error("geolocating error" + error);
-    //   }
-    // );
+      });
   };
 
   //CLUSTERS
-  console.log(props.pins);
   const points = props.pins.map((junction) => ({
     type: "Feature",
     properties: { cluster: false, jid: junction.jid },
@@ -143,14 +90,6 @@ const MapaFormulario = (props) => {
     zoom,
     options: { radius: 70, maxZoom: 15 },
   });
-  // console.log(clusters);
-  // {
-  //   "jid": "J031411",
-  //   "coordinates": [
-  //     -33.554039,
-  //     -70.632627
-  //   ]
-  // }
 
   return (
     <>
@@ -172,10 +111,8 @@ const MapaFormulario = (props) => {
               yesIWantToUseGoogleMapApiInternals
               onGoogleApiLoaded={({ map }) => {
                 mapRef.current = map;
-                console.log(map);
               }}
               onChange={(e) => {
-                console.log(e.zoom);
                 setZoom(e.zoom);
                 setBounds([
                   e.bounds.nw.lng,
@@ -188,7 +125,6 @@ const MapaFormulario = (props) => {
                 const [longitude, latitude] = cluster.geometry.coordinates;
                 const { cluster: isCluster, point_count: pointCount } =
                   cluster.properties;
-                // console.log(cluster);
 
                 if (isCluster) {
                   return (

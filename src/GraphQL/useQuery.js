@@ -30,7 +30,6 @@ export function useQuery(query, onSuccess, variables = {}) {
     GQLclient.request(query, variables)
       .then((data) => {
         if (subscribed) {
-          // console.log(data);
           onSuccess(data);
           dispatch({ type: "success" });
         }

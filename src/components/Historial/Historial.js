@@ -57,7 +57,7 @@ const Historial = (props) => {
   const versionsQuery = useQuery(
     GetVersions,
     (data) => {
-      setVersions(data.versions);
+      setVersions(data.versions.reverse());
     },
     { oid: global_state.actualizando.oid }
   );
@@ -103,7 +103,11 @@ const Historial = (props) => {
               <>
                 <PanelInstalacion
                   expanded={expanded}
-                  id={"Versión " + (cambioIndex + 1)} //ahi ingresar el X
+                  id={
+                    "Versión " +
+                    (versions.length - cambioIndex) +
+                    (version.vid == "latest" ? " (actual)" : "")
+                  }
                   oid={global_state.actualizando.oid}
                   type={""}
                   date={version.date}
@@ -113,14 +117,6 @@ const Historial = (props) => {
               </>
             );
           })}
-          {/* {versions.length > 0 && (
-            <PanelInstalacion
-              expanded={expanded}
-              id={state.listado_cambios.length + 2} //ahi ingresar el X
-              type="Primera version"
-              handleChange={handleChange}
-            />
-          )} */}
         </div>
       </div>
     </>

@@ -9,7 +9,6 @@ const Paginado = (props) => {
 
   function consultar_elementos(_action = "") {
     setStatus("loading");
-    console.log("consultadndo");
     let _after = "";
 
     if (pageInfo !== null) {
@@ -21,7 +20,6 @@ const Paginado = (props) => {
     props
       .consulta(_after)
       .then((response) => {
-        console.log(response);
         setElements(response.elements);
         setPageInfo(response.pageInfo);
 
@@ -29,7 +27,6 @@ const Paginado = (props) => {
       })
       .catch((err) => {
         setStatus("error");
-        console.log(err);
       });
   }
 

@@ -25,8 +25,6 @@ const NuevoControlador = (props) => {
     });
   };
   const get_modelos = () => {
-    console.log("obteniendo modelos");
-
     var modelos = Array.from(controladores).filter(
       (controlador) => controlador.company.name === state.marca
     );
@@ -40,19 +38,15 @@ const NuevoControlador = (props) => {
   };
 
   const registrar_boton = () => {
-    console.log(state);
     if (
       state.marca == "" ||
       state.model == "" ||
       state.firmwareVersion == "" ||
       state.checksum == ""
     ) {
-      console.log(state);
       alert("Favor de rellenar todos los campos");
       return;
     }
-    console.log("checkeando campos");
-    console.log("enviando");
 
     GQLclient.request(createController, {
       data: {
@@ -69,7 +63,6 @@ const NuevoControlador = (props) => {
       })
       .catch((err) => {
         alert("Error en el envio");
-        console.log(err);
       });
     //respuesta del server
     //cerrar popup

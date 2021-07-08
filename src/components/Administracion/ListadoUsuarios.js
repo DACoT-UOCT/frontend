@@ -22,7 +22,6 @@ const ListadoUsuarios = (props) => {
   const [newOpen, setNewOpen] = useState(false);
 
   const usuariosQuery = useQuery(GetUsers, (data) => {
-    // console.log(data);
     dispatch({ type: "usuarios", payLoad: data.users });
   });
   const companiesQuery = useQuery(GetCompanies, (data) => {

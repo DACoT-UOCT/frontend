@@ -35,7 +35,6 @@ const empresa = {
 };
 
 export function reducer(draft, action) {
-  console.log(action.type);
   switch (action.type) {
     case "switch_profile": {
       draft.isLoggedIn = true;
@@ -84,7 +83,6 @@ export function reducer(draft, action) {
       if (draft.username == "empresa") draft.rol = "empresa";
       else draft.rol = "otro";
       draft.username = "";
-      console.log(draft.rol);
       return;
     }
 

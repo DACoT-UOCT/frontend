@@ -5,6 +5,7 @@ import "../../../App.css";
 import { Label, CustomInput } from "reactstrap";
 import PopOver from "../../Shared/PopOver";
 import CursorZoom from "react-cursor-zoom";
+import ZoomImage from "../../Shared/ZoomImage";
 
 const validar_pdf = (file) => {
   return file.type == "application/pdf";
@@ -37,7 +38,6 @@ const Documentacion = (props) => {
         label={state.metadata.pdf_data ? "Cambiar PDF" : "Adjuntar PDF"}
         onChange={(e) => {
           const file = e.target.files[0];
-          console.log(state);
           if (file && validar_pdf(file)) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -95,21 +95,8 @@ const Documentacion = (props) => {
       {img !== null && img !== "/no_image.png" && (
         <div className="imagen-formulario">
           <br></br>
-          <CursorZoom
-            image={{
-              src: img,
-              width: 300,
-              height: 300,
-            }}
-            zoomImage={{
-              src: img,
-              width: 500,
-              height: 500,
-            }}
-            size={180}
-          />
-          {/* <img src={img} width="420" height="420" alt="" /> */}
-          {/* <hr className="separador"></hr> */}
+          <ZoomImage img={img} />
+
           <br></br>
           {/* <hr className="separador"></hr> */}
         </div>

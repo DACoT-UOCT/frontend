@@ -34,15 +34,6 @@ const EditComuna = (props) => {
   const history = useHistory();
 
   const try_submit = () => {
-    console.log(state);
-    var variables = {
-      communeDetails: {
-        code: state.code,
-        maintainer: state.maintainer.name,
-        userInCharge: state.userInCharge.email,
-      },
-    };
-
     GQLclient.request(updateCommune, {
       data: {
         code: state.code,
@@ -57,25 +48,9 @@ const EditComuna = (props) => {
       })
       .catch((err) => {
         alert("Error en el envio");
-        console.log(err);
       });
-
-    // "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
-    // const config = { headers: { "Content-Type": "application/json" } };
-    // axios
-    //   .put(url, JSON.stringify(json), config)
-    //   .then((response) => {
-    //     console.log(response);
-    //     dispatch({ type: "consultado", payLoad: false });
-    //     alert("Cambios guardados");
-    //   })
-    //   .catch((err) => {
-    //     alert("Error en el envio.");
-    //     console.log(err);
-    //   });
   };
 
-  console.log("renderinf");
   return (
     <>
       <TableContainer>

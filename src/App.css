@@ -1090,3 +1090,15 @@ input:disabled {
   display: flexbox;
   flex-direction: column;
 }
+
+.observacion-consulta {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 50%;
+
+  position: relative;
+  top: 40%;
+  -ms-transform: translateY(-50%);
+  transform: translate(50%, -25%);
+}

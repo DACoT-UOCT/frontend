@@ -152,7 +152,7 @@ export const initialState = {
     "REGISTRAR OBSERVACIONES DE INTERÉS \nSolicitud de integración ingresada desde el sistema DACoT",
 
   errors: [],
-  vista: 1,
+  vista: 4,
   submit: false,
   isLoading: true,
   success: false,
@@ -203,7 +203,6 @@ export function reducer(draft, action) {
     }
     case "metadata": {
       if (action.fieldName === "commune") {
-        console.log(JSON.parse(action.payLoad));
         draft.metadata.commune = JSON.parse(action.payLoad);
         return;
       }

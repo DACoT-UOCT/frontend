@@ -11,6 +11,8 @@ import clsx from "clsx";
 import { StateContext, DispatchContext } from "../App";
 import { getFecha } from "../Shared/Utils/general_functions";
 import Loading from "../Shared/Loading";
+import ZoomImage from "../Shared/ZoomImage";
+import PanelInstalacion from "./PanelInstalacion";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,8 +80,8 @@ const PreviewInstalacion = (props) => {
           <table>
             <tbody>
               <tr>
-                <td className="label">Codigo instalacion:</td>
-                <td>{instalacion.oid}</td>
+                <td className="label">Estado: </td>
+                <td>{props.status}</td>
               </tr>
               <tr>
                 <td className="label">Intersecciones / Junctions</td>
@@ -127,30 +129,14 @@ const PreviewInstalacion = (props) => {
         <div
           className={clsx(classes.column2, classes.divider)}
           style={{ "margin-top": "10px" }}>
-          <CursorZoom
-            image={{
-              src: instalacion.metadata.img,
-              width: 300,
-              height: 300,
-            }}
-            zoomImage={{
-              src: instalacion.metadata.img,
-              width: 500,
-              height: 500,
-            }}
-            size={180}
-          />
-          {/* <img
-            style={{ "margin-top": "10px" }}
-            className="responsive"
-            src={instalacion.metadata.img}
-            alt="Cruce"
-          /> */}
+          <ZoomImage img={instalacion.metadata.img} />
         </div>
       </div>
       <div className="buttons">
         {(state.rol === "Personal UOCT" || state.is_admin) &&
-          ["NEW", "UPDATE"].includes(instalacion.metadata.status) && (
+          (["NEW", "UPDATE"].includes(instalacion.metadata.status) ||
+            props.status ==
+              "Operativo (solicitud de actualización pendiente)") && (
             <>
               <Link
                 to="/procesar/solicitud"
@@ -168,7 +154,7 @@ const PreviewInstalacion = (props) => {
           )}
         {state.rol === "Personal UOCT" &&
           instalacion.metadata.status === "PRODUCTION" &&
-          !history_panel && (
+          (props.vid == "latest" || !history_panel) && (
             <>
               <Link
                 to="/editar/instalacion"
@@ -221,15 +207,6 @@ const PreviewInstalacion = (props) => {
                 </Link>
               </>
             )}
-            {/* {["APPROVED", "REJECTED"].includes(
-        instalacion.metadata.status
-      ) && (
-        <Button
-          className="botonDashboard"
-          onClick={confirmar_solicitud}>
-          Confirmar
-        </Button>
-      )} */}
           </>
         )}
         {instalacion.metadata.status === "PRODUCTION" && !history_panel && (

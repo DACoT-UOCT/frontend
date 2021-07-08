@@ -37,7 +37,7 @@ const App = () => {
   //let location = useLocation();
 
   // useEffect(() => {
-  //   console.log("ROUTE CHANGE");
+  //   "ROUTE CHANGE"
   // }, [location]);
 
   useEffect(() => {
@@ -49,14 +49,12 @@ const App = () => {
 
   useEffect(() => {
     if (state.debug && !state.isLoggedIn) {
-      console.log("entrando", state.debug);
       dispatch({ type: "switch_profile" });
     }
   }, []);
 
   useEffect(() => {
     //guardar cositas en cache
-    console.log(state);
     if (state.comunas === null) {
       GQLclient.request(GetCommunes)
         .then((data) => {
@@ -68,7 +66,7 @@ const App = () => {
           });
           dispatch({ type: "save_comunas", payLoad: aux });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {});
     }
   }, []);
   return (

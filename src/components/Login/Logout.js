@@ -10,7 +10,7 @@ const Logout = (props) => {
     axios
       .get(ipAPI + "logout")
       .then((response) => {})
-      .catch(() => console.log("Error al salir"));
+      .catch(() => {});
   }, []);
 
   return <Redirect to="/" />;

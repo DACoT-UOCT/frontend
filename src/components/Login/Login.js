@@ -18,7 +18,6 @@ const Login = () => {
   const dispatch = useContext(DispatchContext);
 
   const logout = () => {
-    console.log("logout");
     dispatch({ type: "logout" });
   };
 
@@ -26,18 +25,16 @@ const Login = () => {
     axios
       .get(ipAPI + "users/me/")
       .then((response) => {
-        console.log(response);
         dispatch({
           type: "login",
           payLoad: response.data,
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   };
 
   const try_login = (response) => {
     var link = ipAPI + "swap_token";
-    console.log("success: ");
     axios({
       method: "post",
       url: link,
@@ -54,18 +51,10 @@ const Login = () => {
       })
       .catch((err) => {
         alert("Usuario no autorizado");
-        console.log(err);
-        // dispatch({
-        //   action: "loginBackendValidationErr",
-        //   payload: err,
-        // });
       });
   };
 
-  const failResponseGoogle = (response) => {
-    console.log("error: ");
-    console.log(response);
-  };
+  const failResponseGoogle = (response) => {};
 
   return (
     <div

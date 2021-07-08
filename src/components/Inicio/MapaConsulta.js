@@ -73,10 +73,8 @@ const MapaConsulta = (props) => {
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({ map }) => {
               mapRef.current = map;
-              // console.log(map);
             }}
             onChange={(e) => {
-              console.log(e.zoom);
               setZoom(e.zoom);
               setBounds([
                 e.bounds.nw.lng,

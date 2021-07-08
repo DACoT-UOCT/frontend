@@ -8,7 +8,6 @@ import { GQLclient } from "../../App";
 export const procesar_json_recibido = (aux) => {
   //procesa el json consultado para mostrarlo en el formulario
   // var temp = JSON.parse(JSON.stringify(props.state.actualizando));
-  console.log(aux);
   var temp = decamelizeKeysDeep(aux);
 
   // temp.metadata.commune.maintainer =
@@ -217,7 +216,6 @@ export const procesar_json_envio = (state_copy, url) => {
   delete state_copy.isLoading;
   delete state_copy.success;
 
-  console.log(camelcaseKeysDeep(state_copy));
   // return JSON.stringify(state_copy);
   return camelcaseKeysDeep(state_copy);
 };

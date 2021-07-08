@@ -104,26 +104,26 @@ const NuevaInstalacion = (props) => {
         data: _data,
       })
         .then((response) => {
-          console.log(response);
           if (
             location.pathname == "/editar/instalacion" ||
-            location.pathname == "/editar/info-programaciones"
+            location.pathname == "/editar/info-programaciones" ||
+            location.pathname == "/nuevo/digitalizacion"
           ) {
-            //SI SE ESTA EDITANDO POR UN FUNCIONARIO UOCT O ADMIN
+            //SI SE ESTA EDITANDO/DIGITALIZANDO POR UN FUNCIONARIO UOCT O ADMIN
             let _data = {
               oid: state.oid,
-              status: "UPDATE",
+              status:
+                location.pathname == "/nuevo/digitalizacion" ? "NEW" : "UPDATE",
             };
 
             GQLclient.request(acceptProject, { data: _data })
               .then((response) => {
-                alert("Actualización realizada con éxito");
+                alert("Formulario enviado con éxito");
                 dispatch({ type: "post_success" });
               })
               .catch((err) => {
                 alert("Error en el envio");
                 dispatch({ type: "post_error" });
-                console.log(err);
               });
           } else {
             alert("Formulario enviado correctamente");

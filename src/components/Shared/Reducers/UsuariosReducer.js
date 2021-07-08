@@ -33,7 +33,6 @@ export function reducer(draft, action) {
       return;
 
     case "editar":
-      console.log("edit reducer");
       draft.desea_eliminar = false;
       draft.isAdmin = action.payLoad.isAdmin;
       draft.fullName = action.payLoad.fullName;

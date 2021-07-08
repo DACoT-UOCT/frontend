@@ -36,14 +36,10 @@ const RouterComponent = (props) => {
 
   useEffect(() => {
     if (!state.debug && state.isLoggedIn) {
-      console.log("Useeffect logout");
       axios
         .get(ipAPI + "users/me/")
-        .then((response) => {
-          console.log(response);
-        })
+        .then((response) => {})
         .catch((err) => {
-          console.log(err);
           dispatch({ type: "logout" });
         });
     }

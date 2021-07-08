@@ -27,7 +27,6 @@ const RegistroActividad = () => {
   const [endDate, setEndDate] = useState(
     dateTemp.setDate(dateTemp.getDate() + 2)
   );
-  console.log(new Date(startDate), new Date(endDate));
 
   const registrosQuery = useQuery(GetLogs, (data) => {
     data.actionsLogs.sort(sortFunction);
@@ -38,7 +37,6 @@ const RegistroActividad = () => {
     //filtra los registros segun la fecha seleccionada
     return listado.filter(function (registro) {
       var fechaRegistro = new Date(registro.date);
-      console.log(fechaRegistro <= endDate && fechaRegistro >= startDate);
       return fechaRegistro <= endDate && fechaRegistro >= startDate;
     });
   };

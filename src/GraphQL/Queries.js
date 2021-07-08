@@ -257,6 +257,14 @@ export const GetProject =
   }
 `;
 
+export const CheckUpdates = gql`
+  query project($oid: String!, $status: String!) {
+    project(oid: $oid, status: $status) {
+      oid
+    }
+  }
+`;
+
 export const GetCoordinates = gql`
   query locations($status: String!) {
     locations(status: $status) {

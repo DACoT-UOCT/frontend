@@ -24,15 +24,6 @@ const ErrorExtraccion = (props) => {
   const [registros, setRegistros] = useState([]);
   const history = useHistory();
 
-  // const planQuery = useQuery(
-  //   GetFailedPlan,
-  //   (data) => {
-  //     console.log(data);
-  //     setRegistros(data.failedPlan.plans);
-  //   },
-  //   { mid: props.id }
-  // );
-
   const eliminar_registros = () => {
     GQLclient.request(deleteFailedPlan, {
       messageDetails: { data: { mid: props.id } },
@@ -43,7 +34,6 @@ const ErrorExtraccion = (props) => {
       })
       .catch((err) => {
         alert("Error en el envio");
-        console.log(err);
       });
 
     props.setOpen(false);
