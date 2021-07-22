@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import "../../App.css";
 import { Button } from "reactstrap";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styles from "./PanelInstall.module.css";
 import CursorZoom from "react-cursor-zoom";
 
@@ -68,6 +68,11 @@ const PreviewInstalacion = (props) => {
   const instalacion = props.instalacion;
   const location = useLocation();
   const history_panel = location.pathname === "/historial";
+  const history = useHistory();
+  let update_data = props.update;
+  if (location.pathname === "/solicitudes") {
+    update_data = props.instalacion;
+  }
 
   if (instalacion == null) {
     return <Loading />;
@@ -76,7 +81,23 @@ const PreviewInstalacion = (props) => {
     <div className={styles.details}>
       <div className="row">
         <div className={classes.column}>
-          <h2>Información del Cruce</h2>
+          <div>
+            <Link
+              to="/info"
+              target="_blank"
+              className="nada"
+              onClick={() => {
+                dispatch({
+                  type: "levantar_actualizacion",
+                  payLoad: instalacion,
+                });
+              }}>
+              <Button outline color="success" size="sm" block>
+                + información
+              </Button>
+            </Link>
+          </div>
+
           <table>
             <tbody>
               <tr>
@@ -144,67 +165,66 @@ const PreviewInstalacion = (props) => {
                 onClick={() => {
                   dispatch({
                     type: "levantar_actualizacion",
-                    payLoad: instalacion,
+                    payLoad: update_data,
                   });
                 }}>
-                <div className="linkBoton">Procesar Solicitud</div>
+                <Button color="info">Procesar solicitud</Button>
               </Link>
               <br></br>
             </>
           )}
         {state.rol === "Personal UOCT" &&
           instalacion.metadata.status === "PRODUCTION" &&
-          (props.vid == "latest" || !history_panel) && (
+          (props.vid == "latest" || !history_panel) &&
+          !history_panel && (
             <>
-              <Link
-                to="/editar/instalacion"
-                target="_blank"
-                className="nada"
+              <Button
                 onClick={() => {
+                  if (update_data != null) {
+                    alert(
+                      "Se deben procesar las solicitudes de actualización pendientes antes de hacer cambios."
+                    );
+                    return;
+                  }
                   dispatch({
                     type: "levantar_actualizacion",
                     payLoad: instalacion,
                   });
+                  history.push("/editar/instalacion");
                 }}>
-                <div className="linkBoton">Editar información</div>
-              </Link>
+                Editar información
+              </Button>
               <br></br>
             </>
           )}
         <Button
-          className="botonDashboard"
+          // className="botonDashboard"
           onClick={() => {
             renderPDF(instalacion);
           }}>
           Documentación de Respaldo
         </Button>
-        <Link
-          to="/info"
-          target="_blank"
-          className="nada"
-          onClick={() => {
-            dispatch({
-              type: "levantar_actualizacion",
-              payLoad: instalacion,
-            });
-          }}>
-          <div className="linkBoton">Información detallada</div>
-        </Link>
-        {state.rol === "Empresa" && (
+
+        {state.rol === "Empresa" && !history_panel && (
           <>
             {instalacion.metadata.status === "PRODUCTION" && (
               <>
-                <Link
-                  to="/nuevo/solicitud-actualizacion"
-                  className="nada"
+                <Button
                   onClick={() => {
+                    if (update_data != null) {
+                      alert(
+                        "No es posible informar cambios, pues existen actualizaciones pendientes en la instalación actual."
+                      );
+                      return;
+                    }
                     dispatch({
                       type: "levantar_actualizacion",
                       payLoad: instalacion,
                     });
+                    history.push("/nuevo/solicitud-actualizacion");
                   }}>
-                  <div className="linkBoton">Informar cambios en el cruce</div>
-                </Link>
+                  Informar cambios en el cruce
+                </Button>
               </>
             )}
           </>
@@ -220,7 +240,7 @@ const PreviewInstalacion = (props) => {
                 payLoad: instalacion,
               });
             }}>
-            <div className="linkBoton">Historial de cambios</div>
+            <Button>Historial de cambios</Button>
           </Link>
         )}
       </div>

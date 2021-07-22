@@ -1102,3 +1102,15 @@ input:disabled {
   -ms-transform: translateY(-50%);
   transform: translate(50%, -25%);
 }
+
+.info-preview-title {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+}
+
+.info-preview-title Button {
+  text-align: center;
+  text-justify: auto;
+  vertical-align: middle;
+}

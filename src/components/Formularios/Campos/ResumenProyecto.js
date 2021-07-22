@@ -107,9 +107,11 @@ const Campos = forwardRef((props, ref) => {
       },
     })
       .then(() => {
-        alert("entreverdes actualizados");
+        alert("Entreverdes actualizados");
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -129,62 +131,63 @@ const Campos = forwardRef((props, ref) => {
             }}>
             {info
               ? state.metadata.status == "PRODUCTION"
-                ? "Formulario de programaciones de tiempos de semáforos " +
-                  state.oid
+                ? "Informe de programaciones de tiempos semafóricos" + state.oid
                 : "Información de solicitud para integración/actualización " +
                   state.oid
               : "Verifique los campos ingresados"}
           </h2>
-
-          {info &&
-            (global_state.rol === "Personal UOCT" || global_state.is_admin) &&
-            !props.scrolled &&
-            state.metadata.status == "PRODUCTION" && (
-              <div className="botones-resumen">
-                {info && state.metadata.status == "PRODUCTION" && (
-                  <>
-                    <div>
-                      <Button
-                        onClick={() => props.setDetalles(!props.detalles)}
-                        color="info"
-                        size="lg"
-                        className="descargar-boton">
-                        {(props.detalles ? "Ocultar" : "Mostrar") +
-                          " información complementaria"}
-                      </Button>
-                    </div>
-                  </>
-                )}
+          <div className="botones-resumen">
+            {info && state.metadata.status == "PRODUCTION" && !props.scrolled && (
+              <>
                 <div>
                   <Button
-                    onClick={() => props.scroll()}
+                    onClick={() => props.setDetalles(!props.detalles)}
                     color="info"
                     size="lg"
                     className="descargar-boton">
-                    Descargar Informe
+                    {(props.detalles ? "Ocultar" : "Mostrar") +
+                      " información complementaria"}
                   </Button>
                 </div>
-                <div>
-                  <Button
-                    onClick={() => history.push("/editar/info-programaciones")}
-                    color="secondary"
-                    size="lg"
-                    className="descargar-boton">
-                    Editar informe de programaciones
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    onClick={() => history.push("/editar/instalacion")}
-                    color="secondary"
-                    size="lg"
-                    className="descargar-boton">
-                    Editar informe de programaciones + complementaria
-                  </Button>
-                </div>
-              </div>
+              </>
             )}
-
+            {info &&
+              (global_state.rol === "Personal UOCT" || global_state.is_admin) &&
+              !props.scrolled &&
+              state.metadata.status == "PRODUCTION" && (
+                <>
+                  <div>
+                    <Button
+                      onClick={() => props.scroll()}
+                      color="info"
+                      size="lg"
+                      className="descargar-boton">
+                      Generar informe de programaciones
+                    </Button>
+                  </div>
+                  <div>
+                    <Button
+                      onClick={() =>
+                        history.push("/editar/info-programaciones")
+                      }
+                      color="secondary"
+                      size="lg"
+                      className="descargar-boton">
+                      Editar informe de programaciones
+                    </Button>
+                  </div>
+                  <div>
+                    <Button
+                      onClick={() => history.push("/editar/instalacion")}
+                      color="secondary"
+                      size="lg"
+                      className="descargar-boton">
+                      Editar informe de programaciones + complementaria
+                    </Button>
+                  </div>
+                </>
+              )}
+          </div>
           {/* datos iniciales */}
           <div className="section">
             <div className="tables" style={{ fontSize: "1rem" }}>
@@ -199,7 +202,7 @@ const Campos = forwardRef((props, ref) => {
                     <td>{state.metadata.commune.name}</td>
                     <td> </td>
                     <td> </td>
-                    <td className="label">Fecha de emisión :</td>
+                    <td className="label">Emisión de documento:</td>
                     <td>{getFecha(new Date())}</td>
                   </tr>
                 </tbody>
@@ -398,7 +401,6 @@ const Campos = forwardRef((props, ref) => {
           <div className="image">
             <ZoomImage img={state.metadata.img} />
           </div>
-
           {/* fases secuencia entreverdes */}
           {state.otu.junctions.map((junction, index) => {
             if (!junctions[index]) return;
@@ -527,7 +529,6 @@ const Campos = forwardRef((props, ref) => {
               </div>
             );
           })}
-
           {/* periodizaciones */}
           {!new_request && (
             <>
@@ -612,7 +613,6 @@ const Campos = forwardRef((props, ref) => {
               </div>
             </>
           )}
-
           {/* Programaciones */}
           {!new_request && (
             <>
@@ -882,7 +882,6 @@ const Campos = forwardRef((props, ref) => {
               )}
             </>
           )}
-
           {props.detalles && (
             <div className="section">
               <h2>Información complementaria</h2>
@@ -1020,7 +1019,6 @@ const Campos = forwardRef((props, ref) => {
               </div>
             </div>
           )}
-
           <div className="section" style={{ whiteSpace: "pre-wrap" }}>
             <h2>Observaciones</h2>
             {info ? (

@@ -81,6 +81,7 @@ export default function PanelInstalacion(props) {
       GQLclient.request(request, variables)
         .then((response) => {
           if (history_panel) {
+            //en el historial
             setInstalacion(procesar_json_recibido(response.version));
           } else {
             setInstalacion(procesar_json_recibido(response.project));

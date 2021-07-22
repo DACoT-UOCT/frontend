@@ -47,14 +47,6 @@ export default function ProcesarSolicitud(props) {
   // const [correos, setCorreos] = useState([""]);
   const [submit, setSubmit] = useState(false);
 
-  // const updateQuery = useQuery(
-  //   GetProject,
-  //   (data) => {
-  //     dispatch({ type: "levantar_actualizacion", payLoad: data.project });
-  //   },
-  //   { oid: global_state.actualizando.oid, status: "UPDATE" }
-  // );
-
   const aprobar_rechazar_solicitud = (
     _oid,
     _status,

@@ -27,6 +27,7 @@ const BarraBusqueda = (props) => {
 
   const [busquedaInput, setBusquedaInput] = useState("");
   const [dataConsultada, setDataConsultada] = useState(null);
+  const [updateConsultado, setUpdateConsultado] = useState(null);
   const [statusConsultado, setStatusConsultado] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
 
@@ -39,7 +40,7 @@ const BarraBusqueda = (props) => {
   );
 
   const buscarUPDATE = (id_consultado) => {
-    GQLclient.request(CheckUpdates, {
+    GQLclient.request(GetProject, {
       oid: id_consultado,
       status: "UPDATE",
     })
@@ -47,6 +48,7 @@ const BarraBusqueda = (props) => {
         if (response.project === null) {
           setStatusConsultado("Operativo");
         } else {
+          setUpdateConsultado(procesar_json_recibido(response.project));
           if (global_state.rol === "Personal UOCT" || global_state.is_admin) {
             //se puede procesar la solicitud
             setStatusConsultado(
@@ -67,6 +69,7 @@ const BarraBusqueda = (props) => {
   const buscarPRODUCTION = (id_consultado) => {
     GQLclient.request(GetProject, { oid: id_consultado, status: "PRODUCTION" })
       .then((response) => {
+        console.log(response);
         if (response.project !== null) {
           buscarUPDATE(id_consultado);
           setDataConsultada(procesar_json_recibido(response.project));
@@ -162,6 +165,7 @@ const BarraBusqueda = (props) => {
         <div className={styles.details}>
           <PreviewInstalacion
             instalacion={dataConsultada}
+            update={updateConsultado}
             status={statusConsultado}
           />
         </div>
