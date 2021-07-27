@@ -118,20 +118,16 @@ const NuevaInstalacion = (props) => {
 
             GQLclient.request(acceptProject, { data: _data })
               .then((response) => {
-                alert("Formulario enviado con éxito");
                 dispatch({ type: "post_success" });
               })
               .catch((err) => {
-                alert("Error en el envio");
                 dispatch({ type: "post_error" });
               });
           } else {
-            alert("Formulario enviado correctamente");
             dispatch({ type: "post_success" });
           }
         })
         .catch((err) => {
-          alert("Error en el envio.");
           dispatch({ type: "post_error" });
         });
     }
@@ -211,7 +207,6 @@ const NuevaInstalacion = (props) => {
                       : "Error de envío del formulario, si el problema persiste contactar con el administrador"
                   }
                 />
-                /
               </>
             )}
           </>

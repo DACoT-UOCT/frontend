@@ -117,7 +117,7 @@ const CrudControladores = () => {
                           },
                         });
                       }}>
-                      Eliminar
+                      Desabilitar
                     </Button>
                   </td>
                 </tr>
@@ -136,10 +136,10 @@ const CrudControladores = () => {
       </PopUp>
       {state.delete_backup != undefined && (
         <PopUp
-          title="Eliminar controlador"
+          title="Desabilitar controlador"
           open={closeOpen}
           setOpen={setCloseOpen}>
-          <p>¿Desea eliminar este controlador?</p>
+          <p>¿Desea desabilitar este controlador?</p>
           <Table hover responsive className={styles.table}>
             <thead>
               <tr>
@@ -170,7 +170,7 @@ const CrudControladores = () => {
               onClick={() => {
                 eliminar_controlador(state.delete_backup.id);
               }}>
-              Eliminar
+              Desabilitar
             </Button>
           </div>
         </PopUp>

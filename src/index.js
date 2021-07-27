@@ -8,9 +8,9 @@ import $ from "jquery";
 import Popper from "popper.js";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  // <React.StrictMode>
+  // </React.StrictMode>,
+  <App />,
   document.getElementById("root")
 );
 

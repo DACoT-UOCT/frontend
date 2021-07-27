@@ -65,13 +65,9 @@ export default function ProcesarSolicitud(props) {
 
     GQLclient.request(mutation, { data: respuesta })
       .then((response) => {
-        alert(
-          "Solicitud " + (aprobar ? "aprobada" : "rechazada") + " con éxito"
-        );
-        setSubmit("ok");
+        setSubmit(aprobar ? "aprobada" : "rechazada");
       })
       .catch((err) => {
-        alert("Error en el envio");
         setSubmit("Error");
       });
   };
@@ -198,11 +194,11 @@ export default function ProcesarSolicitud(props) {
           </>
         ) : (
           <Success
-            success={submit === "ok"}
+            success={submit !== "Error"}
             mensaje={
-              submit === "ok"
-                ? "Formulario enviado con exito"
-                : "Error de envío del formulario, si el problema persiste contactar con el administrador"
+              submit === "Error"
+                ? "Error de envío del formulario, si el problema persiste contactar con el administrador"
+                : "Solicitud " + submit + " exitosamente"
             }
           />
         )}

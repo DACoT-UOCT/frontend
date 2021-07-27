@@ -32,7 +32,7 @@ const Header = (props) => {
   };
 
   useEffect(() => {
-    setSection(sections[location.pathname]);
+    setSection("> " + sections[location.pathname]);
   }, [location]);
 
   return (

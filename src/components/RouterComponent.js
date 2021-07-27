@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import "../App.css";
 import axios from "axios";
@@ -25,10 +25,10 @@ import ResumenProyecto from "./Formularios/Campos/ResumenProyecto";
 import Historial from "./Historial/Historial";
 import { createBrowserHistory } from "history";
 import usePersistentState from "./Shared/Utils/usePersistentState";
+import { DispatchContext, StateContext } from "./App";
 
 const RouterComponent = (props) => {
   //const [state, dispatch] = useImmerReducer(reducer, initialState);
-
   const state = props.state;
   const dispatch = props.dispatch;
 
@@ -63,7 +63,15 @@ const RouterComponent = (props) => {
           <Route
             exact
             path="/"
-            component={() => <Inicio state={state} dispatch={dispatch} />}
+            component={() => (
+              <Inicio
+                is_admin={state.is_admin}
+                rol={state.rol}
+                popup_inicial={state.popup_inicial}
+                coordinates={state.coordinates}
+                dispatch={dispatch}
+              />
+            )}
           />
           <Route
             exact

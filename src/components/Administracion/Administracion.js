@@ -38,7 +38,9 @@ const Administracion = (props) => {
             className={vista == "errores" ? styles.active : null}
             onClick={() => {
               setVista("errores");
-              setTitulo("Errores de extracción automática desde SC");
+              setTitulo(
+                "Errores de extracción automática desde Centro de Control"
+              );
             }}>
             <span>Errores de extracción</span>
           </button>

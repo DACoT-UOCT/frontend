@@ -1,10 +1,7 @@
 import React, { useEffect, useContext, useRef } from "react";
-import { useImmerReducer } from "use-immer";
-import { initialState, reducer } from "./BusquedaReducer";
 import { useHistory } from "react-router-dom";
-import { StateContext as GlobalStateContext } from "../App";
+import { DispatchContext, StateContext } from "../App";
 import PopUp from "../Shared/PopUp";
-import PreviewInstalacion from "../Preview/PreviewInstalacion";
 
 import styles from "./Consulta.module.css";
 import axios from "axios";
@@ -13,8 +10,6 @@ import { ipAPI } from "../Shared/ipAPI";
 import PanelInstalacion from "../Preview/PanelInstalacion";
 import BarraBusqueda from "./BarraBusqueda";
 
-export const StateContext = React.createContext();
-export const DispatchContext = React.createContext();
 const estados = {
   NEW: "Solicitud de integración",
   UPDATE: "Solicitud de actualización",
@@ -23,26 +18,26 @@ const estados = {
   SYSTEM: "Instalación en funcionamiento",
 };
 const Inicio = (props) => {
-  const global_state = props.state;
+  const dispatch = props.dispatch;
   const history = useHistory();
-  const inputRef = useRef(null);
-  const onButtonClick = () => {
-    inputRef.current.focus();
-  };
 
   const bienvenidaHandler = (_bool) => {
-    props.dispatch({ type: "cerrar_bienvenida", payload: _bool });
+    dispatch({ type: "cerrar_bienvenida", payload: _bool });
   };
 
   return (
     <div className="grid-item consulta-semaforo">
-      <BarraBusqueda global_state={global_state} inputRef={inputRef} />
+      <BarraBusqueda
+        rol={props.rol}
+        is_admin={props.is_admin}
+        coordinates={props.coordinates}
+      />
       <div className={`${styles.container} ${"home-buttons-container"}`}>
         {/* <div className="home-btn" onClick={onButtonClick}>
           Buscar instalaciones
           <img src="/imagenes/buscar.svg" width="100" height="100" />
         </div> */}
-        {global_state.rol === "Personal UOCT" || global_state.is_admin ? (
+        {props.rol === "Personal UOCT" || props.is_admin ? (
           <>
             <div
               className="home-btn"
@@ -73,7 +68,7 @@ const Inicio = (props) => {
             </div>
           </>
         )}
-        {global_state.is_admin && (
+        {props.is_admin && (
           <div
             className="home-btn"
             onClick={() => {
@@ -87,7 +82,7 @@ const Inicio = (props) => {
 
       <PopUp
         title="Bienvenido a DACoT"
-        open={global_state.popup_inicial}
+        open={props.popup_inicial}
         setOpen={bienvenidaHandler}>
         <p>
           Este sistema se encuentra en desarrollo y constante mejora. En el
@@ -105,4 +100,4 @@ const Inicio = (props) => {
   );
 };
 
-export default Inicio;
+export default React.memo(Inicio);

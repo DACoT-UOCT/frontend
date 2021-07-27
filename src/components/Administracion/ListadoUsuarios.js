@@ -99,7 +99,7 @@ const ListadoUsuarios = (props) => {
                           dispatch({ type: "editar", payLoad: usuario });
                           setEditOpen(true);
                         }}>
-                        Editar / Eliminar
+                        Editar / Desabilitar
                       </Button>
                     )}
                 </td>

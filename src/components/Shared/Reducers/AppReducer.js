@@ -1,4 +1,5 @@
 export const initialState = {
+  coordinates: null,
   popup_inicial: true,
   isLoading: false,
   error: "",
@@ -124,6 +125,11 @@ export function reducer(draft, action) {
 
     case "save_comunas": {
       draft.comunas = action.payLoad;
+      return;
+    }
+
+    case "save_coordinates": {
+      draft.coordinates = action.payLoad;
       return;
     }
     default:

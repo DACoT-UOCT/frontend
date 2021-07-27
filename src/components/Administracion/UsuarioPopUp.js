@@ -297,7 +297,7 @@ const UsuarioPopUp = (props) => {
       {state.desea_eliminar === true && props.type === "edit" ? (
         <>
           <div className={styles.buttonsGroup}>
-            <h5>¿Desea eliminar el usuario actual?</h5>
+            <h5>¿Desea desabilitar al usuario actual?</h5>
           </div>
           <div className={styles.buttonsGroup}>
             <Button
@@ -313,7 +313,7 @@ const UsuarioPopUp = (props) => {
         <div className={styles.buttonsGroup}>
           <>
             <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
-            <Button onClick={try_submit}>
+            <Button onClick={try_submit} color="info">
               <span>Guardar cambios</span>
             </Button>
             {props.type === "edit" && (
@@ -322,7 +322,7 @@ const UsuarioPopUp = (props) => {
                 onClick={() => {
                   dispatch({ type: "desea_eliminar", payLoad: true });
                 }}>
-                <span>Eliminar usuario</span>
+                <span>Desabilitar usuario</span>
               </Button>
             )}
           </>

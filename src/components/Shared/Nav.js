@@ -1,10 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { ipAPI } from "./ipAPI";
 import MenuIcon from "@material-ui/icons/Menu";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
-
 import styles from "./Nav.module.css";
 import { StateContext, DispatchContext } from "../App";
 
@@ -22,36 +18,41 @@ export default function Nav() {
       />
       <div className={`${styles.menu} ${show && styles.show}`}>
         <Link onClick={() => setShow(false)} className={styles.link} to="/">
-          <span>Inicio</span>
+          <span>‣ Inicio</span>
         </Link>
         <Link
           onClick={() => setShow(false)}
           className={styles.link}
           to="/solicitudes">
-          <span>Mis solicitudes</span>
+          {state.rol === "Empresa" ? (
+            <span>‣ Mis solicitudes</span>
+          ) : (
+            <span>‣ Solicitudes pendientes</span>
+          )}
         </Link>
         {state.rol === "Empresa" && (
           <Link
             onClick={() => setShow(false)}
             className={styles.link}
             to="/nuevo/solicitud-integracion">
-            <span>Solicitud integración nuevo proyecto</span>
+            <span>‣ Nueva solicitud de integración de proyecto</span>
           </Link>
         )}
-
+        {state.rol == "Personal UOCT" && (
+          <Link
+            onClick={() => setShow(false)}
+            className={styles.link}
+            to="/nuevo/digitalizacion">
+            <span>‣ Digitalizar instalación</span>
+          </Link>
+        )}
         {state.is_admin && (
           <>
             <Link
               onClick={() => setShow(false)}
               className={styles.link}
-              to="/nuevo/digitalizacion">
-              <span>Digitalización manual</span>
-            </Link>
-            <Link
-              onClick={() => setShow(false)}
-              className={styles.link}
               to="/administracion">
-              <span>Administración</span>
+              <span>‣ Administración</span>
             </Link>
           </>
         )}
@@ -62,7 +63,7 @@ export default function Nav() {
         </Link> */}
 
         <Link to="/logout" className={styles.link}>
-          <span>Salir</span>
+          <span>‣ Salir</span>
         </Link>
       </div>
       {show && (

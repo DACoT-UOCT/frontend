@@ -1,31 +1,15 @@
 import React, { useEffect } from "react";
-import { useImmerReducer } from "use-immer";
 import "../App.css";
 
-import { ipAPI } from "./Shared/ipAPI";
-import Header from "./Shared/Header";
-import NuevaInstalacion from "./Formularios/NuevaInstalacion";
-import Inicio from "./Inicio/Inicio";
-import Login from "./Login/Login";
-import Logout from "./Login/Logout";
 import { initialState, reducer } from "./Shared/Reducers/AppReducer";
-import ProcesarSolicitud from "./Solicitudes/ProcesarSolicitud";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  useLocation,
-} from "react-router-dom";
-import Solicitudes from "./Solicitudes/Solicitudes";
-import Administracion from "./Administracion/Administracion";
-import Profile from "./Shared/Profile";
 
-import Historial from "./Historial/Historial";
+import { BrowserRouter as Router } from "react-router-dom";
+
 import { createBrowserHistory } from "history";
 import usePersistentState from "./Shared/Utils/usePersistentState";
 import RouterComponent from "./RouterComponent";
-import { request, GraphQLClient } from "graphql-request";
-import { GetCommunes } from "../GraphQL/Queries";
+import { GraphQLClient } from "graphql-request";
+import { GetCommunes, GetCoordinates } from "../GraphQL/Queries";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -54,7 +38,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    //guardar cositas en cache
+    //guardar comunas en el cache
     if (state.comunas === null) {
       GQLclient.request(GetCommunes)
         .then((data) => {
@@ -65,6 +49,19 @@ const App = () => {
             return comuna;
           });
           dispatch({ type: "save_comunas", payLoad: aux });
+        })
+        .catch((error) => {});
+    }
+  }, []);
+
+  useEffect(() => {
+    //guardar cordenadas en el cache
+    if (state.coordinates === null) {
+      console.log("CONSULTANDO COORDENADAS");
+      GQLclient.request(GetCoordinates, { status: "NEW" })
+        .then((data) => {
+          console.log(data);
+          dispatch({ type: "save_coordinates", payLoad: data.locations });
         })
         .catch((error) => {});
     }

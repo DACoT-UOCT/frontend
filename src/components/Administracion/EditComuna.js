@@ -154,7 +154,7 @@ const EditComuna = (props) => {
       </TableContainer>
       <div className={styles.buttonsGroup}>
         <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
-        <Button onClick={try_submit}>
+        <Button onClick={try_submit} color="info">
           <span>Guardar</span>
         </Button>
       </div>

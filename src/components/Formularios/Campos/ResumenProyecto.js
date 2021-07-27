@@ -131,7 +131,8 @@ const Campos = forwardRef((props, ref) => {
             }}>
             {info
               ? state.metadata.status == "PRODUCTION"
-                ? "Informe de programaciones de tiempos semafóricos" + state.oid
+                ? "Informe de programaciones de tiempos semafóricos " +
+                  state.oid
                 : "Información de solicitud para integración/actualización " +
                   state.oid
               : "Verifique los campos ingresados"}
@@ -1020,36 +1021,41 @@ const Campos = forwardRef((props, ref) => {
             </div>
           )}
           <div className="section" style={{ whiteSpace: "pre-wrap" }}>
-            <h2>Observaciones</h2>
             {info ? (
-              <Input
-                className="observaciones"
-                bsSize="sm"
-                disabled={
-                  global_state.rol !== "Personal UOCT" || !global_state.is_admin
-                }
-                type="textarea"
-                // disabled={info}
-                placeholder=""
-                defaultValue={props.state.observation}
-              />
+              <>
+                <h2>{"Observaciones"}</h2>
+                <Input
+                  className="observaciones"
+                  bsSize="sm"
+                  disabled={
+                    global_state.rol !== "Personal UOCT" ||
+                    !global_state.is_admin
+                  }
+                  type="textarea"
+                  // disabled={info}
+                  placeholder=""
+                  defaultValue={props.state.observation}
+                />
+              </>
             ) : (
-              <Input
-                className="observaciones"
-                bsSize="sm"
-                type="textarea"
-                // disabled={info}
-                placeholder=""
-                value={props.state.observation}
-                onChange={(e) =>
-                  props.dispatch({
-                    type: "observation",
-                    payLoad: e.currentTarget.value,
-                  })
-                }
-              />
+              <>
+                <h2>{"Observaciones (editable)"}</h2>
+                <Input
+                  className="observaciones"
+                  bsSize="sm"
+                  type="textarea"
+                  // disabled={info}
+                  placeholder=""
+                  value={props.state.observation}
+                  onChange={(e) =>
+                    props.dispatch({
+                      type: "observation",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }
+                />
+              </>
             )}
-            )
           </div>
         </div>
       </div>
@@ -1132,7 +1138,7 @@ const ResumenProyecto = (props) => {
                         Programaciones, ya que estos datos se extraen
                         automáticamente desde el sistema de control.
                       </p>
-                      <p>
+                      <p style={{ textDecoration: "underline" }}>
                         IMPORANTE: los entreverdes vehiculares de las
                         programaciones deben ser actualizados manualmente para
                         calcular correctamente las tablas de periodización, de

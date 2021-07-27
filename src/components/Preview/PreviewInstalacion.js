@@ -62,6 +62,7 @@ export const renderPDF = (instalacion) => {
 };
 
 const PreviewInstalacion = (props) => {
+  console.log("RENDER PREVIEW");
   const dispatch = useContext(DispatchContext);
   const state = useContext(StateContext);
   const classes = useStyles();
@@ -92,7 +93,12 @@ const PreviewInstalacion = (props) => {
                   payLoad: instalacion,
                 });
               }}>
-              <Button outline color="success" size="sm" block>
+              <Button
+                outline
+                color="success"
+                size="lg"
+                block
+                style={{ fontSize: "3em" }}>
                 + información
               </Button>
             </Link>
@@ -168,7 +174,7 @@ const PreviewInstalacion = (props) => {
                     payLoad: update_data,
                   });
                 }}>
-                <Button color="info">Procesar solicitud</Button>
+                <Button color="info">Procesar solicitud pendiente</Button>
               </Link>
               <br></br>
             </>
@@ -179,6 +185,7 @@ const PreviewInstalacion = (props) => {
           !history_panel && (
             <>
               <Button
+                color="info"
                 onClick={() => {
                   if (update_data != null) {
                     alert(
@@ -210,6 +217,7 @@ const PreviewInstalacion = (props) => {
             {instalacion.metadata.status === "PRODUCTION" && (
               <>
                 <Button
+                  color="info"
                   onClick={() => {
                     if (update_data != null) {
                       alert(

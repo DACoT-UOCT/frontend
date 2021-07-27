@@ -218,7 +218,7 @@ const Siguiente = (props) => {
           </Button>
         </div>
       </PopUp>
-      )
+
       <PopUp
         title="Error en los siguientes campos:"
         open={open}

@@ -1,6 +1,5 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "../../App.css";
 import { Button } from "reactstrap";
 

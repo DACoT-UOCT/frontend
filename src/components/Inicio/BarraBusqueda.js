@@ -1,43 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import MapaConsulta from "./MapaConsulta";
 import styles from "./Consulta.module.css";
 import { procesar_json_recibido } from "../Shared/API/Interface";
-import { ipAPI } from "../Shared/ipAPI";
-import axios from "axios";
 import { Button } from "reactstrap";
 import PopOver from "../Shared/PopOver";
 import { GQLclient } from "../App";
-import {
-  CheckUpdates,
-  GetCoordinates,
-  GetProject,
-} from "../../GraphQL/Queries";
+import { GetCoordinates, GetProject } from "../../GraphQL/Queries";
 import { useQuery } from "../../GraphQL/useQuery";
 import PopUp from "../Shared/PopUp";
 import PreviewInstalacion from "../Preview/PreviewInstalacion";
 import "../../App.css";
 
 const BarraBusqueda = (props) => {
-  // const state = props.state;
-  // const dispatch = props.dispatch;
-  const global_state = props.global_state;
-  const inputRef = props.inputRef;
   const [openMapa, setOpenMapa] = useState(false);
-  const [junctions, setJunctions] = useState([]);
+  // const [junctions, setJunctions] = useState([]);
 
   const [busquedaInput, setBusquedaInput] = useState("");
   const [dataConsultada, setDataConsultada] = useState(null);
-  const [updateConsultado, setUpdateConsultado] = useState(null);
+  const [requestConsultada, setRequestConsultada] = useState(null);
   const [statusConsultado, setStatusConsultado] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
 
-  const coordinatesQuery = useQuery(
-    GetCoordinates,
-    (data) => {
-      setJunctions(data.locations);
-    },
-    { status: "NEW" }
-  );
+  // const coordinatesQuery = useQuery(
+  //   GetCoordinates,
+  //   (data) => {
+  //     setJunctions(data.locations);
+  //   },
+  //   { status: "NEW" }
+  // );
 
   const buscarUPDATE = (id_consultado) => {
     GQLclient.request(GetProject, {
@@ -48,8 +38,8 @@ const BarraBusqueda = (props) => {
         if (response.project === null) {
           setStatusConsultado("Operativo");
         } else {
-          setUpdateConsultado(procesar_json_recibido(response.project));
-          if (global_state.rol === "Personal UOCT" || global_state.is_admin) {
+          setRequestConsultada(procesar_json_recibido(response.project));
+          if (props.rol === "Personal UOCT" || props.is_admin) {
             //se puede procesar la solicitud
             setStatusConsultado(
               "Operativo (solicitud de actualización pendiente)"
@@ -69,13 +59,12 @@ const BarraBusqueda = (props) => {
   const buscarPRODUCTION = (id_consultado) => {
     GQLclient.request(GetProject, { oid: id_consultado, status: "PRODUCTION" })
       .then((response) => {
-        console.log(response);
         if (response.project !== null) {
           buscarUPDATE(id_consultado);
           setDataConsultada(procesar_json_recibido(response.project));
         } else {
           //SI NO ESTÁ EN PRODUCTION, Y ES UOCT O ADMIN, CONSULTA EN STATUS NEW
-          if (global_state.rol === "Personal UOCT" || global_state.is_admin) {
+          if (props.rol === "Personal UOCT" || props.is_admin) {
             buscarNEW(id_consultado);
           } else {
             alert("Instalación no encontrada NO PRODUCTION");
@@ -97,6 +86,7 @@ const BarraBusqueda = (props) => {
           alert("Instalación no encontrada, NO NEW NO PRODUCTION");
         } else {
           setStatusConsultado("Solicitud nueva");
+          setRequestConsultada(procesar_json_recibido(response.project));
           setDataConsultada(procesar_json_recibido(response.project));
           setPreviewOpen(true);
         }
@@ -129,7 +119,6 @@ const BarraBusqueda = (props) => {
           onKeyDown={(e) => {
             if (e.key === "Enter") buscarOnClick(busquedaInput);
           }}
-          ref={inputRef}
           type="text"
           placeholder="J000000"
           value={busquedaInput}
@@ -148,37 +137,37 @@ const BarraBusqueda = (props) => {
       <div className={styles.row}>
         <div style={{ marginRight: "auto" }} className={styles.buttons}>
           <Button
-            disabled={coordinatesQuery.status !== "success"}
+            disabled={props.coordinates === null}
             color="info"
             onClick={() => setOpenMapa(true)}>
-            {coordinatesQuery.status == "success"
+            {props.coordinates !== null
               ? "Buscar instalación con mapa"
               : "Cargando Mapa"}
           </Button>
         </div>
       </div>
 
-      <PopUp
-        title={"Instalación " + busquedaInput}
-        open={previewOpen}
-        setOpen={setPreviewOpen}>
-        <div className={styles.details}>
-          <PreviewInstalacion
-            instalacion={dataConsultada}
-            update={updateConsultado}
-            status={statusConsultado}
-          />
-        </div>
-      </PopUp>
+      {previewOpen && (
+        <PopUp
+          title={"Instalación " + busquedaInput}
+          open={previewOpen}
+          setOpen={setPreviewOpen}>
+          <div className={styles.details}>
+            <PreviewInstalacion
+              instalacion={dataConsultada}
+              update={requestConsultada}
+              status={statusConsultado}
+            />
+          </div>
+        </PopUp>
+      )}
 
-      {junctions.length > 0 && openMapa && (
+      {props.coordinates !== null && openMapa && (
         <MapaConsulta
-          // state={state}
-          // dispatch={dispatch}
           open={openMapa}
           setOpen={setOpenMapa}
           buscar={buscarOnClick}
-          junctions={junctions}
+          junctions={props.coordinates}
         />
       )}
     </div>
