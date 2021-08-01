@@ -10,24 +10,36 @@ import { useQuery } from "../../GraphQL/useQuery";
 import PopUp from "../Shared/PopUp";
 import PreviewInstalacion from "../Preview/PreviewInstalacion";
 import "../../App.css";
+import useSessionStorageState from "../Shared/Utils/useSessionStorageState";
+
+const reducer = (draft, action) => {
+  draft[action.type] = action.payLoad;
+};
+
+const initialState = {
+  busquedaInput: "",
+  dataConsultada: null,
+  requestConsultada: null,
+  statusConsultado: "",
+  previewOpen: false,
+  openMap: false,
+};
+
+const STATE_VARS = {
+  busquedaInput: "busquedaInput",
+  dataConsultada: "dataConsultada",
+  requestConsultada: "requestConsultada",
+  statusConsultado: "statusConsultado",
+  previewOpen: "previewOpen",
+  openMap: "openMap",
+};
 
 const BarraBusqueda = (props) => {
-  const [openMapa, setOpenMapa] = useState(false);
-  // const [junctions, setJunctions] = useState([]);
-
-  const [busquedaInput, setBusquedaInput] = useState("");
-  const [dataConsultada, setDataConsultada] = useState(null);
-  const [requestConsultada, setRequestConsultada] = useState(null);
-  const [statusConsultado, setStatusConsultado] = useState("");
-  const [previewOpen, setPreviewOpen] = useState(false);
-
-  // const coordinatesQuery = useQuery(
-  //   GetCoordinates,
-  //   (data) => {
-  //     setJunctions(data.locations);
-  //   },
-  //   { status: "NEW" }
-  // );
+  const [state, dispatch] = useSessionStorageState(
+    reducer,
+    initialState,
+    "search"
+  );
 
   const buscarUPDATE = (id_consultado) => {
     GQLclient.request(GetProject, {
@@ -36,24 +48,38 @@ const BarraBusqueda = (props) => {
     })
       .then((response) => {
         if (response.project === null) {
-          setStatusConsultado("Operativo");
+          dispatch({ type: STATE_VARS.statusConsultado, payLoad: "Operativo" });
+          // setStatusConsultado("Operativo");
         } else {
-          setRequestConsultada(procesar_json_recibido(response.project));
+          dispatch({
+            type: STATE_VARS.requestConsultada,
+            payLoad: procesar_json_recibido(response.project),
+          });
+          // setRequestConsultada(procesar_json_recibido(response.project));
           if (props.rol === "Personal UOCT" || props.is_admin) {
             //se puede procesar la solicitud
-            setStatusConsultado(
-              "Operativo (solicitud de actualización pendiente)"
-            );
+            dispatch({
+              type: STATE_VARS.statusConsultado,
+              payLoad: "Operativo (solicitud de actualización pendiente)",
+            });
           } else {
             //no se puede procesar la solicitud
-            setStatusConsultado("Operativo");
+            dispatch({
+              type: STATE_VARS.statusConsultado,
+              payLoad: "Operativo",
+            });
           }
         }
       })
       .catch((err) => {
         alert("Error en la consulta UPDATE");
       })
-      .finally(() => setPreviewOpen(true));
+      .finally(() =>
+        dispatch({
+          type: STATE_VARS.previewOpen,
+          payLoad: true,
+        })
+      );
   };
 
   const buscarPRODUCTION = (id_consultado) => {
@@ -61,7 +87,10 @@ const BarraBusqueda = (props) => {
       .then((response) => {
         if (response.project !== null) {
           buscarUPDATE(id_consultado);
-          setDataConsultada(procesar_json_recibido(response.project));
+          dispatch({
+            type: STATE_VARS.dataConsultada,
+            payLoad: procesar_json_recibido(response.project),
+          });
         } else {
           //SI NO ESTÁ EN PRODUCTION, Y ES UOCT O ADMIN, CONSULTA EN STATUS NEW
           if (props.rol === "Personal UOCT" || props.is_admin) {
@@ -85,10 +114,22 @@ const BarraBusqueda = (props) => {
         if (response.project === null) {
           alert("Instalación no encontrada, NO NEW NO PRODUCTION");
         } else {
-          setStatusConsultado("Solicitud nueva");
-          setRequestConsultada(procesar_json_recibido(response.project));
-          setDataConsultada(procesar_json_recibido(response.project));
-          setPreviewOpen(true);
+          dispatch({
+            type: STATE_VARS.statusConsultado,
+            payLoad: "Solicitud nueva",
+          });
+          dispatch({
+            type: STATE_VARS.requestConsultada,
+            payLoad: procesar_json_recibido(response.project),
+          });
+          dispatch({
+            type: STATE_VARS.dataConsultada,
+            payLoad: procesar_json_recibido(response.project),
+          });
+          dispatch({
+            type: STATE_VARS.previewOpen,
+            payLoad: true,
+          });
         }
       })
       .catch((err) => {
@@ -101,8 +142,19 @@ const BarraBusqueda = (props) => {
   const buscarOnClick = (id_consultado) => {
     //primero se busca si existe como latest en PRODUCTION
     //Si no, se busca en status NEW o PRODUCTION, pero solo si es personal UOCT
-    setBusquedaInput(id_consultado);
-    setDataConsultada(null);
+    dispatch({
+      type: STATE_VARS.busquedaInput,
+      payLoad: id_consultado,
+    });
+    dispatch({
+      type: STATE_VARS.dataConsultada,
+      payLoad: null,
+    });
+    dispatch({
+      type: STATE_VARS.requestConsultada,
+      payLoad: null,
+    });
+
     if (!/^(x|X|j|J)\d{6}$/.test(id_consultado)) {
       alert("Formato de búsqueda inválido (J000000)");
       return;
@@ -117,18 +169,21 @@ const BarraBusqueda = (props) => {
       <div className={styles.row}>
         <input
           onKeyDown={(e) => {
-            if (e.key === "Enter") buscarOnClick(busquedaInput);
+            if (e.key === "Enter") buscarOnClick(state.busquedaInput);
           }}
           type="text"
           placeholder="J000000"
-          value={busquedaInput}
+          value={state.busquedaInput}
           onChange={(e) => {
-            setBusquedaInput(e.currentTarget.value.toUpperCase().slice(0, 7));
+            dispatch({
+              type: STATE_VARS.busquedaInput,
+              payLoad: e.currentTarget.value.toUpperCase().slice(0, 7),
+            });
           }}
         />
 
         <div className={styles.buttons}>
-          <Button onClick={() => buscarOnClick(busquedaInput)}>
+          <Button onClick={() => buscarOnClick(state.busquedaInput)}>
             Buscar instalación
           </Button>
         </div>
@@ -139,7 +194,12 @@ const BarraBusqueda = (props) => {
           <Button
             disabled={props.coordinates === null}
             color="info"
-            onClick={() => setOpenMapa(true)}>
+            onClick={() =>
+              dispatch({
+                type: STATE_VARS.openMap,
+                payLoad: true,
+              })
+            }>
             {props.coordinates !== null
               ? "Buscar instalación con mapa"
               : "Cargando Mapa"}
@@ -147,25 +207,29 @@ const BarraBusqueda = (props) => {
         </div>
       </div>
 
-      {previewOpen && (
+      {state.previewOpen && (
         <PopUp
-          title={"Instalación " + busquedaInput}
-          open={previewOpen}
-          setOpen={setPreviewOpen}>
+          title={"Instalación " + state.busquedaInput}
+          open={state.previewOpen}
+          setOpen={(arg) => {
+            dispatch({ type: STATE_VARS.previewOpen, payLoad: arg });
+          }}>
           <div className={styles.details}>
             <PreviewInstalacion
-              instalacion={dataConsultada}
-              update={requestConsultada}
-              status={statusConsultado}
+              instalacion={state.dataConsultada}
+              update={state.requestConsultada}
+              status={state.statusConsultado}
             />
           </div>
         </PopUp>
       )}
 
-      {props.coordinates !== null && openMapa && (
+      {props.coordinates !== null && state.openMap && (
         <MapaConsulta
-          open={openMapa}
-          setOpen={setOpenMapa}
+          open={state.openMap}
+          setOpen={(arg) => {
+            dispatch({ type: STATE_VARS.openMap, payLoad: arg });
+          }}
           buscar={buscarOnClick}
           junctions={props.coordinates}
         />

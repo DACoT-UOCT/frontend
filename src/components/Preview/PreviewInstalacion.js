@@ -62,7 +62,6 @@ export const renderPDF = (instalacion) => {
 };
 
 const PreviewInstalacion = (props) => {
-  console.log("RENDER PREVIEW");
   const dispatch = useContext(DispatchContext);
   const state = useContext(StateContext);
   const classes = useStyles();

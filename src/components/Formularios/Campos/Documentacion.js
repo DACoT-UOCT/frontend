@@ -92,7 +92,7 @@ const Documentacion = (props) => {
         />
       </PopOver>
       {/* <input type="file" id="input" /> */}
-      {img !== null && img !== "/no_image.png" && (
+      {img !== null && (
         <div className="imagen-formulario">
           <br></br>
           <ZoomImage img={img} />

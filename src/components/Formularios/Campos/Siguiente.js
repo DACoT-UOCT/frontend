@@ -37,7 +37,7 @@ const Siguiente = (props) => {
 
   const classes = useStyles();
 
-  const validar_entrada = (str, nombre, expresion = /.+/) => {
+  const input_regex = (str, nombre, expresion = /.+/) => {
     if (!expresion.test(str)) {
       //si no se cumple la expresion regular
       setOpen(true);
@@ -75,33 +75,38 @@ const Siguiente = (props) => {
     //revisar las variables 1 a una dependiendo de la vista
     dispatch({ type: "reset_errores" });
     var metadata = state.metadata;
+    var edit_programaciones = ["/editar/info-programaciones"].includes(
+      location.pathname
+    );
+    var new_instalacion = [
+      "/nuevo/digitalizacion",
+      "/nuevo/solicitud-integracion",
+    ].includes(location.pathname);
 
-    if (["/editar/programacion"].includes(location.pathname)) {
-      //VALIDAR FORMULARIO DE PROGRAMACIONES ACOTADO, NECESITA REVISION
-      validar_entrada(metadata.commune.name, "Comuna");
-      if (state.metadata.img === null) {
-        setOpen(true);
-        dispatch({
-          type: "error",
-          payLoad: "Ingrese diagrama del cruce",
-        });
-        return;
-      }
-      // validar_vista2();
-    } else if (state.vista === 1) {
+    if (state.vista === 1) {
       //VALIDAR FORMULARIO DE TODA LA INFORMACION
       // validar_entrada(metadata.region, "Región");
-      validar_entrada(metadata.commune.name, "Comuna");
-      if (state.metadata.pdf_data === null) {
-        setOpen(true);
-        dispatch({
-          type: "error",
-          payLoad: "Ingrese PDF de respaldo",
-        });
-        // return;
-      }
+      input_regex(metadata.commune.name, "Comuna");
+      input_regex(metadata.installation_company, "Empresa instaladora");
+      input_regex(
+        metadata.installation_company,
+        "Empresa instaladora",
+        /^((?!Sin asignar).)*$/
+      );
 
-      if (state.metadata.img === null) {
+      // if (state.metadata.pdf_data === null) {
+      //   setOpen(true);
+      //   dispatch({
+      //     type: "error",
+      //     payLoad: "Ingrese PDF de respaldo",
+      //   });
+      //   // return;
+      // }
+
+      if (
+        state.metadata.img === null ||
+        state.metadata.img === "/no_image.png"
+      ) {
         setOpen(true);
         dispatch({
           type: "error",
@@ -110,29 +115,32 @@ const Siguiente = (props) => {
         // return;
       }
 
-      validar_entrada(state.oid, "OTU - Codigo", /^(x|X)\d{5}0$/);
       var otu = state.otu;
-      consultar_oid_existente();
-      validar_entrada(otu.metadata.serial, "OTU - N Serie");
-      validar_entrada(otu.metadata.ip_address, "OTU - Dirección IP");
-      validar_entrada(otu.metadata.netmask, "OTU - Netmask");
-      validar_entrada(otu.metadata.link_type, "OTU - Tipo de enlace");
-      validar_entrada(otu.metadata.link_owner, "OTU - Tipo de enlace");
+      if (new_instalacion) {
+        input_regex(state.oid, "OTU - Codigo", /^(x|X)\d{5}0$/);
+        consultar_oid_existente();
+      }
 
-      var controller = state.controller;
-      // validar_entrada(controller.address_reference, " Controlador - Ubicación");
-      //validar modelo valido
-      validar_entrada(controller.model.company.name, " Controlador - Marca");
-      validar_entrada(controller.model.model, " Controlador - Modelo");
-      validar_entrada(
-        controller.model.firmware_version,
-        " Controlador - Firmware"
-      );
+      if (!edit_programaciones) {
+        input_regex(otu.metadata.serial, "OTU - N Serie");
+        input_regex(otu.metadata.ip_address, "OTU - Dirección IP");
+        input_regex(otu.metadata.netmask, "OTU - Netmask");
+        input_regex(otu.metadata.link_type, "OTU - Tipo de enlace");
+        input_regex(otu.metadata.link_owner, "OTU - Tipo de enlace");
+
+        var controller = state.controller;
+        input_regex(controller.model.company.name, " Controlador - Marca");
+        input_regex(controller.model.model, " Controlador - Modelo");
+        input_regex(
+          controller.model.firmware_version,
+          " Controlador - Firmware"
+        );
+      }
     } else if (state.vista === 2) {
       //validar que se ingresan los junction por el mapa
       state.otu.junctions.map((junction, index) => {
         //  validar_entrada(junction.id, "Junction - Código en Sistema");
-        validar_entrada(
+        input_regex(
           junction.metadata.address_reference,
           "Junction " + junction.jid + " - Ubicación no válida"
         );
@@ -147,7 +155,7 @@ const Siguiente = (props) => {
           });
         }
         junction.phases.map((phase, phaseIndex) => {
-          validar_entrada(
+          input_regex(
             phase,
             "Especificar etapas de la fase " +
               (phaseIndex + 1) +
@@ -161,11 +169,11 @@ const Siguiente = (props) => {
     } else if (state.vista === 3) {
       var ups = state.ups;
       if (ups != undefined) {
-        validar_entrada(ups.brand, "UPS - Marca");
-        validar_entrada(ups.model, "UPS - Modelo");
-        validar_entrada(ups.serial, "UPS - N° Serie");
-        validar_entrada(ups.capacity, "UPS - Capacidad");
-        validar_entrada(ups.charge_duration, "UPS - Duración de carga");
+        input_regex(ups.brand, "UPS - Marca");
+        input_regex(ups.model, "UPS - Modelo");
+        input_regex(ups.serial, "UPS - N° Serie");
+        input_regex(ups.capacity, "UPS - Capacidad");
+        input_regex(ups.charge_duration, "UPS - Duración de carga");
       }
     } else if (state.vista === 4) {
       //Si no se ha editado la observacion, preguntar si se envia sin comentario

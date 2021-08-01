@@ -61,8 +61,6 @@ const UsuarioPopUp = (props) => {
     props.setOpen(false);
   };
   const try_submit = () => {
-    // var link;
-    // var metodo;
     var mutation;
 
     var json = {

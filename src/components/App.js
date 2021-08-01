@@ -57,10 +57,8 @@ const App = () => {
   useEffect(() => {
     //guardar cordenadas en el cache
     if (state.coordinates === null) {
-      console.log("CONSULTANDO COORDENADAS");
       GQLclient.request(GetCoordinates, { status: "NEW" })
         .then((data) => {
-          console.log(data);
           dispatch({ type: "save_coordinates", payLoad: data.locations });
         })
         .catch((error) => {});

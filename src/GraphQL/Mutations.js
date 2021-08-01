@@ -79,3 +79,17 @@ export const setVehIntergreen = gql`
     setVehIntergreen(data: $data)
   }
 `;
+
+export const createCompany = gql`
+  mutation createCompany($data: CreateCompanyInput) {
+    createCompany(data: $data) {
+      id
+    }
+  }
+`;
+
+export const deleteCompany = gql`
+  mutation deleteCompany($data: DeleteCompanyInput) {
+    deleteCompany(data: $data)
+  }
+`;
