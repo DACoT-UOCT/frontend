@@ -126,6 +126,13 @@ export const procesar_json_recibido = (aux) => {
 
   temp.observation = temp.observation.message;
 
+  var junctions = temp.otu.junctions;
+  for (var i = 0; i < junctions.length; i++) {
+    if (junctions[i].phases.length == 0) {
+      junctions[i].phases = ["-"];
+    }
+  }
+
   //variables de control
   temp.errors = [];
   temp.vista = 1;

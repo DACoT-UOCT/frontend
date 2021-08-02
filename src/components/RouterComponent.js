@@ -45,6 +45,57 @@ const RouterComponent = (props) => {
     }
   }, [location]);
 
+  useEffect(() => {
+    var title = "UOCT | DACoT";
+    if (location.pathname == "/info") {
+      title =
+        state.actualizando.oid.slice(0, 4) +
+        " " +
+        state.actualizando.oid.slice(4);
+    }
+    if (
+      location.pathname == "/editar/instalacion" ||
+      location.pathname == "/editar/info-programaciones"
+    ) {
+      title =
+        "Editar " +
+        state.actualizando.oid.slice(0, 4) +
+        " " +
+        state.actualizando.oid.slice(4);
+    }
+    if (location.pathname == "/historial") {
+      title =
+        "Historial " +
+        state.actualizando.oid.slice(0, 4) +
+        " " +
+        state.actualizando.oid.slice(4);
+    }
+    if (location.pathname == "/administracion") {
+      title = "Administración";
+    }
+    if (location.pathname == "/solicitudes") {
+      title = "Solicitudes";
+    }
+
+    if (location.pathname == "/procesar/solicitud") {
+      title =
+        "Solicitud " +
+        state.actualizando.oid.slice(0, 4) +
+        " " +
+        state.actualizando.oid.slice(4);
+    }
+
+    if (location.pathname == "/nuevo/solicitud-actualizacion") {
+      title =
+        "Solicitud " +
+        state.actualizando.oid.slice(0, 4) +
+        " " +
+        state.actualizando.oid.slice(4);
+    }
+
+    document.title = title;
+  }, [location]);
+
   return (
     <>
       {!state.isLoggedIn ? (

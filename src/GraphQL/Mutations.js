@@ -93,3 +93,9 @@ export const deleteCompany = gql`
     deleteCompany(data: $data)
   }
 `;
+
+export const computeTables = gql`
+  mutation computeTables($data: GetProjectInput) {
+    computeTables(data: $data)
+  }
+`;

@@ -1,26 +1,26 @@
 import React from "react";
 import CursorZoom from "react-cursor-zoom";
 import "../../App.css";
+import {
+  SideBySideMagnifier,
+  MOUSE_ACTIVATION,
+  TOUCH_ACTIVATION,
+} from "react-image-magnifiers";
 
 const ZoomImage = (props) => {
   //todo: calcular tamaños para el zoom
-  const size1 = 300;
-  const size2 = 600;
-  const size3 = 180;
   return (
     <div>
-      <CursorZoom
-        image={{
-          src: props.img == undefined ? "/no_image.png" : props.img,
-          width: size1,
-          height: size1,
-        }}
-        zoomImage={{
-          src: props.img == undefined ? "/no_image.png" : props.img,
-          width: size2,
-          height: size2,
-        }}
-        size={size3}
+      <SideBySideMagnifier
+        className="zoom-image"
+        imageSrc={props.img}
+        largeImageSrc={props.img}
+        alwaysInPlace={true}
+        overlayOpacity={0.5}
+        zoomPosition="right"
+        fillAvailableSpace={false}
+        zoomContainerBorder="1px solid #ccc"
+        zoomContainerBoxShadow="0 4px 8px rgba(0,0,0,.5)"
       />
     </div>
   );

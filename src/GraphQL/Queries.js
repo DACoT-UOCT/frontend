@@ -338,3 +338,49 @@ export const GetVersion =
   `
   }
 `;
+
+export const GetUpdatedPlans = gql`
+  query project($oid: String!, $status: String!) {
+    project(oid: $oid, status: $status) {
+      otu {
+        junctions {
+          jid
+          plans {
+            cycle
+            plid
+            greenStart {
+              phid
+              value
+            }
+            pedestrianGreen {
+              phid
+              value
+            }
+            phaseStart {
+              phid
+              value
+            }
+            systemStart {
+              phid
+              value
+            }
+            vehicleGreen {
+              phid
+              value
+            }
+            pedestrianIntergreen {
+              phfrom
+              phto
+              value
+            }
+            vehicleIntergreen {
+              phfrom
+              phto
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+`;

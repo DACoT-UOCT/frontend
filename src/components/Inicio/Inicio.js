@@ -1,22 +1,11 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import { DispatchContext, StateContext } from "../App";
 import PopUp from "../Shared/PopUp";
 
 import styles from "./Consulta.module.css";
-import axios from "axios";
-import { ipAPI } from "../Shared/ipAPI";
 
-import PanelInstalacion from "../Preview/PanelInstalacion";
 import BarraBusqueda from "./BarraBusqueda";
 
-const estados = {
-  NEW: "Solicitud de integración",
-  UPDATE: "Solicitud de actualización",
-  APPROVED: "Solicitud aprobada",
-  REJECTED: "Solicitud rechazada",
-  SYSTEM: "Instalación en funcionamiento",
-};
 const Inicio = (props) => {
   const dispatch = props.dispatch;
   const history = useHistory();

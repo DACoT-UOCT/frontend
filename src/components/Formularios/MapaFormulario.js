@@ -33,6 +33,9 @@ const MapaFormulario = (props) => {
   const [zoom, setZoom] = useState(12);
   const mapRef = useRef();
 
+  const [address, setAddress] = useState(props.address);
+  const [coordinates, setCoordinates] = useState(props.pins);
+
   const onMapClick = (e) => {
     let lat = e.lat;
     let lng = e.lng;
@@ -54,28 +57,40 @@ const MapaFormulario = (props) => {
         let respuesta = data.data.results[0].locations[0];
         let address = respuesta.street + " - " + respuesta.adminArea5;
         dispatchMapa({ type: "location", payLoad: address });
-        if (props.junction) {
-          dispatch({
-            type: "junctions",
-            index: props.index,
-            fieldName: "address_reference",
-            address: address,
-            coordinates: [lat, lng],
-          });
+        setAddress(address);
+        if (
+          coordinates.find((element) => element.jid == props.jid) != undefined
+        ) {
+          //actualiza el pin que tiene el jid que se está actualizando
+          var aux = [...coordinates];
+          aux[
+            aux.findIndex((element) => element.jid == props.jid)
+          ].coordinates = [lat, lng];
+          setCoordinates(aux);
+        } else {
+          //si no existe un pin para el Jid, agrega uno nuevo
+          setCoordinates([
+            ...coordinates,
+            {
+              jid: props.jid,
+              coordinates: [lat, lng],
+            },
+          ]);
         }
-        if (props.controlador) {
-          props.setPin([lat, lng]);
-          dispatch({
-            type: "controller",
-            fieldName: "address_reference",
-            payLoad: address,
-          });
-        }
+
+        // if (props.controlador) {
+        //   props.setPin([lat, lng]);
+        //   dispatch({
+        //     type: "controller",
+        //     fieldName: "address_reference",
+        //     payLoad: address,
+        //   });
+        // }
       });
   };
 
   //CLUSTERS
-  const points = props.pins.map((junction) => ({
+  const points = coordinates.map((junction) => ({
     type: "Feature",
     properties: { cluster: false, jid: junction.jid },
     geometry: {
@@ -150,7 +165,7 @@ const MapaFormulario = (props) => {
                             lng: longitude,
                           });
                         }}>
-                        {pointCount / 2}
+                        {pointCount}
                       </div>
                     </Marker>
                   );
@@ -161,9 +176,7 @@ const MapaFormulario = (props) => {
                     lat={latitude}
                     lng={longitude}
                     label={cluster.properties.jid}
-                    gray={
-                      props.junction && cluster.properties.jid !== props.jid
-                    }
+                    gray={cluster.properties.jid !== props.jid}
                     buscar={() => {}}></CustomMarker>
                 );
               })}
@@ -175,16 +188,35 @@ const MapaFormulario = (props) => {
                 {"Ubicación actual " + (props.junction ? props.jid : "")}{" "}
               </h3>
               <Label>
-                {props.address == ""
-                  ? "Ubicación no registrada"
-                  : props.address}
+                {address == "" ? "Ubicación no registrada" : address}
               </Label>
             </div>
             <Button
-              outline
               color="secondary"
               size="lg"
               onClick={() => props.setOpen(false)}>
+              Cancelar
+            </Button>
+            <Button
+              color="success"
+              size="lg"
+              disabled={
+                coordinates.find((element) => element.jid == props.jid) ==
+                undefined
+              }
+              onClick={() => {
+                dispatch({
+                  type: "junctions",
+                  index: props.index,
+                  fieldName: "address_reference",
+
+                  address: address,
+                  coordinates: coordinates.find(
+                    (element) => element.jid == props.jid
+                  ).coordinates,
+                });
+                props.setOpen(false);
+              }}>
               Guardar
             </Button>
           </div>

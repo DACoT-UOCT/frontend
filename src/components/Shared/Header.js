@@ -29,6 +29,8 @@ const Header = (props) => {
     "/editar/instalacion": "Edición de la instalación " + props.instalacion.oid,
     "/editar/info-programaciones":
       "Editar información de programaciones " + props.instalacion.oid,
+    "/nuevo/solicitud-actualizacion":
+      "Solicitud de actualización instalación " + props.instalacion.oid,
   };
 
   useEffect(() => {

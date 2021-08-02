@@ -26,13 +26,12 @@ const CustomMarker = (props) => {
   return (
     <div className="semaforo-marker">
       <img
+        alt=""
         style={{ filter: props.gray ? "grayscale(80%)" : "grayscale(0%)" }}
         aria-owns={open ? "mouse-over-popover" : undefined}
         aria-haspopup="true"
         onMouseOver={handlePopoverOpen}
         onMouseOut={handlePopoverClose}
-        // onMouseEnter={handlePopoverOpen}
-        // onMouseLeave={handlePopoverClose}
         src="/imagenes/semaforo.png"
         width="40vw"
         height="40vh"

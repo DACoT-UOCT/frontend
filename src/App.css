@@ -643,6 +643,7 @@ a {
 }
 
 .observaciones {
+  width: 100%;
   min-height: 90px;
   margin-top: 0.5rem;
   border: 2px solid red !important;
@@ -804,6 +805,7 @@ Button {
   justify-content: space-around;
   padding: 4rem;
   padding-top: 0rem;
+  padding-bottom: 12rem;
 }
 
 .eliminar-controlador-buttons {
@@ -1087,8 +1089,47 @@ input:disabled {
 }
 
 .botones-resumen {
-  display: flexbox;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border-top: #1472b6 solid 0.5rem;
+}
+
+.resumen-btn {
+  background-color: #1a5986;
+  width: 20%;
+  /* color: #ffffff; */
+  /* display: inline-block; */
+  cursor: pointer;
+  color: #fff6e7;
+  font-family: Arial;
+  font-size: 0.9rem;
+  font-weight: bolder;
+  padding: 0.4rem 1rem;
+  padding-bottom: 0.6rem;
+  text-decoration: none;
+  text-align: center;
+  line-height: 2em;
+  display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.resumen-btn img {
+  display: block;
+  margin: 0 auto;
+  margin-top: 1em;
+  /* line-height: 4em; */
+}
+.resumen-btn:hover {
+  background-color: #e2e5e8;
+  text-decoration: none;
+  color: #141414;
+}
+.resumen-btn:active {
+  position: relative;
+  background-color: #ffffff;
+  /* top: 1px; */
 }
 
 .observacion-consulta {
@@ -1113,4 +1154,15 @@ input:disabled {
   text-align: center;
   text-justify: auto;
   vertical-align: middle;
+}
+
+.zoom-image {
+  max-width: 28rem;
+  max-height: auto;
+}
+
+.edit-intergreen-buttons {
+  padding: 2rem;
+  margin-left: 3rem;
+  margin-right: 3rem;
 }

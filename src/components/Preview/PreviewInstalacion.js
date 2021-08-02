@@ -70,6 +70,7 @@ const PreviewInstalacion = (props) => {
   const history_panel = location.pathname === "/historial";
   const history = useHistory();
   let update_data = props.update;
+  dispatch({ type: "update", payLoad: update_data !== null });
   if (location.pathname === "/solicitudes") {
     update_data = props.instalacion;
   }
@@ -84,7 +85,6 @@ const PreviewInstalacion = (props) => {
           <div>
             <Link
               to="/info"
-              target="_blank"
               className="nada"
               onClick={() => {
                 dispatch({
@@ -228,6 +228,7 @@ const PreviewInstalacion = (props) => {
                       type: "levantar_actualizacion",
                       payLoad: instalacion,
                     });
+
                     history.push("/nuevo/solicitud-actualizacion");
                   }}>
                   Informar cambios en el cruce

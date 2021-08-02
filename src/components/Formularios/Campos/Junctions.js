@@ -314,7 +314,6 @@ const Junctions = (props) => {
       {openMapa && (
         <MapaFormulario
           dispatch={dispatch}
-          junction={true}
           address={junctions[indexJunction].metadata.address_reference}
           index={indexJunction}
           open={openMapa}

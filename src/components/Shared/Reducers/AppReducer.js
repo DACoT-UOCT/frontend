@@ -9,6 +9,7 @@ export const initialState = {
   tokenObj: "",
   debug: true,
   comunas: null,
+  update_pendiente: false,
 };
 
 const funcionario = {
@@ -63,6 +64,11 @@ export function reducer(draft, action) {
 
     case "field": {
       draft[action.fieldName] = action.payload;
+      return;
+    }
+
+    case "update": {
+      draft.update_pendiente = action.payLoad;
       return;
     }
     case "login": {
