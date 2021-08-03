@@ -11,9 +11,6 @@ import { getFecha } from "../Shared/Utils/general_functions";
 import { acceptProject, rejectProject } from "../../GraphQL/Mutations";
 import Success from "../Shared/Success";
 import { renderPDF } from "../Preview/PreviewInstalacion";
-import { useQuery } from "../../GraphQL/useQuery";
-import { GetProject } from "../../GraphQL/Queries";
-import Loading from "../Shared/Loading";
 
 const validar_imagen = (imagen) => {
   const formatos = ["image/png", "image/jpg", "image/jpeg"];

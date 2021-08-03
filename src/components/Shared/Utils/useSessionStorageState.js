@@ -6,6 +6,7 @@ export default function useSessionStorageState(reducer, defaultValue, keyName) {
     reducer,
     JSON.parse(sessionStorage.getItem(keyName)) || defaultValue
   );
+
   useEffect(() => {
     sessionStorage.setItem(keyName, JSON.stringify(state));
   }, [state]);

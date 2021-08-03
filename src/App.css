@@ -438,7 +438,7 @@ th {
   font-family: Arial;
   font-size: 24px;
   font-weight: bold;
-  padding: 10px 24px;
+  padding: 1rem 0;
   text-decoration: none;
   text-align: center;
   line-height: 3em;
@@ -450,7 +450,7 @@ th {
 .home-btn img {
   display: block;
   margin: 0 auto;
-  margin-top: 1em;
+  margin-top: 0;
   /* line-height: 4em; */
 }
 .home-btn:hover {
@@ -1165,4 +1165,20 @@ input:disabled {
   padding: 2rem;
   margin-left: 3rem;
   margin-right: 3rem;
+}
+
+.dot {
+  height: 0.65rem;
+  width: 0.65rem;
+  margin-left: 0.4rem;
+  background-color: rgb(255, 0, 0);
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  transform: translateY(-0.05rem);
+}
+
+.status-row {
+  background-color: #00b8a9;
+  color: rgb(0, 0, 0);
 }

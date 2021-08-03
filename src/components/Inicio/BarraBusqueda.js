@@ -6,14 +6,20 @@ import { Button } from "reactstrap";
 import PopOver from "../Shared/PopOver";
 import { GQLclient } from "../App";
 import { GetCoordinates, GetProject } from "../../GraphQL/Queries";
-import { useQuery } from "../../GraphQL/useQuery";
 import PopUp from "../Shared/PopUp";
 import PreviewInstalacion from "../Preview/PreviewInstalacion";
 import "../../App.css";
 import useSessionStorageState from "../Shared/Utils/useSessionStorageState";
+import Loading from "../Shared/Loading";
 
 const reducer = (draft, action) => {
   draft[action.type] = action.payLoad;
+};
+
+const resetSessionStorage = () => {
+  setTimeout(() => {
+    sessionStorage.removeItem("search");
+  }, 10 * 1000);
 };
 
 const initialState = {
@@ -41,6 +47,8 @@ const BarraBusqueda = (props) => {
     "search"
   );
 
+  const [loading, setLoading] = useState(false);
+
   const buscarUPDATE = (id_consultado) => {
     GQLclient.request(GetProject, {
       oid: id_consultado,
@@ -49,7 +57,6 @@ const BarraBusqueda = (props) => {
       .then((response) => {
         if (response.project === null) {
           dispatch({ type: STATE_VARS.statusConsultado, payLoad: "Operativo" });
-          // setStatusConsultado("Operativo");
         } else {
           dispatch({
             type: STATE_VARS.requestConsultada,
@@ -74,12 +81,13 @@ const BarraBusqueda = (props) => {
       .catch((err) => {
         alert("Error en la consulta UPDATE");
       })
-      .finally(() =>
+      .finally(() => {
+        setLoading(false);
         dispatch({
           type: STATE_VARS.previewOpen,
           payLoad: true,
-        })
-      );
+        });
+      });
   };
 
   const buscarPRODUCTION = (id_consultado) => {
@@ -102,6 +110,7 @@ const BarraBusqueda = (props) => {
       })
       .catch((err) => {
         alert("Error en la consulta PRODUCTION");
+        setLoading(false);
       });
   };
 
@@ -134,18 +143,37 @@ const BarraBusqueda = (props) => {
       })
       .catch((err) => {
         alert("Error en la consulta NEW");
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
-  const buscarREJECTED = (id_consultado) => {};
-
   const buscarOnClick = (id_consultado) => {
-    //primero se busca si existe como latest en PRODUCTION
-    //Si no, se busca en status NEW o PRODUCTION, pero solo si es personal UOCT
+    //checkear input consultado
+    if (!/^(x|X|j|J)\d{6}$/.test(id_consultado)) {
+      alert("Formato de búsqueda inválido (J000000)");
+      return;
+    }
+
     dispatch({
       type: STATE_VARS.busquedaInput,
       payLoad: id_consultado,
     });
+    //si el jid consultado existe en el sessionStorage, no se consulta al backend
+    id_consultado = "X" + id_consultado.slice(1, -1) + "0";
+    if (
+      state.dataConsultada != null &&
+      id_consultado === state.dataConsultada.oid
+    ) {
+      dispatch({
+        type: STATE_VARS.previewOpen,
+        payLoad: true,
+      });
+      return;
+    }
+
+    //primero se busca si existe como latest en PRODUCTION
+    //Si no, se busca en status NEW o PRODUCTION, pero solo si es personal UOCT
+
     dispatch({
       type: STATE_VARS.dataConsultada,
       payLoad: null,
@@ -155,12 +183,7 @@ const BarraBusqueda = (props) => {
       payLoad: null,
     });
 
-    if (!/^(x|X|j|J)\d{6}$/.test(id_consultado)) {
-      alert("Formato de búsqueda inválido (J000000)");
-      return;
-    }
-
-    id_consultado = "X" + id_consultado.slice(1, -1) + "0";
+    setLoading(true);
     buscarPRODUCTION(id_consultado);
   };
 
@@ -183,8 +206,10 @@ const BarraBusqueda = (props) => {
         />
 
         <div className={styles.buttons}>
-          <Button onClick={() => buscarOnClick(state.busquedaInput)}>
-            Buscar instalación
+          <Button
+            disabled={loading}
+            onClick={() => buscarOnClick(state.busquedaInput)}>
+            {loading ? <Loading /> : "Buscar instalación"}
           </Button>
         </div>
         <PopOver mensaje="El formato de busqueda para Junctions es una J seguida de 6 números"></PopOver>
@@ -219,6 +244,7 @@ const BarraBusqueda = (props) => {
               instalacion={state.dataConsultada}
               update={state.requestConsultada}
               status={state.statusConsultado}
+              resetSessionStorage={resetSessionStorage}
             />
           </div>
         </PopUp>

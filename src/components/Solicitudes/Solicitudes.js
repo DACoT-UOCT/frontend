@@ -6,6 +6,7 @@ import { GQLclient, StateContext } from "../App";
 import PanelInstalacion from "../Preview/PanelInstalacion";
 import { GetRequests } from "../../GraphQL/Queries";
 import Paginado from "../Shared/Paginado";
+import "../../App.css";
 
 const estados = {
   NEW: "Solicitud de integración",
@@ -69,7 +70,10 @@ const Solicitudes = () => {
               //setVista("Solicitudes");
               //setTitulo("Solicitudes");
             }}>
-            <span>Integración</span>
+            <span>
+              Integración
+              <span class="dot"></span>
+            </span>
           </button>
 
           <button
@@ -79,7 +83,9 @@ const Solicitudes = () => {
               //setVista("Instalaciones");
               //setTitulo("Instalaciones");
             }}>
-            <span>Actualización</span>
+            <span>
+              Actualización <span class="dot"></span>
+            </span>
           </button>
         </div>
       </div>

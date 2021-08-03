@@ -1,18 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import PopUp from "../Shared/PopUp";
 
 import styles from "./Consulta.module.css";
 
 import BarraBusqueda from "./BarraBusqueda";
+import { GQLclient } from "../App";
+import { GetRequests } from "../../GraphQL/Queries";
+import { useQuery } from "../../GraphQL/useQuery";
 
 const Inicio = (props) => {
   const dispatch = props.dispatch;
   const history = useHistory();
+  const [solicitudesPendientes, setSolicitudesPendientes] = useState(false);
 
   const bienvenidaHandler = (_bool) => {
     dispatch({ type: "cerrar_bienvenida", payload: _bool });
   };
+
+  //REVISA SI HAY SOLICITUDES NEW O UPDATE PENDIENTES
+  const check_solicitudes = useQuery(
+    GetRequests,
+    (data) => {
+      let requestPendientes =
+        data.projects.edges.map((edge) => edge.node).length > 0;
+      setSolicitudesPendientes(requestPendientes);
+      if (!requestPendientes)
+        GQLclient.request(GetRequests, {
+          first: 50,
+          after: "",
+          metadata_Status: "UPDATE",
+          metadata_Version: "latest",
+        }).then((data) => {
+          setSolicitudesPendientes(
+            data.projects.edges.map((edge) => edge.node).length > 0
+          );
+        });
+    },
+    {
+      first: 1,
+      after: "",
+      metadata_Status: "NEW",
+      metadata_Version: "latest",
+    }
+  );
 
   return (
     <div className="grid-item consulta-semaforo">
@@ -33,7 +64,10 @@ const Inicio = (props) => {
               onClick={() => {
                 history.push("/solicitudes");
               }}>
-              Solicitudes pendientes
+              <p>
+                Solicitudes pendientes
+                {solicitudesPendientes && <span class="dot"></span>}
+              </p>
               <img src="/imagenes/solicitudes.svg" width="100" height="100" />
             </div>
             <div

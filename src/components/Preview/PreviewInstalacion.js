@@ -5,14 +5,12 @@ import { Button } from "reactstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useHistory } from "react-router-dom";
 import styles from "./PanelInstall.module.css";
-import CursorZoom from "react-cursor-zoom";
 
 import clsx from "clsx";
 import { StateContext, DispatchContext } from "../App";
 import { getFecha } from "../Shared/Utils/general_functions";
 import Loading from "../Shared/Loading";
 import ZoomImage from "../Shared/ZoomImage";
-import PanelInstalacion from "./PanelInstalacion";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,6 +85,7 @@ const PreviewInstalacion = (props) => {
               to="/info"
               className="nada"
               onClick={() => {
+                props.resetSessionStorage();
                 dispatch({
                   type: "levantar_actualizacion",
                   payLoad: instalacion,
@@ -105,7 +104,7 @@ const PreviewInstalacion = (props) => {
 
           <table>
             <tbody>
-              <tr>
+              <tr className="status-row">
                 <td className="label">Estado: </td>
                 <td>{props.status}</td>
               </tr>
@@ -168,6 +167,7 @@ const PreviewInstalacion = (props) => {
                 to="/procesar/solicitud"
                 className="nada"
                 onClick={() => {
+                  props.resetSessionStorage();
                   dispatch({
                     type: "levantar_actualizacion",
                     payLoad: update_data,
@@ -178,7 +178,7 @@ const PreviewInstalacion = (props) => {
               <br></br>
             </>
           )}
-        {state.rol === "Personal UOCT" &&
+        {/* {state.rol === "Personal UOCT" &&
           instalacion.metadata.status === "PRODUCTION" &&
           (props.vid == "latest" || !history_panel) &&
           !history_panel && (
@@ -202,7 +202,7 @@ const PreviewInstalacion = (props) => {
               </Button>
               <br></br>
             </>
-          )}
+          )} */}
         <Button
           // className="botonDashboard"
           onClick={() => {
@@ -240,9 +240,9 @@ const PreviewInstalacion = (props) => {
         {instalacion.metadata.status === "PRODUCTION" && !history_panel && (
           <Link
             to="/historial"
-            target="_blank"
             className="nada"
             onClick={() => {
+              props.resetSessionStorage();
               dispatch({
                 type: "levantar_actualizacion",
                 payLoad: instalacion,
