@@ -80,7 +80,7 @@ const PreviewInstalacion = (props) => {
     <div className={styles.details}>
       <div className="row">
         <div className={classes.column}>
-          <div>
+          <div className="info-preview-button">
             <Link
               to="/info"
               className="nada"
@@ -178,31 +178,7 @@ const PreviewInstalacion = (props) => {
               <br></br>
             </>
           )}
-        {/* {state.rol === "Personal UOCT" &&
-          instalacion.metadata.status === "PRODUCTION" &&
-          (props.vid == "latest" || !history_panel) &&
-          !history_panel && (
-            <>
-              <Button
-                color="info"
-                onClick={() => {
-                  if (update_data != null) {
-                    alert(
-                      "Se deben procesar las solicitudes de actualización pendientes antes de hacer cambios."
-                    );
-                    return;
-                  }
-                  dispatch({
-                    type: "levantar_actualizacion",
-                    payLoad: instalacion,
-                  });
-                  history.push("/editar/instalacion");
-                }}>
-                Editar información
-              </Button>
-              <br></br>
-            </>
-          )} */}
+
         <Button
           // className="botonDashboard"
           onClick={() => {

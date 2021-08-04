@@ -7,6 +7,7 @@ import PanelInstalacion from "../Preview/PanelInstalacion";
 import { GetRequests } from "../../GraphQL/Queries";
 import Paginado from "../Shared/Paginado";
 import "../../App.css";
+import { useQuery } from "../../GraphQL/useQuery";
 
 const estados = {
   NEW: "Solicitud de integración",
@@ -21,6 +22,7 @@ const Solicitudes = () => {
   const global_state = useContext(StateContext);
   const [expanded, setExpanded] = useState(false);
   const [state, dispatch] = useImmerReducer(reducer, initialState);
+  const [notification, setNotification] = useState(""); //indica con un punto rojo si hay updates o new pendientes
 
   const consultar_solicitudes = (_type, _after = "") => {
     return GQLclient.request(GetRequests, {
@@ -58,6 +60,36 @@ const Solicitudes = () => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  //verificar s hay al menos 1 request NEW para mostrar notificacion
+  useQuery(
+    GetRequests,
+    (data) => {
+      if (data.projects.edges.map((edge) => edge.node).length > 0)
+        setNotification("NEW");
+    },
+    {
+      first: 1,
+      after: "",
+      metadata_Status: "NEW",
+      metadata_Version: "latest",
+    }
+  );
+
+  //verificar s hay al menos 1 request UPDATE para mostrar notificacion
+  useQuery(
+    GetRequests,
+    (data) => {
+      if (data.projects.edges.map((edge) => edge.node).length > 0)
+        setNotification("UPDATE");
+    },
+    {
+      first: 1,
+      after: "",
+      metadata_Status: "UPDATE",
+      metadata_Version: "latest",
+    }
+  );
+
   return (
     <div className={`grid-item consulta-semaforo ${styles.dashboard}`}>
       <div className={styles.selection}>
@@ -71,8 +103,8 @@ const Solicitudes = () => {
               //setTitulo("Solicitudes");
             }}>
             <span>
-              Integración
-              <span class="dot"></span>
+              Nuevas instalaciones
+              {notification == "NEW" && <span class="dot"></span>}
             </span>
           </button>
 
@@ -84,7 +116,8 @@ const Solicitudes = () => {
               //setTitulo("Instalaciones");
             }}>
             <span>
-              Actualización <span class="dot"></span>
+              Actualización
+              {notification == "UPDATE" && <span class="dot"></span>}
             </span>
           </button>
         </div>

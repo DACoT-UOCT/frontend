@@ -25,7 +25,7 @@ const Header = (props) => {
     "/solicitudes": "Mis Solicitudes",
     "/editar/programacion": "Editar información de programaciones",
     "/procesar/solicitud": "Procesar solicitud",
-    "/info": "Información de instalación ",
+    "/info": "Información de instalación " + props.instalacion.oid,
     "/editar/instalacion": "Edición de la instalación " + props.instalacion.oid,
     "/editar/info-programaciones":
       "Editar información de programaciones " + props.instalacion.oid,

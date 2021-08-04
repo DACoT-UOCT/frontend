@@ -310,7 +310,6 @@ body legend {
     " . . . ." 4vh
     " caja . profile ." 82vh
     "caja . . ." auto
-    " . . . ." 5vh
     / 80% 1% 16% 3%;
   overflow: auto;
 }
@@ -1092,7 +1091,7 @@ input:disabled {
   display: flex;
   flex-direction: row;
   width: 100%;
-  border-top: #1472b6 solid 0.5rem;
+  border-top: #00b8a9 solid 0.5rem;
 }
 
 .resumen-btn {
@@ -1181,4 +1180,13 @@ input:disabled {
 .status-row {
   background-color: #00b8a9;
   color: rgb(0, 0, 0);
+}
+
+.input-entreverde-vehicular {
+  background-color: #fffda5;
+}
+
+.info-preview-button button {
+  font-size: 1rem !important;
+  font-weight: bold;
 }

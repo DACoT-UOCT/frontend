@@ -19,15 +19,16 @@ const Inicio = (props) => {
   };
 
   //REVISA SI HAY SOLICITUDES NEW O UPDATE PENDIENTES
-  const check_solicitudes = useQuery(
+  useQuery(
     GetRequests,
     (data) => {
+      //SI NO SE ENCUENTRAS REQUEST NEW, SE BUSCAN UPDATE
       let requestPendientes =
         data.projects.edges.map((edge) => edge.node).length > 0;
       setSolicitudesPendientes(requestPendientes);
       if (!requestPendientes)
         GQLclient.request(GetRequests, {
-          first: 50,
+          first: 1,
           after: "",
           metadata_Status: "UPDATE",
           metadata_Version: "latest",
