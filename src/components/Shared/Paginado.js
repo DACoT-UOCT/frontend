@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Loading from "./Loading";
 import styles from "../Solicitudes/Solicitudes.module.css";
 
+//Componente que permite consultar y renderizar listas de solicitudes
+//y errores de extraccion
 const Paginado = (props) => {
   const [elements, setElements] = useState([]);
   const [pageInfo, setPageInfo] = useState(null);
@@ -12,7 +14,7 @@ const Paginado = (props) => {
     let _after = "";
 
     if (pageInfo !== null) {
-      if (_action == "next" && pageInfo.hasNextPage) {
+      if (_action === "next" && pageInfo.hasNextPage) {
         _after = pageInfo.endCursor;
       }
     }
@@ -35,7 +37,7 @@ const Paginado = (props) => {
       setStatus("loading");
       consultar_elementos();
     }
-  }, [props.tipo]);
+  }, [props.tipo]); // eslint-disable-line react-hooks/exhaustive-deps
   const handleNext = () => {
     window.scrollTo({
       top: 0,

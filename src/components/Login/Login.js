@@ -1,25 +1,20 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import "../../App.css";
-import { Button, Form, Input } from "reactstrap";
 import { DispatchContext, StateContext } from "../App";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 import { ipAPI } from "../Shared/ipAPI";
-import { RefreshTokenSetup } from "../../utils/RefreshToken";
 import axios from "axios";
 import styles from "./Login.module.css";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { GoogleLoginAPI_KEY } from "../../API_KEYS";
 
-// const first_click = true;
-
-const validar_usuario = () => {};
+/*Componente mostrado cuando un usuario no está logueado */
 const Login = () => {
   const first_click = useContext(StateContext).first_click_login;
   const dispatch = useContext(DispatchContext);
 
-  const logout = () => {
-    dispatch({ type: "logout" });
-  };
+  // const logout = () => {
+  //   dispatch({ type: "logout" });
+  // };
 
   const consultar_datos = () => {
     axios
@@ -65,13 +60,14 @@ const Login = () => {
           <div className={styles.uoct}>
             <div className={styles.header}>
               <a href="https://dacot.feriadesoftware.cl/">
-                <img className={styles.dacotimg} src="/logo2.png" />
+                <img alt="" className={styles.dacotimg} src="/logo2.png" />
               </a>
               <span className={styles.text}>
                 Datos Abiertos Para el Control de Transito
               </span>
               <a href="https://mtt.gob.cl/pyd/uoct">
                 <img
+                  alt=""
                   className={styles.ministerioimg}
                   src="/logo_transportes.png"
                 />
@@ -87,7 +83,7 @@ const Login = () => {
                   <button
                     className={styles.gugul}
                     onClick={renderProps.onClick}>
-                    <img src="/google.png"></img>
+                    <img alt="" src="/google.png"></img>
                     <span>Ingresar con Google</span>
                   </button>
                 )}

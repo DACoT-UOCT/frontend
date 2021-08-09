@@ -138,7 +138,8 @@ const Siguiente = (props) => {
       }
     } else if (state.vista === 2) {
       //validar que se ingresan los junction por el mapa
-      state.otu.junctions.map((junction, index) => {
+      for (let i = 0; i < state.otu.junctions.length; i++) {
+        let junction = state.otu.junctions[i];
         //  validar_entrada(junction.id, "Junction - Código en Sistema");
         input_regex(
           junction.metadata.address_reference,
@@ -154,21 +155,19 @@ const Siguiente = (props) => {
               " a traves del mapa",
           });
         }
-        junction.phases.map((phase, phaseIndex) => {
+        for (let j = 0; j < junction.phases.length; j++) {
+          let phase = junction.phases[j];
           input_regex(
             phase,
-            "Especificar etapas de la fase " +
-              (phaseIndex + 1) +
-              " - " +
-              junction.jid
+            "Especificar etapas de la fase " + (j + 1) + " - " + junction.jid
           );
-        });
-      });
+        }
+      }
 
       // validar_vista2();
     } else if (state.vista === 3) {
       var ups = state.ups;
-      if (ups != undefined) {
+      if (ups !== undefined) {
         input_regex(ups.brand, "UPS - Marca");
         input_regex(ups.model, "UPS - Modelo");
         input_regex(ups.serial, "UPS - N° Serie");

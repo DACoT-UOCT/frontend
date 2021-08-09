@@ -1,17 +1,11 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import styles from "./Administracion.module.css";
 import { Button, Table } from "reactstrap";
 import PopUp from "../Shared/PopUp";
-import { ipAPI } from "../Shared/ipAPI";
 import "../../App.css";
 import sortTable from "../Shared/Utils/SortTable";
-import {
-  reducer,
-  initialState,
-  controladores_dummy,
-} from "../Shared/Reducers/ControladoresReducer";
+import { reducer, initialState } from "../Shared/Reducers/ControladoresReducer";
 import { useImmerReducer } from "use-immer";
-import axios from "axios";
 import NuevoControlador from "./NuevoControlador";
 import { useQuery } from "../../GraphQL/useQuery";
 import { GetControllers } from "../../GraphQL/Queries";
@@ -21,6 +15,8 @@ import { GQLclient } from "../App";
 import { deleteController } from "../../GraphQL/Mutations";
 import { useHistory } from "react-router-dom";
 
+/*Componente que lista los controladores registrados, y permite
+registrar o desabilitar */
 const CrudControladores = () => {
   const [newOpen, setNewOpen] = useState(false);
   const [closeOpen, setCloseOpen] = useState(false);
@@ -134,7 +130,7 @@ const CrudControladores = () => {
           setOpen={setNewOpen}
         />
       </PopUp>
-      {state.delete_backup != undefined && (
+      {state.delete_backup !== undefined && (
         <PopUp
           title="Desabilitar controlador"
           open={closeOpen}

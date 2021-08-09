@@ -2,6 +2,8 @@ import React from "react";
 import "../../App.css";
 import { Popover, makeStyles, Typography } from "@material-ui/core";
 
+/*Componente que permite mostrar un mensaje al pasar el mouse
+sobre un icono de informacion */
 const PopOver = (props) => {
   const useStyles = makeStyles((theme) => ({
     popover: {
@@ -26,6 +28,7 @@ const PopOver = (props) => {
   return (
     <>
       <img
+        alt=""
         aria-owns={open ? "mouse-over-popover" : undefined}
         aria-haspopup="true"
         onMouseEnter={handlePopoverOpen}

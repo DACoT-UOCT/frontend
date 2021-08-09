@@ -7,6 +7,7 @@ import styles from "./Header.module.css";
 
 import Nav from "./Nav";
 
+//COMPONENTE HEADER QUE CONTIENE LOGO Y TITULO DE LA SECCION
 const Header = (props) => {
   const [section, setSection] = useState("Dashboard Empresa");
   const location = useLocation();
@@ -35,7 +36,7 @@ const Header = (props) => {
 
   useEffect(() => {
     setSection("> " + sections[location.pathname]);
-  }, [location]);
+  }, [location]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={styles.bar}>

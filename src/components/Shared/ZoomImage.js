@@ -1,14 +1,9 @@
 import React from "react";
-import CursorZoom from "react-cursor-zoom";
 import "../../App.css";
-import {
-  SideBySideMagnifier,
-  MOUSE_ACTIVATION,
-  TOUCH_ACTIVATION,
-} from "react-image-magnifiers";
+import { SideBySideMagnifier } from "react-image-magnifiers";
 
+//COMPONENTE QUE RENDERIZA UNA IMAGEN, LA CUAL HACE ZOOM SI PASA EL MOUSE POR ENCIMA
 const ZoomImage = (props) => {
-  //todo: calcular tamaños para el zoom
   return (
     <div>
       <SideBySideMagnifier

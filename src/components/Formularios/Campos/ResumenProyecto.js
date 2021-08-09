@@ -3,29 +3,20 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../../../App.css";
 import styles from "./Resumen.module.css";
 import ReactToPrint from "react-to-print";
-import { Label, Button, Input } from "reactstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Label, Button } from "reactstrap";
+import { useLocation } from "react-router-dom";
 import { Checkbox, FormControlLabel } from "@material-ui/core";
-import { TextField, styled } from "@material-ui/core";
 import { getFecha } from "../../Shared/Utils/general_functions";
 import PopOver from "../../Shared/PopOver";
 import { makeStyles } from "@material-ui/core/styles";
 import { GQLclient, StateContext } from "../../App";
-import CursorZoom from "react-cursor-zoom";
 import { useHistory } from "react-router-dom";
 import ZoomImage from "../../Shared/ZoomImage";
 import TextareaAutosize from "react-textarea-autosize";
-
 import { computeTables, setVehIntergreen } from "../../../GraphQL/Mutations";
 import { GetUpdatedPlans } from "../../../GraphQL/Queries";
 import decamelizeKeysDeep from "decamelize-keys-deep";
 import Loading from "../../Shared/Loading";
-
-const Campo = styled(TextField)({
-  background: "none",
-});
-
-// const Campos;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const encontrarValorEntreverde = (entreverdes, from, to) => {
   for (let i = 0; i < entreverdes.length; i++) {
-    if (entreverdes[i].phfrom == from && entreverdes[i].phto == to)
+    if (entreverdes[i].phfrom === from && entreverdes[i].phto === to)
       return parseInt(entreverdes[i].value);
   }
 };
@@ -53,7 +44,7 @@ const ResumenButtons = (props) => {
     <>
       <div className="botones-resumen">
         {props.info &&
-          props.status == "PRODUCTION" &&
+          props.status === "PRODUCTION" &&
           !props.scrolled &&
           !props.boolIntergreen && (
             <>
@@ -70,7 +61,7 @@ const ResumenButtons = (props) => {
         {props.info &&
           (props.rol === "Personal UOCT" || props.is_admin) &&
           !props.scrolled &&
-          props.status == "PRODUCTION" &&
+          props.status === "PRODUCTION" &&
           !props.boolIntergreen && (
             <>
               <div
@@ -154,11 +145,9 @@ const ResumenBody = forwardRef((props, ref) => {
   const [savingIntergreens, setSavingIntergreens] = useState(false);
   const programacionesRef = useRef(null);
   let history = useHistory();
-  const [programacionesDisponibles, _] = useState(
+  const programacionesDisponibles =
     state.otu.junctions[0].plans != null &&
-      state.otu.junctions[0].plans.length > 0
-  );
-
+    state.otu.junctions[0].plans.length > 0;
   const editVehIntergreen = (junctionIndex, faseFrom, faseTo, _value) => {
     let aux = JSON.parse(JSON.stringify(state));
     if (!_value) _value = "0";
@@ -172,9 +161,9 @@ const ResumenBody = forwardRef((props, ref) => {
       ) {
         if (
           aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[i]
-            .phfrom == faseFrom &&
+            .phfrom === faseFrom &&
           aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[i]
-            .phto == faseTo
+            .phto === faseTo
         ) {
           let valor = parseInt(
             _value
@@ -192,47 +181,58 @@ const ResumenBody = forwardRef((props, ref) => {
     setState(aux);
   };
 
-  const saveVehIntergreenChanges = (_jindex) => {
-    setSavingIntergreens(true);
-    let _phases = state.otu.junctions[_jindex].plans[0].vehicle_intergreen.map(
-      (entreverde) => {
+  const saveVehIntergreenChanges = () => {
+    //funcion auxiliar para hacer las mutationsetVehIntergreen antes del Computetables
+    const saveBehIntergreenPromise = (j_index) => {
+      let _phases = state.otu.junctions[
+        j_index
+      ].plans[0].vehicle_intergreen.map((entreverde) => {
         return {
           phfrom: entreverde.phfrom.toString(),
           phto: entreverde.phto.toString(),
           value: entreverde.value.toString(),
         };
-      }
-    );
-    var _jid = state.otu.junctions[_jindex].jid;
+      });
+      var _jid = state.otu.junctions[j_index].jid;
 
-    GQLclient.request(setVehIntergreen, {
-      data: {
-        jid: _jid,
-        status: "PRODUCTION",
-        phases: _phases,
-      },
-    })
+      GQLclient.request(setVehIntergreen, {
+        data: {
+          jid: _jid,
+          status: "PRODUCTION",
+          phases: _phases,
+        },
+      }).catch((err) => console.log(err));
+    };
+
+    setSavingIntergreens(true);
+
+    Promise.all(
+      state.otu.junctions.map((junction, j_index) => {
+        return saveBehIntergreenPromise(j_index);
+      })
+    )
       .then(() => {
-        compute_tables(_jid);
+        compute_tables();
       })
       .catch((error) => {
-        alert("Error al editar entreverdes");
+        alert("Error setVeh");
         history.push(0);
       });
   };
 
-  const compute_tables = (_jid) => {
+  const compute_tables = () => {
     GQLclient.request(computeTables, {
       data: {
-        oid: "X" + _jid.slice(1, -1) + "0",
+        oid: state.oid,
         status: "PRODUCTION",
       },
     })
       .then(() => {
-        getUpdatedTables(_jid);
+        alert("exito al computar tablas");
+        // getUpdatedTables(_jid);
       })
       .catch((error) => {
-        alert("Error al editar entreverdes");
+        alert("Error compute tables");
         history.push(0);
       });
   };
@@ -243,10 +243,9 @@ const ResumenBody = forwardRef((props, ref) => {
       status: "PRODUCTION",
     })
       .then((response) => {
-        console.log(response);
         let aux = JSON.parse(JSON.stringify(state));
         let junctionIndex = aux.otu.junctions.findIndex(
-          (junction) => junction.jid == _jid
+          (junction) => junction.jid === _jid
         );
         aux.otu.junctions[junctionIndex].plans = decamelizeKeysDeep(
           response.project.otu.junctions[junctionIndex].plans
@@ -258,7 +257,7 @@ const ResumenBody = forwardRef((props, ref) => {
         alert("Programaciones actualizadas con éxito");
       })
       .catch((error) => {
-        alert("Error al editar entreverdes");
+        alert("Error get updated tables");
         history.push(0);
       });
   };
@@ -295,7 +294,7 @@ const ResumenBody = forwardRef((props, ref) => {
               fontWeight: "bold",
             }}>
             {info
-              ? state.metadata.status == "PRODUCTION"
+              ? state.metadata.status === "PRODUCTION"
                 ? "Informe de programaciones de tiempos semafóricos " +
                   state.oid
                 : "Información de solicitud para integración/actualización " +
@@ -391,7 +390,7 @@ const ResumenBody = forwardRef((props, ref) => {
                     <tr>
                       <td className="label">Fecha de instalación:</td>
                       <td>
-                        {state.metadata.installation_date == undefined
+                        {state.metadata.installation_date === undefined
                           ? "Sin registro"
                           : getFecha(state.metadata.installation_date)}
                       </td>
@@ -405,19 +404,23 @@ const ResumenBody = forwardRef((props, ref) => {
                       <tr>
                         <td className="label">Detector Scoot:</td>
                         <td>
-                          {state.metadata.scoot_detector == false ? "No" : "Si"}
+                          {state.metadata.scoot_detector === false
+                            ? "No"
+                            : "Si"}
                         </td>
                       </tr>
                       <tr>
                         <td className="label">Detector Local:</td>
                         <td>
-                          {state.metadata.local_detector == false ? "No" : "Si"}
+                          {state.metadata.local_detector === false
+                            ? "No"
+                            : "Si"}
                         </td>
                       </tr>
                       <tr>
                         <td className="label">Demanda Peatonal:</td>
                         <td>
-                          {state.metadata.pedestrian_demand == false
+                          {state.metadata.pedestrian_demand === false
                             ? "No"
                             : "Si"}
                         </td>
@@ -425,7 +428,7 @@ const ResumenBody = forwardRef((props, ref) => {
                       <tr>
                         <td className="label">Facilidad Peatonal:</td>
                         <td>
-                          {state.metadata.pedestrian_facility == false
+                          {state.metadata.pedestrian_facility === false
                             ? "No"
                             : "Si"}
                         </td>
@@ -486,7 +489,7 @@ const ResumenBody = forwardRef((props, ref) => {
                           type="text"
                           disabled={!info}
                           defaultValue={
-                            junction.metadata.address_reference == ""
+                            junction.metadata.address_reference === ""
                               ? "Ubicación no registrada"
                               : junction.metadata.address_reference
                           }
@@ -518,7 +521,7 @@ const ResumenBody = forwardRef((props, ref) => {
           </div>
           {/* fases secuencia entreverdes */}
           {state.otu.junctions.map((junction, index) => {
-            if (!junctions[index]) return;
+            if (!junctions[index]) return <></>;
 
             let fasesSC = junction.sequence.map((aux) => aux.phid);
             let fasesSYSTEM = junction.sequence.map((aux) => aux.phid_system);
@@ -529,7 +532,7 @@ const ResumenBody = forwardRef((props, ref) => {
                 <div className="tables">
                   <div>
                     <h5> Fases</h5>
-                    {junction.phases.length == 0 ? (
+                    {junction.phases.length === 0 ? (
                       <div className="no-fase">
                         <span>Fases no registradas</span>
                       </div>
@@ -557,7 +560,7 @@ const ResumenBody = forwardRef((props, ref) => {
                     <>
                       <div>
                         <h5>Secuencia</h5>
-                        {junction.sequence.length == 0 ? (
+                        {junction.sequence.length === 0 ? (
                           <p>
                             No se ha extraido ninguna secuencia desde el centro
                             de control para esta intersección
@@ -593,7 +596,7 @@ const ResumenBody = forwardRef((props, ref) => {
                       {props.detalles && (
                         <div>
                           <h5>Entreverdes peatonales</h5>
-                          {junction.intergreens.length == 0 ? (
+                          {junction.intergreens.length === 0 ? (
                             <p>
                               No se ha extraido ninguna tabla de entreverdes
                               desde el centro de control para esta intersección
@@ -643,7 +646,7 @@ const ResumenBody = forwardRef((props, ref) => {
             <>
               <div className="section">
                 <h2>Periodizacion</h2>
-                {state.otu.programs != undefined &&
+                {state.otu.programs !== undefined &&
                 state.otu.programs.length > 0 ? (
                   <>
                     <p style={{ fontSize: "12px" }}>
@@ -728,9 +731,14 @@ const ResumenBody = forwardRef((props, ref) => {
               <div>
                 {programacionesDisponibles ? (
                   state.otu.junctions.map((junction, junctionIndex) => {
-                    if (!junctions[junctionIndex] || junction.plans.length == 0)
-                      return;
-                    let fasesSC = junction.sequence.map((aux) => aux.phid); //[1,2,3,4]
+                    if (
+                      !junctions[junctionIndex] ||
+                      junction.plans.length === 0
+                    )
+                      return <></>;
+                    let fasesSC = junction.sequence.map((aux) =>
+                      parseInt(aux.phid)
+                    ); //[1,2,3,4]
                     let fasesSC_from_to = fasesSC
                       .slice(-1)
                       .concat(fasesSC.slice(0, -1)); //[4,1,2,3]
@@ -742,7 +750,7 @@ const ResumenBody = forwardRef((props, ref) => {
                           <h2>{"Programación " + junction.jid}</h2>
                           {junction.plans[0] && (
                             <>
-                              {junction.metadata.use_default_vi4 == false && (
+                              {junction.metadata.use_default_vi4 === false && (
                                 <p>
                                   Se ha señalado que los entreverdes vehiculares
                                   de esta instalación tienen valor distinto a
@@ -838,11 +846,11 @@ const ResumenBody = forwardRef((props, ref) => {
                                               <>
                                                 <td>
                                                   {plan.phase_start.find(
-                                                    (obj) => obj.phid == fase
+                                                    (obj) => obj.phid === fase
                                                   )
                                                     ? plan.phase_start.find(
                                                         (obj) =>
-                                                          obj.phid == fase
+                                                          obj.phid === fase
                                                       ).value
                                                     : "-"}
                                                 </td>
@@ -892,16 +900,16 @@ const ResumenBody = forwardRef((props, ref) => {
                                                           value={
                                                             plan.vehicle_intergreen.find(
                                                               (obj) =>
-                                                                obj.phfrom ==
+                                                                obj.phfrom ===
                                                                   faseFrom &&
-                                                                obj.phto ==
+                                                                obj.phto ===
                                                                   faseTo
                                                             )
                                                               ? plan.vehicle_intergreen.find(
                                                                   (obj) =>
-                                                                    obj.phfrom ==
+                                                                    obj.phfrom ===
                                                                       faseFrom &&
-                                                                    obj.phto ==
+                                                                    obj.phto ===
                                                                       faseTo
                                                                 ).value
                                                               : "-"
@@ -910,15 +918,15 @@ const ResumenBody = forwardRef((props, ref) => {
                                                       </>
                                                     ) : plan.vehicle_intergreen.find(
                                                         (obj) =>
-                                                          obj.phfrom ==
+                                                          obj.phfrom ===
                                                             faseFrom &&
-                                                          obj.phto == faseTo
+                                                          obj.phto === faseTo
                                                       ) ? (
                                                       plan.vehicle_intergreen.find(
                                                         (obj) =>
-                                                          obj.phfrom ==
+                                                          obj.phfrom ===
                                                             faseFrom &&
-                                                          obj.phto == faseTo
+                                                          obj.phto === faseTo
                                                       ).value
                                                     ) : (
                                                       "-"
@@ -935,11 +943,11 @@ const ResumenBody = forwardRef((props, ref) => {
                                               <>
                                                 <td>
                                                   {plan.green_start.find(
-                                                    (obj) => obj.phid == fase
+                                                    (obj) => obj.phid === fase
                                                   )
                                                     ? plan.green_start.find(
                                                         (obj) =>
-                                                          obj.phid == fase
+                                                          obj.phid === fase
                                                       ).value
                                                     : "-"}
                                                 </td>
@@ -953,11 +961,11 @@ const ResumenBody = forwardRef((props, ref) => {
                                               <>
                                                 <td>
                                                   {plan.vehicle_green.find(
-                                                    (obj) => obj.phid == fase
+                                                    (obj) => obj.phid === fase
                                                   )
                                                     ? plan.vehicle_green.find(
                                                         (obj) =>
-                                                          obj.phid == fase
+                                                          obj.phid === fase
                                                       ).value
                                                     : "-"}
                                                 </td>
@@ -971,11 +979,11 @@ const ResumenBody = forwardRef((props, ref) => {
                                               <>
                                                 <td>
                                                   {plan.pedestrian_green.find(
-                                                    (obj) => obj.phid == fase
+                                                    (obj) => obj.phid === fase
                                                   )
                                                     ? plan.pedestrian_green.find(
                                                         (obj) =>
-                                                          obj.phid == fase
+                                                          obj.phid === fase
                                                       ).value
                                                     : "-"}
                                                 </td>
@@ -996,15 +1004,15 @@ const ResumenBody = forwardRef((props, ref) => {
                                                   <td>
                                                     {plan.pedestrian_intergreen.find(
                                                       (obj) =>
-                                                        obj.phfrom ==
+                                                        obj.phfrom ===
                                                           faseFrom &&
-                                                        obj.phto == faseTo
+                                                        obj.phto === faseTo
                                                     )
                                                       ? plan.pedestrian_intergreen.find(
                                                           (obj) =>
-                                                            obj.phfrom ==
+                                                            obj.phfrom ===
                                                               faseFrom &&
-                                                            obj.phto == faseTo
+                                                            obj.phto === faseTo
                                                         ).value
                                                       : "-"}
                                                   </td>
@@ -1019,11 +1027,11 @@ const ResumenBody = forwardRef((props, ref) => {
                                               <>
                                                 <td>
                                                   {plan.system_start.find(
-                                                    (obj) => obj.phid == fase
+                                                    (obj) => obj.phid === fase
                                                   )
                                                     ? plan.system_start.find(
                                                         (obj) =>
-                                                          obj.phid == fase
+                                                          obj.phid === fase
                                                       ).value
                                                     : "-"}
                                                 </td>
@@ -1125,7 +1133,7 @@ const ResumenBody = forwardRef((props, ref) => {
                       <tr>
                         <td className="label">GPS:</td>
                         <td>
-                          {state.controller.gps == undefined
+                          {state.controller.gps === undefined
                             ? "No registrado"
                             : state.controller.gps
                             ? "Si"
@@ -1155,7 +1163,7 @@ const ResumenBody = forwardRef((props, ref) => {
                       <tr>
                         <td className="label">Postes ganchos:</td>
                         <td>
-                          {state.poles == undefined
+                          {state.poles === undefined
                             ? "Sin registro"
                             : state.poles.hooks}
                         </td>
@@ -1163,7 +1171,7 @@ const ResumenBody = forwardRef((props, ref) => {
                       <tr>
                         <td className="label">Postes vehiculares:</td>
                         <td>
-                          {state.poles == undefined
+                          {state.poles === undefined
                             ? "Sin registro"
                             : state.poles.vehicular}
                         </td>
@@ -1171,7 +1179,7 @@ const ResumenBody = forwardRef((props, ref) => {
                       <tr>
                         <td className="label">Postes peatonales:</td>
                         <td>
-                          {state.poles == undefined
+                          {state.poles === undefined
                             ? "Sin registro"
                             : state.poles.pedestrian}
                         </td>
@@ -1182,7 +1190,7 @@ const ResumenBody = forwardRef((props, ref) => {
 
                 <div>
                   <h5>UPS</h5>
-                  {state.ups == undefined ? (
+                  {state.ups === undefined ? (
                     <table>
                       <tbody>
                         <tr>
@@ -1232,7 +1240,7 @@ const ResumenBody = forwardRef((props, ref) => {
                   bsSize="sm"
                   disabled={
                     !(
-                      global_state.rol == "Personal UOCT" ||
+                      global_state.rol === "Personal UOCT" ||
                       global_state.is_admin
                     )
                   }
@@ -1283,8 +1291,8 @@ const ResumenProyecto = (props) => {
   const info = location.pathname === "/info";
   const [detalles, setDetalles] = useState(
     (!info ||
-      state.metadata.status == "NEW" ||
-      state.metadata.status == "UPDATE") &&
+      state.metadata.status === "NEW" ||
+      state.metadata.status === "UPDATE") &&
       location.pathname !== "/editar/info-programaciones"
   );
   const classes = useStyles();

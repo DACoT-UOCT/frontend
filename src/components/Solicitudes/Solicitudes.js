@@ -1,8 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import styles from "./Solicitudes.module.css";
 import { useImmerReducer } from "use-immer";
 import { initialState, reducer } from "../Shared/Reducers/DashboardReducer";
-import { GQLclient, StateContext } from "../App";
+import { GQLclient } from "../App";
 import PanelInstalacion from "../Preview/PanelInstalacion";
 import { GetRequests } from "../../GraphQL/Queries";
 import Paginado from "../Shared/Paginado";
@@ -17,13 +17,13 @@ const estados = {
   PRODUCTION: "Instalación en funcionamiento",
 };
 
+//componente que muestra 2 pestañas de solicitudes NEW y UPDATE
 const Solicitudes = () => {
-  //solicitudes
-  const global_state = useContext(StateContext);
   const [expanded, setExpanded] = useState(false);
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const [notification, setNotification] = useState(""); //indica con un punto rojo si hay updates o new pendientes
 
+  //FUNCIONES QUE PERMITEN CONSULTAR LAS SOLICITUDES
   const consultar_solicitudes = (_type, _after = "") => {
     return GQLclient.request(GetRequests, {
       first: 50,
@@ -96,7 +96,7 @@ const Solicitudes = () => {
         <h2>{state.titulo}</h2>
         <div className={styles.options}>
           <button
-            className={state.vista == "Integración" ? styles.active : null}
+            className={state.vista === "Integración" ? styles.active : null}
             onClick={() => {
               dispatch({ type: "vista", payLoad: "Integración" });
               //setVista("Solicitudes");
@@ -104,12 +104,12 @@ const Solicitudes = () => {
             }}>
             <span>
               Nuevas instalaciones
-              {notification == "NEW" && <span class="dot"></span>}
+              {notification === "NEW" && <span class="dot"></span>}
             </span>
           </button>
 
           <button
-            className={state.vista == "Actualización" ? styles.active : null}
+            className={state.vista === "Actualización" ? styles.active : null}
             onClick={() => {
               dispatch({ type: "vista", payLoad: "Actualización" });
               //setVista("Instalaciones");
@@ -117,7 +117,7 @@ const Solicitudes = () => {
             }}>
             <span>
               Actualización
-              {notification == "UPDATE" && <span class="dot"></span>}
+              {notification === "UPDATE" && <span class="dot"></span>}
             </span>
           </button>
         </div>

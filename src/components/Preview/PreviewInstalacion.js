@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useLocation } from "react-router-dom";
 import "../../App.css";
 import { Button } from "reactstrap";
@@ -11,6 +11,7 @@ import { StateContext, DispatchContext } from "../App";
 import { getFecha } from "../Shared/Utils/general_functions";
 import Loading from "../Shared/Loading";
 import ZoomImage from "../Shared/ZoomImage";
+import { renderPDF } from "../Shared/Utils/RenderPDF";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,24 +42,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const renderPDF = (instalacion) => {
-  if (instalacion.metadata.pdf_data == null) {
-    alert("No se ha encontrado un PDF con información de esta instalación");
-    return;
-  }
-  var byteCharacters = atob(instalacion.metadata.pdf_data);
-  var byteNumbers = new Array(byteCharacters.length);
-  for (var i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
-  }
-  var byteArray = new Uint8Array(byteNumbers);
-  var file = new Blob([byteArray], {
-    type: "application/pdf;base64",
-  });
-  var fileURL = URL.createObjectURL(file);
-  window.open(fileURL);
-};
-
+/*Componente que muestr aun resumen de la instalacion, junto a una imagen,
+acceso a documentacion de respaldo, historial de cambio, procesar solicitud, y más informacion */
 const PreviewInstalacion = (props) => {
   const dispatch = useContext(DispatchContext);
   const state = useContext(StateContext);
@@ -160,7 +145,7 @@ const PreviewInstalacion = (props) => {
       <div className="buttons">
         {(state.rol === "Personal UOCT" || state.is_admin) &&
           (["NEW", "UPDATE"].includes(instalacion.metadata.status) ||
-            props.status ==
+            props.status ===
               "Operativo (solicitud de actualización pendiente)") && (
             <>
               <Link

@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import { Table } from "reactstrap";
-import { StateContext as GlobalContext } from "../App";
 import { Button } from "reactstrap";
 import styles from "./Administracion.module.css";
 import { useImmerReducer } from "use-immer";
@@ -15,8 +14,9 @@ import sortTable from "../Shared/Utils/SortTable";
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 
+/*Listado de usuarios disponible en panel de administracion
+Muestra usuarios y permite registrar nuevos, editar y eliminar */
 const ListadoUsuarios = (props) => {
-  const global_state = useContext(GlobalContext);
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const [editOpen, setEditOpen] = useState(false);
   const [newOpen, setNewOpen] = useState(false);

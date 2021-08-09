@@ -1,20 +1,14 @@
-import { reducer, initialState } from "../Reducers/FormularioReducer";
+import { initialState } from "../Reducers/FormularioReducer";
 import decamelizeKeysDeep from "decamelize-keys-deep";
 import camelcaseKeysDeep from "camelcase-keys-deep";
-import { GQLclient } from "../../App";
 
-//Interfaz de comunicacion entre la api y el frontend
+//Interfaz de comunicacion entre la api y el frontend para enviar formularios de instalaciones
+//notar que el backend trabaja con variables camelcase y el frontend con snake case
 
+//procesa el json consultado para mostrarlo en el formulario
 export const procesar_json_recibido = (aux) => {
-  //procesa el json consultado para mostrarlo en el formulario
-  // var temp = JSON.parse(JSON.stringify(props.state.actualizando));
   var temp = decamelizeKeysDeep(aux);
-
-  // temp.metadata.commune.maintainer =
-  //   temp.metadata.commune.maintainer == null
-  //     ? "Comuna sin mantenedor"
-  //     : temp.metadata.commune.maintainer.name;
-  if (temp.ups == null) {
+  if (temp.ups === null) {
     delete temp.ups;
   }
   temp.metadata.installation_date = temp.metadata.installation_date
@@ -22,16 +16,16 @@ export const procesar_json_recibido = (aux) => {
     : Date.now();
 
   temp.metadata.installation_company =
-    temp.metadata.installation_company == null
+    temp.metadata.installation_company === null
       ? "Sin asignar"
       : temp.metadata.installation_company.name;
 
   temp.metadata.pdf_data =
-    temp.metadata.pdf_data.data == null
+    temp.metadata.pdf_data.data === null
       ? null
       : temp.metadata.pdf_data.data.slice(2, -1);
 
-  if (temp.poles == undefined) {
+  if (temp.poles === undefined) {
     temp.poles = {
       hooks: 0,
       vehicular: 0,
@@ -40,38 +34,38 @@ export const procesar_json_recibido = (aux) => {
   }
 
   temp.metadata.pedestrian_demand =
-    temp.metadata.pedestrian_demand == undefined
+    temp.metadata.pedestrian_demand === undefined
       ? false
       : temp.metadata.pedestrian_demand;
   temp.metadata.pedestrian_facility =
-    temp.metadata.pedestrian_facility == undefined
+    temp.metadata.pedestrian_facility === undefined
       ? false
       : temp.metadata.pedestrian_facility;
   temp.metadata.local_detector =
-    temp.metadata.local_detector == undefined
+    temp.metadata.local_detector === undefined
       ? false
       : temp.metadata.local_detector;
   temp.metadata.scoot_detector =
-    temp.metadata.scoot_detector == undefined
+    temp.metadata.scoot_detector === undefined
       ? false
       : temp.metadata.scoot_detector;
 
   temp.controller = //REVISAR TODO
-    temp.controller == undefined
+    temp.controller === undefined
       ? initialState.controller
       : {
           gps:
-            temp.controller.gps == undefined
+            temp.controller.gps === undefined
               ? initialState.controller.gps
               : temp.controller.gps,
           model:
-            temp.controller.model == undefined
+            temp.controller.model === undefined
               ? initialState.controller.model
               : temp.controller.model,
         };
 
   temp.otu.metadata =
-    temp.otu.metadata == null
+    temp.otu.metadata === null
       ? {
           serial: "",
           ip_address: "",
@@ -83,44 +77,44 @@ export const procesar_json_recibido = (aux) => {
         }
       : {
           serial:
-            temp.otu.metadata.serial == undefined
+            temp.otu.metadata.serial === undefined
               ? ""
               : temp.otu.metadata.serial,
           ip_address:
-            temp.otu.metadata.ip_address == undefined
+            temp.otu.metadata.ip_address === undefined
               ? ""
               : temp.otu.metadata.ip_address,
           netmask:
-            temp.otu.metadata.netmask == undefined
+            temp.otu.metadata.netmask === undefined
               ? ""
               : temp.otu.metadata.netmask,
           control:
-            temp.otu.metadata.control == undefined
+            temp.otu.metadata.control === undefined
               ? 0
               : temp.otu.metadata.control,
           answer:
-            temp.otu.metadata.answer == undefined
+            temp.otu.metadata.answer === undefined
               ? 0
               : temp.otu.metadata.answer,
           link_type:
-            temp.otu.metadata.link_type == undefined
+            temp.otu.metadata.link_type === undefined
               ? ""
               : temp.otu.metadata.link_type,
           link_owner:
-            temp.otu.metadata.link_owner == undefined
+            temp.otu.metadata.link_owner === undefined
               ? ""
               : temp.otu.metadata.link_owner,
         };
 
   temp.headers =
-    temp.headers == undefined
+    temp.headers === undefined
       ? initialState.headers
-      : temp.headers.length == 0
+      : temp.headers.length === 0
       ? initialState.headers
       : temp.headers;
 
   temp.metadata.img =
-    temp.metadata.img.data == null
+    temp.metadata.img.data === null
       ? "/no_image.png"
       : "data:image/png;base64," + temp.metadata.img.data.slice(2, -1);
 
@@ -128,7 +122,7 @@ export const procesar_json_recibido = (aux) => {
 
   var junctions = temp.otu.junctions;
   for (var i = 0; i < junctions.length; i++) {
-    if (junctions[i].phases.length == 0) {
+    if (junctions[i].phases.length === 0) {
       junctions[i].phases = ["-"];
     }
   }
@@ -142,37 +136,31 @@ export const procesar_json_recibido = (aux) => {
   return temp;
 };
 
+//procesa el json antes de envio al backend
 export const procesar_json_envio = (state_copy, url) => {
-  //procesa el json antes de envio
-  //state_copy.metadata.status_user = props.state.email;
-  // if (url == "/nuevo/solicitud-actualizacion") {
-  //   //SI SE ESTA LEVANTANDO UNA SOLICITUD DE ACTUALIZACION
-  //   state_copy.metadata.status = "UPDATE";
-  // }
-
   if (
-    url == "/editar/instalacion" ||
-    url == "/nuevo/solicitud-actualizacion" ||
-    url == "/editar/info-programaciones"
+    url === "/editar/instalacion" ||
+    url === "/nuevo/solicitud-actualizacion" ||
+    url === "/editar/info-programaciones"
   ) {
     //SI EL ADMIN O UN FUNCIONARIO UOCT ESTA EDITANDO DIRECTAMENTE
     state_copy.status = "UPDATE";
   } else if (
-    url == "/nuevo/digitalizacion" ||
-    url == "/nuevo/solicitud-integracion"
+    url === "/nuevo/digitalizacion" ||
+    url === "/nuevo/solicitud-integracion"
   ) {
     state_copy.status = "NEW";
   }
 
-  if (state_copy.otu.programs.length == 0) {
+  if (state_copy.otu.programs.length === 0) {
     delete state_copy.otu.programs;
   }
   for (let i = 0; i < state_copy.otu.junctions.length; i++) {
-    if (state_copy.otu.junctions[i].intergreens.length == 0)
+    if (state_copy.otu.junctions[i].intergreens.length === 0)
       delete state_copy.otu.junctions[i].intergreens;
-    if (state_copy.otu.junctions[i].plans.length == 0)
+    if (state_copy.otu.junctions[i].plans.length === 0)
       delete state_copy.otu.junctions[i].plans;
-    if (state_copy.otu.junctions[i].sequence.length == 0)
+    if (state_copy.otu.junctions[i].sequence.length === 0)
       delete state_copy.otu.junctions[i].sequence;
   }
 
@@ -198,17 +186,7 @@ export const procesar_json_envio = (state_copy, url) => {
 
   //SE ENVIA EL CÓDIGO DE LA COMUNA, NO EL NOMBRE
   state_copy.metadata.commune = state_copy.metadata.commune.code;
-
-  // if (state_copy.metadata.maintainer == null) {
-  //   state_copy.metadata.maintainer = "SpeeDevs";
-  // }
-  // delete state_copy.metadata.status;
-  // delete state_copy.metadata.status_user;
-  // delete state_copy.metadata.status_date;
   delete state_copy.ups_backup;
-  //cambios de modelo otu / junction
-  // delete state_copy.otu.intergreens;
-  // delete state_copy.otu.sequences;
 
   for (let i = 0; i < state_copy.otu.junctions.length; i++) {
     state_copy.otu.junctions[i].metadata.coordinates =
@@ -223,6 +201,5 @@ export const procesar_json_envio = (state_copy, url) => {
   delete state_copy.isLoading;
   delete state_copy.success;
 
-  // return JSON.stringify(state_copy);
   return camelcaseKeysDeep(state_copy);
 };

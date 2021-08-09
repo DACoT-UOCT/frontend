@@ -1,27 +1,19 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import Loading from "../Shared/Loading";
 import DatePicker from "react-datepicker";
 import styles from "./Administracion.module.css";
-import { StateContext } from "../App";
-import { ipAPI } from "../Shared/ipAPI";
-
 import { Table, Label } from "reactstrap";
-
-import { Button } from "reactstrap";
-import axios from "axios";
-import { ImportantDevicesSharp } from "@material-ui/icons";
 import { useQuery } from "../../GraphQL/useQuery";
 import { GetLogs } from "../../GraphQL/Queries";
 import { sortFunction } from "../Shared/Utils/general_functions";
 
+//PESTAÑA DE REGISTRO DE ACTIVIDAD, PANEL DE ADMINISTRACIÓN
 const RegistroActividad = () => {
-  const state = useContext(StateContext);
   const dateTemp = new Date();
   dateTemp.setHours(24, 0, 0, 0);
   const [registros, setRegistro] = useState([]);
   const [startDate, setStartDate] = useState(
-    // ((d) => new Date(d.setDate(d.getDate() - 1)))(new Date())
     dateTemp.setDate(dateTemp.getDate() - 1)
   );
   const [endDate, setEndDate] = useState(
@@ -29,6 +21,7 @@ const RegistroActividad = () => {
   );
 
   const registrosQuery = useQuery(GetLogs, (data) => {
+    //CONSULTA LA ACTIVIDAD EN EL DIA DE HOY
     data.actionsLogs.sort(sortFunction);
     setRegistro(data.actionsLogs);
   });

@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import PopUp from "../Shared/PopUp";
-
 import styles from "./Consulta.module.css";
-
 import BarraBusqueda from "./BarraBusqueda";
 import { GQLclient } from "../App";
 import { GetRequests } from "../../GraphQL/Queries";
 import { useQuery } from "../../GraphQL/useQuery";
 
+//PAGINA HOME QUE CONTIENE BARRA DE BUSQUEDA, BOTONES DE NAVEGACION y POPUP INICIAL
 const Inicio = (props) => {
   const dispatch = props.dispatch;
   const history = useHistory();
@@ -54,10 +53,6 @@ const Inicio = (props) => {
         coordinates={props.coordinates}
       />
       <div className={`${styles.container} ${"home-buttons-container"}`}>
-        {/* <div className="home-btn" onClick={onButtonClick}>
-          Buscar instalaciones
-          <img src="/imagenes/buscar.svg" width="100" height="100" />
-        </div> */}
         {props.rol === "Personal UOCT" || props.is_admin ? (
           <>
             <div
@@ -69,7 +64,12 @@ const Inicio = (props) => {
                 Solicitudes pendientes
                 {solicitudesPendientes && <span class="dot"></span>}
               </p>
-              <img src="/imagenes/solicitudes.svg" width="100" height="100" />
+              <img
+                alt=""
+                src="/imagenes/solicitudes.svg"
+                width="100"
+                height="100"
+              />
             </div>
             <div
               className="home-btn"
@@ -77,7 +77,12 @@ const Inicio = (props) => {
                 history.push("/nuevo/digitalizacion");
               }}>
               Digitalizar información
-              <img src="/imagenes/digitalizar.svg" width="100" height="100" />
+              <img
+                alt=""
+                src="/imagenes/digitalizar.svg"
+                width="100"
+                height="100"
+              />
             </div>
           </>
         ) : (
@@ -88,7 +93,12 @@ const Inicio = (props) => {
                 history.push("/nuevo/solicitud-integracion");
               }}>
               Nueva solicitud de integración
-              <img src="/imagenes/digitalizar.svg" width="100" height="100" />
+              <img
+                alt=""
+                src="/imagenes/digitalizar.svg"
+                width="100"
+                height="100"
+              />
             </div>
           </>
         )}
@@ -99,7 +109,12 @@ const Inicio = (props) => {
               history.push("/administracion");
             }}>
             Administración
-            <img src="/imagenes/administracion.svg" width="100" height="100" />
+            <img
+              alt=""
+              src="/imagenes/administracion.svg"
+              width="100"
+              height="100"
+            />
           </div>
         )}
       </div>

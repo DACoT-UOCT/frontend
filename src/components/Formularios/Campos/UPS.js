@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { DispatchContext } from "../../Formularios/NuevaInstalacion";
 import "../../../App.css";
 import { Label } from "reactstrap";
-import PopOver from "../../Shared/PopOver";
 import styles from "./Campos.module.css";
 import {
   Checkbox,
@@ -20,10 +19,11 @@ const Campo = styled(TextField)({
   background: "none",
 });
 
+//CAMPO OPCIONAL PARA INGRESAR INFORMACION DE UPS
 const UPS = (props) => {
   const ups = props.state;
   const dispatch = useContext(DispatchContext);
-  const [checkbox, setCheckbox] = useState(ups != undefined);
+  const [checkbox, setCheckbox] = useState(ups !== undefined);
 
   return (
     <>

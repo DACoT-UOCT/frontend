@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import GoogleMapReact from "google-map-react";
 import { useRef } from "react";
 import "../../App.css";
-import { useImmerReducer } from "use-immer";
 import {
   initialState as MapainitialState,
-  reducer as Mapareducer,
   defaultMapOptions,
 } from "../Shared/Reducers/MapaReducer";
 
@@ -14,12 +12,11 @@ import useSupercluster from "use-supercluster";
 import CustomMarker from "../Shared/CustomMarker";
 import { GoogleMapsAPI_KEY } from "../../API_KEYS.js";
 
+/*Componente que muestra todas las instalaciones operativas, disponible desde 
+la pagina de inicio */
 const Marker = ({ children }) => children;
 const MapaConsulta = (props) => {
-  const [stateMapa, dispatchMapa] = useImmerReducer(
-    Mapareducer,
-    MapainitialState
-  );
+  const defaultCenter = MapainitialState.center;
   const [bounds, setBounds] = useState(null);
   const [zoom, setZoom] = useState(10);
   const mapRef = useRef();
@@ -47,13 +44,6 @@ const MapaConsulta = (props) => {
     zoom,
     options: { radius: 70, maxZoom: 15 },
   });
-  // {
-  //   "jid": "J031411",
-  //   "coordinates": [
-  //     -33.554039,
-  //     -70.632627
-  //   ]
-  // }
 
   return (
     <>
@@ -67,7 +57,7 @@ const MapaConsulta = (props) => {
             bootstrapURLKeys={{
               key: GoogleMapsAPI_KEY,
             }}
-            defaultCenter={stateMapa.center}
+            defaultCenter={defaultCenter}
             defaultZoom={zoom}
             options={defaultMapOptions}
             yesIWantToUseGoogleMapApiInternals

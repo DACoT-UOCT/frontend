@@ -1,16 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
-
-import { GQLclient, StateContext } from "../App";
-import { ipAPI } from "../Shared/ipAPI";
-import axios from "axios";
+import React from "react";
+import { GQLclient } from "../App";
 import { Button } from "reactstrap";
-import Loading from "../Shared/Loading";
 import styles from "./Administracion.module.css";
 import { styled } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import {
-  Checkbox,
-  FormControlLabel,
   Table,
   TableBody,
   TableCell,
@@ -27,8 +21,8 @@ const Campo = styled(TextField)({
   justifyContent: "center",
 });
 
+//Componente desplegado para editar mantenedor y usuario a cargo de una comuna
 const EditComuna = (props) => {
-  const global_state = useContext(StateContext);
   const state = props.state;
   const dispatch = props.dispatch;
   const history = useHistory();
@@ -88,13 +82,13 @@ const EditComuna = (props) => {
                       ? "Sin mantenedor"
                       : state.maintainer.name}
                   </option>
-                  {state.empresas.map((empresa) => {
-                    if (empresa.name !== state.maintainer.name) {
+                  {state.empresas
+                    .filter((empresa) => empresa.name !== state.maintainer.name)
+                    .map((empresa) => {
                       return (
                         <option value={empresa.name}>{empresa.name}</option>
                       );
-                    }
-                  })}
+                    })}
                 </Campo>
               </TableCell>
             </TableRow>
@@ -137,15 +131,18 @@ const EditComuna = (props) => {
                         state.userInCharge.email +
                         ")"}
                   </option>
-                  {state.usuarios.map((usuario) => {
-                    if (usuario.fullName !== state.userInCharge.fullName) {
+                  {state.usuarios
+                    .filter(
+                      (usuario) =>
+                        usuario.fullName !== state.userInCharge.fullName
+                    )
+                    .map((usuario) => {
                       return (
                         <option value={JSON.stringify(usuario)}>
                           {usuario.fullName + "  (" + usuario.email + ")"}
                         </option>
                       );
-                    }
-                  })}
+                    })}
                 </Campo>
               </TableCell>
             </TableRow>

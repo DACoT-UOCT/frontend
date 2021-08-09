@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import "../../../App.css";
-import { Label, Button } from "reactstrap";
+import { Label } from "reactstrap";
 import { styled } from "@material-ui/core/styles";
 import styles from "./Campos.module.css";
-import PopOver from "../../Shared/PopOver";
 import decamelizeKeysDeep from "decamelize-keys-deep";
-import Geocode from "react-geocode";
-
 import Loading from "../../Shared/Loading";
 import {
   Checkbox,
@@ -18,41 +15,25 @@ import {
   TableRow,
   TextField,
 } from "@material-ui/core";
-import { getFecha } from "../../Shared/Utils/general_functions";
 import { useQuery } from "../../../GraphQL/useQuery";
 import { GetControllers } from "../../../GraphQL/Queries";
-import { getDate } from "date-fns";
-import MapaFormulario from "../MapaFormulario";
 
 const Campo = styled(TextField)({
   background: "none",
 });
 
+//componente del formulario que consulta los controladores y permite seleccionar
+//entre alguno de ellos
 const Controlador = (props) => {
   const controller = props.state;
   const dispatch = props.dispatch;
 
-  const [openMapa, setOpenMapa] = React.useState(false);
-  const [error, setError] = useState("");
-  const [consultado, setConsultado] = useState(false);
   const [controladores, setControladores] = useState(null);
-  const [coordenadas, setCoordenadas] = useState("");
   const y_offset = "50%";
   const _align = "right";
 
   const controladoresQuery = useQuery(GetControllers, (data) => {
-    //guardar respuesta
     setControladores(decamelizeKeysDeep(data.controllers));
-    //obtener coordenadas de la posicion actual del controlador
-    // Geocode.fromAddress("La moneda, Santiago").then(
-    //   (response) => {
-    //     setCoordenadas(response.results[0].geometry.location);
-    //   },
-    //   (error) => {
-    //     setCoordenadas([-33.554039, -70.632627]);
-    //     console.error("error consiguiendo coordenadas" + error);
-    //   }
-    // );
   });
 
   const getMarcas = () => {

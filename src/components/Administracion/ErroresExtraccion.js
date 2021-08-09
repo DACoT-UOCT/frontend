@@ -1,27 +1,18 @@
-import React, { useState, useContext } from "react";
-
+import React, { useState } from "react";
 import styles from "./Administracion.module.css";
-import { GQLclient, StateContext as GlobalContext } from "../App";
-
+import { GQLclient } from "../App";
 import { Button } from "reactstrap";
-import Loading from "../Shared/Loading";
 import PopUp from "../Shared/PopUp";
 import { useHistory } from "react-router-dom";
-
 import { Table } from "reactstrap";
-import { useQuery } from "../../GraphQL/useQuery";
-import {
-  GetFailedPlan,
-  GetFailedPlans,
-  GetFailedPlans2,
-} from "../../GraphQL/Queries";
+import { GetFailedPlans } from "../../GraphQL/Queries";
 import { deleteFailedPlan } from "../../GraphQL/Mutations";
 import { getFecha } from "../Shared/Utils/general_functions";
 import Paginado from "../Shared/Paginado";
 
 const ErrorExtraccion = (props) => {
-  const global_state = useContext(GlobalContext);
-  const [registros, setRegistros] = useState([]);
+  // const global_state = useContext(GlobalContext);
+  // const [registros, setRegistros] = useState([]);
   const history = useHistory();
 
   const eliminar_registros = () => {
@@ -73,8 +64,8 @@ const ErrorExtraccion = (props) => {
 };
 
 const ErroresExtraccion = (props) => {
-  const global_state = useContext(GlobalContext);
-  const [registros, setRegistros] = useState([]);
+  // const global_state = useContext(GlobalContext);
+  const [registros] = useState([]);
   const [open, setOpen] = useState(false);
   const [seleccionado, setSeleccionado] = useState(null);
   const [listSeleccionado, setListSeleccionado] = useState([]);

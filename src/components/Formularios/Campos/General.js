@@ -19,10 +19,11 @@ import { GetCommunes, GetCompanies } from "../../../GraphQL/Queries";
 import Loading from "../../Shared/Loading";
 import { StateContext } from "../../App";
 
+//COMPONENTE DEL FORMULARIO QUE CONTIENE INFORMACION GENERAL DE LA INSTALACION
+//COMUNA, EMPRESA MANTENEDORA , EMPRESA INSTALADORA, DETECTORES
 const Campo = styled(TextField)({
   background: "none",
 });
-
 const General = (props) => {
   const metadata = props.state;
   const dispatch = props.dispatch;
@@ -46,7 +47,7 @@ const General = (props) => {
       <h6>
         Los siguientes campos son requeridos para el registro de nuevas
         instalaciones.
-        {global_context.rol == "Personal UOCT" &&
+        {global_context.rol === "Personal UOCT" &&
           "Al ingresar los datos con una cuenta UOCT, estos quedarán guardados sin revisiones posteriores. Para instalaciones antiguas con información faltante en este sistema, se recomienda mantener los campos de imagen de cruce, modelo de controlador, etapas y entreverdes vehiculares actualizados."}
       </h6>
       <TableContainer
@@ -59,7 +60,7 @@ const General = (props) => {
                 <Label>Empresa instaladora</Label>
               </TableCell>
               <TableCell align="left">
-                {empresasQuery.status == "success" ? (
+                {empresasQuery.status === "success" ? (
                   <Campo
                     id="standard-select-currency-native"
                     select
@@ -97,7 +98,7 @@ const General = (props) => {
                 <Label>Comuna</Label>
               </TableCell>
               <TableCell align="left">
-                {comunasQuery.status == "success" ? (
+                {comunasQuery.status === "success" ? (
                   <div className="comuna-input">
                     <Campo
                       id="standard-select-currency-native"
@@ -121,7 +122,7 @@ const General = (props) => {
                           payLoad: e.currentTarget.value,
                         })
                       }>
-                      {metadata.commune.name == "" && <option hidden></option>}
+                      {metadata.commune.name === "" && <option hidden></option>}
                       <option value={JSON.stringify(metadata.commune)}>
                         {metadata.commune.name}
                       </option>
@@ -173,7 +174,7 @@ const General = (props) => {
                   dateFormat="dd/MM/yyyy"
                   withPortal
                   selected={
-                    metadata.installation_date == undefined
+                    metadata.installation_date === undefined
                       ? Date.now()
                       : metadata.installation_date
                   }
@@ -185,7 +186,7 @@ const General = (props) => {
                     })
                   }
                 />
-                {metadata.installation_date == undefined && (
+                {metadata.installation_date === undefined && (
                   <p>Campo no ingresado</p>
                 )}
               </TableCell>

@@ -1,26 +1,15 @@
 import React, { useEffect } from "react";
 import { useImmerReducer } from "use-immer";
-import { Label } from "reactstrap";
-import axios from "axios";
-import { Link, Redirect } from "react-router-dom";
 import Loading from "../Shared/Loading";
-import { ipAPI } from "../Shared/ipAPI";
 import { useLocation } from "react-router-dom";
-import { comparar_arrays, procesar_json_envio } from "../Shared/API/Interface";
-// import { comparar_arrays } from "../Shared/Utils/general_functions";
-
+import { procesar_json_envio } from "../Shared/API/Interface";
 import {
-  Switch,
-  Collapse,
-  FormControlLabel,
   Stepper,
   Step,
   StepLabel,
   Typography,
   makeStyles,
-  Button,
 } from "@material-ui/core";
-
 import { reducer, initialState } from "../Shared/Reducers/FormularioReducer";
 import Junctions from "./Campos/Junctions";
 import Siguiente from "./Campos/Siguiente";
@@ -79,50 +68,59 @@ const NuevaInstalacion = (props) => {
     "Verificación",
   ];
 
+  const select_mutation = () => {
+    if (
+      location.pathname === "/nuevo/digitalizacion" ||
+      location.pathname === "/nuevo/solicitud-integracion"
+    )
+      return createProject;
+    else if (
+      location.pathname === "/editar/instalacion" ||
+      location.pathname === "/nuevo/solicitud-actualizacion" ||
+      location.pathname === "/editar/info-programaciones"
+    )
+      return updateProject;
+  };
+
+  const acceptRequest = () => {
+    let _data = {
+      oid: state.oid,
+      status: location.pathname === "/nuevo/digitalizacion" ? "NEW" : "UPDATE",
+    };
+
+    GQLclient.request(acceptProject, { data: _data })
+      .then((response) => {
+        dispatch({ type: "post_success" });
+      })
+      .catch((err) => {
+        dispatch({ type: "post_error" });
+      });
+  };
+
+  //FUNCION QUE ENVIA EL FORMULARIO
   useEffect(() => {
     if (state.submit === true) {
-      //enviar formulario sin errores
-
+      //procesa los datos antes de enviar
       let _data = procesar_json_envio(
         JSON.parse(JSON.stringify(state)),
         location.pathname
       );
-      let mutation;
-      if (
-        location.pathname == "/nuevo/digitalizacion" ||
-        location.pathname == "/nuevo/solicitud-integracion"
-      )
-        mutation = createProject;
-      else if (
-        location.pathname == "/editar/instalacion" ||
-        location.pathname == "/nuevo/solicitud-actualizacion" ||
-        location.pathname == "/editar/info-programaciones"
-      )
-        mutation = updateProject;
+
+      //elegir mutación dependiendo de la url
+      let mutation = select_mutation();
 
       GQLclient.request(mutation, {
         data: _data,
       })
         .then((response) => {
           if (
-            location.pathname == "/editar/instalacion" ||
-            location.pathname == "/editar/info-programaciones" ||
-            location.pathname == "/nuevo/digitalizacion"
+            location.pathname === "/editar/instalacion" ||
+            location.pathname === "/editar/info-programaciones" ||
+            location.pathname === "/nuevo/digitalizacion"
           ) {
             //SI SE ESTA EDITANDO/DIGITALIZANDO POR UN FUNCIONARIO UOCT O ADMIN
-            let _data = {
-              oid: state.oid,
-              status:
-                location.pathname == "/nuevo/digitalizacion" ? "NEW" : "UPDATE",
-            };
-
-            GQLclient.request(acceptProject, { data: _data })
-              .then((response) => {
-                dispatch({ type: "post_success" });
-              })
-              .catch((err) => {
-                dispatch({ type: "post_error" });
-              });
+            //LA SOLICITUD SE ACEPTA SIMULTANEAMENTE
+            acceptRequest();
           } else {
             dispatch({ type: "post_success" });
           }
@@ -131,8 +129,9 @@ const NuevaInstalacion = (props) => {
           dispatch({ type: "post_error" });
         });
     }
-  }, [state.submit]);
+  }, [state.submit]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  //DEPENDIENDO DE LA VISTA, SE MUESTRAN DISTINTOS COMPONENTES DEL FORMULARIO
   function getStepContent(stepIndex) {
     switch (stepIndex) {
       case 1:

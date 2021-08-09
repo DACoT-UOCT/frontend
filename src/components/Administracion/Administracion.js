@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React from "react";
 import RegistroActividad from "./RegistroActividad";
 import ListadoUsuarios from "./ListadoUsuarios";
 import styles from "./Administracion.module.css";
@@ -23,9 +22,10 @@ const initialState = { currentTab: TABS.USUARIOS };
 const reducer = (draft, action) => {
   draft.currentTab = action;
 };
+
+/*Panel de administracion que permite elegir entre distintas pestañas, solo
+disponible para usuarios con rol de administrador */
 const Administracion = (props) => {
-  // const [vista, setVista] = useState("usuarios");
-  // const [titulo, setTitulo] = useState("Usuarios registrados en sistema");
   const [state, dispatch] = useSessionStorageState(
     reducer,
     initialState,
@@ -37,7 +37,9 @@ const Administracion = (props) => {
         <h2 style={{ paddingLeft: "2rem" }}>{state.currentTab}</h2>
         <div className={styles.options}>
           <button
-            className={state.currentTab == TABS.USUARIOS ? styles.active : null}
+            className={
+              state.currentTab === TABS.USUARIOS ? styles.active : null
+            }
             onClick={() => {
               dispatch(TABS.USUARIOS);
             }}>
@@ -46,7 +48,7 @@ const Administracion = (props) => {
 
           <button
             className={
-              state.currentTab == TABS.ACTIVIDAD ? styles.active : null
+              state.currentTab === TABS.ACTIVIDAD ? styles.active : null
             }
             onClick={() => {
               dispatch(TABS.ACTIVIDAD);
@@ -55,7 +57,7 @@ const Administracion = (props) => {
           </button>
 
           <button
-            className={state.currentTab == TABS.ERRORES ? styles.active : null}
+            className={state.currentTab === TABS.ERRORES ? styles.active : null}
             onClick={() => {
               dispatch(TABS.ERRORES);
             }}>
@@ -63,7 +65,7 @@ const Administracion = (props) => {
           </button>
 
           <button
-            className={state.currentTab == TABS.COMUNAS ? styles.active : null}
+            className={state.currentTab === TABS.COMUNAS ? styles.active : null}
             onClick={() => {
               dispatch(TABS.COMUNAS);
             }}>
@@ -72,7 +74,7 @@ const Administracion = (props) => {
 
           <button
             className={
-              state.currentTab == TABS.CONTROLADORES ? styles.active : null
+              state.currentTab === TABS.CONTROLADORES ? styles.active : null
             }
             onClick={() => {
               dispatch(TABS.CONTROLADORES);
@@ -81,7 +83,9 @@ const Administracion = (props) => {
           </button>
 
           <button
-            className={state.currentTab == TABS.EMPRESAS ? styles.active : null}
+            className={
+              state.currentTab === TABS.EMPRESAS ? styles.active : null
+            }
             onClick={() => {
               dispatch(TABS.EMPRESAS);
             }}>

@@ -2,11 +2,11 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import styles from "./Nav.module.css";
-import { StateContext, DispatchContext } from "../App";
+import { StateContext } from "../App";
 
+// Componente de la barra lateral derecha con enlaces a la aplicación
 export default function Nav() {
   const [show, setShow] = useState(false);
-  const dispatch = useContext(DispatchContext);
   const state = useContext(StateContext);
 
   return (
@@ -38,7 +38,7 @@ export default function Nav() {
             <span>‣ Nueva solicitud de integración de proyecto</span>
           </Link>
         )}
-        {state.rol == "Personal UOCT" && (
+        {state.rol === "Personal UOCT" && (
           <Link
             onClick={() => setShow(false)}
             className={styles.link}
@@ -56,11 +56,6 @@ export default function Nav() {
             </Link>
           </>
         )}
-        {/* <Link onClick={() => setShow(false)} className={styles.link} to="/">
-          <button color="inherit" onClick={() => dispatch({ type: "logOut" })}>
-            Salir
-          </button>
-        </Link> */}
 
         <Link to="/logout" className={styles.link}>
           <span>‣ Salir</span>

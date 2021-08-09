@@ -1,32 +1,22 @@
-import React, { useEffect, useContext } from "react";
-import { useImmerReducer } from "use-immer";
+import React, { useEffect } from "react";
 import "../App.css";
 import axios from "axios";
-
 import { ipAPI } from "./Shared/ipAPI";
 import Header from "./Shared/Header";
 import NuevaInstalacion from "./Formularios/NuevaInstalacion";
 import Inicio from "./Inicio/Inicio";
 import Login from "./Login/Login";
 import Logout from "./Login/Logout";
-import { initialState, reducer } from "./Shared/Reducers/AppReducer";
 import ProcesarSolicitud from "./Solicitudes/ProcesarSolicitud";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { Redirect, Route, useLocation } from "react-router-dom";
 import Solicitudes from "./Solicitudes/Solicitudes";
 import Administracion from "./Administracion/Administracion";
 import Profile from "./Shared/Profile";
 import ResumenProyecto from "./Formularios/Campos/ResumenProyecto";
-
 import Historial from "./Historial/Historial";
-import { createBrowserHistory } from "history";
-import usePersistentState from "./Shared/Utils/usePersistentState";
-import { DispatchContext, StateContext } from "./App";
 
+/*Componente router que define los componentes a renderizar dependiendo de la url
+y de los permisos del usuario. Tambien se encarga de modificar el document.title */
 const RouterComponent = (props) => {
   //const [state, dispatch] = useImmerReducer(reducer, initialState);
   const state = props.state;
@@ -43,19 +33,19 @@ const RouterComponent = (props) => {
           dispatch({ type: "logout" });
         });
     }
-  }, [location]);
+  }, [location]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     var title = "UOCT | DACoT";
-    if (location.pathname == "/info") {
+    if (location.pathname === "/info") {
       title =
         state.actualizando.oid.slice(0, 4) +
         " " +
         state.actualizando.oid.slice(4);
     }
     if (
-      location.pathname == "/editar/instalacion" ||
-      location.pathname == "/editar/info-programaciones"
+      location.pathname === "/editar/instalacion" ||
+      location.pathname === "/editar/info-programaciones"
     ) {
       title =
         "Editar " +
@@ -63,21 +53,21 @@ const RouterComponent = (props) => {
         " " +
         state.actualizando.oid.slice(4);
     }
-    if (location.pathname == "/historial") {
+    if (location.pathname === "/historial") {
       title =
         "Historial " +
         state.actualizando.oid.slice(0, 4) +
         " " +
         state.actualizando.oid.slice(4);
     }
-    if (location.pathname == "/administracion") {
+    if (location.pathname === "/administracion") {
       title = "Administración";
     }
-    if (location.pathname == "/solicitudes") {
+    if (location.pathname === "/solicitudes") {
       title = "Solicitudes";
     }
 
-    if (location.pathname == "/procesar/solicitud") {
+    if (location.pathname === "/procesar/solicitud") {
       title =
         "Solicitud " +
         state.actualizando.oid.slice(0, 4) +
@@ -85,7 +75,7 @@ const RouterComponent = (props) => {
         state.actualizando.oid.slice(4);
     }
 
-    if (location.pathname == "/nuevo/solicitud-actualizacion") {
+    if (location.pathname === "/nuevo/solicitud-actualizacion") {
       title =
         "Solicitud " +
         state.actualizando.oid.slice(0, 4) +
@@ -94,7 +84,7 @@ const RouterComponent = (props) => {
     }
 
     document.title = title;
-  }, [location]);
+  }, [location]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -150,8 +140,8 @@ const RouterComponent = (props) => {
                 exact
                 path="/editar/instalacion"
                 component={() =>
-                  state.actualizando.metadata.status == "PRODUCTION" &&
-                  state.actualizando.metadata.version == "latest" && (
+                  state.actualizando.metadata.status === "PRODUCTION" &&
+                  state.actualizando.metadata.version === "latest" && (
                     <NuevaInstalacion state={state} />
                   )
                 }

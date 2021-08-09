@@ -12,16 +12,17 @@ import {
   TableRow,
   TextField,
   FormControlLabel,
-  Slide,
   styled,
 } from "@material-ui/core";
 import MapaFormulario from "../MapaFormulario";
-import { RoundedCorner } from "@material-ui/icons";
 
 const Campo = styled(TextField)({
   background: "none",
 });
 
+/*Componente que permite registrar junctions en el formulario
+Esto es definir su ubicacion mediante un mapa, su direccion, y fases
+Se pueden agregar y quitar junctions, y a cada uno agregar o quitar fases */
 const Junctions = (props) => {
   const junctions = props.state;
   const dispatch = props.dispatch;
@@ -245,7 +246,7 @@ const Junctions = (props) => {
                               colSpan={2}>
                               <Button
                                 style={{ width: "50%" }}
-                                disabled={junction.phases.length == 1}
+                                disabled={junction.phases.length === 1}
                                 onClick={() =>
                                   dispatch({
                                     type: "eliminar_fase",

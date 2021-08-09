@@ -2,11 +2,6 @@ export const initialState = {
   oid: "X",
   metadata: {
     status: "NEW",
-    // version: "base",
-    // maintainer: "",
-    // status: "NEW",
-    // status_date: Date.now(),
-    // status_user: "",
     installation_date: Date.now(),
     installation_company: "",
     commune: { name: "" },
@@ -19,7 +14,6 @@ export const initialState = {
     scoot_detector: false,
   },
   otu: {
-    // oid: "X",
     metadata: {
       serial: "",
       ip_address: "",
@@ -50,7 +44,6 @@ export const initialState = {
     programs: [],
   },
   controller: {
-    // address_reference: "",
     gps: false,
     model: {
       company: { name: "" },
@@ -192,8 +185,8 @@ export function reducer(draft, action) {
     }
 
     case "ups_checkbox": {
-      if (draft.ups == undefined) {
-        if (draft.ups_backup == undefined) draft.ups = ups_initial;
+      if (draft.ups === undefined) {
+        if (draft.ups_backup === undefined) draft.ups = ups_initial;
         else draft.ups = draft.ups_backup;
       } else {
         draft.ups_backup = JSON.parse(JSON.stringify(draft.ups));
@@ -220,6 +213,7 @@ export function reducer(draft, action) {
 
     case "enviado":
       draft.submit = false;
+      return;
 
     case "reset": {
       draft.vista = 1;
@@ -310,9 +304,6 @@ export function reducer(draft, action) {
         draft.controller.model.model = "";
         draft.controller.model.firmware_version = "";
         draft.controller.model.checksum = "";
-        // draft.controller.model.date = "";
-        // } else if (action.fieldName === "date") {
-        //   draft.controller.model[action.fieldName] = action.payLoad;
       } else if (action.fieldName === "model") {
         draft.controller.model[action.fieldName] = action.payLoad;
         draft.controller.model.firmware_version = "";
@@ -373,33 +364,6 @@ export function reducer(draft, action) {
       return;
     }
 
-    case "eliminar_stage": {
-      draft.otu.stages.pop();
-
-      //eliminar columna de matriz entreverdes
-      draft.otu.entreverdes.map((fila) => {
-        fila.pop();
-      });
-      //eliminar ultima fila matriz entreverdes
-      draft.otu.entreverdes.pop();
-      return;
-    }
-
-    case "agregar_stage": {
-      const nuevo = ["", ""];
-      draft.otu.stages.push(nuevo);
-
-      //agregar columna a matriz de entreverdes
-      draft.otu.entreverdes.map((fila) => {
-        fila.push(0);
-      });
-      //agregar fila al final de la matriz de entreverdes
-      const largo = draft.otu.stages.length;
-      const array = Array(largo).fill(0);
-      draft.otu.entreverdes.push(array);
-      return;
-    }
-
     case "upload_PDF": {
       draft.metadata.pdf_data = action.payLoad;
       return;
@@ -422,20 +386,6 @@ export function reducer(draft, action) {
           -1
         );
       }
-      return;
-    }
-
-    case "fase": {
-      const lista = action.payLoad
-        .replace(/\s/g, "")
-        .replace(/[^a-zA-Z-]/g, "")
-        .split("-");
-
-      lista.map((valor) => {
-        //if valor not in stages id
-        //return error
-      });
-      draft.otu.fases[action.index] = lista;
       return;
     }
 

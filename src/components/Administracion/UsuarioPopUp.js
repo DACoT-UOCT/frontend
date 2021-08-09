@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
-
-import { GQLclient, StateContext } from "../App";
+import React from "react";
+import { GQLclient } from "../App";
 import styles from "./Administracion.module.css";
 import { Button } from "reactstrap";
 import { styled } from "@material-ui/core/styles";
@@ -25,8 +24,9 @@ const Campo = styled(TextField)({
   justifyContent: "center",
 });
 
+/*COMPONENTE DE LA PESTAÑA USUARIOS, EN PANEL DE ADMINISTRACION
+SE USA PARA CREAR/EDITAR Y ELIMINAR USUARIOS*/
 const UsuarioPopUp = (props) => {
-  const global_state = useContext(StateContext);
   const state = props.state;
   const dispatch = props.dispatch;
   const history = useHistory();
@@ -34,6 +34,7 @@ const UsuarioPopUp = (props) => {
   const areas_UOCT = ["Ingeniería", "Sala de Control", "TIC", "Administración"];
 
   const validar_json = (json) => {
+    //VALIDA EL INPUT ANTES DE HACER LA CONSULTA
     var temp = json.area !== "" && json.fullName !== "" && json.role !== "";
     if (json.role === "Empresa") {
       temp = temp && json.company !== "";
@@ -46,8 +47,8 @@ const UsuarioPopUp = (props) => {
     temp = temp && json.fullName.length >= 5;
     return temp;
   };
+
   const eliminar = () => {
-    // var url = ipAPI + "delete-user/" + state.email;
     GQLclient.request(deleteUser, { data: { email: state.email } })
       .then((response) => {
         alert("Usuario eliminado");
@@ -60,9 +61,9 @@ const UsuarioPopUp = (props) => {
 
     props.setOpen(false);
   };
+
   const try_submit = () => {
     var mutation;
-
     var json = {
       area: state.area,
       fullName: state.fullName,
@@ -98,6 +99,7 @@ const UsuarioPopUp = (props) => {
 
     props.setOpen(false);
   };
+
   return (
     <>
       <TableContainer className={styles.popup}>
@@ -108,7 +110,6 @@ const UsuarioPopUp = (props) => {
             </TableRow>
             <TableRow>
               <TableCell>Nombre</TableCell>
-
               <TableCell align="left">
                 <Campo
                   id="standard"
@@ -192,15 +193,15 @@ const UsuarioPopUp = (props) => {
                         ) : (
                           <option hidden></option>
                         )}
-                        {state.empresas.map((empresa) => {
-                          if (empresa.name !== state.company) {
+                        {state.empresas
+                          .filter((empresa) => empresa.name !== state.company)
+                          .map((empresa) => {
                             return (
                               <option value={empresa.name}>
                                 {empresa.name}
                               </option>
                             );
-                          }
-                        })}
+                          })}
                       </Campo>
                     </TableCell>
                   </TableRow>
@@ -233,14 +234,16 @@ const UsuarioPopUp = (props) => {
                           <option hidden></option>
                         )}
                         {state.role === "Empresa"
-                          ? areas_empresas.map((area_d) => {
-                              if (area_d !== state.area)
+                          ? areas_empresas
+                              .filter((area_d) => area_d !== state.area)
+                              .map((area_d) => {
                                 return <option value={area_d}>{area_d}</option>;
-                            })
-                          : areas_UOCT.map((area_d) => {
-                              if (area_d !== state.area)
+                              })
+                          : areas_UOCT
+                              .filter((area_d) => area_d !== state.area)
+                              .map((area_d) => {
                                 return <option value={area_d}>{area_d}</option>;
-                            })}
+                              })}
                       </Campo>
                     </TableCell>
                   </TableRow>

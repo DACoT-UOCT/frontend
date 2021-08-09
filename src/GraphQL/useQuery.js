@@ -1,6 +1,11 @@
 import * as React from "react";
 import { GQLclient } from "../components/App";
 
+//FUNCION QUE PERMITE HACER UNA CONSULTA AL MOMENTO QUE
+//SE INICIA UN COMPONENTE. ACEPTA COMO PARAMETRO UN CALLBACK ON SUCCES,
+//Y  VARIABLES PARA HACER LA CONSULTA
+
+//TAMBIEN MANTIENE UN ESTADO INTERNO, IDLE, LOADING, SUCCESS, ERROR.
 const reducer = (state, action) => {
   switch (action.type) {
     case "loading":
@@ -43,6 +48,6 @@ export function useQuery(query, onSuccess, variables = {}) {
     return () => {
       subscribed = false;
     };
-  }, [query]);
+  }, [query]); // eslint-disable-line react-hooks/exhaustive-deps
   return state;
 }

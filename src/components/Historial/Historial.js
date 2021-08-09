@@ -1,58 +1,17 @@
-import React, { useState, useEffect, version } from "react";
-import { useImmerReducer } from "use-immer";
-import { initialState, reducer } from "../Shared/Reducers/HistorialReducer";
-import { ipAPI } from "../Shared/ipAPI";
+import React, { useState } from "react";
 import Loading from "../Shared/Loading";
 import PanelInstalacion from "../Preview/PanelInstalacion";
-import axios from "axios";
-import { getFecha } from "../Shared/Utils/general_functions";
 import { GetVersions } from "../../GraphQL/Queries";
 import { useQuery } from "../../GraphQL/useQuery";
 
-const dummy_request = [
-  {
-    apply_to_id: "X001110",
-    vid: "5fa30d3c9d8ebedddf2b2ea0",
-    date: {
-      $date: Date.now(),
-    },
-    message: "Automatic Update",
-  },
-  {
-    apply_to_id: "X001110",
-    vid: "5fa302514fffaaec53cb2ea0",
-    date: {
-      $date: Date.now(),
-    },
-    message: "Automatic Update",
-  },
-  {
-    apply_to_id: "X001110",
-    vid: "5fa30d3c444fawec53cb2ea0",
-    date: {
-      $date: Date.now(),
-    },
-    message: "Automatic Update",
-  },
-  {
-    apply_to_id: "X001110",
-    vid: "5fa30d3c9d8ebeeawdaw2ea0",
-    date: {
-      $date: Date.now(),
-    },
-    message: "Automatic Update",
-  },
-];
-
+//Componente que muestra el listado de todas las versiones disponibles para una instalacion operativa
 const Historial = (props) => {
   const global_state = props.state;
-  // const [state, dispatch] = useImmerReducer(reducer, initialState);
   const [expanded, setExpanded] = useState(false);
   const [versions, setVersions] = useState([]);
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  // const versionsQuery = null;
 
   const versionsQuery = useQuery(
     GetVersions,
@@ -106,7 +65,7 @@ const Historial = (props) => {
                   id={
                     "Versión " +
                     (versions.length - cambioIndex) +
-                    (version.vid == "latest" ? " (actual)" : "")
+                    (version.vid === "latest" ? " (actual)" : "")
                   }
                   oid={global_state.actualizando.oid}
                   type={""}

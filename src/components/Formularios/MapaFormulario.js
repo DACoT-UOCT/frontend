@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import GoogleMapReact from "google-map-react";
 import { useRef } from "react";
 import "../../App.css";
-
 import Geocode from "react-geocode";
 import { useImmerReducer } from "use-immer";
 import { Label, Button } from "reactstrap";
@@ -22,6 +21,8 @@ Geocode.setLanguage("sp");
 Geocode.setRegion("cl");
 Geocode.enableDebug();
 
+//MAPA USADO PARA VISUALIZAR E INGRESAR LA UBICACION DE UN JUNCTION EN EL FORMULARIO
+//TAMBIEN SE ENCARGA DE ENCONTRAR EL NOMBRE DE LA CALLE DE LA UBICACION
 const Marker = ({ children }) => children;
 const MapaFormulario = (props) => {
   const [stateMapa, dispatchMapa] = useImmerReducer(
@@ -40,9 +41,11 @@ const MapaFormulario = (props) => {
     let lat = e.lat;
     let lng = e.lng;
 
+    //GUARDA LAS COORDENADAS
     dispatchMapa({ type: "markerLat", payLoad: e.lat });
     dispatchMapa({ type: "markerLng", payLoad: e.lng });
 
+    //BUSCA EL NOMBRE DE LA CALLE Y ACTUALIZA OBUCACION DEL PIN
     axios
       .get(
         "http://www.mapquestapi.com/geocoding/v1/reverse?key=" +
@@ -59,12 +62,12 @@ const MapaFormulario = (props) => {
         dispatchMapa({ type: "location", payLoad: address });
         setAddress(address);
         if (
-          coordinates.find((element) => element.jid == props.jid) != undefined
+          coordinates.find((element) => element.jid === props.jid) !== undefined
         ) {
           //actualiza el pin que tiene el jid que se está actualizando
           var aux = [...coordinates];
           aux[
-            aux.findIndex((element) => element.jid == props.jid)
+            aux.findIndex((element) => element.jid === props.jid)
           ].coordinates = [lat, lng];
           setCoordinates(aux);
         } else {
@@ -77,19 +80,10 @@ const MapaFormulario = (props) => {
             },
           ]);
         }
-
-        // if (props.controlador) {
-        //   props.setPin([lat, lng]);
-        //   dispatch({
-        //     type: "controller",
-        //     fieldName: "address_reference",
-        //     payLoad: address,
-        //   });
-        // }
       });
   };
 
-  //CLUSTERS
+  //LISTA DE PINES QUE SE RENDERIZAN EN EL MAPA
   const points = coordinates.map((junction) => ({
     type: "Feature",
     properties: { cluster: false, jid: junction.jid },
@@ -99,6 +93,7 @@ const MapaFormulario = (props) => {
     },
   }));
 
+  //FUNCION PARA CREAR CLUSTERS S EL MAPA SE ALEJA
   const { clusters, supercluster } = useSupercluster({
     points,
     bounds,
@@ -188,7 +183,7 @@ const MapaFormulario = (props) => {
                 {"Ubicación actual " + (props.junction ? props.jid : "")}{" "}
               </h3>
               <Label>
-                {address == "" ? "Ubicación no registrada" : address}
+                {address === "" ? "Ubicación no registrada" : address}
               </Label>
             </div>
             <Button
@@ -201,7 +196,7 @@ const MapaFormulario = (props) => {
               color="success"
               size="lg"
               disabled={
-                coordinates.find((element) => element.jid == props.jid) ==
+                coordinates.find((element) => element.jid === props.jid) ===
                 undefined
               }
               onClick={() => {
@@ -212,7 +207,7 @@ const MapaFormulario = (props) => {
 
                   address: address,
                   coordinates: coordinates.find(
-                    (element) => element.jid == props.jid
+                    (element) => element.jid === props.jid
                   ).coordinates,
                 });
                 props.setOpen(false);

@@ -5,7 +5,7 @@ import { procesar_json_recibido } from "../Shared/API/Interface";
 import { Button } from "reactstrap";
 import PopOver from "../Shared/PopOver";
 import { GQLclient } from "../App";
-import { GetCoordinates, GetProject } from "../../GraphQL/Queries";
+import { GetProject } from "../../GraphQL/Queries";
 import PopUp from "../Shared/PopUp";
 import PreviewInstalacion from "../Preview/PreviewInstalacion";
 import "../../App.css";

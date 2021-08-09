@@ -1,4 +1,3 @@
-import { useRef } from "react";
 export const initialState = {
   center: { lat: -33.447763, lng: -70.645001 },
   markerLat: null,

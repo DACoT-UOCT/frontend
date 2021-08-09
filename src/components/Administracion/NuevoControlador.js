@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Button } from "reactstrap";
-import { List } from "@material-ui/core";
 import { createController } from "../../GraphQL/Mutations";
 import { GQLclient } from "../App";
 import { useHistory } from "react-router-dom";
+import { GetCompanies } from "../../GraphQL/Queries";
 
+//POPUP EN PANEL DE ADMINISTRACION, PARA REGISTRAR UN NUEVO CONTROLADOR
 const NuevoControlador = (props) => {
   const controladores = props.controladores;
   const state = props.state;
@@ -16,13 +17,16 @@ const NuevoControlador = (props) => {
   const history = useHistory();
 
   useEffect(() => {
-    if (marcas.size == 0) get_marcas();
-  });
+    if (marcas.size === 0) get_marcas();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const get_marcas = () => {
-    controladores.map((controlador) => {
-      setMarcas(marcas.add(controlador.company.name));
-    });
+    GQLclient.request(GetCompanies)
+      .then((data) => setMarcas(data.companies.map((empresa) => empresa.name)))
+      .catch((err) => {
+        alert("Error al consultar marcas");
+        console.log(err);
+      });
   };
   const get_modelos = () => {
     var modelos = Array.from(controladores).filter(
@@ -39,10 +43,10 @@ const NuevoControlador = (props) => {
 
   const registrar_boton = () => {
     if (
-      state.marca == "" ||
-      state.model == "" ||
-      state.firmwareVersion == "" ||
-      state.checksum == ""
+      state.marca === "" ||
+      state.model === "" ||
+      state.firmwareVersion === "" ||
+      state.checksum === ""
     ) {
       alert("Favor de rellenar todos los campos");
       return;
@@ -64,8 +68,6 @@ const NuevoControlador = (props) => {
       .catch((err) => {
         alert("Error en el envio");
       });
-    //respuesta del server
-    //cerrar popup
   };
 
   return (
@@ -99,7 +101,6 @@ const NuevoControlador = (props) => {
         })}
       </TextField>
 
-      {/* <p>{"Modelo" + state.modelo}</p> */}
       <Autocomplete
         id="free-solo-demo"
         freeSolo
@@ -120,10 +121,6 @@ const NuevoControlador = (props) => {
             payLoad: value === null ? "" : String(value).toUpperCase(),
           })
         }
-        //   inputValue={inputValue}
-        //   onInputChange={(event, newInputValue) => {
-        //     setInputValue(newInputValue);
-        //   }}
         renderInput={(params) => (
           <TextField
             {...params}

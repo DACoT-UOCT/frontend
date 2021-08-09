@@ -87,7 +87,7 @@ export function reducer(draft, action) {
     case "success": {
       draft.isLoggedIn = true;
       draft.isLoading = false;
-      if (draft.username == "empresa") draft.rol = "empresa";
+      if (draft.username === "empresa") draft.rol = "empresa";
       else draft.rol = "otro";
       draft.username = "";
       return;

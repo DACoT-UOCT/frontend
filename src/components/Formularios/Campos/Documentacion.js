@@ -1,27 +1,28 @@
 import React from "react";
-
 import "../../../App.css";
-
 import { Label, CustomInput } from "reactstrap";
 import PopOver from "../../Shared/PopOver";
-import CursorZoom from "react-cursor-zoom";
 import ZoomImage from "../../Shared/ZoomImage";
 
-const validar_pdf = (file) => {
-  return file.type == "application/pdf";
-};
-const validar_imagen = (imagen) => {
-  const formatos = ["image/png", "image/jpg", "image/jpeg"];
-  if (formatos.includes(imagen.type)) {
-    return true;
-  } else {
-    return false;
-  }
-};
+//COMPONENTE DEL FORMULARIO QUE RECIBE EL PDF DE RESPALDO Y LA IMAGEN DEL CRUCE
 const Documentacion = (props) => {
   const state = props.state;
   const dispatch = props.dispatch;
   const img = state.metadata.img;
+
+  const validar_pdf = (file) => {
+    //VALIDA FORMATO DEL PDF DE RESPALDO
+    return file.type === "application/pdf";
+  };
+  const validar_imagen = (imagen) => {
+    //VALIDA FORMATO DE LA IMAGEN DEL CRUCE
+    const formatos = ["image/png", "image/jpg", "image/jpeg"];
+    if (formatos.includes(imagen.type)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   return (
     <div style={{ marginTop: "2rem" }}>
       <legend>Documentacion de respaldo</legend>

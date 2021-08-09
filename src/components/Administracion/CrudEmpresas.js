@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import { Table as TableReactstrap } from "reactstrap";
-import { GQLclient, StateContext as GlobalContext } from "../App";
+import { GQLclient } from "../App";
 import { Button } from "reactstrap";
 import styles from "./Administracion.module.css";
 import PopUp from "../Shared/PopUp";
@@ -27,8 +27,9 @@ const Campo = styled(TextField)({
   justifyContent: "center",
 });
 
+/*Listado de empresas registradas, disponible en panel de administracion
+Tambien permite registrar y desabilitar empresas */
 const CrudEmpresas = (props) => {
-  const global_state = useContext(GlobalContext);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [newCompany, setNewCompany] = useState("");
   const [newOpen, setNewOpen] = useState(false);

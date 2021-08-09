@@ -1,16 +1,13 @@
 import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { DispatchContext, GQLclient, StateContext } from "../App";
-
+import { GQLclient, StateContext } from "../App";
 import { Col, FormGroup, Input, CustomInput } from "reactstrap";
-
 import ButtonMaterial from "@material-ui/core/Button";
-
 import { getFecha } from "../Shared/Utils/general_functions";
 import { acceptProject, rejectProject } from "../../GraphQL/Mutations";
 import Success from "../Shared/Success";
-import { renderPDF } from "../Preview/PreviewInstalacion";
+import { renderPDF } from "../Shared/Utils/RenderPDF";
 
 const validar_imagen = (imagen) => {
   const formatos = ["image/png", "image/jpg", "image/jpeg"];
@@ -21,6 +18,9 @@ const validar_imagen = (imagen) => {
   }
 };
 
+//COMPONENTE PARA PROCESAR UNA SOICITUD
+//PERMITE ACEPTAR O RECHAZAR, ADJUNTR UN COMENTARIO E IMAGEN
+//TIENE ACCESO DIRECTO A LA INFORMACION DE LA INSTALACION CON SOLICITUDES Y SU INFORMACION COMPLEMENTARIA(PDF)
 export default function ProcesarSolicitud(props) {
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,12 +36,10 @@ export default function ProcesarSolicitud(props) {
   }));
   const classes = useStyles();
   const global_state = useContext(StateContext);
-  const dispatch = useContext(DispatchContext);
   let history = useHistory();
 
   const [comentario, setComentario] = useState("");
   const [imagen, setImagen] = useState(null);
-  // const [correos, setCorreos] = useState([""]);
   const [submit, setSubmit] = useState(false);
 
   const aprobar_rechazar_solicitud = (
@@ -68,12 +66,6 @@ export default function ProcesarSolicitud(props) {
         setSubmit("Error");
       });
   };
-
-  // if (updateQuery.status === "idle" || updateQuery.status === "loading")
-  //   return <Loading />;
-  // else if (updateQuery.status === "error") {
-  //   return <p>Error en la consulta</p>;
-  // }
 
   return (
     <>

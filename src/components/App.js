@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 import "../App.css";
-
 import { initialState, reducer } from "./Shared/Reducers/AppReducer";
-
 import { BrowserRouter as Router } from "react-router-dom";
-
 import { createBrowserHistory } from "history";
 import usePersistentState from "./Shared/Utils/usePersistentState";
 import RouterComponent from "./RouterComponent";
 import { GraphQLClient } from "graphql-request";
 import { GetCommunes, GetCoordinates } from "../GraphQL/Queries";
+import { BACKEND_URL } from "../API_KEYS";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
-export const GQLclient = new GraphQLClient("https://dacot.duckdns.org/api/v2/");
+export const GQLclient = new GraphQLClient(BACKEND_URL);
 const history = createBrowserHistory();
 
+//COMPONENTE QUE ALOJA TODA LA APLICACION
+//CREA EL ESTADO GLOBAL DE LA APLICACION, EL CUAL ES PERSISTENTE(LOCALSTORAGE)
 const App = () => {
   const [state, dispatch] = usePersistentState(reducer, initialState);
   //let location = useLocation();
@@ -35,7 +35,7 @@ const App = () => {
     if (state.debug && !state.isLoggedIn) {
       dispatch({ type: "switch_profile" });
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     //guardar comunas en el cache
@@ -52,10 +52,10 @@ const App = () => {
         })
         .catch((error) => {});
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    //guardar cordenadas en el cache
+    //guardar cordenadas del mapa en el cache
     if (state.coordinates === null) {
       GQLclient.request(GetCoordinates, { status: "NEW" })
         .then((data) => {
@@ -63,7 +63,8 @@ const App = () => {
         })
         .catch((error) => {});
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>

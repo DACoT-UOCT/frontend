@@ -1,15 +1,3 @@
-export const comparar_arrays = (arr1, arr2) => {
-  if (arr1.length !== arr2.length) {
-    return false;
-  }
-  for (var i = 0; i < arr1.length; i++) {
-    if (arr1[i] !== arr2[i]) {
-      return false;
-    }
-  }
-  return true;
-};
-
 export const sortFunction = (a, b) => {
   //ordenar cronologicamente registros consultados
   var keyA = new Date(a.date),
@@ -20,8 +8,9 @@ export const sortFunction = (a, b) => {
   return 0;
 };
 
+//transforma un objeto tipo Date a una fecha dia/mes/año
 export const getFecha = (date) => {
-  if (date == undefined) {
+  if (date === undefined) {
     return "Desconocido";
   }
   var temp = new Date(date);

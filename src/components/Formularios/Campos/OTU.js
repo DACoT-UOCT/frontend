@@ -1,15 +1,10 @@
 import React from "react";
 import "../../../App.css";
 import "react-datepicker/dist/react-datepicker.css";
-import PopOver from "../../Shared/PopOver";
-import DatePicker from "react-datepicker";
 import styles from "./Campos.module.css";
 import { Label } from "reactstrap";
 import { useLocation } from "react-router-dom";
-
 import {
-  Checkbox,
-  FormControlLabel,
   Table,
   TableBody,
   TableCell,
@@ -19,6 +14,8 @@ import {
   styled,
 } from "@material-ui/core";
 
+//COMPONENTE QUE CONTIENE INFORMACION DE LA OTU, CODIGO, TIPO DE ENLACE, NUMERO DE SERIE
+//IP/MASCARA DE RED, NUMERO DE BITS DE CONTROL
 const Campo = styled(TextField)({
   background: "none",
 });

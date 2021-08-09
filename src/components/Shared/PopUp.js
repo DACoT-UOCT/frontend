@@ -1,21 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "../../App.css";
 import styles from "./PopUp.module.css";
-
 import {
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Slide,
-  makeStyles,
 } from "@material-ui/core";
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+/*Componente que despliega un PopUp */
 const PopUp = (props) => {
   return (
     <>

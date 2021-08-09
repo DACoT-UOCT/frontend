@@ -1,18 +1,12 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import { useImmerReducer } from "use-immer";
-
 import styles from "./Administracion.module.css";
-import { StateContext as GlobalContext } from "../App";
-import { ipAPI } from "../Shared/ipAPI";
-import axios from "axios";
 import { Button } from "reactstrap";
 import Loading from "../Shared/Loading";
 import PopUp from "../Shared/PopUp";
 import { reducer, initialState } from "../Shared/Reducers/ComunaReducer";
-
 import { Table } from "reactstrap";
 import EditComuna from "./EditComuna";
-import PopOver from "../Shared/PopOver";
 import sortTable from "../Shared/Utils/SortTable";
 import { useQuery } from "../../GraphQL/useQuery";
 import { GetCommunes, GetUsers, GetCompanies } from "../../GraphQL/Queries";
@@ -20,15 +14,9 @@ import { GetCommunes, GetUsers, GetCompanies } from "../../GraphQL/Queries";
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 
+/*Listado de comunas de santiago en el panel de administracion */
 const ListadoComunas = (props) => {
-  const global_state = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
-  // const [comunas, setComunas] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState("");
-  // const [consultado, setConsultado] = useState(false);
-  // const [editarPopUp, setEditarPopUp] = useState(false);
-
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const comunasQuery = useQuery(GetCommunes, (data) => {
     dispatch({ type: "comunas", payLoad: data.communes });

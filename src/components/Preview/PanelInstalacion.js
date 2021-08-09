@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Loading from "../Shared/Loading";
 import { useLocation } from "react-router-dom";
 
-import { StateContext, DispatchContext, GQLclient } from "../App";
+import { GQLclient } from "../App";
 import styles from "./PanelInstall.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -17,6 +17,9 @@ import { getFecha } from "../Shared/Utils/general_functions";
 import PreviewInstalacion from "./PreviewInstalacion";
 import { procesar_json_recibido } from "../Shared/API/Interface";
 import { GetProject, GetVersion } from "../../GraphQL/Queries";
+
+//Elemento de listado en vista de SOLICITUDES PENDIENTES e HISTORIAL
+//Se despliega al hacer click, a la vez que hace la consulta de la instalacion
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -37,8 +40,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PanelInstalacion(props) {
-  const dispatch = useContext(DispatchContext);
-  const state = useContext(StateContext);
   const classes = useStyles();
   const location = useLocation();
   const history_panel = location.pathname === "/historial";
@@ -58,7 +59,7 @@ export default function PanelInstalacion(props) {
       setError("");
       setLoading(false);
     }
-  }, [props.expanded]);
+  }, [props.expanded]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function getData() {
     let request;
@@ -109,12 +110,12 @@ export default function PanelInstalacion(props) {
   const getStatus = () => {
     //obtiene el status del preview en las vistas de historial y solicitudes
     if (history_panel) {
-      if (props.vid == "latest") return "Operativa";
+      if (props.vid === "latest") return "Operativa";
       else return "Versión histórica";
     } else {
-      if (instalacion.metadata.status == "NEW")
+      if (instalacion.metadata.status === "NEW")
         return "Solicitud de nueva instalación pendiente";
-      else if (instalacion.metadata.status == "UPDATE")
+      else if (instalacion.metadata.status === "UPDATE")
         return "Solicitud de actualización pendiente";
     }
   };
