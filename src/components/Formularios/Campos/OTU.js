@@ -47,7 +47,7 @@ const OTU = (props) => {
               </TableCell>
               <TableCell align="left">
                 <Campo
-                  id="standard"
+                  id="codig-input"
                   disabled={[
                     "/nuevo/solicitud-actualizacion",
                     "/editar/instalacion",
@@ -83,11 +83,7 @@ const OTU = (props) => {
                   SelectProps={{
                     native: true,
                   }}
-                  value={
-                    otu.metadata.link_owner !== ""
-                      ? otu.metadata.link_owner
-                      : ""
-                  }
+                  value={otu.metadata.link_owner ? otu.metadata.link_owner : ""}
                   onChange={(e) => {
                     dispatch({
                       type: "otu_metadata",
@@ -137,7 +133,7 @@ const OTU = (props) => {
               </TableCell>
               <TableCell align="left">
                 <Campo
-                  id="standard"
+                  id="n-serie-input"
                   label="N° Serie"
                   variant="standard"
                   name="otu-serie"
@@ -162,7 +158,7 @@ const OTU = (props) => {
               </TableCell>
               <TableCell align="left">
                 <Campo
-                  id="standard"
+                  id="ip-input"
                   label="Dirección IP"
                   variant="standard"
                   name="otu-ip"
@@ -181,7 +177,7 @@ const OTU = (props) => {
                   }
                 />{" "}
                 <Campo
-                  id="standard"
+                  id="netmask-input"
                   label="Mascara de Red"
                   variant="standard"
                   name="otu-netmask"
@@ -208,7 +204,7 @@ const OTU = (props) => {
               </TableCell>
               <TableCell align="left">
                 <Campo
-                  id="standard"
+                  id="control-input"
                   label="Control"
                   variant="standard"
                   type="number"
@@ -226,7 +222,7 @@ const OTU = (props) => {
                   }
                 />{" "}
                 <Campo
-                  id="standard"
+                  id="respuesta-input"
                   label="Respuesta"
                   placeholder="Respuesta"
                   variant="standard"

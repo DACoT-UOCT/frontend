@@ -231,8 +231,8 @@ const Siguiente = (props) => {
         open={open}
         setOpen={setOpen}>
         <div className="error-list">
-          {state.errors.map((error) => {
-            return <li>{error}</li>;
+          {state.errors.map((error, err_index) => {
+            return <li key={err_index}>{error}</li>;
           })}
         </div>
         <Button

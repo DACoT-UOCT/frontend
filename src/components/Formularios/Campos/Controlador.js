@@ -117,7 +117,7 @@ const Controlador = (props) => {
                   }>
                   <option hidden></option>
                   {getMarcas().map((marca) => {
-                    return <option>{marca}</option>;
+                    return <option key={marca}>{marca}</option>;
                   })}
                 </Campo>
               </TableCell>
@@ -153,8 +153,8 @@ const Controlador = (props) => {
                       })
                     }>
                     <option hidden></option>
-                    {getModelos().map((modelo) => {
-                      return <option>{modelo}</option>;
+                    {getModelos().map((modelo, i) => {
+                      return <option key={i}>{modelo}</option>;
                     })}
                   </Campo>
                 </TableCell>
@@ -195,8 +195,8 @@ const Controlador = (props) => {
                         })
                       }>
                       <option hidden></option>
-                      {getVersions().map((version) => {
-                        return <option>{version}</option>;
+                      {getVersions().map((version, i) => {
+                        return <option key={i}>{version}</option>;
                       })}
                     </Campo>
                   </TableCell>

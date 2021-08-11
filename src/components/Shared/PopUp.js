@@ -1,13 +1,7 @@
 import React from "react";
 import "../../App.css";
 import styles from "./PopUp.module.css";
-import {
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Slide,
-} from "@material-ui/core";
+import { Dialog, DialogContent, DialogTitle, Slide } from "@material-ui/core";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -34,9 +28,7 @@ const PopUp = (props) => {
           </div>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText style={{ padding: "1rem" }}>
-            {props.children}
-          </DialogContentText>
+          <div style={{ padding: "1rem" }}>{props.children}</div>
         </DialogContent>
       </Dialog>
     </>

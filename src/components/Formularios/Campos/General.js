@@ -83,8 +83,12 @@ const General = (props) => {
                     {/* <option value={metadata.installation_company}>
                       {metadata.installation_company}
                     </option> */}
-                    {companies.map((company) => {
-                      return <option value={company}>{company}</option>;
+                    {companies.map((company, i) => {
+                      return (
+                        <option key={company + i} value={company}>
+                          {company}
+                        </option>
+                      );
                     })}
                   </Campo>
                 ) : (
@@ -126,9 +130,11 @@ const General = (props) => {
                       <option value={JSON.stringify(metadata.commune)}>
                         {metadata.commune.name}
                       </option>
-                      {comunas.map((comuna) => {
+                      {comunas.map((comuna, index) => {
                         return (
-                          <option value={JSON.stringify(comuna)}>
+                          <option
+                            key={comuna + index}
+                            value={JSON.stringify(comuna)}>
                             {comuna.name}
                           </option>
                         );

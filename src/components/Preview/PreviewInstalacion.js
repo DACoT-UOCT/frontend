@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../../App.css";
 import { Button } from "reactstrap";
@@ -53,7 +53,11 @@ const PreviewInstalacion = (props) => {
   const history_panel = location.pathname === "/historial";
   const history = useHistory();
   let update_data = props.update;
-  dispatch({ type: "update", payLoad: update_data !== null });
+
+  useEffect(() => {
+    dispatch({ type: "update", payLoad: update_data !== null });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   if (location.pathname === "/solicitudes") {
     update_data = props.instalacion;
   }
@@ -70,7 +74,7 @@ const PreviewInstalacion = (props) => {
               to="/info"
               className="nada"
               onClick={() => {
-                props.resetSessionStorage();
+                if (location.pathname === "/") props.resetSessionStorage();
                 dispatch({
                   type: "levantar_actualizacion",
                   payLoad: instalacion,
@@ -138,7 +142,7 @@ const PreviewInstalacion = (props) => {
         </div>
         <div
           className={clsx(classes.column2, classes.divider)}
-          style={{ "margin-top": "10px" }}>
+          style={{ marginTop: "10px" }}>
           <ZoomImage img={instalacion.metadata.img} />
         </div>
       </div>
@@ -152,7 +156,7 @@ const PreviewInstalacion = (props) => {
                 to="/procesar/solicitud"
                 className="nada"
                 onClick={() => {
-                  props.resetSessionStorage();
+                  if (location.pathname === "/") props.resetSessionStorage();
                   dispatch({
                     type: "levantar_actualizacion",
                     payLoad: update_data,
@@ -203,7 +207,7 @@ const PreviewInstalacion = (props) => {
             to="/historial"
             className="nada"
             onClick={() => {
-              props.resetSessionStorage();
+              if (location.pathname === "/") props.resetSessionStorage();
               dispatch({
                 type: "levantar_actualizacion",
                 payLoad: instalacion,

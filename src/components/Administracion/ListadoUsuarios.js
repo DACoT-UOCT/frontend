@@ -78,9 +78,9 @@ const ListadoUsuarios = (props) => {
           </tr>
         </thead>
         <tbody>
-          {state.usuarios.map((usuario) => {
+          {state.usuarios.map((usuario, i) => {
             return (
-              <tr>
+              <tr key={i}>
                 <td> {usuario.fullName}</td>
                 <td> {usuario.role}</td>
                 <td>
@@ -108,22 +108,26 @@ const ListadoUsuarios = (props) => {
           })}
         </tbody>
       </Table>
-      <PopUp title="Nuevo usuario" open={newOpen} setOpen={setNewOpen}>
-        <UsuarioPopUp
-          state={state}
-          dispatch={dispatch}
-          setOpen={setNewOpen}
-          type="new"
-        />
-      </PopUp>
-      <PopUp title={"Editar usuario"} open={editOpen} setOpen={setEditOpen}>
-        <UsuarioPopUp
-          state={state}
-          dispatch={dispatch}
-          setOpen={setEditOpen}
-          type="edit"
-        />
-      </PopUp>
+      {setNewOpen && state && (
+        <PopUp title="Nuevo usuario" open={newOpen} setOpen={setNewOpen}>
+          <UsuarioPopUp
+            state={state}
+            dispatch={dispatch}
+            setOpen={setNewOpen}
+            type="new"
+          />
+        </PopUp>
+      )}
+      {editOpen && state && (
+        <PopUp title={"Editar usuario"} open={editOpen} setOpen={setEditOpen}>
+          <UsuarioPopUp
+            state={state}
+            dispatch={dispatch}
+            setOpen={setEditOpen}
+            type="edit"
+          />
+        </PopUp>
+      )}
     </>
   );
 };

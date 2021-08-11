@@ -115,9 +115,9 @@ const CrudEmpresas = (props) => {
           </tr>
         </thead>
         <tbody>
-          {empresas.map((empresa) => {
+          {empresas.map((empresa, i) => {
             return (
-              <tr>
+              <tr key={i}>
                 <td> {empresa}</td>
                 <td>
                   <Button
@@ -143,10 +143,9 @@ const CrudEmpresas = (props) => {
                   <TableCell>Nombre</TableCell>
                   <TableCell align="left">
                     <Campo
-                      id="standard"
+                      id="nombre-input"
                       label=""
                       variant="standard"
-                      name="otu-serie"
                       autoComplete="off"
                       value={newCompany}
                       onChange={(e) =>

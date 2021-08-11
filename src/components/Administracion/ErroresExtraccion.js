@@ -88,12 +88,6 @@ const ErroresExtraccion = (props) => {
       .catch((error) => error);
   };
 
-  // if (erroresQuery.status === "idle" || erroresQuery.status === "loading") {
-  //   return <Loading />;
-  // } else if (erroresQuery.status === "error") {
-  //   return <p>Error en la consulta</p>;
-  // }
-
   return (
     <>
       {registros !== [] ? (
@@ -111,52 +105,30 @@ const ErroresExtraccion = (props) => {
                 <th></th>
               </tr>
             </thead>
-            <tbody>
-              <Paginado
-                render={(registro, indice) => {
-                  return (
-                    <tr>
-                      <td>{(indice + 1).toString() + ".-"}</td>
-                      <td> {getFecha(registro.date)}</td>
-                      <td></td>
-                      <td>
-                        {" "}
-                        <Button
-                          onClick={() => {
-                            setSeleccionado(registro.id);
-                            setListSeleccionado(registro.plans);
-                            setOpen(true);
-                          }}>
-                          Consultar
-                        </Button>
-                      </td>
-                    </tr>
-                  );
-                }}
-                tipo="failedPlans"
-                consulta={consultar_errores}
-              />
-              {/* {registros.map((registro, indice) => {
-                return (
-                  <tr>
-                    <td>{(indice + 1).toString() + ".-"}</td>
-                    <td> {getFecha(registro.date)}</td>
-                    <td></td>
-                    <td>
-                      {" "}
-                      <Button
-                        onClick={() => {
-                          setSeleccionado(registro.id);
-                          setOpen(true);
-                        }}>
-                        Consultar
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              })} */}
-            </tbody>
           </Table>
+          <Paginado
+            render={(registro, indice) => {
+              return (
+                <tr key={indice}>
+                  <td>{(indice + 1).toString() + ".-"}</td>
+                  <td> {getFecha(registro.date)}</td>
+                  <td></td>
+                  <td>
+                    <Button
+                      onClick={() => {
+                        setSeleccionado(registro.id);
+                        setListSeleccionado(registro.plans);
+                        setOpen(true);
+                      }}>
+                      Consultar
+                    </Button>
+                  </td>
+                </tr>
+              );
+            }}
+            tipo="failedPlans"
+            consulta={consultar_errores}
+          />
 
           {seleccionado !== null && (
             <PopUp title={"Planes no extraidos"} open={open} setOpen={setOpen}>

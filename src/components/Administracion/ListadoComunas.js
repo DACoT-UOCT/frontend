@@ -63,7 +63,7 @@ const ListadoComunas = (props) => {
                 <tbody>
                   {state.comunas.map((comuna, comunaIndex) => {
                     return (
-                      <tr>
+                      <tr key={comunaIndex}>
                         <td> {comuna.name}</td>
                         <td>
                           {comuna.maintainer === null

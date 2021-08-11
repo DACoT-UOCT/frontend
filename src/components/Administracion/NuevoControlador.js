@@ -25,7 +25,6 @@ const NuevoControlador = (props) => {
       .then((data) => setMarcas(data.companies.map((empresa) => empresa.name)))
       .catch((err) => {
         alert("Error al consultar marcas");
-        console.log(err);
       });
   };
   const get_modelos = () => {
@@ -87,7 +86,7 @@ const NuevoControlador = (props) => {
         SelectProps={{
           native: true,
         }}
-        value={state.marca}
+        value={state.marca || ""}
         onBlur={(e) => get_modelos()}
         onChange={(e) =>
           dispatch({
@@ -96,8 +95,8 @@ const NuevoControlador = (props) => {
           })
         }>
         <option hidden></option>
-        {Array.from(marcas).map((marca) => {
-          return <option>{marca}</option>;
+        {Array.from(marcas).map((marca, i) => {
+          return <option key={i}>{marca}</option>;
         })}
       </TextField>
 
@@ -105,7 +104,7 @@ const NuevoControlador = (props) => {
         id="free-solo-demo"
         freeSolo
         options={Array.from(modelos)}
-        value={state.model}
+        value={state.model || ""}
         disableClearable={true}
         autoComplete={false}
         autoSelect={true}
@@ -135,7 +134,7 @@ const NuevoControlador = (props) => {
         label="Versión"
         variant="outlined"
         margin="normal"
-        value={state.firmwareVersion}
+        value={state.firmwareVersion || ""}
         onChange={(e) =>
           dispatch({
             type: "firmwareVersion",
@@ -146,7 +145,7 @@ const NuevoControlador = (props) => {
         label="Checksum"
         variant="outlined"
         margin="normal"
-        value={state.checksum}
+        value={state.checksum || ""}
         onChange={(e) =>
           dispatch({
             type: "checksum",

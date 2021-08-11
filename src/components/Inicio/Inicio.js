@@ -62,7 +62,7 @@ const Inicio = (props) => {
               }}>
               <p>
                 Solicitudes pendientes
-                {solicitudesPendientes && <span class="dot"></span>}
+                {solicitudesPendientes && <span className="dot"></span>}
               </p>
               <img
                 alt=""
@@ -119,22 +119,24 @@ const Inicio = (props) => {
         )}
       </div>
 
-      <PopUp
-        title="Bienvenido a DACoT"
-        open={props.popup_inicial}
-        setOpen={bienvenidaHandler}>
-        <p>
-          Este sistema se encuentra en desarrollo y constante mejora. En el
-          podrás acceder a los datos semafóricos de la Región Metropolitana e
-          ingresar solicitudes de actualización al Centro de Control de la UOCT.
-          Aplicación optimizada para Google Chrome
-        </p>
-        <div
-          className={styles.entendido}
-          onClick={() => bienvenidaHandler(false)}>
-          Entendido
-        </div>
-      </PopUp>
+      {props.popup_inicial && (
+        <PopUp
+          title="Bienvenido a DACoT"
+          open={props.popup_inicial}
+          setOpen={bienvenidaHandler}>
+          <p>
+            Este sistema se encuentra en desarrollo y constante mejora. En el
+            podrás acceder a los datos semafóricos de la Región Metropolitana e
+            ingresar solicitudes de actualización al Centro de Control de la
+            UOCT. Aplicación optimizada para Google Chrome
+          </p>
+          <div
+            className={styles.entendido}
+            onClick={() => bienvenidaHandler(false)}>
+            Entendido
+          </div>
+        </PopUp>
+      )}
     </div>
   );
 };

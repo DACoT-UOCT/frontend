@@ -28,12 +28,12 @@ const Cabezales = (props) => {
         Ingresar cantidad de cabezales halógenos y led de cada tipo,
         considerando el total para todos los junctions.
       </h6>
-      <TableContainer style={{ width: "70%", "overflow-x": "hidden" }}>
+      <TableContainer style={{ width: "70%", overflowX: "hidden" }}>
         <Table size="small" aria-label="simple table">
           <TableBody>
             {headers.map((header, index) => {
               return (
-                <TableRow>
+                <TableRow key={index}>
                   <TableCell component="th" scope="row">
                     <Label>{header.type}</Label>
                   </TableCell>
@@ -48,7 +48,7 @@ const Cabezales = (props) => {
                   </TableCell>
                   <TableCell align="left">
                     <Campo
-                      id="standard"
+                      id={index + "led"}
                       variant="standard"
                       name="cabezales-l1-hal"
                       type="number"
@@ -73,7 +73,7 @@ const Cabezales = (props) => {
                   </TableCell>
                   <TableCell align="left">
                     <Campo
-                      id="standard"
+                      id={index + "hal"}
                       variant="standard"
                       name="cabezales-l1-hal"
                       type="number"

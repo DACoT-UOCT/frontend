@@ -34,6 +34,7 @@ const Documentacion = (props) => {
       </Label>
       <br></br>
       <CustomInput
+        id="pdf-input"
         className="boton-file"
         type="file"
         label={state.metadata.pdf_data ? "Cambiar PDF" : "Adjuntar PDF"}
@@ -61,6 +62,7 @@ const Documentacion = (props) => {
       </h6>
       <br></br>
       <CustomInput
+        id="diagrama-input"
         className="boton-file"
         type="file"
         label={state.metadata.img ? "Cambiar diagrama" : "Adjuntar diagrama"}

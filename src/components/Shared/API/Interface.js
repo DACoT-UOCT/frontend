@@ -1,5 +1,5 @@
 import { initialState } from "../Reducers/FormularioReducer";
-import decamelizeKeysDeep from "decamelize-keys-deep";
+import decamelizeKeys from "@puuuudding/decamelize-keys";
 import camelcaseKeysDeep from "camelcase-keys-deep";
 
 //Interfaz de comunicacion entre la api y el frontend para enviar formularios de instalaciones
@@ -7,7 +7,8 @@ import camelcaseKeysDeep from "camelcase-keys-deep";
 
 //procesa el json consultado para mostrarlo en el formulario
 export const procesar_json_recibido = (aux) => {
-  var temp = decamelizeKeysDeep(aux);
+  var temp = decamelizeKeys(aux, { deep: true });
+
   if (temp.ups === null) {
     delete temp.ups;
   }
@@ -25,7 +26,7 @@ export const procesar_json_recibido = (aux) => {
       ? null
       : temp.metadata.pdf_data.data.slice(2, -1);
 
-  if (temp.poles === undefined) {
+  if (!temp.poles) {
     temp.poles = {
       hooks: 0,
       vehicular: 0,
@@ -64,47 +65,23 @@ export const procesar_json_recibido = (aux) => {
               : temp.controller.model,
         };
 
-  temp.otu.metadata =
-    temp.otu.metadata === null
-      ? {
-          serial: "",
-          ip_address: "",
-          netmask: "",
-          control: 0,
-          answer: 0,
-          link_type: "",
-          link_owner: "",
-        }
-      : {
-          serial:
-            temp.otu.metadata.serial === undefined
-              ? ""
-              : temp.otu.metadata.serial,
-          ip_address:
-            temp.otu.metadata.ip_address === undefined
-              ? ""
-              : temp.otu.metadata.ip_address,
-          netmask:
-            temp.otu.metadata.netmask === undefined
-              ? ""
-              : temp.otu.metadata.netmask,
-          control:
-            temp.otu.metadata.control === undefined
-              ? 0
-              : temp.otu.metadata.control,
-          answer:
-            temp.otu.metadata.answer === undefined
-              ? 0
-              : temp.otu.metadata.answer,
-          link_type:
-            temp.otu.metadata.link_type === undefined
-              ? ""
-              : temp.otu.metadata.link_type,
-          link_owner:
-            temp.otu.metadata.link_owner === undefined
-              ? ""
-              : temp.otu.metadata.link_owner,
-        };
+  temp.otu.metadata = temp.otu.metadata
+    ? {
+        serial: temp.otu.metadata.serial ? "" : temp.otu.metadata.serial,
+        ip_address: temp.otu.metadata.ip_address
+          ? ""
+          : temp.otu.metadata.ip_address,
+        netmask: temp.otu.metadata.netmask ? "" : temp.otu.metadata.netmask,
+        control: temp.otu.metadata.control ? 0 : temp.otu.metadata.control,
+        answer: temp.otu.metadata.answer ? 0 : temp.otu.metadata.answer,
+        link_type: temp.otu.metadata.link_type
+          ? ""
+          : temp.otu.metadata.link_type,
+        link_owner: temp.otu.metadata.link_owner
+          ? ""
+          : temp.otu.metadata.link_owner,
+      }
+    : initialState.otu.metadata;
 
   temp.headers =
     temp.headers === undefined

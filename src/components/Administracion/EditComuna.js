@@ -84,9 +84,11 @@ const EditComuna = (props) => {
                   </option>
                   {state.empresas
                     .filter((empresa) => empresa.name !== state.maintainer.name)
-                    .map((empresa) => {
+                    .map((empresa, i) => {
                       return (
-                        <option value={empresa.name}>{empresa.name}</option>
+                        <option key={i} value={empresa.name}>
+                          {empresa.name}
+                        </option>
                       );
                     })}
                 </Campo>
@@ -136,9 +138,9 @@ const EditComuna = (props) => {
                       (usuario) =>
                         usuario.fullName !== state.userInCharge.fullName
                     )
-                    .map((usuario) => {
+                    .map((usuario, i) => {
                       return (
-                        <option value={JSON.stringify(usuario)}>
+                        <option key={i} value={JSON.stringify(usuario)}>
                           {usuario.fullName + "  (" + usuario.email + ")"}
                         </option>
                       );

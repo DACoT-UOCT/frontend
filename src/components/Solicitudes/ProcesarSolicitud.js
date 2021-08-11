@@ -2,21 +2,12 @@ import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { GQLclient, StateContext } from "../App";
-import { Col, FormGroup, Input, CustomInput } from "reactstrap";
+import { Col, FormGroup, Input } from "reactstrap";
 import ButtonMaterial from "@material-ui/core/Button";
 import { getFecha } from "../Shared/Utils/general_functions";
 import { acceptProject, rejectProject } from "../../GraphQL/Mutations";
 import Success from "../Shared/Success";
 import { renderPDF } from "../Shared/Utils/RenderPDF";
-
-const validar_imagen = (imagen) => {
-  const formatos = ["image/png", "image/jpg", "image/jpeg"];
-  if (formatos.includes(imagen.type)) {
-    return true;
-  } else {
-    return false;
-  }
-};
 
 //COMPONENTE PARA PROCESAR UNA SOICITUD
 //PERMITE ACEPTAR O RECHAZAR, ADJUNTR UN COMENTARIO E IMAGEN
@@ -39,21 +30,14 @@ export default function ProcesarSolicitud(props) {
   let history = useHistory();
 
   const [comentario, setComentario] = useState("");
-  const [imagen, setImagen] = useState(null);
   const [submit, setSubmit] = useState(false);
 
-  const aprobar_rechazar_solicitud = (
-    _oid,
-    _status,
-    _message = "",
-    _img = "",
-    aprobar = true
-  ) => {
+  const aprobar_rechazar_solicitud = (aprobar) => {
     let respuesta = {
-      oid: _oid,
-      status: _status,
-      message: _message,
-      img: _img,
+      oid: global_state.actualizando.oid,
+      status: global_state.actualizando.metadata.status,
+      message: comentario,
+      img: "",
     };
 
     let mutation = aprobar ? acceptProject : rejectProject;
@@ -89,7 +73,9 @@ export default function ProcesarSolicitud(props) {
                 {" datos ingresados "}
               </Link>
               entregados por la empresa con
-              <Link onClick={() => renderPDF(global_state.actualizando)}>
+              <Link
+                to="/procesar/solicitud"
+                onClick={() => renderPDF(global_state.actualizando)}>
                 {" la documentación de la instalación. "}
               </Link>
               Para solicitudes de actualización, queda a criterio del revisor
@@ -102,9 +88,9 @@ export default function ProcesarSolicitud(props) {
               Personal UOCT
             </p>
             <p>
-              Se puede adjuntar una imagen y/o comentario antes de procesar la
-              solicitud. Estas serán enviadas por correo electrónico a la
-              empresa emisora junto con la resolución tomada.
+              Se puede adjuntar un comentario antes de procesar la solicitud.
+              Este será enviado por correo electrónico a la empresa emisora
+              junto con la resolución tomada.
             </p>
             <legend>Comentarios adicionales (opcional)</legend>
             <FormGroup>
@@ -118,26 +104,6 @@ export default function ProcesarSolicitud(props) {
                   onChange={(e) => setComentario(e.currentTarget.value)}
                 />
               </Col>
-            </FormGroup>
-            <legend>Imagen adjunta (opcional)</legend>
-            <FormGroup>
-              <CustomInput
-                className="boton-file"
-                type="file"
-                label={"file"}
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file && validar_imagen(file)) {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onloadend = function () {
-                      setImagen(reader.result);
-                    };
-                  } else {
-                    alert("Ingrese imagen en formato png/jpg/jpeg");
-                  }
-                }}
-              />
             </FormGroup>
 
             <div style={{ textAlign: "center", margin: "2rem" }}>
@@ -154,13 +120,7 @@ export default function ProcesarSolicitud(props) {
                 className={classes.backButton}
                 size="large"
                 onClick={() => {
-                  aprobar_rechazar_solicitud(
-                    global_state.actualizando.oid,
-                    global_state.actualizando.metadata.status,
-                    comentario,
-                    imagen,
-                    false
-                  );
+                  aprobar_rechazar_solicitud(false);
                 }}>
                 Rechazar
               </ButtonMaterial>
@@ -169,13 +129,7 @@ export default function ProcesarSolicitud(props) {
                 color="primary"
                 size="large"
                 onClick={() => {
-                  aprobar_rechazar_solicitud(
-                    global_state.actualizando.oid,
-                    global_state.actualizando.metadata.status,
-                    comentario,
-                    imagen,
-                    true
-                  );
+                  aprobar_rechazar_solicitud(true);
                 }}>
                 Aprobar
               </ButtonMaterial>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "../App.css";
 import { initialState, reducer } from "./Shared/Reducers/AppReducer";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import usePersistentState from "./Shared/Utils/usePersistentState";
 import RouterComponent from "./RouterComponent";
@@ -28,6 +28,7 @@ const App = () => {
     //limpiar cache si se cierra la sesión, o se engresa por primera vez
     if (state.isLoggedIn === false) {
       localStorage.clear();
+      sessionStorage.clear();
     }
   }, [state.isLoggedIn]);
 

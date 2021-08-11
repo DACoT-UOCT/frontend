@@ -229,7 +229,7 @@ const ResumenBody = forwardRef((props, ref) => {
     })
       .then(() => {
         alert("exito al computar tablas");
-        // getUpdatedTables(_jid);
+        getUpdatedTables();
       })
       .catch((error) => {
         alert("Error compute tables");
@@ -237,7 +237,7 @@ const ResumenBody = forwardRef((props, ref) => {
       });
   };
 
-  const getUpdatedTables = (_jid) => {
+  const getUpdatedTables = (_jid = "") => {
     GQLclient.request(GetUpdatedPlans, {
       oid: "X" + _jid.slice(1, -1) + "0",
       status: "PRODUCTION",
@@ -442,15 +442,17 @@ const ResumenBody = forwardRef((props, ref) => {
             <h2 style={{ marginTop: "2rem" }}>Junctions</h2>
             <table>
               <thead>
-                {info && <th>Mostrar</th>}
-                <th>Código</th>
-                <th>Ubicación</th>
-                <th>Coordenadas</th>
+                <tr>
+                  {info && <th>Mostrar</th>}
+                  <th>Código</th>
+                  <th>Ubicación</th>
+                  <th>Coordenadas</th>
+                </tr>
               </thead>
               <tbody>
                 {state.otu.junctions.map((junction, index) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       {info && (
                         <td style={{ padding: "0" }} align="center">
                           <FormControlLabel
@@ -526,7 +528,7 @@ const ResumenBody = forwardRef((props, ref) => {
             let fasesSC = junction.sequence.map((aux) => aux.phid);
             let fasesSYSTEM = junction.sequence.map((aux) => aux.phid_system);
             return (
-              <div className="section ">
+              <div className="section" key={index}>
                 <h2>{junction.jid}</h2>
                 {/* <h5> Etapas</h5> */}
                 <div className="tables">
@@ -539,13 +541,15 @@ const ResumenBody = forwardRef((props, ref) => {
                     ) : (
                       <table>
                         <thead>
-                          <th>Fase</th>
-                          <th>Etapas</th>
+                          <tr>
+                            <th>Fase</th>
+                            <th>Etapas</th>
+                          </tr>
                         </thead>
                         <tbody>
                           {junction.phases.map((faseValue, faseIndex) => {
                             return (
-                              <tr>
+                              <tr key={faseIndex}>
                                 <td>{"F" + (faseIndex + 1)}</td>
                                 <td>{faseValue.toUpperCase()}</td>
                               </tr>
@@ -568,8 +572,10 @@ const ResumenBody = forwardRef((props, ref) => {
                         ) : (
                           <table>
                             <thead>
-                              <th>Secuencia</th>
-                              <th>Sistema</th>
+                              <tr>
+                                <th>Secuencia</th>
+                                <th>Sistema</th>
+                              </tr>
                             </thead>
                             <tbody>
                               <tr>
@@ -604,21 +610,23 @@ const ResumenBody = forwardRef((props, ref) => {
                           ) : (
                             <table>
                               <thead>
-                                <th>Desde/Hacia</th>
-                                {fasesSC.map((fase) => {
-                                  return <th>{"F" + fase}</th>;
-                                })}
+                                <tr>
+                                  <th>Desde/Hacia</th>
+                                  {fasesSC.map((fase, i) => {
+                                    return <th key={i}>{"F" + fase}</th>;
+                                  })}
+                                </tr>
                               </thead>
                               <tbody>
                                 {fasesSC.map((faseFila, indexFila) => {
                                   return (
-                                    <tr>
+                                    <tr key={indexFila}>
                                       <td>{"F" + faseFila}</td>
                                       {fasesSC.map((faseCol, indexCol) => {
                                         if (indexFila === indexCol)
-                                          return <td> -</td>;
+                                          return <td key={indexCol}> -</td>;
                                         return (
-                                          <td>
+                                          <td key={indexCol}>
                                             {encontrarValorEntreverde(
                                               junction.intergreens,
                                               fasesSYSTEM[indexFila],
@@ -653,67 +661,78 @@ const ResumenBody = forwardRef((props, ref) => {
                       L: Lunes a Viernes / S: Sabado / D: Domingo y festivos
                     </p>
                     <div className="tables">
-                      <table>
-                        <thead>
-                          <th>Día</th>
-                          <th>Hora</th>
-                          <th>Plan</th>
-                        </thead>
-                        <tbody>
-                          {state.otu.programs
-                            .filter((program) => program.day === "L")
-                            .map((program) => {
-                              return (
-                                <tr>
-                                  <td>{program.day}</td>
-                                  <td>{program.time}</td>
-                                  <td>{program.plan}</td>
-                                </tr>
-                              );
-                            })}
-                        </tbody>
-                      </table>
-
-                      <table>
-                        <thead>
-                          <th>Día</th>
-                          <th>Hora</th>
-                          <th>Plan</th>
-                        </thead>
-                        <tbody>
-                          {state.otu.programs
-                            .filter((program) => program.day === "S")
-                            .map((program) => {
-                              return (
-                                <tr>
-                                  <td>{program.day}</td>
-                                  <td>{program.time}</td>
-                                  <td>{program.plan}</td>
-                                </tr>
-                              );
-                            })}
-                        </tbody>
-                      </table>
-                      <table>
-                        <thead>
-                          <th>Día</th>
-                          <th>Hora</th>
-                          <th>Plan</th>
-                        </thead>
-                        <tbody>
-                          {state.otu.programs
-                            .filter((program) => program.day === "D")
-                            .map((program) => {
-                              return (
-                                <tr>
-                                  <td>{program.day}</td>
-                                  <td>{program.time}</td>
-                                  <td>{program.plan}</td>
-                                </tr>
-                              );
-                            })}
-                        </tbody>
-                      </table>
+                      <div>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Día</th>
+                              <th>Hora</th>
+                              <th>Plan</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {state.otu.programs
+                              .filter((program) => program.day === "L")
+                              .map((program, i) => {
+                                return (
+                                  <tr key={i}>
+                                    <td>{program.day}</td>
+                                    <td>{program.time}</td>
+                                    <td>{program.plan}</td>
+                                  </tr>
+                                );
+                              })}
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Día</th>
+                              <th>Hora</th>
+                              <th>Plan</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {state.otu.programs
+                              .filter((program) => program.day === "S")
+                              .map((program, i) => {
+                                return (
+                                  <tr key={i}>
+                                    <td>{program.day}</td>
+                                    <td>{program.time}</td>
+                                    <td>{program.plan}</td>
+                                  </tr>
+                                );
+                              })}
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Día</th>
+                              <th>Hora</th>
+                              <th>Plan</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {state.otu.programs
+                              .filter((program) => program.day === "D")
+                              .map((program, i) => {
+                                return (
+                                  <tr key={i}>
+                                    <td>{program.day}</td>
+                                    <td>{program.time}</td>
+                                    <td>{program.plan}</td>
+                                  </tr>
+                                );
+                              })}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </>
                 ) : (
@@ -735,7 +754,7 @@ const ResumenBody = forwardRef((props, ref) => {
                       !junctions[junctionIndex] ||
                       junction.plans.length === 0
                     )
-                      return <></>;
+                      return <div key={junctionIndex}></div>;
                     let fasesSC = junction.sequence.map((aux) =>
                       parseInt(aux.phid)
                     ); //[1,2,3,4]
@@ -744,7 +763,7 @@ const ResumenBody = forwardRef((props, ref) => {
                       .concat(fasesSC.slice(0, -1)); //[4,1,2,3]
 
                     return (
-                      <>
+                      <div key={junctionIndex}>
                         <div className="page-break" />
                         <div className="section">
                           <h2>{"Programación " + junction.jid}</h2>
@@ -761,285 +780,267 @@ const ResumenBody = forwardRef((props, ref) => {
                               )}
                               <table>
                                 <thead>
-                                  <th rowSpan="2">Plan</th>
-                                  <th rowSpan="2">Ciclo</th>
-                                  <th colSpan={fasesSC.length}>I. fase</th>
-                                  <th colSpan={fasesSC.length}>Ent veh</th>
-                                  <th colSpan={fasesSC.length}>I. verde</th>
-                                  <th colSpan={fasesSC.length}>
-                                    Tpo. verde veh
-                                  </th>
-                                  <th colSpan={fasesSC.length}>
-                                    Tpo. verde peat
-                                  </th>
-                                  <th colSpan={fasesSC.length}>Ent. peat</th>
-                                  <th colSpan={fasesSC.length}>I. sistema</th>
+                                  <tr>
+                                    <th rowSpan="2">Plan</th>
+                                    <th rowSpan="2">Ciclo</th>
+                                    <th colSpan={fasesSC.length}>I. fase</th>
+                                    <th colSpan={fasesSC.length}>Ent veh</th>
+                                    <th colSpan={fasesSC.length}>I. verde</th>
+                                    <th colSpan={fasesSC.length}>
+                                      Tpo. verde veh
+                                    </th>
+                                    <th colSpan={fasesSC.length}>
+                                      Tpo. verde peat
+                                    </th>
+                                    <th colSpan={fasesSC.length}>Ent. peat</th>
+                                    <th colSpan={fasesSC.length}>I. sistema</th>
+                                  </tr>
                                 </thead>
                                 <thead style={{ backgroundColor: "#3f8605" }}>
-                                  <th
-                                    style={{ backgroundColor: "#034472" }}></th>
-                                  <th
-                                    style={{ backgroundColor: "#034472" }}></th>
-                                  {fasesSC.map((fase) => {
-                                    return <th>{"F" + fase}</th>;
-                                  })}
-                                  {fasesSC_from_to.map(
-                                    (faseFrom, faseFromIndex) => {
-                                      let faseTo =
-                                        fasesSC_from_to[
-                                          (faseFromIndex + 1) %
-                                            fasesSC_from_to.length
-                                        ];
-                                      return (
-                                        <th>
-                                          {"F" +
-                                            faseFrom +
-                                            " a " +
-                                            "F" +
-                                            faseTo}
-                                        </th>
-                                      );
-                                    }
-                                  )}
-                                  {fasesSC.map((fase) => {
-                                    return <th>{"F" + fase}</th>;
-                                  })}
-                                  {fasesSC.map((fase) => {
-                                    return <th>{"F" + fase}</th>;
-                                  })}
-                                  {fasesSC.map((fase) => {
-                                    return <th>{"F" + fase}</th>;
-                                  })}
-                                  {fasesSC_from_to.map(
-                                    (faseFrom, faseFromIndex) => {
-                                      let faseTo =
-                                        fasesSC_from_to[
-                                          (faseFromIndex + 1) %
-                                            fasesSC_from_to.length
-                                        ];
-                                      return (
-                                        <th>
-                                          {"F" +
-                                            faseFrom +
-                                            " a " +
-                                            "F" +
-                                            faseTo}
-                                        </th>
-                                      );
-                                    }
-                                  )}
-                                  {fasesSC.map((fase) => {
-                                    return <th>{"F" + fase}</th>;
-                                  })}
+                                  <tr>
+                                    <th
+                                      style={{
+                                        backgroundColor: "#034472",
+                                      }}></th>
+                                    <th
+                                      style={{
+                                        backgroundColor: "#034472",
+                                      }}></th>
+                                    {fasesSC.map((fase, i) => {
+                                      return <th key={i}>{"F" + fase}</th>;
+                                    })}
+                                    {fasesSC_from_to.map(
+                                      (faseFrom, faseFromIndex) => {
+                                        let faseTo =
+                                          fasesSC_from_to[
+                                            (faseFromIndex + 1) %
+                                              fasesSC_from_to.length
+                                          ];
+                                        return (
+                                          <th key={faseFromIndex}>
+                                            {"F" +
+                                              faseFrom +
+                                              " a " +
+                                              "F" +
+                                              faseTo}
+                                          </th>
+                                        );
+                                      }
+                                    )}
+                                    {fasesSC.map((fase, i) => {
+                                      return <th key={i}>{"F" + fase}</th>;
+                                    })}
+                                    {fasesSC.map((fase, i) => {
+                                      return <th key={i}>{"F" + fase}</th>;
+                                    })}
+                                    {fasesSC.map((fase, i) => {
+                                      return <th key={i}>{"F" + fase}</th>;
+                                    })}
+                                    {fasesSC_from_to.map(
+                                      (faseFrom, faseFromIndex) => {
+                                        let faseTo =
+                                          fasesSC_from_to[
+                                            (faseFromIndex + 1) %
+                                              fasesSC_from_to.length
+                                          ];
+                                        return (
+                                          <th key={faseFromIndex}>
+                                            {"F" +
+                                              faseFrom +
+                                              " a " +
+                                              "F" +
+                                              faseTo}
+                                          </th>
+                                        );
+                                      }
+                                    )}
+                                    {fasesSC.map((fase, i) => {
+                                      return <th key={i}>{"F" + fase}</th>;
+                                    })}
+                                  </tr>
                                 </thead>
                                 <tbody>
                                   {junction.plans.map((plan, planIndex) => {
                                     return (
-                                      <>
-                                        <tr>
-                                          <td>{plan.plid}</td>
-                                          <td>{plan.cycle}</td>
+                                      <tr key={planIndex}>
+                                        <td>{plan.plid}</td>
+                                        <td>{plan.cycle}</td>
 
-                                          {/* INICIO DE FASES */}
-                                          {fasesSC.map((fase) => {
-                                            return (
-                                              <>
-                                                <td>
-                                                  {plan.phase_start.find(
+                                        {/* INICIO DE FASES */}
+                                        {fasesSC.map((fase, i) => {
+                                          return (
+                                            <td key={i}>
+                                              {plan.phase_start.find(
+                                                (obj) => obj.phid === fase
+                                              )
+                                                ? plan.phase_start.find(
                                                     (obj) => obj.phid === fase
-                                                  )
-                                                    ? plan.phase_start.find(
-                                                        (obj) =>
-                                                          obj.phid === fase
-                                                      ).value
-                                                    : "-"}
-                                                </td>
-                                              </>
-                                            );
-                                          })}
+                                                  ).value
+                                                : "-"}
+                                            </td>
+                                          );
+                                        })}
 
-                                          {/* ENTREVERDE VEHICULAR EDITABLE */}
-                                          {fasesSC_from_to.map(
-                                            (faseFrom, faseFromIndex) => {
-                                              let faseTo =
-                                                fasesSC_from_to[
-                                                  (faseFromIndex + 1) %
-                                                    fasesSC_from_to.length
-                                                ];
+                                        {/* ENTREVERDE VEHICULAR EDITABLE */}
+                                        {fasesSC_from_to.map(
+                                          (faseFrom, faseFromIndex) => {
+                                            let faseTo =
+                                              fasesSC_from_to[
+                                                (faseFromIndex + 1) %
+                                                  fasesSC_from_to.length
+                                              ];
 
-                                              return (
-                                                <>
-                                                  <td
-                                                    className={
-                                                      boolIntergreen
-                                                        ? "input-entreverde-vehicular"
-                                                        : ""
-                                                    }>
-                                                    {boolIntergreen ? (
-                                                      <>
-                                                        <input
-                                                          type="text"
-                                                          disabled={
-                                                            !info ||
-                                                            !boolIntergreen
-                                                          }
-                                                          style={{
-                                                            width: "1.5rem",
-                                                            textAlign: "center",
-                                                            padding: "0",
-                                                          }}
-                                                          onChange={(e) =>
-                                                            editVehIntergreen(
-                                                              junctionIndex,
-                                                              faseFrom,
-                                                              faseTo,
-                                                              e.currentTarget
-                                                                .value
-                                                            )
-                                                          }
-                                                          value={
-                                                            plan.vehicle_intergreen.find(
+                                            return (
+                                              <td
+                                                key={faseFromIndex}
+                                                className={
+                                                  boolIntergreen
+                                                    ? "input-entreverde-vehicular"
+                                                    : ""
+                                                }>
+                                                {boolIntergreen ? (
+                                                  <>
+                                                    <input
+                                                      type="text"
+                                                      disabled={
+                                                        !info || !boolIntergreen
+                                                      }
+                                                      style={{
+                                                        width: "1.5rem",
+                                                        textAlign: "center",
+                                                        padding: "0",
+                                                      }}
+                                                      onChange={(e) =>
+                                                        editVehIntergreen(
+                                                          junctionIndex,
+                                                          faseFrom,
+                                                          faseTo,
+                                                          e.currentTarget.value
+                                                        )
+                                                      }
+                                                      value={
+                                                        plan.vehicle_intergreen.find(
+                                                          (obj) =>
+                                                            obj.phfrom ===
+                                                              faseFrom &&
+                                                            obj.phto === faseTo
+                                                        )
+                                                          ? plan.vehicle_intergreen.find(
                                                               (obj) =>
                                                                 obj.phfrom ===
                                                                   faseFrom &&
                                                                 obj.phto ===
                                                                   faseTo
-                                                            )
-                                                              ? plan.vehicle_intergreen.find(
-                                                                  (obj) =>
-                                                                    obj.phfrom ===
-                                                                      faseFrom &&
-                                                                    obj.phto ===
-                                                                      faseTo
-                                                                ).value
-                                                              : "-"
-                                                          }
-                                                        />
-                                                      </>
-                                                    ) : plan.vehicle_intergreen.find(
-                                                        (obj) =>
-                                                          obj.phfrom ===
-                                                            faseFrom &&
-                                                          obj.phto === faseTo
-                                                      ) ? (
-                                                      plan.vehicle_intergreen.find(
-                                                        (obj) =>
-                                                          obj.phfrom ===
-                                                            faseFrom &&
-                                                          obj.phto === faseTo
-                                                      ).value
-                                                    ) : (
-                                                      "-"
-                                                    )}
-                                                  </td>
-                                                </>
-                                              );
-                                            }
-                                          )}
-
-                                          {/* INICIO DE VERDE */}
-                                          {fasesSC.map((fase) => {
-                                            return (
-                                              <>
-                                                <td>
-                                                  {plan.green_start.find(
-                                                    (obj) => obj.phid === fase
-                                                  )
-                                                    ? plan.green_start.find(
-                                                        (obj) =>
-                                                          obj.phid === fase
-                                                      ).value
-                                                    : "-"}
-                                                </td>
-                                              </>
+                                                            ).value
+                                                          : "-"
+                                                      }
+                                                    />
+                                                  </>
+                                                ) : plan.vehicle_intergreen.find(
+                                                    (obj) =>
+                                                      obj.phfrom === faseFrom &&
+                                                      obj.phto === faseTo
+                                                  ) ? (
+                                                  plan.vehicle_intergreen.find(
+                                                    (obj) =>
+                                                      obj.phfrom === faseFrom &&
+                                                      obj.phto === faseTo
+                                                  ).value
+                                                ) : (
+                                                  "-"
+                                                )}
+                                              </td>
                                             );
-                                          })}
+                                          }
+                                        )}
 
-                                          {/* TIPO VERDE VEHICULAR */}
-                                          {fasesSC.map((fase) => {
-                                            return (
-                                              <>
-                                                <td>
-                                                  {plan.vehicle_green.find(
+                                        {/* INICIO DE VERDE */}
+                                        {fasesSC.map((fase, i) => {
+                                          return (
+                                            <td key={i}>
+                                              {plan.green_start.find(
+                                                (obj) => obj.phid === fase
+                                              )
+                                                ? plan.green_start.find(
                                                     (obj) => obj.phid === fase
-                                                  )
-                                                    ? plan.vehicle_green.find(
-                                                        (obj) =>
-                                                          obj.phid === fase
-                                                      ).value
-                                                    : "-"}
-                                                </td>
-                                              </>
-                                            );
-                                          })}
+                                                  ).value
+                                                : "-"}
+                                            </td>
+                                          );
+                                        })}
 
-                                          {/* TIPO VERDE PEATONAL */}
-                                          {fasesSC.map((fase) => {
-                                            return (
-                                              <>
-                                                <td>
-                                                  {plan.pedestrian_green.find(
+                                        {/* TIPO VERDE VEHICULAR */}
+                                        {fasesSC.map((fase, i) => {
+                                          return (
+                                            <td key={i}>
+                                              {plan.vehicle_green.find(
+                                                (obj) => obj.phid === fase
+                                              )
+                                                ? plan.vehicle_green.find(
                                                     (obj) => obj.phid === fase
-                                                  )
-                                                    ? plan.pedestrian_green.find(
-                                                        (obj) =>
-                                                          obj.phid === fase
-                                                      ).value
-                                                    : "-"}
-                                                </td>
-                                              </>
-                                            );
-                                          })}
+                                                  ).value
+                                                : "-"}
+                                            </td>
+                                          );
+                                        })}
 
-                                          {/* ENTREVERDE PEATONAL */}
-                                          {fasesSC_from_to.map(
-                                            (faseFrom, faseFromIndex) => {
-                                              let faseTo =
-                                                fasesSC_from_to[
-                                                  (faseFromIndex + 1) %
-                                                    fasesSC_from_to.length
-                                                ];
-                                              return (
-                                                <>
-                                                  <td>
-                                                    {plan.pedestrian_intergreen.find(
+                                        {/* TIPO VERDE PEATONAL */}
+                                        {fasesSC.map((fase, i) => {
+                                          return (
+                                            <td key={i}>
+                                              {plan.pedestrian_green.find(
+                                                (obj) => obj.phid === fase
+                                              )
+                                                ? plan.pedestrian_green.find(
+                                                    (obj) => obj.phid === fase
+                                                  ).value
+                                                : "-"}
+                                            </td>
+                                          );
+                                        })}
+
+                                        {/* ENTREVERDE PEATONAL */}
+                                        {fasesSC_from_to.map(
+                                          (faseFrom, faseFromIndex) => {
+                                            let faseTo =
+                                              fasesSC_from_to[
+                                                (faseFromIndex + 1) %
+                                                  fasesSC_from_to.length
+                                              ];
+                                            return (
+                                              <td key={faseFromIndex}>
+                                                {plan.pedestrian_intergreen.find(
+                                                  (obj) =>
+                                                    obj.phfrom === faseFrom &&
+                                                    obj.phto === faseTo
+                                                )
+                                                  ? plan.pedestrian_intergreen.find(
                                                       (obj) =>
                                                         obj.phfrom ===
                                                           faseFrom &&
                                                         obj.phto === faseTo
-                                                    )
-                                                      ? plan.pedestrian_intergreen.find(
-                                                          (obj) =>
-                                                            obj.phfrom ===
-                                                              faseFrom &&
-                                                            obj.phto === faseTo
-                                                        ).value
-                                                      : "-"}
-                                                  </td>
-                                                </>
-                                              );
-                                            }
-                                          )}
-
-                                          {/* INICIO SISTEMA */}
-                                          {fasesSC.map((fase) => {
-                                            return (
-                                              <>
-                                                <td>
-                                                  {plan.system_start.find(
-                                                    (obj) => obj.phid === fase
-                                                  )
-                                                    ? plan.system_start.find(
-                                                        (obj) =>
-                                                          obj.phid === fase
-                                                      ).value
-                                                    : "-"}
-                                                </td>
-                                              </>
+                                                    ).value
+                                                  : "-"}
+                                              </td>
                                             );
-                                          })}
-                                        </tr>
-                                      </>
+                                          }
+                                        )}
+
+                                        {/* INICIO SISTEMA */}
+                                        {fasesSC.map((fase, i) => {
+                                          return (
+                                            <td key={i}>
+                                              {plan.system_start.find(
+                                                (obj) => obj.phid === fase
+                                              )
+                                                ? plan.system_start.find(
+                                                    (obj) => obj.phid === fase
+                                                  ).value
+                                                : "-"}
+                                            </td>
+                                          );
+                                        })}
+                                      </tr>
                                     );
                                   })}
                                 </tbody>
@@ -1075,7 +1076,7 @@ const ResumenBody = forwardRef((props, ref) => {
                             </div>
                           )}
                         </div>
-                      </>
+                      </div>
                     );
                   })
                 ) : (
@@ -1100,14 +1101,16 @@ const ResumenBody = forwardRef((props, ref) => {
                   <h5>Cabezales</h5>
                   <table>
                     <thead>
-                      <th>Tipo</th>
-                      <th>Led</th>
-                      <th>Halógeno</th>
+                      <tr>
+                        <th>Tipo</th>
+                        <th>Led</th>
+                        <th>Halógeno</th>
+                      </tr>
                     </thead>
                     <tbody>
-                      {state.headers.map((header) => {
+                      {state.headers.map((header, headerIndex) => {
                         return (
-                          <tr>
+                          <tr key={headerIndex}>
                             <td>{header.type}</td>
                             <td>{header.led}</td>
                             <td>{header.hal}</td>
@@ -1237,7 +1240,6 @@ const ResumenBody = forwardRef((props, ref) => {
                 <h2>{"Observaciones"}</h2>
                 <TextareaAutosize
                   className="observaciones"
-                  bsSize="sm"
                   disabled={
                     !(
                       global_state.rol === "Personal UOCT" ||
@@ -1333,45 +1335,34 @@ const ResumenProyecto = (props) => {
               </div>
 
               <div className="descargar-informe2">
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <Label>¿Descargar información complementaria?</Label>
-                      </td>
-                      <td>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              color="primary"
-                              checked={detalles}
-                              onChange={() => setDetalles(!detalles)}
-                              name="gilad"
-                            />
-                          }
-                        />
-                      </td>
-                      <PopOver mensaje="La información complementaria incluye detalles de la OTU, del controlador, UPS, cabezales y postes."></PopOver>
-                    </tr>
-                    <tr>
-                      <p>
-                        Los datos descargados deben ser corroborados por el
-                        usuario que los descarga, siedo su responsabilidad que
-                        la información esté debidamente actualizada, exceptuando
-                        Secuencias, Matriz de entreverdes, Periodizaciones y
-                        Programaciones, ya que estos datos se extraen
-                        automáticamente desde el sistema de control.
-                      </p>
-                      <p style={{ textDecoration: "underline" }}>
-                        IMPORANTE: los entreverdes vehiculares de las
-                        programaciones deben ser actualizados manualmente para
-                        calcular correctamente las tablas de periodización, de
-                        otra forma se considerará un valor por defecto de 4
-                        segundos
-                      </p>
-                    </tr>
-                  </tbody>
-                </table>
+                <Label>¿Descargar información complementaria?</Label>
+
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="primary"
+                      checked={detalles}
+                      onChange={() => setDetalles(!detalles)}
+                      name="gilad"
+                    />
+                  }
+                />
+
+                <PopOver mensaje="La información complementaria incluye detalles de la OTU, del controlador, UPS, cabezales y postes."></PopOver>
+
+                <p>
+                  Los datos descargados deben ser corroborados por el usuario
+                  que los descarga, siedo su responsabilidad que la información
+                  esté debidamente actualizada, exceptuando Secuencias, Matriz
+                  de entreverdes, Periodizaciones y Programaciones, ya que estos
+                  datos se extraen automáticamente desde el sistema de control.
+                </p>
+                <p style={{ textDecoration: "underline" }}>
+                  IMPORANTE: los entreverdes vehiculares de las programaciones
+                  deben ser actualizados manualmente para calcular correctamente
+                  las tablas de periodización, de otra forma se considerará un
+                  valor por defecto de 4 segundos
+                </p>
 
                 <ReactToPrint
                   documentTitle={"UOCT_DACoT_" + state.oid}

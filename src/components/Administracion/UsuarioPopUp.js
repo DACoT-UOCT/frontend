@@ -112,12 +112,12 @@ const UsuarioPopUp = (props) => {
               <TableCell>Nombre</TableCell>
               <TableCell align="left">
                 <Campo
-                  id="standard"
+                  id="nombre-input"
                   label=""
                   variant="standard"
-                  name="otu-serie"
+                  name="nombre"
                   autoComplete="off"
-                  value={state.fullName}
+                  value={state.fullName || ""}
                   onChange={(e) =>
                     dispatch({
                       type: "fullName",
@@ -126,7 +126,9 @@ const UsuarioPopUp = (props) => {
                   }
                 />
               </TableCell>
-              <PopOver mensaje="Mínimo 5 caracteres" />
+              <TableCell>
+                <PopOver mensaje="Mínimo 5 caracteres" />
+              </TableCell>
             </TableRow>
             {props.type !== "edit" && (
               <>
@@ -134,7 +136,7 @@ const UsuarioPopUp = (props) => {
                   <TableCell>Rol</TableCell>
                   <TableCell>
                     <Campo
-                      id="standard-select-currency-native"
+                      id="rol-input"
                       select
                       disabled={props.state === "edit"}
                       label=""
@@ -171,7 +173,7 @@ const UsuarioPopUp = (props) => {
                     <TableCell>Empresa</TableCell>
                     <TableCell>
                       <Campo
-                        id="standard-select-currency-native"
+                        id="empresa-input"
                         select
                         label=""
                         variant="standard"
@@ -211,7 +213,7 @@ const UsuarioPopUp = (props) => {
                     <TableCell>Área</TableCell>
                     <TableCell align="left">
                       <Campo
-                        id="standard-select-currency-native"
+                        id="area-input"
                         select
                         label=""
                         variant="standard"
@@ -241,8 +243,12 @@ const UsuarioPopUp = (props) => {
                               })
                           : areas_UOCT
                               .filter((area_d) => area_d !== state.area)
-                              .map((area_d) => {
-                                return <option value={area_d}>{area_d}</option>;
+                              .map((area_d, i) => {
+                                return (
+                                  <option key={i} value={area_d}>
+                                    {area_d}
+                                  </option>
+                                );
                               })}
                       </Campo>
                     </TableCell>
@@ -254,7 +260,7 @@ const UsuarioPopUp = (props) => {
               <TableCell>Email</TableCell>
               <TableCell align="left">
                 <Campo
-                  id="standard"
+                  id="email-input"
                   disabled={props.type === "edit"}
                   label=""
                   variant="standard"
@@ -269,7 +275,9 @@ const UsuarioPopUp = (props) => {
                   }
                 />
               </TableCell>
-              <PopOver mensaje="Cuenta de Google Suite" />
+              <TableCell>
+                <PopOver mensaje="Cuenta de Google Suite" />
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Permisos de administración</TableCell>

@@ -87,37 +87,35 @@ const CrudControladores = () => {
           </tr>
         </thead>
         <tbody>
-          {state.controladores.map((controlador) => {
+          {state.controladores.map((controlador, i) => {
             return (
-              <>
-                <tr>
-                  <td> {controlador.company.name}</td>
-                  <td>{controlador.model}</td>
-                  <td>{controlador.firmwareVersion}</td>
-                  <td>{controlador.checksum}</td>
-                  <td>{getFecha(controlador.date)}</td>
-                  <td>
-                    <Button
-                      color="danger"
-                      onClick={() => {
-                        setCloseOpen(true);
-                        dispatch({
-                          type: "delete_backup",
-                          payLoad: {
-                            id: controlador.id,
-                            company: controlador.company,
-                            model: controlador.model,
-                            firmwareVersion: controlador.firmwareVersion,
-                            checksum: controlador.checksum,
-                            date: controlador.date,
-                          },
-                        });
-                      }}>
-                      Desabilitar
-                    </Button>
-                  </td>
-                </tr>
-              </>
+              <tr key={i}>
+                <td> {controlador.company.name}</td>
+                <td>{controlador.model}</td>
+                <td>{controlador.firmwareVersion}</td>
+                <td>{controlador.checksum}</td>
+                <td>{getFecha(controlador.date)}</td>
+                <td>
+                  <Button
+                    color="danger"
+                    onClick={() => {
+                      setCloseOpen(true);
+                      dispatch({
+                        type: "delete_backup",
+                        payLoad: {
+                          id: controlador.id,
+                          company: controlador.company,
+                          model: controlador.model,
+                          firmwareVersion: controlador.firmwareVersion,
+                          checksum: controlador.checksum,
+                          date: controlador.date,
+                        },
+                      });
+                    }}>
+                    Desabilitar
+                  </Button>
+                </td>
+              </tr>
             );
           })}
         </tbody>
@@ -147,11 +145,13 @@ const CrudControladores = () => {
               </tr>
             </thead>
             <tbody>
-              <td> {state.delete_backup.company.name}</td>
-              <td>{state.delete_backup.model}</td>
-              <td>{state.delete_backup.firmwareVersion}</td>
-              <td>{state.delete_backup.checksum}</td>
-              <td>{getFecha(state.delete_backup.date)}</td>
+              <tr>
+                <td> {state.delete_backup.company.name}</td>
+                <td>{state.delete_backup.model}</td>
+                <td>{state.delete_backup.firmwareVersion}</td>
+                <td>{state.delete_backup.checksum}</td>
+                <td>{getFecha(state.delete_backup.date)}</td>
+              </tr>
             </tbody>
           </Table>
           <div className="eliminar-controlador-buttons">

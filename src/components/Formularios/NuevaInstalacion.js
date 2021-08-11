@@ -231,7 +231,7 @@ const NuevaInstalacion = (props) => {
               alternativeLabel
               style={{
                 background: "none",
-                "border-bottom": "2px solid #999999",
+                borderBottom: "2px solid #999999",
                 padding: "1.3rem 17rem 1rem 1rem",
               }}>
               {steps.map((label) => (
@@ -243,7 +243,7 @@ const NuevaInstalacion = (props) => {
             <div
               style={{
                 flexGrow: "1",
-                "overflow-y": "scroll",
+                overflowY: "scroll",
               }}>
               <div
                 className="grid-item"
@@ -260,7 +260,9 @@ const NuevaInstalacion = (props) => {
                   style={{
                     paddingTop: "1rem",
                     paddingRight: "1rem",
-                  }}>
+                  }}
+                  component={"span"}
+                  variant={"body2"}>
                   {getStepContent(state.vista)}
                 </Typography>
 

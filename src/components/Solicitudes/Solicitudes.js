@@ -21,7 +21,8 @@ const estados = {
 const Solicitudes = () => {
   const [expanded, setExpanded] = useState(false);
   const [state, dispatch] = useImmerReducer(reducer, initialState);
-  const [notification, setNotification] = useState(""); //indica con un punto rojo si hay updates o new pendientes
+  const [notificationNEW, setNotificationNEW] = useState(false); //indica con un punto rojo si hay updates o new pendientes
+  const [notificationUPDATE, setNotificationUPDATE] = useState(false);
 
   //FUNCIONES QUE PERMITEN CONSULTAR LAS SOLICITUDES
   const consultar_solicitudes = (_type, _after = "") => {
@@ -65,7 +66,7 @@ const Solicitudes = () => {
     GetRequests,
     (data) => {
       if (data.projects.edges.map((edge) => edge.node).length > 0)
-        setNotification("NEW");
+        setNotificationNEW(true);
     },
     {
       first: 1,
@@ -80,7 +81,7 @@ const Solicitudes = () => {
     GetRequests,
     (data) => {
       if (data.projects.edges.map((edge) => edge.node).length > 0)
-        setNotification("UPDATE");
+        setNotificationUPDATE(true);
     },
     {
       first: 1,
@@ -104,7 +105,7 @@ const Solicitudes = () => {
             }}>
             <span>
               Nuevas instalaciones
-              {notification === "NEW" && <span class="dot"></span>}
+              {notificationNEW && <span className="dot"></span>}
             </span>
           </button>
 
@@ -117,7 +118,7 @@ const Solicitudes = () => {
             }}>
             <span>
               Actualización
-              {notification === "UPDATE" && <span class="dot"></span>}
+              {notificationUPDATE && <span class="dot"></span>}
             </span>
           </button>
         </div>
@@ -132,7 +133,7 @@ const Solicitudes = () => {
           titulo={"Solicitudes de " + state.vista.toLowerCase()}
           render={(request, index) => {
             return (
-              <>
+              <div key={index}>
                 <PanelInstalacion
                   expanded={expanded}
                   id={request.oid}
@@ -142,7 +143,7 @@ const Solicitudes = () => {
                   date={request.metadata.statusDate}
                   handleChange={handleChange}
                 />
-              </>
+              </div>
             );
           }}
           tipo={state.vista}
