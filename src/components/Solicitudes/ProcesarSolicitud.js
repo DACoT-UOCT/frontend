@@ -33,6 +33,7 @@ export default function ProcesarSolicitud(props) {
   const [submit, setSubmit] = useState(false);
 
   const aprobar_rechazar_solicitud = (aprobar) => {
+    sessionStorage.clear();
     let respuesta = {
       oid: global_state.actualizando.oid,
       status: global_state.actualizando.metadata.status,

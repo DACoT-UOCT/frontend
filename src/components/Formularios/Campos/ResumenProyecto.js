@@ -7,7 +7,6 @@ import { Label, Button } from "reactstrap";
 import { useLocation } from "react-router-dom";
 import { Checkbox, FormControlLabel } from "@material-ui/core";
 import { getFecha } from "../../Shared/Utils/general_functions";
-import PopOver from "../../Shared/PopOver";
 import { makeStyles } from "@material-ui/core/styles";
 import { GQLclient, StateContext } from "../../App";
 import { useHistory } from "react-router-dom";
@@ -145,6 +144,7 @@ const ResumenBody = forwardRef((props, ref) => {
   const [savingIntergreens, setSavingIntergreens] = useState(false);
   const programacionesRef = useRef(null);
   let history = useHistory();
+
   const programacionesDisponibles =
     state.otu.junctions[0].plans != null &&
     state.otu.junctions[0].plans.length > 0;
@@ -311,13 +311,14 @@ const ResumenBody = forwardRef((props, ref) => {
                     <td className="label">Código en sistema:</td>
                     <td>{state.oid}</td>
                     <td> </td>
-                    <td> </td>
                     <td className="label">Comuna:</td>
                     <td>{state.metadata.commune.name}</td>
                     <td> </td>
-                    <td> </td>
                     <td className="label">Emisión de documento:</td>
                     <td>{getFecha(new Date())}</td>
+                    <td> </td>
+                    {/* <td className="label">Estado a la fecha:</td>
+                    <td className={status.operativa}>{"Operativo"}</td> */}
                   </tr>
                 </tbody>
               </table>
@@ -1151,10 +1152,6 @@ const ResumenBody = forwardRef((props, ref) => {
                         <td className="label">Checksum:</td>
                         <td>{state.controller.model.checksum}</td>
                       </tr>
-                      {/* <tr>
-                      <td className="label">Fecha del modelo:</td>
-                      <td>{getFecha(state.controller.model.date)}</td>
-                    </tr> */}
                     </tbody>
                   </table>
                 </div>
@@ -1335,20 +1332,25 @@ const ResumenProyecto = (props) => {
               </div>
 
               <div className="descargar-informe2">
-                <Label>¿Descargar información complementaria?</Label>
-
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="primary"
-                      checked={detalles}
-                      onChange={() => setDetalles(!detalles)}
-                      name="gilad"
-                    />
-                  }
-                />
-
-                <PopOver mensaje="La información complementaria incluye detalles de la OTU, del controlador, UPS, cabezales y postes."></PopOver>
+                <div>
+                  <Label style={{ marginRight: "1rem" }}>
+                    ¿Descargar con información complementaria?
+                  </Label>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="primary"
+                        checked={detalles}
+                        onChange={() => setDetalles(!detalles)}
+                        name="gilad"
+                      />
+                    }
+                  />
+                </div>
+                <p style={{ fontSize: "0.8rem" }}>
+                  La información complementaria incluye detalles de la OTU, del
+                  controlador, UPS, cabezales y postes.
+                </p>
 
                 <p>
                   Los datos descargados deben ser corroborados por el usuario

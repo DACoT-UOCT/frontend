@@ -62,20 +62,11 @@ const BarraBusqueda = (props) => {
             type: STATE_VARS.requestConsultada,
             payLoad: procesar_json_recibido(response.project),
           });
-          // setRequestConsultada(procesar_json_recibido(response.project));
-          if (props.rol === "Personal UOCT" || props.is_admin) {
-            //se puede procesar la solicitud
-            dispatch({
-              type: STATE_VARS.statusConsultado,
-              payLoad: "Operativo (solicitud de actualización pendiente)",
-            });
-          } else {
-            //no se puede procesar la solicitud
-            dispatch({
-              type: STATE_VARS.statusConsultado,
-              payLoad: "Operativo",
-            });
-          }
+
+          dispatch({
+            type: STATE_VARS.statusConsultado,
+            payLoad: "Operativo (solicitud de actualización pendiente)",
+          });
         }
       })
       .catch((err) => {
@@ -160,16 +151,6 @@ const BarraBusqueda = (props) => {
     });
     //si el jid consultado existe en el sessionStorage, no se consulta al backend
     id_consultado = "X" + id_consultado.slice(1, -1) + "0";
-    if (
-      state.dataConsultada != null &&
-      id_consultado === state.dataConsultada.oid
-    ) {
-      dispatch({
-        type: STATE_VARS.previewOpen,
-        payLoad: true,
-      });
-      return;
-    }
 
     //primero se busca si existe como latest en PRODUCTION
     //Si no, se busca en status NEW o PRODUCTION, pero solo si es personal UOCT

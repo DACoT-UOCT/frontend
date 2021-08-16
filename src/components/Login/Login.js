@@ -100,20 +100,9 @@ const Login = () => {
                 admin@dacot.cl{" "}
               </a>
             </span>
-            <span className={styles.sub}>@DACoT 2020</span>
+            <span className={styles.sub}>@DACoT 2021</span>
           </div>
-          <footer className={styles.footer}>
-            {/* <span>
-              ¿Necesitas acceder a los datos semafóricos de Santiago?
-              <a
-                target="_blank"
-                className={styles.link}
-                href="https://dacot.duckdns.org/api/v1/docs#/Junctions">
-                {" "}
-                ¡Utiliza nuestra API! (Beta)
-              </a>
-            </span> */}
-          </footer>
+          <footer className={styles.footer}></footer>
         </>
       ) : (
         <div className={styles.init}>

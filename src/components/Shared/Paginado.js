@@ -24,7 +24,6 @@ const Paginado = (props) => {
       .then((response) => {
         setElements(response.elements);
         setPageInfo(response.pageInfo);
-
         setStatus("success");
       })
       .catch((err) => {

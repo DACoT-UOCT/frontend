@@ -118,7 +118,7 @@ const Solicitudes = () => {
             }}>
             <span>
               Actualización
-              {notificationUPDATE && <span class="dot"></span>}
+              {notificationUPDATE && <span className="dot"></span>}
             </span>
           </button>
         </div>

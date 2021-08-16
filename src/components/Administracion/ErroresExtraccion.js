@@ -74,7 +74,7 @@ const ErroresExtraccion = (props) => {
   //   setRegistros(data.failedPlans)
   // );
 
-  const consultar_errores = (_type, _after = "") => {
+  const consultar_errores = (_after = "") => {
     return GQLclient.request(GetFailedPlans, {
       first: 50,
       after: _after,

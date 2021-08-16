@@ -1,30 +1,40 @@
 import { initialState } from "../Reducers/FormularioReducer";
 import decamelizeKeys from "@puuuudding/decamelize-keys";
+// import decamelizeKeysDeep from "decamelize-keys-deep";
 import camelcaseKeysDeep from "camelcase-keys-deep";
 
 //Interfaz de comunicacion entre la api y el frontend para enviar formularios de instalaciones
 //notar que el backend trabaja con variables camelcase y el frontend con snake case
 
+export const date_format = (date) => {
+  let temp_date = new Date(date);
+  return (
+    temp_date.getFullYear() +
+    "-" +
+    ("0" + (temp_date.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + temp_date.getDate()).slice(-2)
+  );
+};
+
 //procesa el json consultado para mostrarlo en el formulario
 export const procesar_json_recibido = (aux) => {
-  var temp = decamelizeKeys(aux, { deep: true });
+  let temp = decamelizeKeys(JSON.parse(JSON.stringify(aux)), { deep: true });
 
-  if (temp.ups === null) {
+  if (!temp.ups) {
     delete temp.ups;
   }
   temp.metadata.installation_date = temp.metadata.installation_date
     ? Date.parse(temp.metadata.installation_date)
     : Date.now();
 
-  temp.metadata.installation_company =
-    temp.metadata.installation_company === null
-      ? "Sin asignar"
-      : temp.metadata.installation_company.name;
+  temp.metadata.installation_company = !temp.metadata.installation_company
+    ? "Sin asignar"
+    : temp.metadata.installation_company.name;
 
-  temp.metadata.pdf_data =
-    temp.metadata.pdf_data.data === null
-      ? null
-      : temp.metadata.pdf_data.data.slice(2, -1);
+  temp.metadata.pdf_data = !temp.metadata.pdf_data.data
+    ? null
+    : temp.metadata.pdf_data.data.slice(2, -1);
 
   if (!temp.poles) {
     temp.poles = {
@@ -34,66 +44,43 @@ export const procesar_json_recibido = (aux) => {
     };
   }
 
-  temp.metadata.pedestrian_demand =
-    temp.metadata.pedestrian_demand === undefined
-      ? false
-      : temp.metadata.pedestrian_demand;
-  temp.metadata.pedestrian_facility =
-    temp.metadata.pedestrian_facility === undefined
-      ? false
-      : temp.metadata.pedestrian_facility;
-  temp.metadata.local_detector =
-    temp.metadata.local_detector === undefined
-      ? false
-      : temp.metadata.local_detector;
-  temp.metadata.scoot_detector =
-    temp.metadata.scoot_detector === undefined
-      ? false
-      : temp.metadata.scoot_detector;
+  temp.metadata.pedestrian_demand = !temp.metadata.pedestrian_demand
+    ? false
+    : temp.metadata.pedestrian_demand;
+  temp.metadata.pedestrian_facility = !temp.metadata.pedestrian_facility
+    ? false
+    : temp.metadata.pedestrian_facility;
+  temp.metadata.local_detector = !temp.metadata.local_detector
+    ? false
+    : temp.metadata.local_detector;
+  temp.metadata.scoot_detector = !temp.metadata.scoot_detector
+    ? false
+    : temp.metadata.scoot_detector;
 
-  temp.controller = //REVISAR TODO
-    temp.controller === undefined
-      ? initialState.controller
-      : {
-          gps:
-            temp.controller.gps === undefined
-              ? initialState.controller.gps
-              : temp.controller.gps,
-          model:
-            temp.controller.model === undefined
-              ? initialState.controller.model
-              : temp.controller.model,
-        };
+  temp.controller = !temp.controller //REVISAR TODO
+    ? initialState.controller
+    : {
+        gps: !temp.controller.gps
+          ? initialState.controller.gps
+          : temp.controller.gps,
+        model: !temp.controller.model
+          ? initialState.controller.model
+          : temp.controller.model,
+      };
 
   temp.otu.metadata = temp.otu.metadata
-    ? {
-        serial: temp.otu.metadata.serial ? "" : temp.otu.metadata.serial,
-        ip_address: temp.otu.metadata.ip_address
-          ? ""
-          : temp.otu.metadata.ip_address,
-        netmask: temp.otu.metadata.netmask ? "" : temp.otu.metadata.netmask,
-        control: temp.otu.metadata.control ? 0 : temp.otu.metadata.control,
-        answer: temp.otu.metadata.answer ? 0 : temp.otu.metadata.answer,
-        link_type: temp.otu.metadata.link_type
-          ? ""
-          : temp.otu.metadata.link_type,
-        link_owner: temp.otu.metadata.link_owner
-          ? ""
-          : temp.otu.metadata.link_owner,
-      }
+    ? temp.otu.metadata
     : initialState.otu.metadata;
 
-  temp.headers =
-    temp.headers === undefined
-      ? initialState.headers
-      : temp.headers.length === 0
-      ? initialState.headers
-      : temp.headers;
+  temp.headers = !temp.headers
+    ? initialState.headers
+    : temp.headers.length === 0
+    ? initialState.headers
+    : temp.headers;
 
-  temp.metadata.img =
-    temp.metadata.img.data === null
-      ? "/no_image.png"
-      : "data:image/png;base64," + temp.metadata.img.data.slice(2, -1);
+  temp.metadata.img = !temp.metadata.img.data
+    ? "/no_image.png"
+    : "data:image/png;base64," + temp.metadata.img.data.slice(2, -1);
 
   temp.observation = temp.observation.message;
 
@@ -152,14 +139,9 @@ export const procesar_json_envio = (state_copy, url) => {
     state_copy.controller.model.company.name;
   // delete state_copy.controller.model.date;
 
-  var temp = new Date(state_copy.metadata.installation_date);
-  state_copy.metadata.installation_date =
-    temp.getFullYear() +
-    "-" +
-    ("0" + (temp.getMonth() + 1)).slice(-2) +
-    "-" +
-    ("0" + temp.getDate()).slice(-2);
-  // return string;
+  state_copy.metadata.installation_date = date_format(
+    state_copy.metadata.installation_date
+  );
 
   //SE ENVIA EL CÓDIGO DE LA COMUNA, NO EL NOMBRE
   state_copy.metadata.commune = state_copy.metadata.commune.code;

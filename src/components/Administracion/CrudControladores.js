@@ -21,6 +21,7 @@ const CrudControladores = () => {
   const [newOpen, setNewOpen] = useState(false);
   const [closeOpen, setCloseOpen] = useState(false);
   const [state, dispatch] = useImmerReducer(reducer, initialState);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   const controladoresQuery = useQuery(GetControllers, (data) => {
@@ -28,15 +29,18 @@ const CrudControladores = () => {
   });
 
   const eliminar_controlador = (_cid) => {
+    setLoading(true);
     GQLclient.request(deleteController, {
       cid: _cid,
     })
       .then((response) => {
+        // setLoading(false);
         alert("Controlador eliminado");
         history.go(0);
         // props.setOpen(false);
       })
       .catch((err) => {
+        setLoading(false);
         alert("Error en el envio");
       });
   };
@@ -163,6 +167,7 @@ const CrudControladores = () => {
             </Button>
             <Button
               color="danger"
+              disabled={loading}
               onClick={() => {
                 eliminar_controlador(state.delete_backup.id);
               }}>

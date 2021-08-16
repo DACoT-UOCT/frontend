@@ -53,14 +53,17 @@ const PreviewInstalacion = (props) => {
   const history_panel = location.pathname === "/historial";
   const history = useHistory();
   let update_data = props.update;
+  const NEW_bool = instalacion.metadata.status === "NEW";
+  const UPDATE_bool = update_data && update_data.metadata.status === "UPDATE";
 
   useEffect(() => {
+    //variable auxialiar para bloquear acciones de edicion si es que hay updates pendiente
     dispatch({ type: "update", payLoad: update_data !== null });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (location.pathname === "/solicitudes") {
-    update_data = props.instalacion;
-  }
+  // if (location.pathname === "/solicitudes") {
+  //   update_data = props.instalacion;
+  // }
 
   if (instalacion == null) {
     return <Loading />;
@@ -86,7 +89,7 @@ const PreviewInstalacion = (props) => {
                 size="lg"
                 block
                 style={{ fontSize: "3em" }}>
-                + información
+                Mostrar información vigente
               </Button>
             </Link>
           </div>
@@ -148,9 +151,7 @@ const PreviewInstalacion = (props) => {
       </div>
       <div className="buttons">
         {(state.rol === "Personal UOCT" || state.is_admin) &&
-          (["NEW", "UPDATE"].includes(instalacion.metadata.status) ||
-            props.status ===
-              "Operativo (solicitud de actualización pendiente)") && (
+          (NEW_bool || UPDATE_bool) && (
             <>
               <Link
                 to="/procesar/solicitud"
@@ -159,7 +160,7 @@ const PreviewInstalacion = (props) => {
                   if (location.pathname === "/") props.resetSessionStorage();
                   dispatch({
                     type: "levantar_actualizacion",
-                    payLoad: update_data,
+                    payLoad: NEW_bool ? instalacion : update_data,
                   });
                 }}>
                 <Button color="info">Procesar solicitud pendiente</Button>

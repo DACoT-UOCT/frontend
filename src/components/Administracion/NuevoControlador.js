@@ -14,6 +14,7 @@ const NuevoControlador = (props) => {
   const dispatch = props.dispatch;
   const [marcas, setMarcas] = useState(new Set());
   const [modelos, setModelos] = useState(new Set());
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -41,6 +42,7 @@ const NuevoControlador = (props) => {
   };
 
   const registrar_boton = () => {
+    setLoading(true);
     if (
       state.marca === "" ||
       state.model === "" ||
@@ -61,10 +63,12 @@ const NuevoControlador = (props) => {
     })
       .then((response) => {
         alert("Controlador registrado");
+        // setLoading(false);
         history.go(0);
         props.setOpen(false);
       })
       .catch((err) => {
+        setLoading(false);
         alert("Error en el envio");
       });
   };
@@ -153,6 +157,7 @@ const NuevoControlador = (props) => {
           })
         }></TextField>
       <Button
+        disabled={loading}
         onClick={() => {
           registrar_boton();
         }}>

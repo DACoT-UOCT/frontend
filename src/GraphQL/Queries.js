@@ -25,16 +25,6 @@ export const GetCompanies = gql`
   }
 `;
 
-export const GetLogs = gql`
-  {
-    actionsLogs {
-      action
-      date
-      user
-    }
-  }
-`;
-
 export const GetCommunes = gql`
   {
     communes {
@@ -74,6 +64,39 @@ export const GetFailedPlans2 = gql`
     failedPlans {
       id
       date
+    }
+  }
+`;
+
+export const GetLogs = gql`
+  query actionLogs(
+    $first: Int
+    $after: String
+    $startDate: DateTime!
+    $endDate: DateTime!
+  ) {
+    actionLogs(
+      first: $first
+      after: $after
+      startDate: $startDate
+      endDate: $endDate
+    ) {
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          id
+          action
+          context
+          date
+          origin
+          user
+        }
+      }
     }
   }
 `;

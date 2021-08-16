@@ -101,6 +101,7 @@ const NuevaInstalacion = (props) => {
   useEffect(() => {
     if (state.submit === true) {
       //procesa los datos antes de enviar
+      sessionStorage.clear();
       let _data = procesar_json_envio(
         JSON.parse(JSON.stringify(state)),
         location.pathname

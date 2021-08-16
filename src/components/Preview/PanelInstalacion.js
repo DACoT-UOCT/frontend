@@ -45,6 +45,7 @@ export default function PanelInstalacion(props) {
   const history_panel = location.pathname === "/historial";
 
   const [instalacion, setInstalacion] = useState(null);
+  const [request, setRequest] = useState(null);
   const [consultado, setConsultado] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -61,7 +62,11 @@ export default function PanelInstalacion(props) {
     }
   }, [props.expanded]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  async function getData() {
+  const consultar = () => {
+    //consulta datos de la instalacion, y si corresponde, datos de UPDATE o NEW
+    setLoading(true);
+    setError("");
+
     let request;
     let variables;
     if (history_panel) {
@@ -77,34 +82,42 @@ export default function PanelInstalacion(props) {
         status: props.status,
       };
     }
-
-    return new Promise((resolve, reject) => {
+    let queries = [];
+    //consulta la request NEW o UPDATE, o alguna version del historial
+    queries.push(
       GQLclient.request(request, variables)
         .then((response) => {
           if (history_panel) {
             //en el historial
             setInstalacion(procesar_json_recibido(response.version));
-          } else {
+          } else if (props.status === "NEW") {
             setInstalacion(procesar_json_recibido(response.project));
+          } else if (props.status === "UPDATE") {
+            setRequest(procesar_json_recibido(response.project));
           }
-          resolve();
         })
         .catch((err) => {
-          reject(err);
-        });
-    });
-  }
-  const consultar = async () => {
-    setLoading(true);
-    setError("");
+          setError("Error en la consulta");
+        })
+    );
 
-    try {
-      await getData();
-    } catch (error) {
-      setError("Error en la consulta");
+    //consulta la ultima version vigente para instalaciones con UPDATE pendiente
+    if (!history_panel && props.status === "UPDATE") {
+      variables.status = "PRODUCTION";
+      queries.push(
+        GQLclient.request(request, variables)
+          .then((response) => {
+            setInstalacion(procesar_json_recibido(response.project));
+          })
+          .catch((err) => {
+            setError("Error en la consulta");
+          })
+      );
     }
 
-    setLoading(false);
+    Promise.all(queries)
+      .catch(() => setError("Error en la consulta"))
+      .finally(() => setLoading(false));
   };
 
   const getStatus = () => {
@@ -113,10 +126,9 @@ export default function PanelInstalacion(props) {
       if (props.vid === "latest") return "Operativa";
       else return "Versión histórica";
     } else {
-      if (instalacion.metadata.status === "NEW")
-        return "Solicitud de nueva instalación pendiente";
-      else if (instalacion.metadata.status === "UPDATE")
-        return "Solicitud de actualización pendiente";
+      if (props.status === "NEW") return "Solicitud de nueva instalación";
+      else if (props.status === "UPDATE")
+        return "Instalación operativa con Solicitud de actualización pendiente";
     }
   };
 
@@ -157,6 +169,7 @@ export default function PanelInstalacion(props) {
           <AccordionDetails className={styles.details}>
             <PreviewInstalacion
               instalacion={instalacion}
+              update={request}
               vid={props.vid}
               status={getStatus()}
             />
