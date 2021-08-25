@@ -3,7 +3,6 @@ import "../../../App.css";
 import styles from "./Campos.module.css";
 import { Label } from "reactstrap";
 import { styled } from "@material-ui/core/styles";
-import DatePicker from "react-datepicker";
 import {
   Checkbox,
   FormControlLabel,
@@ -15,9 +14,10 @@ import {
   TextField,
 } from "@material-ui/core";
 import { useQuery } from "../../../GraphQL/useQuery";
-import { GetCommunes, GetCompanies } from "../../../GraphQL/Queries";
+import { GetCommunes } from "../../../GraphQL/Queries";
 import Loading from "../../Shared/Loading";
 import { StateContext } from "../../App";
+import { date_format } from "../../Shared/API/Interface";
 
 //COMPONENTE DEL FORMULARIO QUE CONTIENE INFORMACION GENERAL DE LA INSTALACION
 //COMUNA, EMPRESA MANTENEDORA , EMPRESA INSTALADORA, DETECTORES
@@ -28,18 +28,11 @@ const General = (props) => {
   const metadata = props.state;
   const dispatch = props.dispatch;
   const [comunas, setComunas] = useState([]);
-  const [companies, setCompanies] = useState([]);
   const global_context = useContext(StateContext);
   const comunasQuery = useQuery(GetCommunes, (data) => {
     setComunas(data.communes);
   });
-  const empresasQuery = useQuery(GetCompanies, (data) => {
-    setCompanies(
-      data.companies.map((company) => {
-        return company.name;
-      })
-    );
-  });
+
   const _align = "right";
   return (
     <>
@@ -55,48 +48,6 @@ const General = (props) => {
         style={{ width: "70%", paddingTop: "2rem" }}>
         <Table size="small" aria-label="simple table">
           <TableBody>
-            <TableRow>
-              <TableCell component="th" scope="row" align={_align}>
-                <Label>Empresa instaladora</Label>
-              </TableCell>
-              <TableCell align="left">
-                {empresasQuery.status === "success" ? (
-                  <Campo
-                    id="standard-select-currency-native"
-                    select
-                    style={{ transform: "translateY(14%)" }}
-                    variant="standard"
-                    name="instalador"
-                    autoComplete="off"
-                    SelectProps={{
-                      native: true,
-                    }}
-                    value={metadata.installation_company}
-                    onChange={(e) =>
-                      dispatch({
-                        type: "metadata",
-                        fieldName: "installation_company",
-                        payLoad: e.currentTarget.value,
-                      })
-                    }>
-                    <option hidden></option>
-                    {/* <option value={metadata.installation_company}>
-                      {metadata.installation_company}
-                    </option> */}
-                    {companies.map((company, i) => {
-                      return (
-                        <option key={company + i} value={company}>
-                          {company}
-                        </option>
-                      );
-                    })}
-                  </Campo>
-                ) : (
-                  <Loading />
-                )}
-              </TableCell>
-            </TableRow>
-
             <TableRow>
               <TableCell align={_align}>
                 <Label>Comuna</Label>
@@ -172,29 +123,12 @@ const General = (props) => {
               <TableCell component="th" scope="row" align={_align}>
                 <Label
                   style={{ paddingTop: "0.8rem", paddingBottom: "0.8rem" }}>
-                  Última modificación del controlador
+                  Última modificación del registro
                 </Label>
               </TableCell>
               <TableCell align="left">
-                <DatePicker
-                  dateFormat="dd/MM/yyyy"
-                  withPortal
-                  selected={
-                    metadata.installation_date === undefined
-                      ? Date.now()
-                      : metadata.installation_date
-                  }
-                  onChange={(date) =>
-                    dispatch({
-                      type: "metadata",
-                      fieldName: "installation_date",
-                      payLoad: date,
-                    })
-                  }
-                />
-                {metadata.installation_date === undefined && (
-                  <p>Campo no ingresado</p>
-                )}
+                {date_format(metadata.status_date) ||
+                  "Información no disponible"}
               </TableCell>
             </TableRow>
 

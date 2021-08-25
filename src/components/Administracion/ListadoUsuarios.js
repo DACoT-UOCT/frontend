@@ -21,12 +21,20 @@ const ListadoUsuarios = (props) => {
   const [editOpen, setEditOpen] = useState(false);
   const [newOpen, setNewOpen] = useState(false);
 
-  const usuariosQuery = useQuery(GetUsers, (data) => {
-    dispatch({ type: "usuarios", payLoad: data.users });
-  });
-  const companiesQuery = useQuery(GetCompanies, (data) => {
-    dispatch({ type: "empresas", payLoad: data.companies });
-  });
+  const usuariosQuery = useQuery(
+    GetUsers,
+    (data) => {
+      dispatch({ type: "usuarios", payLoad: data.users });
+    },
+    { showDisabled: true }
+  );
+  const companiesQuery = useQuery(
+    GetCompanies,
+    (data) => {
+      dispatch({ type: "empresas", payLoad: data.companies });
+    },
+    { showDisabled: false }
+  );
 
   if (
     usuariosQuery.status === "loading" ||
@@ -74,6 +82,7 @@ const ListadoUsuarios = (props) => {
             <th onClick={() => sortTable(2)}>Empresa/Área</th>
             <th onClick={() => sortTable(3)}>Correo</th>
             <th onClick={() => sortTable(4)}>Administrador</th>
+            <th onClick={() => sortTable(5)}>Estado usuario</th>
             <th>Acción</th>
           </tr>
         </thead>
@@ -91,6 +100,7 @@ const ListadoUsuarios = (props) => {
                 </td>
                 <td> {usuario.email}</td>
                 <td>{usuario.isAdmin ? "Si" : "No"}</td>
+                <td>{!usuario.disabled ? "Hailitado" : "Desabilitado"}</td>
                 <td>
                   {usuario.email !== "seed@dacot.uoct.cl" &&
                     usuario.email !== "admin@dacot.uoct.cl" && (
@@ -99,7 +109,8 @@ const ListadoUsuarios = (props) => {
                           dispatch({ type: "editar", payLoad: usuario });
                           setEditOpen(true);
                         }}>
-                        Editar / Desabilitar
+                        {"Editar /" +
+                          (usuario.disabled ? "Habilitar" : "Desabilitar")}
                       </Button>
                     )}
                 </td>

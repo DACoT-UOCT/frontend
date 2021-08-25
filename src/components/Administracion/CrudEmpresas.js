@@ -36,13 +36,13 @@ const CrudEmpresas = (props) => {
   const [empresas, setEmpresas] = useState([]);
   const history = useHistory();
 
-  const companiesQuery = useQuery(GetCompanies, (data) => {
-    setEmpresas(
-      data.companies.map((empresa) => {
-        return empresa.name;
-      })
-    );
-  });
+  const companiesQuery = useQuery(
+    GetCompanies,
+    (data) => {
+      setEmpresas(data.companies);
+    },
+    { showDisabled: true }
+  );
 
   const try_submit = () => {
     if (newCompany === "") {
@@ -111,6 +111,7 @@ const CrudEmpresas = (props) => {
         <thead>
           <tr>
             <th onClick={() => sortTable(0)}>Nombre de la empresa</th>
+            <th onClick={() => sortTable(1)}>Estado</th>
             <th>Acción</th>
           </tr>
         </thead>
@@ -118,15 +119,16 @@ const CrudEmpresas = (props) => {
           {empresas.map((empresa, i) => {
             return (
               <tr key={i}>
-                <td> {empresa}</td>
+                <td> {empresa.name}</td>
+                <td> {empresa.disabled ? "Desabilitada" : "Habilitada"}</td>
                 <td>
                   <Button
                     onClick={() => {
                       //   dispatch({ type: "editar", payLoad: usuario });
-                      setNewCompany(empresa);
+                      setNewCompany(empresa.name);
                       setDeleteOpen(true);
                     }}>
-                    Desabilitar empresa
+                    {empresa.disabled ? "Habilitar" : "Desabilitar"}
                   </Button>
                 </td>
               </tr>

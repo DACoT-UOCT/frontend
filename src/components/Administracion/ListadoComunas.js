@@ -21,12 +21,20 @@ const ListadoComunas = (props) => {
   const comunasQuery = useQuery(GetCommunes, (data) => {
     dispatch({ type: "comunas", payLoad: data.communes });
   });
-  const usuariosQuery = useQuery(GetUsers, (data) => {
-    dispatch({ type: "usuarios", payLoad: data.users });
-  });
-  const companiesQuery = useQuery(GetCompanies, (data) => {
-    dispatch({ type: "empresas", payLoad: data.companies });
-  });
+  const usuariosQuery = useQuery(
+    GetUsers,
+    (data) => {
+      dispatch({ type: "usuarios", payLoad: data.users });
+    },
+    { showDisabled: false }
+  );
+  const companiesQuery = useQuery(
+    GetCompanies,
+    (data) => {
+      dispatch({ type: "empresas", payLoad: data.companies });
+    },
+    { showDisabled: false }
+  );
 
   if (
     comunasQuery.status === "loading" ||

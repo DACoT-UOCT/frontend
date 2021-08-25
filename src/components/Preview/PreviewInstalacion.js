@@ -120,10 +120,7 @@ const PreviewInstalacion = (props) => {
                     : "Sn especificar"}
                 </td>
               </tr>
-              <tr>
-                <td className="label">Empresa instaladora:</td>
-                <td>{instalacion.metadata.installation_company}</td>
-              </tr>
+
               <tr>
                 <td className="label">Empresa mantenedora:</td>
                 <td>
@@ -132,14 +129,6 @@ const PreviewInstalacion = (props) => {
                     : "Comuna sin mantendor"}
                 </td>
               </tr>
-              {/* <tr>
-                <td className="label">Última modificación controlador:</td>
-                <td>
-                  {instalacion.metadata.installation_date == undefined
-                    ? "Sin registro"
-                    : getFecha(instalacion.metadata.installation_date)}
-                </td>
-              </tr> */}
             </tbody>
           </table>
         </div>

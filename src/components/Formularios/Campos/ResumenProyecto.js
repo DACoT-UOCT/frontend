@@ -181,6 +181,22 @@ const ResumenBody = forwardRef((props, ref) => {
     setState(aux);
   };
 
+  const getStatus = () => {
+    //new, update, history, production
+    const style_ok = { backgroundColor: "#0cbd1b80" };
+    const style_warning = { backgroundColor: "#fffb19" };
+    if (state.metadata.version !== "latest")
+      return <td style={style_warning}>{"Registro histórico"}</td>;
+    if (state.metadata.status === "NEW")
+      return <td style={style_warning}>{"Instalación nueva"}</td>;
+    if (state.metadata.status === "PRODUCTION")
+      return <td style={style_ok}>{"Operativa"}</td>;
+    if (state.metadata.status === "UPDATE")
+      return (
+        <td style={style_warning}>{"Instalación con revisiones pendientes"}</td>
+      );
+  };
+
   const saveVehIntergreenChanges = () => {
     //funcion auxiliar para hacer las mutationsetVehIntergreen antes del Computetables
     const saveBehIntergreenPromise = (j_index) => {
@@ -195,23 +211,27 @@ const ResumenBody = forwardRef((props, ref) => {
       });
       var _jid = state.otu.junctions[j_index].jid;
 
-      GQLclient.request(setVehIntergreen, {
+      return GQLclient.request(setVehIntergreen, {
         data: {
           jid: _jid,
           status: "PRODUCTION",
           phases: _phases,
         },
-      }).catch((err) => console.log(err));
+      })
+        .then(() => console.log("Set veh completada" + _jid))
+        .catch((err) => console.log(err));
     };
 
     setSavingIntergreens(true);
+    let promesas = state.otu.junctions.map((junction, j_index) => {
+      return saveBehIntergreenPromise(j_index);
+    });
 
-    Promise.all(
-      state.otu.junctions.map((junction, j_index) => {
-        return saveBehIntergreenPromise(j_index);
-      })
-    )
+    console.log(promesas);
+
+    Promise.all(promesas)
       .then(() => {
+        console.log("setVeh promises completado");
         compute_tables();
       })
       .catch((error) => {
@@ -239,17 +259,22 @@ const ResumenBody = forwardRef((props, ref) => {
 
   const getUpdatedTables = (_jid = "") => {
     GQLclient.request(GetUpdatedPlans, {
-      oid: "X" + _jid.slice(1, -1) + "0",
+      oid: state.oid,
       status: "PRODUCTION",
     })
       .then((response) => {
         let aux = JSON.parse(JSON.stringify(state));
-        let junctionIndex = aux.otu.junctions.findIndex(
-          (junction) => junction.jid === _jid
-        );
-        aux.otu.junctions[junctionIndex].plans = decamelizeKeysDeep(
-          response.project.otu.junctions[junctionIndex].plans
-        );
+        for (let i = 0; i < aux.otu.junctions.length; i++) {
+          aux.otu.junctions[i].plans = decamelizeKeysDeep(
+            response.project.otu.junctions[i].plans
+          );
+        }
+        // let junctionIndex = aux.otu.junctions.findIndex(
+        //   (junction) => junction.jid === _jid
+        // );
+        // aux.otu.junctions[junctionIndex].plans = decamelizeKeysDeep(
+        //   response.project.otu.junctions[junctionIndex].plans
+        // );
         console.log(aux);
         setState(aux);
         setBoolIntergreen(false);
@@ -317,8 +342,8 @@ const ResumenBody = forwardRef((props, ref) => {
                     <td className="label">Emisión de documento:</td>
                     <td>{getFecha(new Date())}</td>
                     <td> </td>
-                    {/* <td className="label">Estado a la fecha:</td>
-                    <td className={status.operativa}>{"Operativo"}</td> */}
+                    <td className="label">Estado a la fecha:</td>
+                    {getStatus()}
                   </tr>
                 </tbody>
               </table>
@@ -376,24 +401,6 @@ const ResumenBody = forwardRef((props, ref) => {
                         {state.controller.model.company.name +
                           " " +
                           state.controller.model.model}
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td className="label">Instalador:</td>
-                      <td>
-                        {state.metadata.installation_company
-                          ? state.metadata.installation_company
-                          : "No registrado"}
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td className="label">Fecha de instalación:</td>
-                      <td>
-                        {state.metadata.installation_date === undefined
-                          ? "Sin registro"
-                          : getFecha(state.metadata.installation_date)}
                       </td>
                     </tr>
 
@@ -1262,7 +1269,7 @@ const ResumenBody = forwardRef((props, ref) => {
                 <h2>{"Observaciones (editable)"}</h2>
                 <TextareaAutosize
                   className="observaciones"
-                  bsSize="sm"
+                  // bsSize="sm"
                   type="textarea"
                   // disabled={info}
                   placeholder=""

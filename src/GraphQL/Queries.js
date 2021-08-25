@@ -1,8 +1,8 @@
 import { gql } from "graphql-request";
 
 export const GetUsers = gql`
-  {
-    users {
+  query users($showDisabled: Boolean) {
+    users(showDisabled: $showDisabled) {
       id
       area
       company {
@@ -13,14 +13,16 @@ export const GetUsers = gql`
       fullName
       isAdmin
       role
+      disabled
     }
   }
 `;
 
 export const GetCompanies = gql`
-  {
-    companies {
+  query companies($showDisabled: Boolean) {
+    companies(showDisabled: $showDisabled) {
       name
+      disabled
     }
   }
 `;
@@ -45,10 +47,11 @@ export const GetCommunes = gql`
 `;
 
 export const GetControllers = gql`
-  {
-    controllers {
+  query controllers($showDisabled: Boolean) {
+    controllers(showDisabled: $showDisabled) {
       id
       model
+      disabled
       checksum
       company {
         name

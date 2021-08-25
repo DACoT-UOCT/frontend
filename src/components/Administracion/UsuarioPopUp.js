@@ -51,7 +51,7 @@ const UsuarioPopUp = (props) => {
   const eliminar = () => {
     GQLclient.request(deleteUser, { data: { email: state.email } })
       .then((response) => {
-        alert("Usuario eliminado");
+        alert("Usuario desabilitado");
         dispatch({ type: "consultado", payLoad: false });
         history.go(0);
       })

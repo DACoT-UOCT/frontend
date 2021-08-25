@@ -32,9 +32,13 @@ const Controlador = (props) => {
   const y_offset = "50%";
   const _align = "right";
 
-  const controladoresQuery = useQuery(GetControllers, (data) => {
-    setControladores(decamelizeKeysDeep(data.controllers));
-  });
+  const controladoresQuery = useQuery(
+    GetControllers,
+    (data) => {
+      setControladores(decamelizeKeysDeep(data.controllers));
+    },
+    { showDisabled: false }
+  );
 
   const getMarcas = () => {
     let marcas = new Set();

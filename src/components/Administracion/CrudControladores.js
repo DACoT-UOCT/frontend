@@ -24,9 +24,13 @@ const CrudControladores = () => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
-  const controladoresQuery = useQuery(GetControllers, (data) => {
-    dispatch({ type: "controladores", payLoad: data.controllers });
-  });
+  const controladoresQuery = useQuery(
+    GetControllers,
+    (data) => {
+      dispatch({ type: "controladores", payLoad: data.controllers });
+    },
+    { showDisabled: true }
+  );
 
   const eliminar_controlador = (_cid) => {
     setLoading(true);
@@ -86,6 +90,7 @@ const CrudControladores = () => {
             <th onClick={() => sortTable(1)}>Modelo</th>
             <th onClick={() => sortTable(2)}>Versión</th>
             <th onClick={() => sortTable(3)}>Checksum</th>
+            <th onClick={() => sortTable(4)}>Estado</th>
             <th>Fecha de versión</th>
             <th> </th>
           </tr>
@@ -98,6 +103,7 @@ const CrudControladores = () => {
                 <td>{controlador.model}</td>
                 <td>{controlador.firmwareVersion}</td>
                 <td>{controlador.checksum}</td>
+                <td>{controlador.disabled ? "Desabilitado" : "Habilitado"}</td>
                 <td>{getFecha(controlador.date)}</td>
                 <td>
                   <Button
@@ -116,7 +122,7 @@ const CrudControladores = () => {
                         },
                       });
                     }}>
-                    Desabilitar
+                    {controlador.disabled ? "Habilitar" : "Desabilitar"}
                   </Button>
                 </td>
               </tr>

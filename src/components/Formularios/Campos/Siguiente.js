@@ -38,7 +38,7 @@ const Siguiente = (props) => {
   const classes = useStyles();
 
   const input_regex = (str, nombre, expresion = /.+/) => {
-    if (!expresion.test(str)) {
+    if (!expresion.test(str) || !str) {
       //si no se cumple la expresion regular
       setOpen(true);
       dispatch({ type: "error", payLoad: nombre });
@@ -87,12 +87,6 @@ const Siguiente = (props) => {
       //VALIDAR FORMULARIO DE TODA LA INFORMACION
       // validar_entrada(metadata.region, "Región");
       input_regex(metadata.commune.name, "Comuna");
-      input_regex(metadata.installation_company, "Empresa instaladora");
-      input_regex(
-        metadata.installation_company,
-        "Empresa instaladora",
-        /^((?!Sin asignar).)*$/
-      );
 
       // if (state.metadata.pdf_data === null) {
       //   setOpen(true);
@@ -122,11 +116,14 @@ const Siguiente = (props) => {
       }
 
       if (!edit_programaciones) {
+        //Caso de NO editar programaciones acotadas
         input_regex(otu.metadata.serial, "OTU - N Serie");
         input_regex(otu.metadata.ip_address, "OTU - Dirección IP");
         input_regex(otu.metadata.netmask, "OTU - Netmask");
         input_regex(otu.metadata.link_type, "OTU - Tipo de enlace");
         input_regex(otu.metadata.link_owner, "OTU - Tipo de enlace");
+        input_regex(otu.metadata.answer, "OTU - N° palabras de resuesta");
+        input_regex(otu.metadata.control, "OTU - N° palabras de control");
 
         var controller = state.controller;
         input_regex(controller.model.company.name, " Controlador - Marca");

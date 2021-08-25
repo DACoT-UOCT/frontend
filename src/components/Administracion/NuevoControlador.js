@@ -22,7 +22,7 @@ const NuevoControlador = (props) => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const get_marcas = () => {
-    GQLclient.request(GetCompanies)
+    GQLclient.request(GetCompanies, { showDisabled: false })
       .then((data) => setMarcas(data.companies.map((empresa) => empresa.name)))
       .catch((err) => {
         alert("Error al consultar marcas");

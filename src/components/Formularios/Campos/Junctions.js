@@ -200,6 +200,7 @@ const Junctions = (props) => {
                               borderRight: "solid 1px #034472",
                             }}>
                             <Campo
+                              autoFocus
                               id={junction_index + phase_index + "fase-input"}
                               // defaultValue="No registrado"
                               value={fase}

@@ -11,7 +11,6 @@ import {
   defaultMapOptions,
 } from "../Shared/Reducers/MapaReducer";
 import PopUp from "../Shared/PopUp";
-import useSupercluster from "use-supercluster";
 import CustomMarker from "../Shared/CustomMarker";
 import { GeocodingAPI_KEY, GoogleMapsAPI_KEY } from "../../API_KEYS.js";
 import axios from "axios";
@@ -23,14 +22,12 @@ Geocode.enableDebug();
 
 //MAPA USADO PARA VISUALIZAR E INGRESAR LA UBICACION DE UN JUNCTION EN EL FORMULARIO
 //TAMBIEN SE ENCARGA DE ENCONTRAR EL NOMBRE DE LA CALLE DE LA UBICACION
-const Marker = ({ children }) => children;
 const MapaFormulario = (props) => {
   const [stateMapa, dispatchMapa] = useImmerReducer(
     Mapareducer,
     MapainitialState
   );
   const dispatch = props.dispatch;
-  const [bounds, setBounds] = useState(null);
   const [zoom, setZoom] = useState(12);
   const mapRef = useRef();
 
@@ -93,18 +90,10 @@ const MapaFormulario = (props) => {
     },
   }));
 
-  //FUNCION PARA CREAR CLUSTERS S EL MAPA SE ALEJA
-  const { clusters, supercluster } = useSupercluster({
-    points,
-    bounds,
-    zoom,
-    options: { radius: 70, maxZoom: 15 },
-  });
-
   return (
     <>
       <PopUp
-        title={"Seleccione una ubicación sobre el mapa"}
+        title={"Seleccione una ubicación haciendo click sobre el mapa"}
         open={props.open}
         setOpen={props.setOpen}
         map={true}>
@@ -124,54 +113,16 @@ const MapaFormulario = (props) => {
               }}
               onChange={(e) => {
                 setZoom(e.zoom);
-                setBounds([
-                  e.bounds.nw.lng,
-                  e.bounds.se.lat,
-                  e.bounds.se.lng,
-                  e.bounds.nw.lat,
-                ]);
               }}>
-              {clusters.map((cluster) => {
-                const [longitude, latitude] = cluster.geometry.coordinates;
-                const { cluster: isCluster, point_count: pointCount } =
-                  cluster.properties;
-
-                if (isCluster) {
-                  return (
-                    <Marker
-                      key={`cluster-${cluster.id}`}
-                      lat={latitude}
-                      lng={longitude}>
-                      <div
-                        className="cluster-marker"
-                        style={{
-                          width: `${10 + (pointCount / points.length) * 20}px`,
-                          height: `${10 + (pointCount / points.length) * 20}px`,
-                        }}
-                        onClick={() => {
-                          const expansionZoom = Math.min(
-                            supercluster.getClusterExpansionZoom(cluster.id),
-                            20
-                          );
-
-                          mapRef.current.setZoom(expansionZoom);
-                          mapRef.current.panTo({
-                            lat: latitude,
-                            lng: longitude,
-                          });
-                        }}>
-                        {pointCount}
-                      </div>
-                    </Marker>
-                  );
-                }
+              {points.map((point) => {
+                const [longitude, latitude] = point.geometry.coordinates;
 
                 return (
                   <CustomMarker
                     lat={latitude}
                     lng={longitude}
-                    label={cluster.properties.jid}
-                    gray={cluster.properties.jid !== props.jid}
+                    label={point.properties.jid}
+                    gray={point.properties.jid !== props.jid}
                     buscar={() => {}}></CustomMarker>
                 );
               })}
@@ -179,9 +130,7 @@ const MapaFormulario = (props) => {
           </div>
           <div className="address-mapa-formulario">
             <div>
-              <h3>
-                {"Ubicación actual " + (props.junction ? props.jid : "")}{" "}
-              </h3>
+              <h3>{"Ubicación actual " + props.jid} </h3>
               <Label>
                 {address === "" ? "Ubicación no registrada" : address}
               </Label>

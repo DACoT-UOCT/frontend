@@ -24,13 +24,6 @@ export const procesar_json_recibido = (aux) => {
   if (!temp.ups) {
     delete temp.ups;
   }
-  temp.metadata.installation_date = temp.metadata.installation_date
-    ? Date.parse(temp.metadata.installation_date)
-    : Date.now();
-
-  temp.metadata.installation_company = !temp.metadata.installation_company
-    ? "Sin asignar"
-    : temp.metadata.installation_company.name;
 
   temp.metadata.pdf_data = !temp.metadata.pdf_data.data
     ? null
@@ -87,7 +80,7 @@ export const procesar_json_recibido = (aux) => {
   var junctions = temp.otu.junctions;
   for (var i = 0; i < junctions.length; i++) {
     if (junctions[i].phases.length === 0) {
-      junctions[i].phases = ["-"];
+      junctions[i].phases = [""];
     }
   }
 
@@ -138,10 +131,6 @@ export const procesar_json_envio = (state_copy, url) => {
   state_copy.controller.model.company =
     state_copy.controller.model.company.name;
   // delete state_copy.controller.model.date;
-
-  state_copy.metadata.installation_date = date_format(
-    state_copy.metadata.installation_date
-  );
 
   //SE ENVIA EL CÓDIGO DE LA COMUNA, NO EL NOMBRE
   state_copy.metadata.commune = state_copy.metadata.commune.code;
