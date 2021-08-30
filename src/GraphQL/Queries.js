@@ -153,10 +153,6 @@ const project = ` {
     img {
       data
     }
-    installationCompany {
-      name
-    }
-    installationDate
     localDetector
     pdfData {
       data

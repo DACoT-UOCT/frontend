@@ -25,7 +25,7 @@ const Documentacion = (props) => {
   };
   return (
     <div style={{ marginTop: "2rem" }}>
-      <legend>Documentacion de respaldo</legend>
+      <legend>Documentación de respaldo</legend>
       <Label>
         Adjuntar un PDF con toda la informacion de la instalación, este será
         usado para respaldar y corroborar lo entregado en este formulario.

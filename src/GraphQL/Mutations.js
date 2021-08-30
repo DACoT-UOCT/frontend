@@ -22,6 +22,12 @@ export const deleteUser = gql`
   }
 `;
 
+export const enableUser = gql`
+  mutation enableUser($data: DeleteUserInput) {
+    enableUser(data: $data)
+  }
+`;
+
 export const createController = gql`
   mutation createController($data: CreateControllerModelInput) {
     createController(data: $data) {
@@ -68,6 +74,12 @@ export const deleteController = gql`
   }
 `;
 
+export const enableController = gql`
+  mutation enableController($cid: String!) {
+    enableController(cid: $cid)
+  }
+`;
+
 export const updateProject = gql`
   mutation updateProject($data: CreateProjectInput) {
     updateProject(data: $data)
@@ -91,6 +103,12 @@ export const createCompany = gql`
 export const deleteCompany = gql`
   mutation deleteCompany($data: DeleteCompanyInput) {
     deleteCompany(data: $data)
+  }
+`;
+
+export const enableCompany = gql`
+  mutation enableCompany($data: DeleteCompanyInput) {
+    enableCompany(data: $data)
   }
 `;
 

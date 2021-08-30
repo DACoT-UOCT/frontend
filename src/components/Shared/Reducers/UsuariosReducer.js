@@ -4,7 +4,8 @@ export const initialState = {
   area: "",
   empresa: "",
   email: "",
-  is_admin: false,
+  isAdmin: false,
+  disabled: true,
 
   comunas: [],
   empresas: [],
@@ -42,6 +43,7 @@ export function reducer(draft, action) {
         draft.company = action.payLoad.company.name;
       }
       draft.email = action.payLoad.email;
+      draft.disabled = action.payLoad.disabled;
       return;
 
     default:

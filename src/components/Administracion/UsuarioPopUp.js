@@ -15,7 +15,12 @@ import {
   TextField,
 } from "@material-ui/core";
 import PopOver from "../Shared/PopOver";
-import { CreateUser, deleteUser, UpdateUser } from "../../GraphQL/Mutations";
+import {
+  CreateUser,
+  deleteUser,
+  enableUser,
+  UpdateUser,
+} from "../../GraphQL/Mutations";
 
 const Campo = styled(TextField)({
   width: "100%",
@@ -48,10 +53,13 @@ const UsuarioPopUp = (props) => {
     return temp;
   };
 
-  const eliminar = () => {
-    GQLclient.request(deleteUser, { data: { email: state.email } })
+  const enable_disable_handler = () => {
+    let mutation = state.disabled ? enableUser : deleteUser;
+    GQLclient.request(mutation, { data: { email: state.email } })
       .then((response) => {
-        alert("Usuario desabilitado");
+        state.disabled
+          ? alert("Usuario habilitado")
+          : alert("Usuario desabilitado");
         dispatch({ type: "consultado", payLoad: false });
         history.go(0);
       })
@@ -105,9 +113,6 @@ const UsuarioPopUp = (props) => {
       <TableContainer className={styles.popup}>
         <Table size="small" aria-label="simple table">
           <TableBody>
-            <TableRow>
-              <TableCell>{state.fullName}</TableCell>
-            </TableRow>
             <TableRow>
               <TableCell>Nombre</TableCell>
               <TableCell align="left">
@@ -197,9 +202,9 @@ const UsuarioPopUp = (props) => {
                         )}
                         {state.empresas
                           .filter((empresa) => empresa.name !== state.company)
-                          .map((empresa) => {
+                          .map((empresa, i) => {
                             return (
-                              <option value={empresa.name}>
+                              <option key={i} value={empresa.name}>
                                 {empresa.name}
                               </option>
                             );
@@ -238,8 +243,12 @@ const UsuarioPopUp = (props) => {
                         {state.role === "Empresa"
                           ? areas_empresas
                               .filter((area_d) => area_d !== state.area)
-                              .map((area_d) => {
-                                return <option value={area_d}>{area_d}</option>;
+                              .map((area_d, i) => {
+                                return (
+                                  <option key={i} value={area_d}>
+                                    {area_d}
+                                  </option>
+                                );
                               })
                           : areas_UOCT
                               .filter((area_d) => area_d !== state.area)
@@ -306,7 +315,11 @@ const UsuarioPopUp = (props) => {
       {state.desea_eliminar === true && props.type === "edit" ? (
         <>
           <div className={styles.buttonsGroup}>
-            <h5>¿Desea desabilitar al usuario actual?</h5>
+            {state.disabled ? (
+              <h5>¿Desea habilitar al usuario selecionado?</h5>
+            ) : (
+              <h5>¿Desea desabilitar al usuario selecionado?</h5>
+            )}
           </div>
           <div className={styles.buttonsGroup}>
             <Button
@@ -315,7 +328,7 @@ const UsuarioPopUp = (props) => {
               }>
               Cancelar
             </Button>
-            <Button onClick={eliminar}>Confirmar</Button>
+            <Button onClick={enable_disable_handler}>Confirmar</Button>
           </div>
         </>
       ) : (
@@ -327,11 +340,15 @@ const UsuarioPopUp = (props) => {
             </Button>
             {props.type === "edit" && (
               <Button
-                color="danger"
+                color="warning"
                 onClick={() => {
                   dispatch({ type: "desea_eliminar", payLoad: true });
                 }}>
-                <span>Desabilitar usuario</span>
+                {state.disabled ? (
+                  <span>Habilitar usuario</span>
+                ) : (
+                  <span>Desabilitar usuario</span>
+                )}
               </Button>
             )}
           </>

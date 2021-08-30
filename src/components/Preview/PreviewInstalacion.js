@@ -158,13 +158,15 @@ const PreviewInstalacion = (props) => {
             </>
           )}
 
-        <Button
-          // className="botonDashboard"
-          onClick={() => {
-            renderPDF(instalacion);
-          }}>
-          Documentación de Respaldo
-        </Button>
+        {(state.rol === "Personal UOCT" || state.is_admin) && (
+          <Button
+            // className="botonDashboard"
+            onClick={() => {
+              renderPDF(instalacion);
+            }}>
+            Documentación de Respaldo
+          </Button>
+        )}
 
         {state.rol === "Empresa" && !history_panel && (
           <>

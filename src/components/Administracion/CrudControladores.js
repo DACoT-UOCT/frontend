@@ -12,7 +12,7 @@ import { GetControllers } from "../../GraphQL/Queries";
 import Loading from "../Shared/Loading";
 import { getFecha } from "../Shared/Utils/general_functions";
 import { GQLclient } from "../App";
-import { deleteController } from "../../GraphQL/Mutations";
+import { deleteController, enableController } from "../../GraphQL/Mutations";
 import { useHistory } from "react-router-dom";
 
 /*Componente que lista los controladores registrados, y permite
@@ -32,16 +32,20 @@ const CrudControladores = () => {
     { showDisabled: true }
   );
 
-  const eliminar_controlador = (_cid) => {
+  const enable_disable_handler = (_cid) => {
+    let mutation = state.delete_backup.disabled
+      ? enableController
+      : deleteController;
+
     setLoading(true);
-    GQLclient.request(deleteController, {
+    GQLclient.request(mutation, {
       cid: _cid,
     })
       .then((response) => {
-        // setLoading(false);
-        alert("Controlador eliminado");
+        state.delete_backup.disabled
+          ? alert("Controlador habilitado")
+          : alert("Controlador desabilitado");
         history.go(0);
-        // props.setOpen(false);
       })
       .catch((err) => {
         setLoading(false);
@@ -107,7 +111,7 @@ const CrudControladores = () => {
                 <td>{getFecha(controlador.date)}</td>
                 <td>
                   <Button
-                    color="danger"
+                    color="warning"
                     onClick={() => {
                       setCloseOpen(true);
                       dispatch({
@@ -119,6 +123,7 @@ const CrudControladores = () => {
                           firmwareVersion: controlador.firmwareVersion,
                           checksum: controlador.checksum,
                           date: controlador.date,
+                          disabled: controlador.disabled,
                         },
                       });
                     }}>
@@ -140,10 +145,13 @@ const CrudControladores = () => {
       </PopUp>
       {state.delete_backup !== undefined && (
         <PopUp
-          title="Desabilitar controlador"
+          title={
+            state.delete_backup.disabled
+              ? "¿Desea habilitar el controlador seleccionado?"
+              : "¿Desea desabilitar el controlador seleccionado?"
+          }
           open={closeOpen}
           setOpen={setCloseOpen}>
-          <p>¿Desea desabilitar este controlador?</p>
           <Table hover responsive className={styles.table}>
             <thead>
               <tr>
@@ -172,12 +180,18 @@ const CrudControladores = () => {
               Cancelar
             </Button>
             <Button
-              color="danger"
+              color="warning"
               disabled={loading}
               onClick={() => {
-                eliminar_controlador(state.delete_backup.id);
+                enable_disable_handler(state.delete_backup.id);
               }}>
-              Desabilitar
+              {loading ? (
+                <Loading />
+              ) : state.delete_backup.disabled ? (
+                "Habilitar"
+              ) : (
+                "Desabilitar"
+              )}
             </Button>
           </div>
         </PopUp>

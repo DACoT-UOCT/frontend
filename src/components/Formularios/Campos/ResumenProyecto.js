@@ -148,7 +148,7 @@ const ResumenBody = forwardRef((props, ref) => {
   const programacionesDisponibles =
     state.otu.junctions[0].plans != null &&
     state.otu.junctions[0].plans.length > 0;
-  const editVehIntergreen = (junctionIndex, faseFrom, faseTo, _value) => {
+  const onChangeVehIntergreen = (junctionIndex, faseFrom, faseTo, _value) => {
     let aux = JSON.parse(JSON.stringify(state));
     if (!_value) _value = "0";
     // let intergreens =
@@ -197,9 +197,9 @@ const ResumenBody = forwardRef((props, ref) => {
       );
   };
 
-  const saveVehIntergreenChanges = () => {
+  const saveVehIntergreenChanges = async () => {
     //funcion auxiliar para hacer las mutationsetVehIntergreen antes del Computetables
-    const saveBehIntergreenPromise = (j_index) => {
+    const VehIntergreenPromiseHandler = (j_index) => {
       let _phases = state.otu.junctions[
         j_index
       ].plans[0].vehicle_intergreen.map((entreverde) => {
@@ -217,27 +217,15 @@ const ResumenBody = forwardRef((props, ref) => {
           status: "PRODUCTION",
           phases: _phases,
         },
-      })
-        .then(() => console.log("Set veh completada" + _jid))
-        .catch((err) => console.log(err));
+      });
     };
 
     setSavingIntergreens(true);
-    let promesas = state.otu.junctions.map((junction, j_index) => {
-      return saveBehIntergreenPromise(j_index);
-    });
 
-    console.log(promesas);
-
-    Promise.all(promesas)
-      .then(() => {
-        console.log("setVeh promises completado");
-        compute_tables();
-      })
-      .catch((error) => {
-        alert("Error setVeh");
-        history.push(0);
-      });
+    for (let i = 0; i < state.otu.junctions.length; i++) {
+      await VehIntergreenPromiseHandler(i);
+    }
+    compute_tables();
   };
 
   const compute_tables = () => {
@@ -248,11 +236,10 @@ const ResumenBody = forwardRef((props, ref) => {
       },
     })
       .then(() => {
-        alert("exito al computar tablas");
         getUpdatedTables();
       })
       .catch((error) => {
-        alert("Error compute tables");
+        alert("Error al actualizar");
         history.push(0);
       });
   };
@@ -269,13 +256,7 @@ const ResumenBody = forwardRef((props, ref) => {
             response.project.otu.junctions[i].plans
           );
         }
-        // let junctionIndex = aux.otu.junctions.findIndex(
-        //   (junction) => junction.jid === _jid
-        // );
-        // aux.otu.junctions[junctionIndex].plans = decamelizeKeysDeep(
-        //   response.project.otu.junctions[junctionIndex].plans
-        // );
-        console.log(aux);
+
         setState(aux);
         setBoolIntergreen(false);
         setSavingIntergreens(false);
@@ -919,7 +900,7 @@ const ResumenBody = forwardRef((props, ref) => {
                                                         padding: "0",
                                                       }}
                                                       onChange={(e) =>
-                                                        editVehIntergreen(
+                                                        onChangeVehIntergreen(
                                                           junctionIndex,
                                                           faseFrom,
                                                           faseTo,
@@ -1070,9 +1051,7 @@ const ResumenBody = forwardRef((props, ref) => {
                                 block
                                 disabled={savingIntergreens}
                                 color="danger"
-                                onClick={() =>
-                                  saveVehIntergreenChanges(junctionIndex)
-                                }>
+                                onClick={() => saveVehIntergreenChanges()}>
                                 {savingIntergreens ? (
                                   <Loading />
                                 ) : (
@@ -1291,6 +1270,7 @@ const ResumenBody = forwardRef((props, ref) => {
     </>
   );
 });
+
 const ResumenProyecto = (props) => {
   const state = JSON.parse(JSON.stringify(props.state));
   const location = useLocation();

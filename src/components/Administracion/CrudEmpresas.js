@@ -18,7 +18,11 @@ import {
   TextField,
 } from "@material-ui/core";
 import { styled } from "@material-ui/core/styles";
-import { createCompany, deleteCompany } from "../../GraphQL/Mutations";
+import {
+  createCompany,
+  deleteCompany,
+  enableCompany,
+} from "../../GraphQL/Mutations";
 
 const Campo = styled(TextField)({
   width: "100%",
@@ -66,8 +70,11 @@ const CrudEmpresas = (props) => {
     setNewOpen(false);
   };
 
-  const desabilitar_empresa = () => {
-    GQLclient.request(deleteCompany, { data: { name: newCompany } })
+  const enable_disable_company = () => {
+    let name = empresas[newCompany].name;
+    let disabled = empresas[newCompany].disabled;
+    let mutation = disabled ? enableCompany : deleteCompany;
+    GQLclient.request(mutation, { data: { name: name } })
       .then((response) => {
         alert("Cambios guardados");
         history.go(0);
@@ -123,9 +130,9 @@ const CrudEmpresas = (props) => {
                 <td> {empresa.disabled ? "Desabilitada" : "Habilitada"}</td>
                 <td>
                   <Button
+                    color="warning"
                     onClick={() => {
-                      //   dispatch({ type: "editar", payLoad: usuario });
-                      setNewCompany(empresa.name);
+                      setNewCompany(i);
                       setDeleteOpen(true);
                     }}>
                     {empresa.disabled ? "Habilitar" : "Desabilitar"}
@@ -169,22 +176,37 @@ const CrudEmpresas = (props) => {
           </div>
         </>
       </PopUp>
-      <PopUp
-        title={"¿Desabilitar empresa?"}
-        open={deleteOpen}
-        setOpen={setDeleteOpen}>
-        <>
-          <div className={styles.buttonsGroup}>
-            <h5>{"¿Desea desabilitar la empresa " + newCompany + "?"}</h5>
-          </div>
-          <div className={styles.buttonsGroup}>
-            <Button onClick={() => setDeleteOpen(false)}>Cancelar</Button>
-            <Button color="danger" onClick={desabilitar_empresa}>
-              Desabilitar
-            </Button>
-          </div>
-        </>
-      </PopUp>
+
+      {empresas[newCompany] && (
+        <PopUp
+          title={
+            empresas[newCompany].disabled
+              ? "Habilitar empresa"
+              : "Desabilitar empresa"
+          }
+          open={deleteOpen}
+          setOpen={setDeleteOpen}>
+          <>
+            <div className={styles.buttonsGroup}>
+              <h5>
+                {"¿Desea " +
+                  (empresas[newCompany].disabled
+                    ? "habilitar"
+                    : "desabilitar") +
+                  " la empresa " +
+                  empresas[newCompany].name +
+                  "?"}
+              </h5>
+            </div>
+            <div className={styles.buttonsGroup}>
+              <Button onClick={() => setDeleteOpen(false)}>Cancelar</Button>
+              <Button color="warning" onClick={enable_disable_company}>
+                {empresas[newCompany].disabled ? "Habilitar" : "Desabilitar"}
+              </Button>
+            </div>
+          </>
+        </PopUp>
+      )}
     </>
   );
 };

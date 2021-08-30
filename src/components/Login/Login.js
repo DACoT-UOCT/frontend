@@ -12,10 +12,6 @@ const Login = () => {
   const first_click = useContext(StateContext).first_click_login;
   const dispatch = useContext(DispatchContext);
 
-  // const logout = () => {
-  //   dispatch({ type: "logout" });
-  // };
-
   const consultar_datos = () => {
     axios
       .get(ipAPI + "users/me/")

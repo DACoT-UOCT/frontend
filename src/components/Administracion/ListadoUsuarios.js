@@ -100,7 +100,7 @@ const ListadoUsuarios = (props) => {
                 </td>
                 <td> {usuario.email}</td>
                 <td>{usuario.isAdmin ? "Si" : "No"}</td>
-                <td>{!usuario.disabled ? "Hailitado" : "Desabilitado"}</td>
+                <td>{!usuario.disabled ? "Habilitado" : "Desabilitado"}</td>
                 <td>
                   {usuario.email !== "seed@dacot.uoct.cl" &&
                     usuario.email !== "admin@dacot.uoct.cl" && (
