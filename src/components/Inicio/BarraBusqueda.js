@@ -11,6 +11,7 @@ import PreviewInstalacion from "../Preview/PreviewInstalacion";
 import "../../App.css";
 import useSessionStorageState from "../Shared/Utils/useSessionStorageState";
 import Loading from "../Shared/Loading";
+import Session from "react-session-api";
 
 const reducer = (draft, action) => {
   draft[action.type] = action.payLoad;
@@ -18,7 +19,7 @@ const reducer = (draft, action) => {
 
 const resetSessionStorage = () => {
   setTimeout(() => {
-    sessionStorage.removeItem("search");
+    Session.remove("search");
   }, 10 * 1000);
 };
 

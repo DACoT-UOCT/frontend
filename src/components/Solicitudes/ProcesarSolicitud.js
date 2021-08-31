@@ -8,6 +8,7 @@ import { getFecha } from "../Shared/Utils/general_functions";
 import { acceptProject, rejectProject } from "../../GraphQL/Mutations";
 import Success from "../Shared/Success";
 import { renderPDF } from "../Shared/Utils/RenderPDF";
+import Session from "react-session-api";
 
 //COMPONENTE PARA PROCESAR UNA SOICITUD
 //PERMITE ACEPTAR O RECHAZAR, ADJUNTR UN COMENTARIO E IMAGEN
@@ -33,7 +34,8 @@ export default function ProcesarSolicitud(props) {
   const [submit, setSubmit] = useState(false);
 
   const aprobar_rechazar_solicitud = (aprobar) => {
-    sessionStorage.clear();
+    // sessionStorage.clear();
+    Session.clear();
     let respuesta = {
       oid: global_state.actualizando.oid,
       status: global_state.actualizando.metadata.status,

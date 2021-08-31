@@ -8,6 +8,8 @@ import RouterComponent from "./RouterComponent";
 import { GraphQLClient } from "graphql-request";
 import { GetCommunes, GetCoordinates } from "../GraphQL/Queries";
 import { BACKEND_URL } from "../API_KEYS";
+import Session from "react-session-api";
+import store from "local-storage-pro";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -27,8 +29,10 @@ const App = () => {
   useEffect(() => {
     //limpiar cache si se cierra la sesión, o se engresa por primera vez
     if (state.isLoggedIn === false) {
-      localStorage.clear();
-      sessionStorage.clear();
+      // localStorage.clear();
+      // sessionStorage.clear();
+      store.clear();
+      Session.clear();
     }
   }, [state.isLoggedIn]);
 

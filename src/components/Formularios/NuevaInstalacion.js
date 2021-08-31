@@ -22,6 +22,7 @@ import Postes from "./Campos/Postes";
 import Controlador from "./Campos/Controlador";
 import Documentacion from "./Campos/Documentacion";
 import { GQLclient } from "../App";
+import Session from "react-session-api";
 import {
   acceptProject,
   createProject,
@@ -101,7 +102,8 @@ const NuevaInstalacion = (props) => {
   useEffect(() => {
     if (state.submit === true) {
       //procesa los datos antes de enviar
-      sessionStorage.clear();
+      // sessionStorage.clear();
+      Session.clear();
       let _data = procesar_json_envio(
         JSON.parse(JSON.stringify(state)),
         location.pathname
