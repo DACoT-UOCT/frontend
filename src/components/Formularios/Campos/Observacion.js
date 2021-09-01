@@ -21,6 +21,10 @@ const Observacion = (props) => {
             type="textarea"
             placeholder=""
             value={props.observation}
+            onFocus={(e) => {
+              if (e.currentTarget.value.slice(-6) !== "\n*\n*\n*")
+                props.setObservation(e.currentTarget.value + "\n*\n*\n*");
+            }}
             onChange={(e) => {
               props.setObservation(
                 e.currentTarget.value.slice(0, -6) + "\n*\n*\n*"
@@ -36,6 +40,13 @@ const Observacion = (props) => {
             type="textarea"
             placeholder=""
             value={props.observation}
+            onFocus={(e) => {
+              if (e.currentTarget.value.slice(-6) !== "\n*\n*\n*")
+                props.dispatch({
+                  type: "observation",
+                  payLoad: e.currentTarget.value + "\n*\n*\n*",
+                });
+            }}
             onChange={(e) =>
               props.dispatch({
                 type: "observation",
