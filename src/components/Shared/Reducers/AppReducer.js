@@ -7,7 +7,7 @@ export const initialState = {
   first_click_login: false,
   actualizando: "",
   tokenObj: "",
-  debug: true,
+  debug: false,
   comunas: null,
   update_pendiente: false,
 };
