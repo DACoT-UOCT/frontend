@@ -1,92 +1,51 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import Loading from "../Shared/Loading";
 import DatePicker from "react-datepicker";
 import styles from "./Administracion.module.css";
-import { StateContext } from "../App";
-import { ipAPI } from "../Shared/ipAPI";
-
 import { Table, Label } from "reactstrap";
+import { GetLogs } from "../../GraphQL/Queries";
+import { GQLclient } from "../App";
+import Paginado from "../Shared/Paginado";
+import { date_format } from "../Shared/API/Interface";
 
-import { Button } from "reactstrap";
-import axios from "axios";
-import { ImportantDevicesSharp } from "@material-ui/icons";
-
+//PESTAÑA DE REGISTRO DE ACTIVIDAD, PANEL DE ADMINISTRACIÓN
 const RegistroActividad = () => {
-  const state = useContext(StateContext);
-  const [registros, setRegistro] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const dateTemp = new Date();
+  dateTemp.setHours(24, 0, 0, 0);
+  const [startDate, setStartDate] = useState(
+    dateTemp.setDate(dateTemp.getDate() - 1)
+  );
+  const [endDate, setEndDate] = useState(
+    dateTemp.setDate(dateTemp.getDate() + 2)
+  );
 
-  const [vacio, setVacio] = useState("");
-
-  const consultarRegistros = () => {
-    if (startDate <= endDate) {
-      submitClick();
-    } else {
-      setError("Intervalo de fechas no válido");
-      return;
-    }
-  };
-  async function getData() {
-    //consulta por id al backend
-
-    const startString =
-      startDate.getFullYear() +
-      "-" +
-      (startDate.getMonth() + 1) +
-      "-" +
-      startDate.getDate();
-    var temp = new Date(endDate.getTime() + +24 * 60 * 60 * 1000);
-    const endString =
-      temp.getFullYear() + "-" + (temp.getMonth() + 1) + "-" + temp.getDate();
-
-    const link =
-      ipAPI + "actions_log" + "?gte=" + startString + "&lte=" + endString;
-
-    return new Promise((resolve, reject) => {
-      axios
-        .get(link)
-        .then((response) => {
-          //solicitud exitosa
-          console.log(response);
-          setRegistro(response.data);
-          resolve();
-          console.log(registros.length);
-          if (registros.length === 0) {
-            console.log("entre");
-            setVacio("No hay actividad entre el intervalo");
-          }
-        })
-        .catch((err) => {
-          //error
-          reject(err);
-        });
-    });
-  }
-  const submitClick = async () => {
-    setLoading(true);
-    setRegistro([]);
-    setError("");
-    setVacio("");
-
-    try {
-      await getData();
-      console.log(getData());
-    } catch (error) {
-      console.log(error);
-      setError("Error en la consulta");
-    }
-    setLoading(false);
+  const consultar_actividad = (_after = "") => {
+    return GQLclient.request(GetLogs, {
+      first: 25,
+      after: _after,
+      startDate: date_format(startDate) + "T00:00:00",
+      endDate: date_format(endDate) + "T00:00:00",
+    })
+      .then((data) => {
+        return {
+          elements: data.actionLogs.edges.map((edge) => edge.node),
+          pageInfo: data.actionLogs.pageInfo,
+        };
+      })
+      .catch((error) => error);
   };
 
   return (
     <>
-      <div className={styles.registro} style={{ display: "flex" }}>
-        <div style={{ "padding-left": "10px" }}>
-          <Label>Desde</Label>
+      <p>
+        Seleccionar fecha de inicio y fin para consultar registro de actividad
+        dentro de la plataforma
+      </p>
+      <div
+        className={styles.registro}
+        style={{ display: "flex", marginBottom: "2rem" }}>
+        <div style={{ paddingLeft: "10px" }}>
+          <Label>Fecha inicio</Label>
           <br></br>
           <DatePicker
             dateFormat="dd/MM/yyyy"
@@ -96,8 +55,8 @@ const RegistroActividad = () => {
           />
         </div>
 
-        <div style={{ "padding-left": "10px" }}>
-          <Label>Hasta</Label>
+        <div style={{ paddingLeft: "10px" }}>
+          <Label>Fecha fin</Label>
           <br></br>
           <DatePicker
             dateFormat="dd/MM/yyyy"
@@ -106,15 +65,33 @@ const RegistroActividad = () => {
             onChange={(date) => setEndDate(date)}
           />
         </div>
-        <div style={{ "padding-left": "10px" }}>
-          <Button onClick={() => consultarRegistros("usuarios")}>
-            <span>Consultar Registros</span>
-          </Button>
-        </div>
       </div>
-      <p>{error}</p>
-      {loading && <Loading />}
-      {registros.length > 0 ? (
+
+      <Table hover responsive className={styles.table}>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Usuario</th>
+            <th>Accion</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <Paginado
+          render={(registro, indice) => {
+            return (
+              <tr key={indice}>
+                <td>{indice + 1}</td>
+                <td>{registro.user}</td>
+                <td>{registro.action}</td>
+                <td>{new Date(registro.date).toLocaleString()}</td>
+              </tr>
+            );
+          }}
+          tipo={startDate + endDate}
+          consulta={consultar_actividad}
+        />{" "}
+      </Table>
+      {/* {filtrar(registros).length > 0 ? (
         <Table hover responsive className={styles.table}>
           <thead>
             <tr>
@@ -125,12 +102,12 @@ const RegistroActividad = () => {
             </tr>
           </thead>
           <tbody>
-            {registros.map((registro, regIndex) => {
+            {filtrar(registros).map((registro, regIndex) => {
               return (
                 <tr>
                   <td>{regIndex + 1}</td>
                   <td>{registro.user}</td>
-                  <td>{registro.component}</td>
+                  <td>{registro.action}</td>
                   <td>{new Date(registro.date).toLocaleString()}</td>
                 </tr>
               );
@@ -138,8 +115,8 @@ const RegistroActividad = () => {
           </tbody>
         </Table>
       ) : (
-        <Label>{vacio}</Label>
-      )}
+        <Label>No hay registros disponibles</Label>
+      )} */}
     </>
   );
 };

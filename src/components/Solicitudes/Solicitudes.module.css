@@ -1,0 +1,107 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  background: rgb(236, 238, 240);
+  padding: 25px;
+  padding-top: 20px;
+}
+
+.border {
+  border-radius: 10px 0px 10px 10px !important;
+}
+
+.selection {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: -50px;
+  padding-right: 3rem;
+}
+
+.selection h2 {
+  font-size: 1.6rem;
+  padding-bottom: 20px;
+}
+
+.options button {
+  display: inline-block;
+  background: none;
+  border: none;
+  color: gray;
+  padding: 10px;
+  border-radius: 10px 10px 0px 0px;
+  transform: translateY(2px);
+  transition: all 0.1s;
+}
+
+.options button:focus {
+  outline: none;
+}
+
+.options button:hover {
+  color: black;
+}
+
+.active {
+  background: white !important;
+  border-left: 2px solid lightgray !important;
+  border-right: 2px solid lightgray !important;
+  border-top: 2px solid lightgray !important;
+  color: black !important;
+}
+
+.info {
+  border: none;
+  background: rgb(255, 255, 255);
+  padding: 30px;
+  flex: 1;
+  border-radius: 10px;
+  border: 2px solid lightgray;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.registro {
+  align-items: flex-end;
+  font-size: 1rem;
+}
+
+.registro button {
+  padding: 5px 10px;
+}
+
+.table {
+  font-size: 1rem;
+  width: 100%;
+  overflow-x: hidden !important;
+}
+
+.mb {
+  margin-bottom: 20px;
+}
+
+.popup td {
+  margin-top: 5px;
+}
+
+.buttonsGroup {
+  width: 100%;
+  padding: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.buttonsGroup button {
+  margin-right: 50px;
+}
+
+.top {
+  display: inline-flex !important;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}
+
+.pagination {
+  float: right;
+  margin-bottom: -1rem;
+}

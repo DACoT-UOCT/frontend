@@ -1,1 +1,1 @@
-export const ipAPI = "https://dacot.duckdns.org/api/v1/";
+export const ipAPI = "http://localhost:8081/";

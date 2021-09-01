@@ -1,15 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
-
-import { StateContext } from "../App";
-import { ipAPI } from "../Shared/ipAPI";
-import axios from "axios";
+import React from "react";
+import { GQLclient } from "../App";
 import { Button } from "reactstrap";
-import Loading from "../Shared/Loading";
 import styles from "./Administracion.module.css";
 import { styled } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import {
-  Checkbox,
-  FormControlLabel,
   Table,
   TableBody,
   TableCell,
@@ -17,6 +12,7 @@ import {
   TableRow,
   TextField,
 } from "@material-ui/core";
+import { updateCommune } from "../../GraphQL/Mutations";
 
 const Campo = styled(TextField)({
   width: "100%",
@@ -25,34 +21,30 @@ const Campo = styled(TextField)({
   justifyContent: "center",
 });
 
+//Componente desplegado para editar mantenedor y usuario a cargo de una comuna
 const EditComuna = (props) => {
-  const global_state = useContext(StateContext);
   const state = props.state;
   const dispatch = props.dispatch;
+  const history = useHistory();
 
   const try_submit = () => {
-    var url = ipAPI + "edit-commune";
-    var json = {
-      commune: state.name,
-      company_email: state.maintainer.name,
-    };
-
-    // "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
-    const config = { headers: { "Content-Type": "application/json" } };
-    axios
-      .put(url, JSON.stringify(json), config)
+    GQLclient.request(updateCommune, {
+      data: {
+        code: state.code,
+        maintainer: state.maintainer.name,
+        userInCharge: state.userInCharge.email,
+      },
+    })
       .then((response) => {
-        console.log(response);
-        dispatch({ type: "consultado", payLoad: false });
-        alert("Cambios guardados");
+        alert("Comuna actualizada");
+        history.go(0);
+        props.setOpen(false);
       })
       .catch((err) => {
-        alert("Error en el envio.");
-        console.log(err);
+        alert("Error en el envio");
       });
-
-    props.setOpen(false);
   };
+
   return (
     <>
       <TableContainer>
@@ -75,11 +67,7 @@ const EditComuna = (props) => {
                   SelectProps={{
                     native: true,
                   }}
-                  value={
-                    state.maintainer.name === ""
-                      ? "Sin mantenedor"
-                      : state.maintainer.name
-                  }
+                  value={state.maintainer.name}
                   onChange={(e) =>
                     dispatch({
                       type: "empresa",
@@ -94,13 +82,15 @@ const EditComuna = (props) => {
                       ? "Sin mantenedor"
                       : state.maintainer.name}
                   </option>
-                  {state.empresas.map((empresa) => {
-                    if (empresa.name !== state.maintainer.name) {
+                  {state.empresas
+                    .filter((empresa) => empresa.name !== state.maintainer.name)
+                    .map((empresa, i) => {
                       return (
-                        <option value={empresa.name}>{empresa.name}</option>
+                        <option key={i} value={empresa.name}>
+                          {empresa.name}
+                        </option>
                       );
-                    }
-                  })}
+                    })}
                 </Campo>
               </TableCell>
             </TableRow>
@@ -118,16 +108,43 @@ const EditComuna = (props) => {
                   SelectProps={{
                     native: true,
                   }}
-                  value="Pedro Carrasco"
-                  // onChange={(e) =>
-                  //   dispatch({
-                  //     type: "empresa",
-                  //     payLoad: e.currentTarget.value,
-                  //   })
-                  // }
-                >
-                  {/* <option hidden></option> */}
-                  <option value="Pedro Carrasco">Pedro Carrasco</option>
+                  value={JSON.stringify(state.userInCharge)}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "usuario",
+                      payLoad: e.currentTarget.value,
+                    })
+                  }>
+                  {state.userInCharge.fullName !== "" && (
+                    <option value='{ "fullName": "", "email": "" }'>
+                      Sin encargado
+                    </option>
+                  )}
+                  <option
+                    value={
+                      state.userInCharge.fullName === ""
+                        ? '{ "fullName": "", "email": "" }'
+                        : JSON.stringify(state.userInCharge)
+                    }>
+                    {state.userInCharge.fullName === ""
+                      ? "Sin encargado"
+                      : state.userInCharge.fullName +
+                        " (" +
+                        state.userInCharge.email +
+                        ")"}
+                  </option>
+                  {state.usuarios
+                    .filter(
+                      (usuario) =>
+                        usuario.fullName !== state.userInCharge.fullName
+                    )
+                    .map((usuario, i) => {
+                      return (
+                        <option key={i} value={JSON.stringify(usuario)}>
+                          {usuario.fullName + "  (" + usuario.email + ")"}
+                        </option>
+                      );
+                    })}
                 </Campo>
               </TableCell>
             </TableRow>
@@ -136,7 +153,7 @@ const EditComuna = (props) => {
       </TableContainer>
       <div className={styles.buttonsGroup}>
         <Button onClick={() => props.setOpen(false)}>Cancelar</Button>
-        <Button onClick={try_submit}>
+        <Button onClick={try_submit} color="info">
           <span>Guardar</span>
         </Button>
       </div>

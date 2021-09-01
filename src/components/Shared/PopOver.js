@@ -2,13 +2,15 @@ import React from "react";
 import "../../App.css";
 import { Popover, makeStyles, Typography } from "@material-ui/core";
 
+/*Componente que permite mostrar un mensaje al pasar el mouse
+sobre un icono de informacion */
 const PopOver = (props) => {
   const useStyles = makeStyles((theme) => ({
     popover: {
       pointerEvents: "none",
     },
     paper: {
-      padding: theme.spacing(1),
+      padding: "1.5rem",
     },
   }));
 
@@ -26,11 +28,13 @@ const PopOver = (props) => {
   return (
     <>
       <img
+        alt=""
         aria-owns={open ? "mouse-over-popover" : undefined}
         aria-haspopup="true"
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
-        src="/information.svg"></img>
+        src="/information.svg"
+        style={{ marginLeft: "1rem", marginRight: "2rem" }}></img>
       <Popover
         id="mouse-over-popover"
         className={classes.popover}
@@ -49,7 +53,9 @@ const PopOver = (props) => {
         }}
         onClose={handlePopoverClose}
         disableRestoreFocus>
-        <Typography>{props.mensaje}</Typography>
+        <Typography style={{ marginBottom: ".5rem" }}>
+          {props.mensaje}
+        </Typography>
         {props.children}
       </Popover>
     </>

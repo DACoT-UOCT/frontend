@@ -1,44 +1,32 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import "../../App.css";
-import { Button, Form, Input } from "reactstrap";
 import { DispatchContext, StateContext } from "../App";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 import { ipAPI } from "../Shared/ipAPI";
-import { RefreshTokenSetup } from "../../utils/RefreshToken";
+import { BACKEND_URL } from "../../API_KEYS"
 import axios from "axios";
 import styles from "./Login.module.css";
+import { GoogleLoginAPI_KEY } from "../../API_KEYS";
 
-// const first_click = true;
-
-export const clientId =
-  "226837255536-1kghlr6q84lc4iroc7dk9ri29v262hs6.apps.googleusercontent.com";
-
-const validar_usuario = () => {};
+/*Componente mostrado cuando un usuario no está logueado */
 const Login = () => {
   const first_click = useContext(StateContext).first_click_login;
   const dispatch = useContext(DispatchContext);
 
-  const logout = () => {
-    console.log("logout");
-    dispatch({ type: "logout" });
-  };
-
   const consultar_datos = () => {
     axios
-      .get(ipAPI + "users/me/")
+      .get(BACKEND_URL + "me")
       .then((response) => {
-        console.log(response);
         dispatch({
           type: "login",
           payLoad: response.data,
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   };
 
   const try_login = (response) => {
-    var link = ipAPI + "swap_token";
-    console.log("success: ");
+    var link = BACKEND_URL + "swap_token";
     axios({
       method: "post",
       url: link,
@@ -55,18 +43,10 @@ const Login = () => {
       })
       .catch((err) => {
         alert("Usuario no autorizado");
-        console.log(err);
-        // dispatch({
-        //   action: "loginBackendValidationErr",
-        //   payload: err,
-        // });
       });
   };
 
-  const failResponseGoogle = (response) => {
-    console.log("error: ");
-    console.log(response);
-  };
+  const failResponseGoogle = (response) => {};
 
   return (
     <div
@@ -76,25 +56,34 @@ const Login = () => {
         <>
           <div className={styles.uoct}>
             <div className={styles.header}>
-              <img src="/logo2.png" />
+              <a href="https://dacot.feriadesoftware.cl/">
+                <img alt="" className={styles.dacotimg} src="/logo2.png" />
+              </a>
               <span className={styles.text}>
                 Datos Abiertos Para el Control de Transito
               </span>
-              <img src="/logo_transportes.png" />
+              <a href="https://mtt.gob.cl/pyd/uoct">
+                <img
+                  alt=""
+                  className={styles.ministerioimg}
+                  src="/logo_transportes.png"
+                />
+              </a>
             </div>
           </div>
           <div className={styles.loginForm}>
             <span className={styles.title}>Ingreso al sistema</span>
             <div className={styles.button}>
               <GoogleLogin
-                clientId={clientId}
-                render = {renderProps => (
-                  <button className={styles.gugul} onClick={renderProps.onClick}>
-                    <img src="/google.png"></img>
+                clientId={GoogleLoginAPI_KEY}
+                render={(renderProps) => (
+                  <button
+                    className={styles.gugul}
+                    onClick={renderProps.onClick}>
+                    <img alt="" src="/google.png"></img>
                     <span>Ingresar con Google</span>
                   </button>
-                )
-                }
+                )}
                 onSuccess={try_login}
                 onFailure={failResponseGoogle}
                 cookiePolicy={"single_host_origin"}
@@ -102,17 +91,20 @@ const Login = () => {
                 buttonText="Ingresar con Google"
               />
             </div>
-            <span className={styles.sub}>DACoT 2020</span>
-          </div>
-          <footer className={styles.footer}>
-            <span>¿Necesitas acceder a los datos semafóricos de Santiago? 
-              <a target="_blank" className={styles.link} href="https://dacot.duckdns.org/api/v1/docs#/Junctions"> ¡Utiliza nuestra API!</a>
+            <span style={{ padding: "2rem", fontSize: ".9rem" }}>
+              {"Si necesitas acceso contacta al administrador "}
+              <a href="mailto:admin@dacot.com?Subect=Solicitud%20de%20acceso.">
+                admin@dacot.cl{" "}
+              </a>
             </span>
-          </footer>
+            <span className={styles.sub}>@DACoT 2021</span>
+          </div>
+          <footer className={styles.footer}></footer>
         </>
       ) : (
         <div className={styles.init}>
           <img className={styles.dacot} src="/logo.png" alt="" />
+          <div className={styles.accederbutton}> Ingresar</div>
         </div>
       )}
     </div>

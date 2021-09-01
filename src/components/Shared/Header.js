@@ -7,14 +7,15 @@ import styles from "./Header.module.css";
 
 import Nav from "./Nav";
 
-const Header = () => {
+//COMPONENTE HEADER QUE CONTIENE LOGO Y TITULO DE LA SECCION
+const Header = (props) => {
   const [section, setSection] = useState("Dashboard Empresa");
   const location = useLocation();
 
   const sections = {
-    "/": "Consultar información",
+    "/": "Inicio",
     "/consulta": "Consultar Semáforo",
-    "/nuevo/instalacion":
+    "/nuevo/solicitud-integracion":
       "Solicitud de integración para proyectos de nuevos semáforos",
     "/administracion": "Administración",
     "/nuevo/actualizacion":
@@ -23,11 +24,19 @@ const Header = () => {
       "Digitalización manual para instalaciones operativas",
     "/historial": "Historial",
     "/solicitudes": "Mis Solicitudes",
+    "/editar/programacion": "Editar información de programaciones",
+    "/procesar/solicitud": "Procesar solicitud",
+    "/info": "Información de instalación " + props.instalacion.oid,
+    "/editar/instalacion": "Edición de la instalación " + props.instalacion.oid,
+    "/editar/info-programaciones":
+      "Editar información de programaciones " + props.instalacion.oid,
+    "/nuevo/solicitud-actualizacion":
+      "Solicitud de actualización instalación " + props.instalacion.oid,
   };
 
   useEffect(() => {
-    setSection(sections[location.pathname]);
-  }, [location]);
+    setSection("> " + sections[location.pathname]);
+  }, [location]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={styles.bar}>

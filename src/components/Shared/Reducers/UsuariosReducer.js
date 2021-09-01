@@ -4,7 +4,8 @@ export const initialState = {
   area: "",
   empresa: "",
   email: "",
-  is_admin: false,
+  isAdmin: false,
+  disabled: true,
 
   comunas: [],
   empresas: [],
@@ -24,24 +25,25 @@ export function reducer(draft, action) {
       return;
 
     case "nuevo":
-      draft.nombre = "";
-      draft.rol = "";
+      draft.fullName = "";
+      draft.role = "";
       draft.area = "";
-      draft.empresa = "";
+      draft.company = "";
       draft.email = "";
-      draft.is_admin = false;
+      draft.isAdmin = false;
       return;
 
     case "editar":
       draft.desea_eliminar = false;
-      draft.nombre = action.payLoad.full_name;
-      draft.rol = action.payLoad.rol;
+      draft.isAdmin = action.payLoad.isAdmin;
+      draft.fullName = action.payLoad.fullName;
+      draft.role = action.payLoad.role;
       draft.area = action.payLoad.area;
-      if (action.payLoad.rol === "Empresa") {
-        draft.empresa = action.payLoad.company.name;
+      if (action.payLoad.role === "Empresa") {
+        draft.company = action.payLoad.company.name;
       }
       draft.email = action.payLoad.email;
-      draft.is_admin = action.payLoad.is_admin;
+      draft.disabled = action.payLoad.disabled;
       return;
 
     default:

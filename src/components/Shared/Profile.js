@@ -36,7 +36,8 @@ function Profile({ user, email, rol, state, dispatch }) {
           <span>Switch profile</span>
         </Button>
       )}
-      <span className={styles.footer}>DACoT 2020</span>
+
+      <span className={styles.footer}>@DACoT 2021</span>
     </div>
   );
 }

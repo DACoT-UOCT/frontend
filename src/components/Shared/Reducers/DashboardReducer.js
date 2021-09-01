@@ -1,5 +1,5 @@
 export const initialState = {
-  vista: "Solicitudes",
+  vista: "Integración",
   expanded: false,
   listado_solicitudes: [],
   listado_instalaciones: [],
@@ -16,14 +16,15 @@ export const initialState = {
 export function reducer(draft, action) {
   switch (action.type) {
     case "listado":
-      action.payLoad.map((i) => {
-        if (i.metadata.status === "SYSTEM") {
-          draft.listado_instalaciones.push(i);
+      for (let i = 0; i < action.payLoad.length; i++) {
+        let valor = action.payLoad[i];
+        if (valor.metadata.status === "PRODUCTION") {
+          draft.listado_instalaciones.push(valor);
         } else {
-          draft.listado_solicitudes.push(i);
+          draft.listado_solicitudes.push(valor);
         }
-        draft.listado.push(i);
-      });
+        draft.listado.push(valor);
+      }
       return;
 
     default:

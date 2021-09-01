@@ -1,13 +1,9 @@
 export const initialState = {
+  oid: "X",
   metadata: {
-    version: "base",
-    maintainer: "",
     status: "NEW",
-    status_date: { $date: Date.now() },
-    status_user: "",
-    installation_date: { $date: Date.now() },
-    commune: "",
-    region: "Región Metropolitana de Santiago",
+    commune: { name: "" },
+    // region: "Región Metropolitana de Santiago",
     img: null,
     pdf_data: null,
     pedestrian_demand: false,
@@ -16,7 +12,6 @@ export const initialState = {
     scoot_detector: false,
   },
   otu: {
-    oid: "X",
     metadata: {
       serial: "",
       ip_address: "",
@@ -26,37 +21,33 @@ export const initialState = {
       link_type: "", //Digital Analogo
       link_owner: "", //Propio Compartido
     },
-    //program: "", asignado al leer desde el SC
-    stages: [
-      ["", ""],
-      // "A", "VEH",
-    ],
 
-    fases: [[]],
-
-    secuencias: [[]], //[[1,2,3], "J003672"]
-    entreverdes: [[0]],
-    // sequences: [
-    //   { seqid: 1, phases: [{ phid: 1, stages: [{ stid: "A", type: "" }] }] }, //tipos de etapa, 'Vehicular', 'Peatonal', 'Flecha Verde', 'Ciclista', 'No Configurada'
-    // ],
-    // intergreens: [], //lista de listas unidimensional
     junctions: [
       {
         jid: "",
-        metadata: { location: "pointField", address_reference: "" },
-        //plans: "",  //se asignan cuando se lee el SC
+        metadata: {
+          location: {
+            type: "Point",
+            coordinates: null,
+          },
+          address_reference: "",
+          use_default_vi4: true,
+        },
+        phases: ["", ""],
+        intergreens: [],
+        plans: [],
+        sequence: [],
       },
     ],
+    programs: [],
   },
   controller: {
-    address_reference: "",
     gps: false,
     model: {
       company: { name: "" },
       model: "",
       firmware_version: "",
       checksum: "",
-      date: { $date: "" },
     },
   },
   headers: [
@@ -124,22 +115,22 @@ export const initialState = {
     {
       hal: 0,
       led: 0,
-      type: "L7 Peatonal",
+      type: "L7",
     },
     {
       hal: 0,
       led: 0,
-      type: "L8 Biciclos",
+      type: "L8",
     },
     {
       hal: 0,
       led: 0,
-      type: "L9 Buses",
+      type: "L9",
     },
     {
       hal: 0,
       led: 0,
-      type: "L10 Repetidora",
+      type: "L10",
     },
   ],
 
@@ -148,7 +139,8 @@ export const initialState = {
     vehicular: 0,
     pedestrian: 0,
   },
-  observations: "",
+  observation:
+    "REGISTRAR OBSERVACIONES DE INTERÉS \nSolicitud de integración ingresada desde el sistema DACoT",
 
   errors: [],
   vista: 1,
@@ -157,7 +149,7 @@ export const initialState = {
   success: false,
 };
 
-const ups = {
+const ups_initial = {
   brand: "",
   model: "",
   serial: "",
@@ -172,7 +164,6 @@ export function reducer(draft, action) {
     }
 
     case "oid": {
-      //CHECK
       for (var i = 0; i < draft.otu.junctions.length; i++) {
         draft.otu.junctions[i].jid =
           "J" +
@@ -182,7 +173,7 @@ export function reducer(draft, action) {
             .replace(/[^0-9]/g, "") +
           (i + 1).toString();
       }
-      draft.otu.oid =
+      draft.oid =
         "X" +
         action.payLoad
           .slice(1, 7)
@@ -193,18 +184,20 @@ export function reducer(draft, action) {
 
     case "ups_checkbox": {
       if (draft.ups === undefined) {
-        draft.ups = ups;
+        if (draft.ups_backup === undefined) draft.ups = ups_initial;
+        else draft.ups = draft.ups_backup;
       } else {
+        draft.ups_backup = JSON.parse(JSON.stringify(draft.ups));
         delete draft["ups"];
       }
       return;
     }
     case "metadata": {
-      if (action.fieldName === "installation_date") {
-        draft[action.type][action.fieldName] = { $date: action.payLoad };
-      } else {
-        draft[action.type][action.fieldName] = action.payLoad;
+      if (action.fieldName === "commune") {
+        draft.metadata.commune = JSON.parse(action.payLoad);
+        return;
       }
+      draft[action.type][action.fieldName] = action.payLoad;
       return;
     }
 
@@ -216,6 +209,10 @@ export function reducer(draft, action) {
       draft.submit = true;
       return;
 
+    case "enviado":
+      draft.submit = false;
+      return;
+
     case "reset": {
       draft.vista = 1;
       return;
@@ -224,10 +221,15 @@ export function reducer(draft, action) {
       if (draft.errors.length === 0) {
         if (draft.vista === 4) {
           draft.submit = true;
-          document.getElementById("formulario").scrollTop = 0;
         }
+        // document.getElementById("formulario").scrollTop = 0;
         draft.vista += 1;
-        document.getElementById("formulario").scrollTop = 0;
+        setTimeout(() => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }, 200);
       }
       return;
     }
@@ -262,8 +264,10 @@ export function reducer(draft, action) {
 
     case "junctions": {
       if (action.fieldName === "address_reference") {
-        draft.otu[action.type][action.index].metadata[action.fieldName] =
-          action.payLoad;
+        draft.otu[action.type][action.index].metadata.address_reference =
+          action.address;
+        draft.otu[action.type][action.index].metadata.location.coordinates =
+          action.coordinates;
       } else {
         draft.otu[action.type][action.index][action.fieldName] = action.payLoad;
       }
@@ -271,16 +275,12 @@ export function reducer(draft, action) {
     }
 
     case "agregar_junction": {
-      //CHECKED
       const name =
         "J" +
-        draft.otu.oid.slice(1, 6) +
+        draft.oid.slice(1, 6) +
         (draft.otu.junctions.length + 1).toString();
-      const nuevo = {
-        jid: name,
-        metadata: { location: "pointField", address_reference: "" },
-        //plans: "",  //se asignan cuando se lee el SC
-      };
+      const nuevo = JSON.parse(JSON.stringify(initialState)).otu.junctions[0];
+      nuevo.jid = name;
       draft.otu.junctions.push(nuevo);
       return;
     }
@@ -291,7 +291,6 @@ export function reducer(draft, action) {
       return;
     }
 
-    //CORREGIR----------
     case "controller": {
       draft.controller[action.fieldName] = action.payLoad;
       return;
@@ -303,33 +302,24 @@ export function reducer(draft, action) {
         draft.controller.model.model = "";
         draft.controller.model.firmware_version = "";
         draft.controller.model.checksum = "";
-        draft.controller.model.date = { $date: "" };
-      } else if (action.fieldName === "date") {
-        draft.controller.model[action.fieldName] = { $date: action.payLoad };
       } else if (action.fieldName === "model") {
         draft.controller.model[action.fieldName] = action.payLoad;
         draft.controller.model.firmware_version = "";
-        draft.controller.model.date = { $date: "" };
+        // draft.controller.model.date = "";
         draft.controller.model.checksum = "";
       } else if (action.fieldName === "firmware_version") {
         draft.controller.model[action.fieldName] = action.payLoad;
-        action.modelos.map((marca) => {
-          if (marca.company === draft.controller.model.company.name) {
-            marca.models.map((modelo) => {
-              if (modelo.name === draft.controller.model.model)
-                modelo.firmware.map((firmware) => {
-                  if (
-                    firmware.version === draft.controller.model.firmware_version
-                  ) {
-                    draft.controller.model.checksum = firmware.checksum;
-                    draft.controller.model.date = {
-                      $date: firmware.date.$date,
-                    };
-                  }
-                });
-            });
+        for (let i = 0; i < action.controladores.length; i++) {
+          if (
+            draft.controller.model.company.name ===
+              action.controladores[i].company.name &&
+            draft.controller.model.model === action.controladores[i].model &&
+            draft.controller.model.firmware_version ===
+              action.controladores[i].firmware_version
+          ) {
+            draft.controller.model.checksum = action.controladores[i].checksum;
           }
-        });
+        }
       }
       return;
     }
@@ -363,39 +353,12 @@ export function reducer(draft, action) {
 
     case "stage": {
       if (action.fieldName === 0) {
-        draft.otu.stages[action.index][
-          action.fieldName
-        ] = action.payLoad.replace(/\s/g, "").replace(/[^a-zA-Z]/g, "");
+        draft.otu.stages[action.index][action.fieldName] = action.payLoad
+          .replace(/\s/g, "")
+          .replace(/[^a-zA-Z]/g, "");
       } else {
         draft.otu.stages[action.index][action.fieldName] = action.payLoad;
       }
-      return;
-    }
-
-    case "eliminar_stage": {
-      draft.otu.stages.pop();
-
-      //eliminar columna de matriz entreverdes
-      draft.otu.entreverdes.map((fila) => {
-        fila.pop();
-      });
-      //eliminar ultima fila matriz entreverdes
-      draft.otu.entreverdes.pop();
-      return;
-    }
-
-    case "agregar_stage": {
-      const nuevo = ["", ""];
-      draft.otu.stages.push(nuevo);
-
-      //agregar columna a matriz de entreverdes
-      draft.otu.entreverdes.map((fila) => {
-        fila.push(0);
-      });
-      //agregar fila al final de la matriz de entreverdes
-      const largo = draft.otu.stages.length;
-      const array = Array(largo).fill(0);
-      draft.otu.entreverdes.push(array);
       return;
     }
 
@@ -423,27 +386,32 @@ export function reducer(draft, action) {
       }
       return;
     }
-    case "fase": {
-      const lista = action.payLoad
-        .replace(/\s/g, "")
-        .replace(/[^a-zA-Z-]/g, "")
-        .split("-");
-
-      lista.map((valor) => {
-        //if valor not in stages id
-        //return error
-      });
-      draft.otu.fases[action.index] = lista;
-      return;
-    }
 
     case "agregar_fase": {
-      draft.otu.fases.push([]);
+      draft.otu.junctions[action.junction_index].phases.push("");
       return;
     }
 
     case "eliminar_fase": {
-      draft.otu.fases.pop();
+      draft.otu.junctions[action.junction_index].phases.pop();
+      return;
+    }
+
+    case "fase_input": {
+      draft.otu.junctions[action.junction_index].phases[action.phase_index] =
+        action.payLoad;
+      return;
+    }
+
+    case "junction_address": {
+      draft.otu.junctions[action.junction_index].metadata.address_reference =
+        action.payLoad;
+      return;
+    }
+
+    case "entreverde_vehicular_default": {
+      draft.otu.junctions[action.junction_index].metadata.use_default_vi4 =
+        action.payLoad;
       return;
     }
 
@@ -492,8 +460,16 @@ export function reducer(draft, action) {
       return;
     }
 
-    case "observations": {
-      draft.observations = action.payLoad;
+    case "observation": {
+      draft.observation = action.payLoad;
+      return;
+    }
+
+    case "importar_excel": {
+      draft.otu.stages = action.payLoad.stages;
+      draft.otu.fases = action.payLoad.fases;
+      draft.otu.secuencias = action.payLoad.secuencias;
+      draft.otu.entreverdes = action.payLoad.entreverdes;
       return;
     }
 

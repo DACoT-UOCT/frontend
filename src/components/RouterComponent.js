@@ -1,72 +1,102 @@
 import React, { useEffect } from "react";
-import { useImmerReducer } from "use-immer";
 import "../App.css";
 import axios from "axios";
-
 import { ipAPI } from "./Shared/ipAPI";
 import Header from "./Shared/Header";
-import NuevaInstalacion from "./SolicitudInstalacionNueva/NuevaInstalacion";
-import ConsultaSemaforo from "./Consulta/ConsultaInstalacion";
+import NuevaInstalacion, { useStyles } from "./Formularios/NuevaInstalacion";
+import Inicio from "./Inicio/Inicio";
 import Login from "./Login/Login";
 import Logout from "./Login/Logout";
-import { initialState, reducer } from "./Shared/Reducers/AppReducer";
-import ProcesarSolicitud from "./ProcesarSolicitud/ProcesarSolicitud";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  useLocation,
-} from "react-router-dom";
-import Dashboard from "./Dashboards/Dashboard";
+import ProcesarSolicitud from "./Solicitudes/ProcesarSolicitud";
+import { Redirect, Route, useLocation } from "react-router-dom";
+import Solicitudes from "./Solicitudes/Solicitudes";
 import Administracion from "./Administracion/Administracion";
 import Profile from "./Shared/Profile";
-import Verificacion from "./Shared/Campos/Verificacion";
-import Resumen from "./Shared/Resumen";
+import ResumenProyecto from "./Formularios/Campos/ResumenProyecto";
 import Historial from "./Historial/Historial";
-import { createBrowserHistory } from "history";
-import usePersistentState from "./Shared/Utils/usePersistentState";
+import { Typography } from "@material-ui/core";
 
+/*Componente router que define los componentes a renderizar dependiendo de la url
+y de los permisos del usuario. Tambien se encarga de modificar el document.title */
 const RouterComponent = (props) => {
   //const [state, dispatch] = useImmerReducer(reducer, initialState);
-
   const state = props.state;
   const dispatch = props.dispatch;
-  const {
-    full_name,
-    password,
-    isLoading,
-    error,
-    isLoggedIn,
-    rol,
-    email,
-  } = state;
-
+  const classes = useStyles();
   let location = useLocation();
 
   useEffect(() => {
-    if (!state.debug) {
+    if (!state.debug && state.isLoggedIn) {
       axios
         .get(ipAPI + "users/me/")
-        .then((response) => {
-          console.log(response);
-        })
+        .then((response) => {})
         .catch((err) => {
-          console.log(err);
           dispatch({ type: "logout" });
         });
     }
-  }, [location]);
+  }, [location]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    var title = "UOCT | DACoT";
+    if (location.pathname === "/info") {
+      title =
+        state.actualizando.oid.slice(0, 4) +
+        " " +
+        state.actualizando.oid.slice(4);
+    }
+    if (
+      location.pathname === "/editar/instalacion" ||
+      location.pathname === "/editar/info-programaciones"
+    ) {
+      title =
+        "Editar " +
+        state.actualizando.oid.slice(0, 4) +
+        " " +
+        state.actualizando.oid.slice(4);
+    }
+    if (location.pathname === "/historial") {
+      title =
+        "Historial " +
+        state.actualizando.oid.slice(0, 4) +
+        " " +
+        state.actualizando.oid.slice(4);
+    }
+    if (location.pathname === "/administracion") {
+      title = "Administración";
+    }
+    if (location.pathname === "/solicitudes") {
+      title = "Solicitudes";
+    }
+
+    if (location.pathname === "/procesar/solicitud") {
+      title =
+        "Solicitud " +
+        state.actualizando.oid.slice(0, 4) +
+        " " +
+        state.actualizando.oid.slice(4);
+    }
+
+    if (location.pathname === "/nuevo/solicitud-actualizacion") {
+      title =
+        "Solicitud " +
+        state.actualizando.oid.slice(0, 4) +
+        " " +
+        state.actualizando.oid.slice(4);
+    }
+
+    document.title = title;
+  }, [location]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
-      {!isLoggedIn ? (
+      {!state.isLoggedIn ? (
         <>
           <Redirect to="/" />
           <Route path="/" exact component={Login} />
         </>
       ) : (
         <div className="app-container">
-          <Header />
+          <Header instalacion={state.actualizando} />
           <Route
             exact
             path="/logout"
@@ -76,7 +106,13 @@ const RouterComponent = (props) => {
             exact
             path="/"
             component={() => (
-              <ConsultaSemaforo state={state} dispatch={dispatch} />
+              <Inicio
+                is_admin={state.is_admin}
+                rol={state.rol}
+                popup_inicial={state.popup_inicial}
+                coordinates={state.coordinates}
+                dispatch={dispatch}
+              />
             )}
           />
           <Route
@@ -84,33 +120,33 @@ const RouterComponent = (props) => {
             path="/procesar/solicitud"
             component={() => <ProcesarSolicitud state={state.actualizando} />}
           />
-          {state.rol === "Empresa" && (
+          {state.rol === "Empresa" ? (
             <>
               <Route
                 exact
-                path="/nuevo/instalacion"
+                path="/nuevo/solicitud-integracion"
                 component={() => <NuevaInstalacion state={state} />}
               />
 
               <Route
                 exact
-                path="/actualizar/instalacion"
+                path="/nuevo/solicitud-actualizacion"
                 component={() => <NuevaInstalacion state={state} />}
               />
             </>
-          )}
-          {state.area === "Ingeniería" && (
+          ) : (
+            // FUNCIONARIO UOCT
             <>
               <Route
                 exact
                 path="/editar/instalacion"
-                component={() => <NuevaInstalacion state={state} />}
+                component={() =>
+                  state.actualizando.metadata.status === "PRODUCTION" &&
+                  state.actualizando.metadata.version === "latest" && (
+                    <NuevaInstalacion state={state} />
+                  )
+                }
               />
-            </>
-          )}
-          {state.is_admin && (
-            <>
-              <Route exact path="/administracion" component={Administracion} />
               <Route
                 exact
                 path="/nuevo/digitalizacion"
@@ -118,15 +154,20 @@ const RouterComponent = (props) => {
               />
               <Route
                 exact
-                path="/editar/instalacion"
+                path="/editar/info-programaciones"
                 component={() => <NuevaInstalacion state={state} />}
               />
+            </>
+          )}
+          {state.is_admin && (
+            <>
+              <Route exact path="/administracion" component={Administracion} />
             </>
           )}
           <Route
             exact
             path="/solicitudes"
-            component={() => <Dashboard dispatch={dispatch} />}
+            component={() => <Solicitudes dispatch={dispatch} />}
           />
 
           <Route
@@ -138,7 +179,50 @@ const RouterComponent = (props) => {
           <Route
             exact
             path="/info"
-            component={() => <Resumen instalacion={state.actualizando} />}
+            component={() => (
+              <>
+                <div className="grid-item nuevo-semaforo">
+                  <div
+                    className={classes.root}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      height: "100%",
+                    }}>
+                    <div
+                      style={{
+                        flexGrow: "1",
+                        overflowY: "scroll",
+                      }}>
+                      <div
+                        className="grid-item"
+                        id="formulario"
+                        style={{
+                          height: "100%",
+                          position: "relative",
+                          display: "flex",
+                          flexDirection: "column",
+                          border: "0px",
+                        }}>
+                        <Typography
+                          className={classes.instructions}
+                          style={{
+                            paddingTop: "1rem",
+                            paddingRight: "1rem",
+                          }}
+                          component={"span"}
+                          variant={"body2"}>
+                          <ResumenProyecto
+                            state={state.actualizando}
+                            procesar={true}
+                          />
+                        </Typography>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           />
 
           <Profile

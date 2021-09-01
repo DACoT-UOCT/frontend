@@ -1,28 +1,13 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { ipAPI } from "./ipAPI";
 import MenuIcon from "@material-ui/icons/Menu";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
-
 import styles from "./Nav.module.css";
-import { StateContext, DispatchContext } from "../App";
-import clientId from "../Login/Login";
-import Axios from "axios";
+import { StateContext } from "../App";
 
+// Componente de la barra lateral derecha con enlaces a la aplicación
 export default function Nav() {
   const [show, setShow] = useState(false);
-  const dispatch = useContext(DispatchContext);
   const state = useContext(StateContext);
-
-  // const logout = () => {
-  //   axios
-  //     .get(ipAPI + "logout")
-  //     .then((response) => {
-  //       dispatch({ type: "logout" });
-  //     })
-  //     .catch(() => console.log("Error al salir"));
-  // };
 
   return (
     <>
@@ -33,47 +18,47 @@ export default function Nav() {
       />
       <div className={`${styles.menu} ${show && styles.show}`}>
         <Link onClick={() => setShow(false)} className={styles.link} to="/">
-          <span>Inicio</span>
+          <span>‣ Inicio</span>
         </Link>
         <Link
           onClick={() => setShow(false)}
           className={styles.link}
           to="/solicitudes">
-          <span>Mis solicitudes</span>
+          {state.rol === "Empresa" ? (
+            <span>‣ Mis solicitudes</span>
+          ) : (
+            <span>‣ Solicitudes pendientes</span>
+          )}
         </Link>
         {state.rol === "Empresa" && (
           <Link
             onClick={() => setShow(false)}
             className={styles.link}
-            to="/nuevo/instalacion">
-            <span>Solicitud integración nuevo proyecto</span>
+            to="/nuevo/solicitud-integracion">
+            <span>‣ Nueva solicitud de integración de proyecto</span>
           </Link>
         )}
-
+        {state.rol === "Personal UOCT" && (
+          <Link
+            onClick={() => setShow(false)}
+            className={styles.link}
+            to="/nuevo/digitalizacion">
+            <span>‣ Digitalizar instalación</span>
+          </Link>
+        )}
         {state.is_admin && (
           <>
             <Link
               onClick={() => setShow(false)}
               className={styles.link}
-              to="/nuevo/digitalizacion">
-              <span>Digitalización manual</span>
-            </Link>
-            <Link
-              onClick={() => setShow(false)}
-              className={styles.link}
               to="/administracion">
-              <span>Administración</span>
+              <span>‣ Administración</span>
             </Link>
           </>
         )}
-        {/* <Link onClick={() => setShow(false)} className={styles.link} to="/">
-          <button color="inherit" onClick={() => dispatch({ type: "logOut" })}>
-            Salir
-          </button>
-        </Link> */}
 
         <Link to="/logout" className={styles.link}>
-          <span>Salir</span>
+          <span>‣ Salir</span>
         </Link>
       </div>
       {show && (

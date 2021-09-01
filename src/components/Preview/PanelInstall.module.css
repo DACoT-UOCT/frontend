@@ -1,0 +1,52 @@
+.details :global(.row) {
+  display: flex;
+  padding: 1rem;
+}
+
+.details :global(.buttons) {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.details :global(.row) button {
+  padding: 1rem !important;
+}
+
+.details {
+  display: block !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.details :global(.label) {
+  font-weight: bold;
+}
+
+.details h2 {
+  font-size: 1.5rem;
+}
+
+.details table {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 1.2rem 0 1rem 0;
+  margin-right: 0;
+
+  font-size: 1rem;
+  color: rgb(88, 88, 88);
+  border-spacing: 0;
+  border: 1px solid rgb(236, 236, 236);
+}
+
+.details td {
+  padding: 0.65rem;
+  font-weight: lighter;
+}
+
+.details tr:nth-child(even) {
+  background-color: rgb(236, 236, 236);
+}
+
+.code {
+  font-weight: bold;
+}

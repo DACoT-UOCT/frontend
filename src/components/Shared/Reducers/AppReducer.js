@@ -1,12 +1,5 @@
-import { Redirect } from "react-router-dom";
-
-// full_name: "ACME Employee",
-// email: "employee@acmecorp.com",
-// rol: "Empresa", //'Sala de Control', 'Ingiería', 'TIC'
-// area: "Mantenedora",
-// is_admin: false,
-
 export const initialState = {
+  coordinates: null,
   popup_inicial: true,
   isLoading: false,
   error: "",
@@ -15,6 +8,8 @@ export const initialState = {
   actualizando: "",
   tokenObj: "",
   debug: false,
+  comunas: null,
+  update_pendiente: false,
 };
 
 const funcionario = {
@@ -42,7 +37,6 @@ const empresa = {
 };
 
 export function reducer(draft, action) {
-  console.log(action.type);
   switch (action.type) {
     case "switch_profile": {
       draft.isLoggedIn = true;
@@ -72,6 +66,11 @@ export function reducer(draft, action) {
       draft[action.fieldName] = action.payload;
       return;
     }
+
+    case "update": {
+      draft.update_pendiente = action.payLoad;
+      return;
+    }
     case "login": {
       draft.error = "";
       draft.isLoading = false;
@@ -88,10 +87,9 @@ export function reducer(draft, action) {
     case "success": {
       draft.isLoggedIn = true;
       draft.isLoading = false;
-      if (draft.username == "empresa") draft.rol = "empresa";
+      if (draft.username === "empresa") draft.rol = "empresa";
       else draft.rol = "otro";
       draft.username = "";
-      console.log(draft.rol);
       return;
     }
 
@@ -118,7 +116,7 @@ export function reducer(draft, action) {
       draft.actualizando = "";
 
       draft.isLoggedIn = false;
-      draft.first_click_login = false;
+      draft.first_click_login = true;
       return;
     }
     case "toggleTodoCompleted": {
@@ -128,6 +126,16 @@ export function reducer(draft, action) {
     }
     case "FIRST CLICK": {
       draft.first_click_login = true;
+      return;
+    }
+
+    case "save_comunas": {
+      draft.comunas = action.payLoad;
+      return;
+    }
+
+    case "save_coordinates": {
+      draft.coordinates = action.payLoad;
       return;
     }
     default:
