@@ -11,11 +11,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import { GQLclient, StateContext } from "../../App";
 import { useHistory } from "react-router-dom";
 import ZoomImage from "../../Shared/ZoomImage";
-import TextareaAutosize from "react-textarea-autosize";
 import { computeTables, setVehIntergreen } from "../../../GraphQL/Mutations";
 import { GetUpdatedPlans } from "../../../GraphQL/Queries";
 import decamelizeKeysDeep from "decamelize-keys-deep";
 import Loading from "../../Shared/Loading";
+import Observacion from "./Observacion";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -790,11 +790,15 @@ const ResumenBody = forwardRef((props, ref) => {
                                     <th
                                       style={{
                                         backgroundColor: "#034472",
-                                      }}></th>
+                                      }}>
+                                      _
+                                    </th>
                                     <th
                                       style={{
                                         backgroundColor: "#034472",
-                                      }}></th>
+                                      }}>
+                                      _
+                                    </th>
                                     {fasesSC.map((fase, i) => {
                                       return <th key={i}>{"F" + fase}</th>;
                                     })}
@@ -809,7 +813,7 @@ const ResumenBody = forwardRef((props, ref) => {
                                           <th key={faseFromIndex}>
                                             {"F" +
                                               faseFrom +
-                                              " a " +
+                                              "a" +
                                               "F" +
                                               faseTo}
                                           </th>
@@ -836,7 +840,7 @@ const ResumenBody = forwardRef((props, ref) => {
                                           <th key={faseFromIndex}>
                                             {"F" +
                                               faseFrom +
-                                              " a " +
+                                              "a" +
                                               "F" +
                                               faseTo}
                                           </th>
@@ -1217,54 +1221,13 @@ const ResumenBody = forwardRef((props, ref) => {
           )}
 
           {/* OBSERVACIOENS */}
-          <div className="section" style={{ whiteSpace: "pre-wrap" }}>
-            {info ? (
-              <>
-                <h2>{"Observaciones"}</h2>
-                <TextareaAutosize
-                  className="observaciones"
-                  disabled={
-                    !(
-                      global_state.rol === "Personal UOCT" ||
-                      global_state.is_admin
-                    )
-                  }
-                  type="textarea"
-                  // disabled={info}
-                  placeholder=""
-                  value={props.observation}
-                  onChange={(e) => {
-                    props.setObservation(
-                      props.state.observation +
-                        e.currentTarget.value.slice(
-                          props.state.observation.length
-                        )
-                    );
-                  }}
-                />
-              </>
-            ) : (
-              <>
-                <h2>{"Observaciones (editable)"}</h2>
-                <TextareaAutosize
-                  className="observaciones"
-                  // bsSize="sm"
-                  type="textarea"
-                  // disabled={info}
-                  placeholder=""
-                  value={props.state.observation}
-                  onChange={(e) =>
-                    props.dispatch({
-                      type: "observation",
-                      payLoad:
-                        props.observation +
-                        e.currentTarget.value.slice(props.observation.length),
-                    })
-                  }
-                />
-              </>
-            )}
-          </div>
+          <Observacion
+            info={info}
+            global_state={global_state}
+            observation={info ? props.observation : props.state.observation}
+            setObservation={props.setObservation}
+            dispatch={props.dispatch}
+          />
         </div>
       </div>
     </>

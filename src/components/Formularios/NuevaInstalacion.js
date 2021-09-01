@@ -33,7 +33,7 @@ import Success from "../Shared/Success";
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
   },

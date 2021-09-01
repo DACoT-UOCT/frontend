@@ -173,6 +173,7 @@ const BarraBusqueda = (props) => {
     <div className={`${styles.container} ${"search-container"}`}>
       <div className={styles.row}>
         <input
+          autoFocus
           onKeyDown={(e) => {
             if (e.key === "Enter") buscarOnClick(state.busquedaInput);
           }}

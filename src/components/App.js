@@ -20,11 +20,6 @@ const history = createBrowserHistory();
 //CREA EL ESTADO GLOBAL DE LA APLICACION, EL CUAL ES PERSISTENTE(LOCALSTORAGE)
 const App = () => {
   const [state, dispatch] = usePersistentState(reducer, initialState);
-  //let location = useLocation();
-
-  // useEffect(() => {
-  //   "ROUTE CHANGE"
-  // }, [location]);
 
   useEffect(() => {
     //limpiar cache si se cierra la sesión, o se engresa por primera vez

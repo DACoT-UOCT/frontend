@@ -3,7 +3,7 @@ import "../App.css";
 import axios from "axios";
 import { ipAPI } from "./Shared/ipAPI";
 import Header from "./Shared/Header";
-import NuevaInstalacion from "./Formularios/NuevaInstalacion";
+import NuevaInstalacion, { useStyles } from "./Formularios/NuevaInstalacion";
 import Inicio from "./Inicio/Inicio";
 import Login from "./Login/Login";
 import Logout from "./Login/Logout";
@@ -14,6 +14,7 @@ import Administracion from "./Administracion/Administracion";
 import Profile from "./Shared/Profile";
 import ResumenProyecto from "./Formularios/Campos/ResumenProyecto";
 import Historial from "./Historial/Historial";
+import { Typography } from "@material-ui/core";
 
 /*Componente router que define los componentes a renderizar dependiendo de la url
 y de los permisos del usuario. Tambien se encarga de modificar el document.title */
@@ -21,7 +22,7 @@ const RouterComponent = (props) => {
   //const [state, dispatch] = useImmerReducer(reducer, initialState);
   const state = props.state;
   const dispatch = props.dispatch;
-
+  const classes = useStyles();
   let location = useLocation();
 
   useEffect(() => {
@@ -179,7 +180,48 @@ const RouterComponent = (props) => {
             exact
             path="/info"
             component={() => (
-              <ResumenProyecto state={state.actualizando} procesar={true} />
+              <>
+                <div className="grid-item nuevo-semaforo">
+                  <div
+                    className={classes.root}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      height: "100%",
+                    }}>
+                    <div
+                      style={{
+                        flexGrow: "1",
+                        overflowY: "scroll",
+                      }}>
+                      <div
+                        className="grid-item"
+                        id="formulario"
+                        style={{
+                          height: "100%",
+                          position: "relative",
+                          display: "flex",
+                          flexDirection: "column",
+                          border: "0px",
+                        }}>
+                        <Typography
+                          className={classes.instructions}
+                          style={{
+                            paddingTop: "1rem",
+                            paddingRight: "1rem",
+                          }}
+                          component={"span"}
+                          variant={"body2"}>
+                          <ResumenProyecto
+                            state={state.actualizando}
+                            procesar={true}
+                          />
+                        </Typography>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
             )}
           />
 
