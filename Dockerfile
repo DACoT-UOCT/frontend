@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json /app/
 RUN npm install
 COPY ./ /app/
-RUN cp /app/src/API_KEYS.dist.js /app/src/API_KEYS.js && INLINE_RUNTIME_CHUNK=false npm run build
+RUN cp /keys.js /app/src/API_KEYS.js && INLINE_RUNTIME_CHUNK=false npm run build
 
 # Deploy app
 FROM nginx:1.15
