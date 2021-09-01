@@ -3,6 +3,7 @@ import "../../App.css";
 import { DispatchContext, StateContext } from "../App";
 import { GoogleLogin } from "react-google-login";
 import { ipAPI } from "../Shared/ipAPI";
+import { BACKEND_URL } from "../../API_KEYS"
 import axios from "axios";
 import styles from "./Login.module.css";
 import { GoogleLoginAPI_KEY } from "../../API_KEYS";
@@ -14,7 +15,7 @@ const Login = () => {
 
   const consultar_datos = () => {
     axios
-      .get(ipAPI + "users/me/")
+      .get(BACKEND_URL + "me")
       .then((response) => {
         dispatch({
           type: "login",
@@ -25,7 +26,7 @@ const Login = () => {
   };
 
   const try_login = (response) => {
-    var link = ipAPI + "swap_token";
+    var link = BACKEND_URL + "swap_token";
     axios({
       method: "post",
       url: link,
