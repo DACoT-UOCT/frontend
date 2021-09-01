@@ -26,6 +26,11 @@ jobs:
           chmod +x ./buildkeys.sh
           ./buildkeys.sh
         shell: bash
+        env:
+          MAPS_KEY: ${{ secrets.MAPS_KEY }}
+          LOGIN_KEY: ${{ secrets.LOGIN_KEY }}
+          GEO_KEY: ${{ secrets.GEO_KEY }}
+          BACKEND: ${{ secrets.BACKEND }}
         name: Build Keys
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
