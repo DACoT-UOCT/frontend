@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "../../App.css";
-import { DispatchContext, StateContext } from "../App";
+import { DispatchContext, email_admin, StateContext } from "../App";
 import { GoogleLogin } from "react-google-login";
 import { BACKEND_URL } from "../../API_KEYS";
 import axios from "axios";
@@ -16,16 +16,19 @@ const Login = () => {
     axios
       .get(BACKEND_URL + "me")
       .then((response) => {
+        console.log("response me", response);
         dispatch({
           type: "login",
           payLoad: response.data,
         });
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log("err me", err);
+        alert("Usuario no autorizado");
+      });
   };
 
   const try_login = (response) => {
-    console.log(response);
     var link = BACKEND_URL + "swap_token";
     axios({
       method: "post",
@@ -39,11 +42,12 @@ const Login = () => {
       },
     })
       .then((response) => {
-        console.log(response);
+        console.log("resposne swap", response);
         consultar_datos();
       })
       .catch((err) => {
-        alert("Usuario no autorizado");
+        console.log("err swap", err);
+        alert("Error en la consulta");
       });
   };
 
@@ -89,13 +93,17 @@ const Login = () => {
                 onFailure={failResponseGoogle}
                 cookiePolicy={"single_host_origin"}
                 isSignedIn={false}
+                autoLoad={true}
                 buttonText="Ingresar con Google"
               />
             </div>
             <span style={{ padding: "2rem", fontSize: ".9rem" }}>
               {"Si necesitas acceso contacta al administrador "}
-              <a href="mailto:admin@dacot.com?Subect=Solicitud%20de%20acceso.">
-                admin@dacot.cl{" "}
+              <a
+                href={
+                  "mailto:" + email_admin + "?Subect=Solicitud%20de%20acceso."
+                }>
+                {email_admin}
               </a>
             </span>
             <span className={styles.sub}>@DACoT 2021</span>

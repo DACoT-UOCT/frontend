@@ -10,6 +10,7 @@ import { GetCompanies, GetUsers } from "../../GraphQL/Queries";
 import { useQuery } from "../../GraphQL/useQuery";
 import Loading from "../Shared/Loading";
 import sortTable from "../Shared/Utils/SortTable";
+import { email_admin } from "../App";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -103,7 +104,7 @@ const ListadoUsuarios = (props) => {
                 <td>{!usuario.disabled ? "Habilitado" : "Desabilitado"}</td>
                 <td>
                   {usuario.email !== "seed@dacot.uoct.cl" &&
-                    usuario.email !== "admin@dacot.uoct.cl" && (
+                    usuario.email !== email_admin && (
                       <Button
                         onClick={() => {
                           dispatch({ type: "editar", payLoad: usuario });

@@ -14,6 +14,7 @@ import store from "local-storage-pro";
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 export const GQLclient = new GraphQLClient(BACKEND_URL);
+export const email_admin = "asimov.uoct@mtt.gob.cl";
 const history = createBrowserHistory();
 
 //COMPONENTE QUE ALOJA TODA LA APLICACION

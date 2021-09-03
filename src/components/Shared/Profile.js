@@ -5,6 +5,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import { Button } from "reactstrap";
 
 import styles from "./Profile.module.css";
+import { email_admin } from "../App";
 
 function Profile({ user, email, rol, state, dispatch }) {
   return (
@@ -29,7 +30,7 @@ function Profile({ user, email, rol, state, dispatch }) {
           <SettingsIcon fontSize="small" className={styles.icon} />
           Contacto Administrador:
         </span>
-        <span className={styles.admin_mail}>admin@uoct.cl</span>
+        <span className={styles.admin_mail}>{email_admin}</span>
       </div>
       {state.debug && (
         <Button onClick={() => dispatch({ type: "switch_profile" })}>
