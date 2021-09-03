@@ -91,6 +91,7 @@ const Login = () => {
                 isSignedIn={false}
                 autoLoad={false}
                 buttonText="Ingresar con Google"
+                prompt="consent"
               />
             </div>
             <span style={{ padding: "2rem", fontSize: ".9rem" }}>
