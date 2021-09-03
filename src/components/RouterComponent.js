@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "../App.css";
 import axios from "axios";
-import { ipAPI } from "./Shared/ipAPI";
 import Header from "./Shared/Header";
 import NuevaInstalacion, { useStyles } from "./Formularios/NuevaInstalacion";
 import Inicio from "./Inicio/Inicio";
@@ -15,6 +14,7 @@ import Profile from "./Shared/Profile";
 import ResumenProyecto from "./Formularios/Campos/ResumenProyecto";
 import Historial from "./Historial/Historial";
 import { Typography } from "@material-ui/core";
+import { BACKEND_URL } from "../API_KEYS";
 
 /*Componente router que define los componentes a renderizar dependiendo de la url
 y de los permisos del usuario. Tambien se encarga de modificar el document.title */
@@ -28,7 +28,7 @@ const RouterComponent = (props) => {
   useEffect(() => {
     if (!state.debug && state.isLoggedIn) {
       axios
-        .get(ipAPI + "users/me/")
+        .get(BACKEND_URL + "me")
         .then((response) => {})
         .catch((err) => {
           dispatch({ type: "logout" });

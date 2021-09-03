@@ -21,8 +21,8 @@ const history = createBrowserHistory();
 const App = () => {
   const [state, dispatch] = usePersistentState(reducer, initialState);
 
+  //limpiar cache si se cierra la sesión, o se engresa por primera vez
   useEffect(() => {
-    //limpiar cache si se cierra la sesión, o se engresa por primera vez
     if (state.isLoggedIn === false) {
       // localStorage.clear();
       // sessionStorage.clear();
@@ -31,14 +31,15 @@ const App = () => {
     }
   }, [state.isLoggedIn]);
 
+  //auto log in developer
   useEffect(() => {
     if (state.debug && !state.isLoggedIn) {
       dispatch({ type: "switch_profile" });
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  //guardar comunas en el cache
   useEffect(() => {
-    //guardar comunas en el cache
     if (state.comunas === null) {
       GQLclient.request(GetCommunes)
         .then((data) => {
@@ -57,7 +58,7 @@ const App = () => {
   useEffect(() => {
     //guardar cordenadas del mapa en el cache
     if (state.coordinates === null) {
-      GQLclient.request(GetCoordinates, { status: "NEW" })
+      GQLclient.request(GetCoordinates, { status: "PRODUCTION" })
         .then((data) => {
           dispatch({ type: "save_coordinates", payLoad: data.locations });
         })

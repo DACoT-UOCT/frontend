@@ -2,8 +2,7 @@ import React, { useContext } from "react";
 import "../../App.css";
 import { DispatchContext, StateContext } from "../App";
 import { GoogleLogin } from "react-google-login";
-import { ipAPI } from "../Shared/ipAPI";
-import { BACKEND_URL } from "../../API_KEYS"
+import { BACKEND_URL } from "../../API_KEYS";
 import axios from "axios";
 import styles from "./Login.module.css";
 import { GoogleLoginAPI_KEY } from "../../API_KEYS";
@@ -26,6 +25,7 @@ const Login = () => {
   };
 
   const try_login = (response) => {
+    console.log(response);
     var link = BACKEND_URL + "swap_token";
     axios({
       method: "post",
@@ -39,6 +39,7 @@ const Login = () => {
       },
     })
       .then((response) => {
+        console.log(response);
         consultar_datos();
       })
       .catch((err) => {
