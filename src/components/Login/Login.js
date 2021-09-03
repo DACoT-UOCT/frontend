@@ -16,14 +16,12 @@ const Login = () => {
     axios
       .get(BACKEND_URL + "me")
       .then((response) => {
-        console.log("response me", response);
         dispatch({
           type: "login",
           payLoad: response.data,
         });
       })
       .catch((err) => {
-        console.log("err me", err);
         alert("Usuario no autorizado");
       });
   };
@@ -42,11 +40,9 @@ const Login = () => {
       },
     })
       .then((response) => {
-        console.log("resposne swap", response);
         consultar_datos();
       })
       .catch((err) => {
-        console.log("err swap", err);
         alert("Error en la consulta");
       });
   };
@@ -93,7 +89,7 @@ const Login = () => {
                 onFailure={failResponseGoogle}
                 cookiePolicy={"single_host_origin"}
                 isSignedIn={false}
-                autoLoad={true}
+                autoLoad={false}
                 buttonText="Ingresar con Google"
               />
             </div>
