@@ -41,6 +41,10 @@ const Documentacion = (props) => {
         onChange={(e) => {
           const file = e.target.files[0];
           if (file && validar_pdf(file)) {
+            if (file.size > 10e6) {
+              alert("Por favor, ingrese documentos de hasta 10MB.");
+              return;
+            }
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function () {
@@ -69,6 +73,10 @@ const Documentacion = (props) => {
         onChange={(e) => {
           const file = e.target.files[0];
           if (file && validar_imagen(file)) {
+            if (file.size > 10e6 / 2) {
+              alert("Por favor, ingrese imagenes de hasta 5MB.");
+              return;
+            }
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function () {

@@ -133,6 +133,7 @@ const ResumenButtons = (props) => {
 const ResumenBody = forwardRef((props, ref) => {
   // const classes = useStyles();
   const [state, setState] = useState(props.state);
+  const [textSize, setTextSize] = useState(13);
   const global_state = useContext(StateContext);
   const location = useLocation();
   const info = location.pathname === "/info";
@@ -754,7 +755,30 @@ const ResumenBody = forwardRef((props, ref) => {
                     return (
                       <div key={junctionIndex}>
                         <div className="page-break" />
-                        <div className="section">
+                        <div className="section" style={{ fontSize: textSize }}>
+                          <div className="text-size">
+                            <Button
+                              outline
+                              color="danger"
+                              onClick={() =>
+                                setTextSize(
+                                  textSize - 1 < 8 ? textSize : textSize - 1
+                                )
+                              }>
+                              -
+                            </Button>
+                            <p>{textSize}</p>
+                            <Button
+                              outline
+                              color="danger"
+                              onClick={() =>
+                                setTextSize(
+                                  textSize + 1 > 14 ? textSize : textSize + 1
+                                )
+                              }>
+                              +
+                            </Button>
+                          </div>
                           <h2>{"Programación " + junction.jid}</h2>
                           {junction.plans[0] && (
                             <>

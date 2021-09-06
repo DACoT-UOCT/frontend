@@ -61,7 +61,7 @@
 }
 
 .resume td {
-  padding: 0.2rem;
+  padding: 0.2em;
   text-align: center;
   border-right: solid 1px rgb(171, 172, 207);
   border-left: solid 1px rgb(201, 255, 252);
@@ -73,7 +73,7 @@
 }
 
 .resume td {
-  min-width: 2rem;
+  min-width: 1.3rem;
 }
 
 .resume :global(.entreverdes) {

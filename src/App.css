@@ -1202,3 +1202,24 @@ input:disabled {
   position: relative;
   transform: translate(8%, 0%);
 }
+
+.text-size {
+  position: absolute;
+  left: 75%;
+  width: 8rem;
+  height: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.text-size button {
+  height: 1.5rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-weight: bold;
+}
+
+.text-size p {
+  padding-top: 0.2rem;
+}
