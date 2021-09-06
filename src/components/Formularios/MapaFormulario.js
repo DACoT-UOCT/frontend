@@ -54,7 +54,7 @@ const MapaFormulario = (props) => {
     //BUSCA EL NOMBRE DE LA CALLE Y ACTUALIZA OBUCACION DEL PIN
     axios
       .get(
-        "http://www.mapquestapi.com/geocoding/v1/reverse?key=" +
+        "https://www.mapquestapi.com/geocoding/v1/reverse?key=" +
           GeocodingAPI_KEY +
           "&location=" +
           lat +
