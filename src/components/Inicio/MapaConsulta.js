@@ -1,29 +1,20 @@
-import React, { useState } from "react";
-import GoogleMapReact from "google-map-react";
-import { useRef } from "react";
+import React from "react";
 import "../../App.css";
-import {
-  initialState as MapainitialState,
-  defaultMapOptions,
-} from "../Shared/Reducers/MapaReducer";
+import { initialState as MapainitialState } from "../Shared/Reducers/MapaReducer";
 
 import PopUp from "../Shared/PopUp";
-import useSupercluster from "use-supercluster";
-import CustomMarker from "../Shared/CustomMarker";
-import { GoogleMapsAPI_KEY } from "../../API_KEYS.js";
+
+import MarkerClusterGroup from "react-leaflet-markercluster";
+
+import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 
 /*Componente que muestra todas las instalaciones operativas, disponible desde 
 la pagina de inicio */
-const Marker = ({ children }) => children;
 const MapaConsulta = (props) => {
   const defaultCenter = MapainitialState.center;
-  const [bounds, setBounds] = useState(null);
-  const [zoom, setZoom] = useState(10);
-  const mapRef = useRef();
 
   const buscar = (id) => {
     props.setOpen(false);
-    // setIsOpen("");
     const aux = "X" + id.slice(1, -1) + "0";
     props.buscar(aux);
   };
@@ -38,13 +29,6 @@ const MapaConsulta = (props) => {
     },
   }));
 
-  const { clusters, supercluster } = useSupercluster({
-    points,
-    bounds,
-    zoom,
-    options: { radius: 70, maxZoom: 15 },
-  });
-
   return (
     <>
       <PopUp
@@ -53,67 +37,37 @@ const MapaConsulta = (props) => {
         setOpen={props.setOpen}
         map={true}>
         <div style={{ height: "70vh", width: "100%" }}>
-          <GoogleMapReact
-            bootstrapURLKeys={{
-              key: GoogleMapsAPI_KEY,
-            }}
-            defaultCenter={defaultCenter}
-            defaultZoom={zoom}
-            options={defaultMapOptions}
-            yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={({ map }) => {
-              mapRef.current = map;
-            }}
-            onChange={(e) => {
-              setZoom(e.zoom);
-              setBounds([
-                e.bounds.nw.lng,
-                e.bounds.se.lat,
-                e.bounds.se.lng,
-                e.bounds.nw.lat,
-              ]);
-            }}>
-            {clusters.map((cluster) => {
-              const [longitude, latitude] = cluster.geometry.coordinates;
-              const { cluster: isCluster, point_count: pointCount } =
-                cluster.properties;
+          <MapContainer
+            center={defaultCenter}
+            zoom={13}
+            style={{ height: "100%", width: "100%" }}
+            scrollWheelZoom={true}>
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <MarkerClusterGroup
+              showCoverageOnHover={true}
+              disableClusteringAtZoom={16}>
+              {points.map((point, i) => {
+                const [longitude, latitude] = point.geometry.coordinates;
 
-              if (isCluster) {
                 return (
                   <Marker
-                    key={`cluster-${cluster.id}`}
-                    lat={latitude}
-                    lng={longitude}>
-                    <div
-                      className="cluster-marker"
-                      style={{
-                        width: `${10 + (pointCount / points.length) * 20}px`,
-                        height: `${10 + (pointCount / points.length) * 20}px`,
-                      }}
-                      onClick={() => {
-                        const expansionZoom = Math.min(
-                          supercluster.getClusterExpansionZoom(cluster.id),
-                          20
-                        );
-
-                        mapRef.current.setZoom(expansionZoom);
-                        mapRef.current.panTo({ lat: latitude, lng: longitude });
-                      }}>
-                      {pointCount / 2}
-                    </div>
+                    key={i}
+                    position={[latitude, longitude]}
+                    eventHandlers={{
+                      click: () => {
+                        buscar(point.properties.jid);
+                        // console.log("marker clicked", e);
+                      },
+                    }}>
+                    <Tooltip> {point.properties.jid}</Tooltip>{" "}
                   </Marker>
                 );
-              }
-
-              return (
-                <CustomMarker
-                  lat={latitude}
-                  lng={longitude}
-                  label={cluster.properties.jid}
-                  buscar={buscar}></CustomMarker>
-              );
-            })}
-          </GoogleMapReact>
+              })}
+            </MarkerClusterGroup>
+          </MapContainer>
         </div>
       </PopUp>
     </>

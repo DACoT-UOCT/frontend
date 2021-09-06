@@ -796,6 +796,7 @@ Button {
 .mapa-formulario {
   height: 70vh;
   width: 70%;
+  border: red 3px solid;
 }
 
 .address-mapa-formulario {

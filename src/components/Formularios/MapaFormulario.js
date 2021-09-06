@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import GoogleMapReact from "google-map-react";
-import { useRef } from "react";
 import "../../App.css";
 import Geocode from "react-geocode";
 import { useImmerReducer } from "use-immer";
@@ -8,12 +6,27 @@ import { Label, Button } from "reactstrap";
 import {
   initialState as MapainitialState,
   reducer as Mapareducer,
-  defaultMapOptions,
 } from "../Shared/Reducers/MapaReducer";
 import PopUp from "../Shared/PopUp";
-import CustomMarker from "../Shared/CustomMarker";
 import { GeocodingAPI_KEY, GoogleMapsAPI_KEY } from "../../API_KEYS.js";
 import axios from "axios";
+
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Tooltip,
+  useMapEvent,
+} from "react-leaflet";
+import L from "leaflet";
+
+let DefaultIcon = L.icon({
+  iconUrl: "/imagenes/semaforo.png",
+  shadowUrl: null,
+  iconSize: new L.Point(30, 30),
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 Geocode.setApiKey(GoogleMapsAPI_KEY);
 Geocode.setLanguage("sp");
@@ -28,15 +41,11 @@ const MapaFormulario = (props) => {
     MapainitialState
   );
   const dispatch = props.dispatch;
-  const [zoom, setZoom] = useState(12);
-  const mapRef = useRef();
-
   const [address, setAddress] = useState(props.address);
   const [coordinates, setCoordinates] = useState(props.pins);
 
   const onMapClick = (e) => {
-    let lat = e.lat;
-    let lng = e.lng;
+    const { lat, lng } = e.latlng;
 
     //GUARDA LAS COORDENADAS
     dispatchMapa({ type: "markerLat", payLoad: e.lat });
@@ -90,6 +99,13 @@ const MapaFormulario = (props) => {
     },
   }));
 
+  const OnMapClick = () => {
+    useMapEvent("click", (e) => {
+      onMapClick(e);
+    });
+    return null;
+  };
+
   return (
     <>
       <PopUp
@@ -99,34 +115,27 @@ const MapaFormulario = (props) => {
         map={true}>
         <div className="mapa-formulario-container">
           <div className="mapa-formulario">
-            <GoogleMapReact
-              bootstrapURLKeys={{
-                key: GoogleMapsAPI_KEY,
-              }}
-              onClick={(e) => onMapClick(e)}
-              defaultCenter={stateMapa.center}
-              defaultZoom={zoom}
-              options={defaultMapOptions}
-              yesIWantToUseGoogleMapApiInternals
-              onGoogleApiLoaded={({ map }) => {
-                mapRef.current = map;
-              }}
-              onChange={(e) => {
-                setZoom(e.zoom);
-              }}>
-              {points.map((point) => {
+            <MapContainer
+              center={stateMapa.center}
+              zoom={13}
+              style={{ height: "100%", width: "100%" }}
+              scrollWheelZoom={true}>
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <OnMapClick />
+
+              {points.map((point, i) => {
                 const [longitude, latitude] = point.geometry.coordinates;
 
                 return (
-                  <CustomMarker
-                    lat={latitude}
-                    lng={longitude}
-                    label={point.properties.jid}
-                    gray={point.properties.jid !== props.jid}
-                    buscar={() => {}}></CustomMarker>
+                  <Marker key={i} position={[latitude, longitude]}>
+                    <Tooltip> {point.properties.jid}</Tooltip>{" "}
+                  </Marker>
                 );
               })}
-            </GoogleMapReact>
+            </MapContainer>
           </div>
           <div className="address-mapa-formulario">
             <div>

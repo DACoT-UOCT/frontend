@@ -201,7 +201,11 @@ const Junctions = (props) => {
                             }}>
                             <Campo
                               autoFocus
-                              id={junction_index + phase_index + "fase-input"}
+                              id={
+                                junction_index.toString() +
+                                phase_index.toString() +
+                                "fase-input"
+                              }
                               // defaultValue="No registrado"
                               value={fase}
                               label={"Etapas de la fase " + (phase_index + 1)}

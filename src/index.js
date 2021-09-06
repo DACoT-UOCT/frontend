@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
+import "leaflet/dist/leaflet.css";
+// import "react-leaflet-markercluster/dist/styles.min.css";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
