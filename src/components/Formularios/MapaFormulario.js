@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../../App.css";
-import Geocode from "react-geocode";
 import { useImmerReducer } from "use-immer";
 import { Label, Button } from "reactstrap";
 import {
@@ -8,7 +7,7 @@ import {
   reducer as Mapareducer,
 } from "../Shared/Reducers/MapaReducer";
 import PopUp from "../Shared/PopUp";
-import { GeocodingAPI_KEY, GoogleMapsAPI_KEY } from "../../API_KEYS.js";
+import { GeocodingAPI_KEY } from "../../API_KEYS.js";
 import axios from "axios";
 
 import {
@@ -27,11 +26,6 @@ let DefaultIcon = L.icon({
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
-
-Geocode.setApiKey(GoogleMapsAPI_KEY);
-Geocode.setLanguage("sp");
-Geocode.setRegion("cl");
-Geocode.enableDebug();
 
 //MAPA USADO PARA VISUALIZAR E INGRESAR LA UBICACION DE UN JUNCTION EN EL FORMULARIO
 //TAMBIEN SE ENCARGA DE ENCONTRAR EL NOMBRE DE LA CALLE DE LA UBICACION

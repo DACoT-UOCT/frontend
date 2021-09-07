@@ -17,7 +17,6 @@ import { useQuery } from "../../../GraphQL/useQuery";
 import { GetCommunes } from "../../../GraphQL/Queries";
 import Loading from "../../Shared/Loading";
 import { StateContext } from "../../App";
-import { date_format } from "../../Shared/API/Interface";
 
 //COMPONENTE DEL FORMULARIO QUE CONTIENE INFORMACION GENERAL DE LA INSTALACION
 //COMUNA, EMPRESA MANTENEDORA , EMPRESA INSTALADORA, DETECTORES
@@ -116,19 +115,6 @@ const General = (props) => {
                 ) : (
                   <Loading />
                 )}
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell component="th" scope="row" align={_align}>
-                <Label
-                  style={{ paddingTop: "0.8rem", paddingBottom: "0.8rem" }}>
-                  Última modificación del registro
-                </Label>
-              </TableCell>
-              <TableCell align="left">
-                {date_format(metadata.status_date) ||
-                  "Información no disponible"}
               </TableCell>
             </TableRow>
 
