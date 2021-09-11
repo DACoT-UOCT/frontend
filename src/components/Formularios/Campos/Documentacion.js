@@ -27,10 +27,11 @@ const Documentacion = (props) => {
     <div style={{ marginTop: "2rem" }}>
       <legend>Documentación de respaldo</legend>
       <Label>
-        Adjuntar un PDF con toda la informacion de la instalación, este será
-        usado para respaldar y corroborar lo entregado en este formulario.
+        Adjuntar un PDF (DATA) con toda la informacion de la instalación, este
+        será usado para respaldar y corroborar lo entregado en este formulario.
         Asegurarse de incluir tablas de periodizaciones y programaciones en este
-        documento.
+        documento. Este documento estará disponible solo para personal de la
+        UOCT y administradores de la aplicación.
       </Label>
       <br></br>
       <CustomInput

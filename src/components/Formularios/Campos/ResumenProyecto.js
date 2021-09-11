@@ -926,6 +926,7 @@ const ResumenBody = forwardRef((props, ref) => {
                                                         width: "1.5rem",
                                                         textAlign: "center",
                                                         padding: "0",
+                                                        fontWeight: "bold",
                                                       }}
                                                       onChange={(e) =>
                                                         onChangeVehIntergreen(

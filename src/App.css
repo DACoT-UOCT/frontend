@@ -11,11 +11,11 @@
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #3b3b3b49;
+  background-color: #bbb6883b;
   background-image: -webkit-linear-gradient(
     90deg,
     transparent,
-    rgb(177, 177, 177) 50%,
+    rgb(119, 113, 146) 50%,
     transparent,
     transparent
   );
