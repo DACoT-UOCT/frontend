@@ -1234,3 +1234,8 @@ input:disabled {
   flex-direction: row;
   justify-content: space-around;
 }
+
+.program-check {
+  color: rgb(112, 78, 233);
+  cursor: pointer;
+}
