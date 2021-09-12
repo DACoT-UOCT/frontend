@@ -215,6 +215,7 @@ const RouterComponent = (props) => {
                           <ResumenProyecto
                             state={state.actualizando}
                             procesar={true}
+                            dispatch={dispatch}
                           />
                         </Typography>
                       </div>

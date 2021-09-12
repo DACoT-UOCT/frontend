@@ -98,6 +98,7 @@ const ResumenButtons = (props) => {
                     return;
                   }
                   props.setBoolIntergreen(true);
+                  props.resetProgramsAndSeq();
                   setTimeout(() => {
                     props.programacionesRef.current.scrollIntoView({
                       block: "start",
@@ -158,8 +159,17 @@ const ResumenBody = forwardRef((props, ref) => {
   const programacionesRef = useRef(null);
   let history = useHistory();
 
-  const [secuencias, setSecuencias] = useState(
-    state.otu.junctions.map((junction, index) => {
+  const getJunctions = () => {
+    return state.otu.junctions.map((junction, index) => {
+      return {
+        junction: junction,
+        initial_junction: junction,
+      };
+    });
+  };
+
+  const getSecuencias = () => {
+    return state.otu.junctions.map((junction, index) => {
       return {
         seq: junction.sequence.map((aux) => parseInt(aux.phid)),
         initial_seq: junction.sequence.map((aux) => parseInt(aux.phid)),
@@ -169,37 +179,34 @@ const ResumenBody = forwardRef((props, ref) => {
         junction: junction,
         initial_junction: junction,
       };
-    })
-  );
+    });
+  };
 
-  const [junctions, setJunctions] = useState(
-    state.otu.junctions.map((junction, index) => {
-      return {
-        junction: junction,
-        initial_junction: junction,
-      };
-    })
-  );
+  const [secuencias, setSecuencias] = useState(getSecuencias());
+
+  const [junctions, setJunctions] = useState(getJunctions());
+
+  const resetProgramsAndSeq = () => {
+    setSecuencias(getSecuencias());
+
+    setJunctions(getJunctions());
+  };
 
   const programacionesDisponibles =
     state.otu.junctions[0].plans != null &&
     state.otu.junctions[0].plans.length > 0;
   const onChangeVehIntergreen = (junctionIndex, faseFrom, faseTo, _value) => {
-    let aux = JSON.parse(JSON.stringify(state));
+    let junction = JSON.parse(
+      JSON.stringify(junctions[junctionIndex].junction)
+    );
     if (!_value) _value = "0";
     // let intergreens =
     //   aux.otu.junctions[junctionIndex].plans[planIndex].vehicle_intergreen;
-    for (let j = 0; j < aux.otu.junctions[junctionIndex].plans.length; j++) {
-      for (
-        let i = 0;
-        i < aux.otu.junctions[junctionIndex].plans[0].vehicle_intergreen.length;
-        i++
-      ) {
+    for (let j = 0; j < junction.plans.length; j++) {
+      for (let i = 0; i < junction.plans[0].vehicle_intergreen.length; i++) {
         if (
-          aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[i]
-            .phfrom === faseFrom &&
-          aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[i]
-            .phto === faseTo
+          junction.plans[j].vehicle_intergreen[i].phfrom === faseFrom &&
+          junction.plans[j].vehicle_intergreen[i].phto === faseTo
         ) {
           let valor = parseInt(
             _value
@@ -207,14 +214,13 @@ const ResumenBody = forwardRef((props, ref) => {
               .replace(/\s/g, "")
               .replace(/[^0-9]/g, "")
           );
-          aux.otu.junctions[junctionIndex].plans[j].vehicle_intergreen[
-            i
-          ].value = valor;
+          junction.plans[j].vehicle_intergreen[i].value = valor;
         }
       }
     }
-
-    setState(aux);
+    let temp = JSON.parse(JSON.stringify(junctions));
+    temp[junctionIndex].junction = junction;
+    setJunctions(temp);
   };
 
   const getStatus = () => {
@@ -236,16 +242,16 @@ const ResumenBody = forwardRef((props, ref) => {
   const saveVehIntergreenChanges = async () => {
     //funcion auxiliar para hacer las mutationsetVehIntergreen antes del Computetables
     const VehIntergreenPromiseHandler = (j_index) => {
-      let _phases = state.otu.junctions[
-        j_index
-      ].plans[0].vehicle_intergreen.map((entreverde) => {
-        return {
-          phfrom: entreverde.phfrom.toString(),
-          phto: entreverde.phto.toString(),
-          value: entreverde.value.toString(),
-        };
-      });
-      var _jid = state.otu.junctions[j_index].jid;
+      let _phases = junctions[j_index].junction.plans[0].vehicle_intergreen.map(
+        (entreverde) => {
+          return {
+            phfrom: entreverde.phfrom.toString(),
+            phto: entreverde.phto.toString(),
+            value: entreverde.value.toString(),
+          };
+        }
+      );
+      var _jid = junctions[j_index].junction.jid;
 
       return GQLclient.request(setVehIntergreen, {
         data: {
@@ -258,7 +264,7 @@ const ResumenBody = forwardRef((props, ref) => {
 
     setSavingIntergreens(true);
 
-    for (let i = 0; i < state.otu.junctions.length; i++) {
+    for (let i = 0; i < junctions.length; i++) {
       await VehIntergreenPromiseHandler(i);
     }
     compute_tables();
@@ -285,17 +291,27 @@ const ResumenBody = forwardRef((props, ref) => {
       oid: state.oid,
       status: "PRODUCTION",
     })
-      .then((response) => {
+      .then((_response) => {
+        let response = decamelizeKeysDeep(_response);
         let aux = JSON.parse(JSON.stringify(state));
         for (let i = 0; i < aux.otu.junctions.length; i++) {
-          aux.otu.junctions[i].plans = decamelizeKeysDeep(
-            response.project.otu.junctions[i].plans
-          );
+          aux.otu.junctions[i].plans = response.project.otu.junctions[i].plans;
         }
 
+        setJunctions(
+          aux.otu.junctions.map((junction, index) => {
+            return {
+              junction: junction,
+              initial_junction: junction,
+            };
+          })
+        );
+
+        props.dispatch({ type: "levantar_actualizacion", payLoad: aux });
         setState(aux);
         setBoolIntergreen(false);
         setSavingIntergreens(false);
+
         alert("Programaciones actualizadas con éxito");
       })
       .catch((error) => {
@@ -324,6 +340,7 @@ const ResumenBody = forwardRef((props, ref) => {
           programacionesRef={programacionesRef}
           update={global_state.update_pendiente}
           programacionesDisponibles={programacionesDisponibles}
+          resetProgramsAndSeq={resetProgramsAndSeq}
         />
         <div className={styles.resume}>
           <h2
@@ -633,6 +650,7 @@ const ResumenBody = forwardRef((props, ref) => {
                                       outline
                                       color="warning"
                                       onClick={() => {
+                                        if (boolIntergreen) return;
                                         let temp = JSON.parse(
                                           JSON.stringify(secuencias)
                                         );
@@ -927,17 +945,6 @@ const ResumenBody = forwardRef((props, ref) => {
                             <h2>{"Programación " + junction.jid}</h2>
                             {junction.plans[0] && (
                               <>
-                                {junction.metadata.use_default_vi4 ===
-                                  false && (
-                                  <p>
-                                    Se ha señalado que los entreverdes
-                                    vehiculares de esta instalación tienen valor
-                                    distinto a 4s. De no ser así, se requiere
-                                    actualizar este valor para calcular
-                                    correctamente las programaciones de la
-                                    instalación.
-                                  </p>
-                                )}
                                 <table>
                                   <thead>
                                     <tr>
@@ -1029,6 +1036,7 @@ const ResumenBody = forwardRef((props, ref) => {
                                       <th>
                                         <ReplayIcon
                                           onClick={() => {
+                                            if (boolIntergreen) return;
                                             let temp = JSON.parse(
                                               JSON.stringify(junctions)
                                             );
@@ -1233,6 +1241,7 @@ const ResumenBody = forwardRef((props, ref) => {
                                             <CheckIcon
                                               className="program-check"
                                               onClick={() => {
+                                                if (boolIntergreen) return;
                                                 let temp = JSON.parse(
                                                   JSON.stringify(junctions)
                                                 );
@@ -1272,9 +1281,7 @@ const ResumenBody = forwardRef((props, ref) => {
                                   {savingIntergreens ? (
                                     <Loading />
                                   ) : (
-                                    "Guardar cambios de entreverdes vehiculares (" +
-                                    state.otu.junctions[junctionIndex].jid +
-                                    ")"
+                                    "Guardar entreverdes vehiculares (aplica a todos los Junctions de la instalación)"
                                   )}
                                 </Button>
                               </div>
