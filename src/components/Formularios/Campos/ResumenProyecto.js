@@ -157,7 +157,6 @@ const ResumenBody = forwardRef((props, ref) => {
   const [savingIntergreens, setSavingIntergreens] = useState(false);
   const programacionesRef = useRef(null);
   let history = useHistory();
-  console.log(state);
 
   const [secuencias, setSecuencias] = useState(
     state.otu.junctions.map((junction, index) => {
@@ -181,8 +180,6 @@ const ResumenBody = forwardRef((props, ref) => {
       };
     })
   );
-
-  console.log(secuencias);
 
   const programacionesDisponibles =
     state.otu.junctions[0].plans != null &&
@@ -652,8 +649,9 @@ const ResumenBody = forwardRef((props, ref) => {
                                       autoFocus
                                       onKeyDown={(e) => {
                                         if (
-                                          e.key === "Backspace" ||
-                                          e.key === "Delete"
+                                          (e.key === "Backspace" ||
+                                            e.key === "Delete") &&
+                                          e.target.value === ""
                                         ) {
                                           let temp = JSON.parse(
                                             JSON.stringify(secuencias)
