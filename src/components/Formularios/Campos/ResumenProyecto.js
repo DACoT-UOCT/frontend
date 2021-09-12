@@ -5,7 +5,13 @@ import styles from "./Resumen.module.css";
 import ReactToPrint from "react-to-print";
 import { Label, Button } from "reactstrap";
 import { useLocation } from "react-router-dom";
-import { Checkbox, FormControlLabel } from "@material-ui/core";
+import EditSharpIcon from "@material-ui/icons/EditSharp";
+import {
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  styled,
+} from "@material-ui/core";
 import { getFecha } from "../../Shared/Utils/general_functions";
 import { makeStyles } from "@material-ui/core/styles";
 import { GQLclient, StateContext } from "../../App";
@@ -29,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
 }));
+
+const Campo = styled(TextField)({
+  background: "none",
+});
 
 const encontrarValorEntreverde = (entreverdes, from, to) => {
   for (let i = 0; i < entreverdes.length; i++) {
@@ -145,6 +155,17 @@ const ResumenBody = forwardRef((props, ref) => {
   const [savingIntergreens, setSavingIntergreens] = useState(false);
   const programacionesRef = useRef(null);
   let history = useHistory();
+
+  const [secuencias, setSecuencias] = useState(
+    state.otu.junctions.map((junction, index) => {
+      return {
+        seq: junction.sequence.map((aux) => parseInt(aux.phid)),
+        initial_seq: junction.sequence.map((aux) => parseInt(aux.phid)),
+        openEdit: false,
+        addSeq: false,
+      };
+    })
+  );
 
   const programacionesDisponibles =
     state.otu.junctions[0].plans != null &&
@@ -512,13 +533,13 @@ const ResumenBody = forwardRef((props, ref) => {
             <ZoomImage img={state.metadata.img} />
           </div>
           {/* fases secuencia entreverdes */}
-          {state.otu.junctions.map((junction, index) => {
-            if (!junctions[index]) return <></>;
+          {state.otu.junctions.map((junction, junctionIndex) => {
+            if (!junctions[junctionIndex]) return <></>;
 
             let fasesSC = junction.sequence.map((aux) => aux.phid);
             let fasesSYSTEM = junction.sequence.map((aux) => aux.phid_system);
             return (
-              <div className="section" key={index}>
+              <div className="section" key={junctionIndex}>
                 <h2>{junction.jid}</h2>
                 {/* <h5> Etapas</h5> */}
                 <div className="tables">
@@ -560,33 +581,94 @@ const ResumenBody = forwardRef((props, ref) => {
                             de control para esta intersección
                           </p>
                         ) : (
-                          <table>
-                            <thead>
-                              <tr>
-                                <th>Secuencia</th>
-                                <th>Sistema</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  {junction.sequence
-                                    .map((aux) => {
-                                      return "F" + aux.phid;
-                                    })
-                                    .join(" - ")}
-                                </td>
+                          <div className="secuencia-resumen">
+                            <div>
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th>Secuencia</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td style={{ fontWeight: "bold" }}>
+                                      {secuencias[junctionIndex].seq
+                                        .map((aux) => {
+                                          return "F" + aux;
+                                        })
+                                        .join(" - ")}
+                                    </td>
 
-                                <td>
-                                  {junction.sequence
-                                    .map((aux) => {
-                                      return aux.phid_system;
-                                    })
-                                    .join(" - ")}
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                                    {/* <td>
+                                    {junction.sequence
+                                      .map((aux) => {
+                                        return aux.phid_system;
+                                      })
+                                      .join(" - ")}
+                                  </td> */}
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div className="secuencia-resumen-edit">
+                              {!secuencias[junctionIndex].openEdit ? (
+                                <>
+                                  <Button
+                                    outline
+                                    color="warning"
+                                    onClick={() => {
+                                      let temp = JSON.parse(
+                                        JSON.stringify(secuencias)
+                                      );
+                                      temp[junctionIndex].openEdit = true;
+                                      setSecuencias(temp);
+                                    }}>
+                                    <EditSharpIcon />
+                                  </Button>
+                                </>
+                              ) : (
+                                <>
+                                  <Campo></Campo>
+                                  <Button>Agregar fase</Button>
+                                  <Button>Guardar</Button>
+                                  <Button
+                                    onClick={() => {
+                                      let temp = JSON.parse(
+                                        JSON.stringify(secuencias)
+                                      );
+                                      temp[junctionIndex].seq =
+                                        temp[junctionIndex].initial_seq;
+                                      setSecuencias(temp);
+                                    }}>
+                                    Reset
+                                  </Button>
+                                  <Button
+                                    color="danger"
+                                    onClick={() => {
+                                      let temp = JSON.parse(
+                                        JSON.stringify(secuencias)
+                                      );
+                                      temp[junctionIndex].seq.pop();
+                                      setSecuencias(temp);
+                                    }}>
+                                    Eliminar fase
+                                  </Button>
+                                  <Button
+                                    outline
+                                    color="success"
+                                    onClick={() => {
+                                      let temp = JSON.parse(
+                                        JSON.stringify(secuencias)
+                                      );
+                                      temp[junctionIndex].openEdit = false;
+                                      setSecuencias(temp);
+                                    }}>
+                                    OK
+                                  </Button>
+                                </>
+                              )}
+                            </div>
+                          </div>
                         )}
                       </div>
                       {props.detalles && (
@@ -648,81 +730,37 @@ const ResumenBody = forwardRef((props, ref) => {
                 state.otu.programs.length > 0 ? (
                   <>
                     <p style={{ fontSize: "12px" }}>
-                      L: Lunes a Viernes / S: Sabado / D: Domingo y festivos
+                      LU: Lunes a Viernes / DO: Domingo y festivos
                     </p>
                     <div className="tables">
-                      <div>
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Día</th>
-                              <th>Hora</th>
-                              <th>Plan</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {state.otu.programs
-                              .filter((program) => program.day === "L")
-                              .map((program, i) => {
-                                return (
-                                  <tr key={i}>
-                                    <td>{program.day}</td>
-                                    <td>{program.time}</td>
-                                    <td>{program.plan}</td>
-                                  </tr>
-                                );
-                              })}
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Día</th>
-                              <th>Hora</th>
-                              <th>Plan</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {state.otu.programs
-                              .filter((program) => program.day === "S")
-                              .map((program, i) => {
-                                return (
-                                  <tr key={i}>
-                                    <td>{program.day}</td>
-                                    <td>{program.time}</td>
-                                    <td>{program.plan}</td>
-                                  </tr>
-                                );
-                              })}
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Día</th>
-                              <th>Hora</th>
-                              <th>Plan</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {state.otu.programs
-                              .filter((program) => program.day === "D")
-                              .map((program, i) => {
-                                return (
-                                  <tr key={i}>
-                                    <td>{program.day}</td>
-                                    <td>{program.time}</td>
-                                    <td>{program.plan}</td>
-                                  </tr>
-                                );
-                              })}
-                          </tbody>
-                        </table>
-                      </div>
+                      {["LU", "MA", "MI", "JU", "VI", "SA", "DO"].map((dia) => {
+                        return (
+                          <div key={dia}>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Día</th>
+                                  <th>Hora</th>
+                                  <th>Plan</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {state.otu.programs
+                                  .filter((program) => program.day === dia)
+                                  .map((program, i) => {
+                                    return (
+                                      <tr key={i}>
+                                        <td>{program.day}</td>
+                                        <td>{program.time}</td>
+                                        <td>{program.plan}</td>
+                                      </tr>
+                                    );
+                                  })}
+                              </tbody>
+                            </table>
+                          </div>
+                        );
+                      })}
                     </div>
                   </>
                 ) : (
@@ -745,9 +783,8 @@ const ResumenBody = forwardRef((props, ref) => {
                       junction.plans.length === 0
                     )
                       return <div key={junctionIndex}></div>;
-                    let fasesSC = junction.sequence.map((aux) =>
-                      parseInt(aux.phid)
-                    ); //[1,2,3,4]
+                    let fasesSC = secuencias[junctionIndex].seq; //[1,2,3,4]
+
                     let fasesSC_from_to = fasesSC
                       .slice(-1)
                       .concat(fasesSC.slice(0, -1)); //[4,1,2,3]

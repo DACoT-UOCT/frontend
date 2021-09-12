@@ -1223,3 +1223,14 @@ input:disabled {
 .text-size p {
   padding-top: 0.2rem;
 }
+
+.secuencia-resumen {
+  display: flex;
+  flex-direction: row;
+}
+
+.secuencia-resumen-edit {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
