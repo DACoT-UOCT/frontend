@@ -155,6 +155,7 @@ const ResumenBody = forwardRef((props, ref) => {
   const [savingIntergreens, setSavingIntergreens] = useState(false);
   const programacionesRef = useRef(null);
   let history = useHistory();
+  console.log(state);
 
   const [secuencias, setSecuencias] = useState(
     state.otu.junctions.map((junction, index) => {
@@ -163,6 +164,7 @@ const ResumenBody = forwardRef((props, ref) => {
         initial_seq: junction.sequence.map((aux) => parseInt(aux.phid)),
         openEdit: false,
         addSeq: false,
+        inputSeq: "",
       };
     })
   );
@@ -610,64 +612,142 @@ const ResumenBody = forwardRef((props, ref) => {
                                 </tbody>
                               </table>
                             </div>
-                            <div className="secuencia-resumen-edit">
-                              {!secuencias[junctionIndex].openEdit ? (
-                                <>
-                                  <Button
-                                    outline
-                                    color="warning"
-                                    onClick={() => {
-                                      let temp = JSON.parse(
-                                        JSON.stringify(secuencias)
-                                      );
-                                      temp[junctionIndex].openEdit = true;
-                                      setSecuencias(temp);
-                                    }}>
-                                    <EditSharpIcon />
-                                  </Button>
-                                </>
-                              ) : (
-                                <>
-                                  <Campo></Campo>
-                                  <Button>Agregar fase</Button>
-                                  <Button>Guardar</Button>
-                                  <Button
-                                    onClick={() => {
-                                      let temp = JSON.parse(
-                                        JSON.stringify(secuencias)
-                                      );
-                                      temp[junctionIndex].seq =
-                                        temp[junctionIndex].initial_seq;
-                                      setSecuencias(temp);
-                                    }}>
-                                    Reset
-                                  </Button>
-                                  <Button
-                                    color="danger"
-                                    onClick={() => {
-                                      let temp = JSON.parse(
-                                        JSON.stringify(secuencias)
-                                      );
-                                      temp[junctionIndex].seq.pop();
-                                      setSecuencias(temp);
-                                    }}>
-                                    Eliminar fase
-                                  </Button>
-                                  <Button
-                                    outline
-                                    color="success"
-                                    onClick={() => {
-                                      let temp = JSON.parse(
-                                        JSON.stringify(secuencias)
-                                      );
-                                      temp[junctionIndex].openEdit = false;
-                                      setSecuencias(temp);
-                                    }}>
-                                    OK
-                                  </Button>
-                                </>
-                              )}
-                            </div>
+                            {!props.scrolled && (
+                              <div className="secuencia-resumen-edit">
+                                {!secuencias[junctionIndex].openEdit ? (
+                                  <>
+                                    <Button
+                                      style={{ marginRight: "4rem" }}
+                                      outline
+                                      color="warning"
+                                      onClick={() => {
+                                        let temp = JSON.parse(
+                                          JSON.stringify(secuencias)
+                                        );
+                                        temp[junctionIndex].openEdit = true;
+                                        setSecuencias(temp);
+                                      }}>
+                                      <EditSharpIcon />
+                                    </Button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Campo
+                                      id="input-secuencia"
+                                      autoFocus
+                                      onKeyDown={(e) => {
+                                        if (
+                                          e.key === "Backspace" ||
+                                          e.key === "Delete"
+                                        ) {
+                                          let temp = JSON.parse(
+                                            JSON.stringify(secuencias)
+                                          );
+                                          temp[junctionIndex].seq.pop();
+                                          setSecuencias(temp);
+                                        }
+                                        if (e.key === "Enter") {
+                                          if (
+                                            secuencias[junctionIndex]
+                                              .inputSeq === ""
+                                          ) {
+                                            alert(
+                                              "Ingrese un número de fase válido"
+                                            );
+                                            return;
+                                          }
+                                          let temp = JSON.parse(
+                                            JSON.stringify(secuencias)
+                                          );
+                                          temp[junctionIndex].seq.push(
+                                            parseInt(
+                                              temp[junctionIndex].inputSeq
+                                            )
+                                          );
+                                          temp[junctionIndex].inputSeq = "";
+                                          setSecuencias(temp);
+                                        }
+                                      }}
+                                      style={{
+                                        width: "8rem",
+                                        marginRight: "0.2rem",
+                                      }}
+                                      placeholder="Número de secuencia"
+                                      value={secuencias[junctionIndex].inputSeq}
+                                      onChange={(e) => {
+                                        let temp = JSON.parse(
+                                          JSON.stringify(secuencias)
+                                        );
+                                        // temp[junctionIndex].seq.push(temp[junctionIndex].inputSeq);
+                                        temp[junctionIndex].inputSeq =
+                                          e.currentTarget.value
+                                            .replace(/\s/g, "")
+                                            .replace(/[^0-9]/g, "")
+                                            .slice(0, 2);
+                                        setSecuencias(temp);
+                                      }}></Campo>
+                                    <Button
+                                      color="success"
+                                      onClick={() => {
+                                        if (
+                                          secuencias[junctionIndex].inputSeq ===
+                                          ""
+                                        ) {
+                                          alert(
+                                            "Ingrese un número de fase válido"
+                                          );
+                                          return;
+                                        }
+                                        let temp = JSON.parse(
+                                          JSON.stringify(secuencias)
+                                        );
+                                        temp[junctionIndex].seq.push(
+                                          parseInt(temp[junctionIndex].inputSeq)
+                                        );
+                                        temp[junctionIndex].inputSeq = "";
+                                        setSecuencias(temp);
+                                      }}>
+                                      Agregar fase
+                                    </Button>
+
+                                    <Button
+                                      color="danger"
+                                      onClick={() => {
+                                        let temp = JSON.parse(
+                                          JSON.stringify(secuencias)
+                                        );
+                                        temp[junctionIndex].seq.pop();
+                                        setSecuencias(temp);
+                                      }}>
+                                      Eliminar fase
+                                    </Button>
+                                    <Button
+                                      color="info"
+                                      onClick={() => {
+                                        let temp = JSON.parse(
+                                          JSON.stringify(secuencias)
+                                        );
+                                        temp[junctionIndex].seq =
+                                          temp[junctionIndex].initial_seq;
+                                        setSecuencias(temp);
+                                      }}>
+                                      Reset
+                                    </Button>
+                                    <Button
+                                      color="success"
+                                      onClick={() => {
+                                        let temp = JSON.parse(
+                                          JSON.stringify(secuencias)
+                                        );
+                                        temp[junctionIndex].openEdit = false;
+                                        setSecuencias(temp);
+                                      }}>
+                                      Terminar edición de secuencia
+                                    </Button>
+                                  </>
+                                )}
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
@@ -733,34 +813,41 @@ const ResumenBody = forwardRef((props, ref) => {
                       LU: Lunes a Viernes / DO: Domingo y festivos
                     </p>
                     <div className="tables">
-                      {["LU", "MA", "MI", "JU", "VI", "SA", "DO"].map((dia) => {
-                        return (
-                          <div key={dia}>
-                            <table>
-                              <thead>
-                                <tr>
-                                  <th>Día</th>
-                                  <th>Hora</th>
-                                  <th>Plan</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {state.otu.programs
-                                  .filter((program) => program.day === dia)
-                                  .map((program, i) => {
-                                    return (
-                                      <tr key={i}>
-                                        <td>{program.day}</td>
-                                        <td>{program.time}</td>
-                                        <td>{program.plan}</td>
-                                      </tr>
-                                    );
-                                  })}
-                              </tbody>
-                            </table>
-                          </div>
-                        );
-                      })}
+                      {["LU", "MA", "MI", "JU", "VI", "SA", "DO"]
+                        .filter(
+                          (dia) =>
+                            state.otu.programs.filter(
+                              (program) => program.day === dia
+                            ).length > 0
+                        )
+                        .map((dia) => {
+                          return (
+                            <div key={dia}>
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th>Día</th>
+                                    <th>Hora</th>
+                                    <th>Plan</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {state.otu.programs
+                                    .filter((program) => program.day === dia)
+                                    .map((program, i) => {
+                                      return (
+                                        <tr key={i}>
+                                          <td>{program.day}</td>
+                                          <td>{program.time}</td>
+                                          <td>{program.plan}</td>
+                                        </tr>
+                                      );
+                                    })}
+                                </tbody>
+                              </table>
+                            </div>
+                          );
+                        })}
                     </div>
                   </>
                 ) : (
