@@ -105,30 +105,32 @@ const ErroresExtraccion = (props) => {
                 <th></th>
               </tr>
             </thead>
+
+            <Paginado
+              render={(registro, indice) => {
+                return (
+                  <tr key={indice}>
+                    <td>{(indice + 1).toString() + ".-"}</td>
+                    <td> {getFecha(registro.date)}</td>
+                    <td></td>
+                    <td>
+                      <Button
+                        onClick={() => {
+                          console.log(registro);
+                          setSeleccionado(registro.id);
+                          setListSeleccionado(registro.plans);
+                          setOpen(true);
+                        }}>
+                        Consultar
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              }}
+              tipo="failedPlans"
+              consulta={consultar_errores}
+            />
           </Table>
-          <Paginado
-            render={(registro, indice) => {
-              return (
-                <tr key={indice}>
-                  <td>{(indice + 1).toString() + ".-"}</td>
-                  <td> {getFecha(registro.date)}</td>
-                  <td></td>
-                  <td>
-                    <Button
-                      onClick={() => {
-                        setSeleccionado(registro.id);
-                        setListSeleccionado(registro.plans);
-                        setOpen(true);
-                      }}>
-                      Consultar
-                    </Button>
-                  </td>
-                </tr>
-              );
-            }}
-            tipo="failedPlans"
-            consulta={consultar_errores}
-          />
 
           {seleccionado !== null && (
             <PopUp title={"Planes no extraidos"} open={open} setOpen={setOpen}>

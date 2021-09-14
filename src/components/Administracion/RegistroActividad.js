@@ -21,7 +21,7 @@ const RegistroActividad = () => {
 
   const consultar_actividad = (_after = "") => {
     return GQLclient.request(GetLogs, {
-      first: 25,
+      first: 50,
       after: _after,
       startDate: date_format(startDate) + "T00:00:00",
       endDate: date_format(endDate) + "T00:00:00",

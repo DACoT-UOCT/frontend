@@ -18,12 +18,20 @@ import { makeStyles } from "@material-ui/core/styles";
 import { GQLclient, StateContext } from "../../App";
 import { useHistory } from "react-router-dom";
 import ZoomImage from "../../Shared/ZoomImage";
-import { computeTables, setVehIntergreen } from "../../../GraphQL/Mutations";
-import { GetUpdatedPlans } from "../../../GraphQL/Queries";
+import {
+  computeTables,
+  setVehIntergreen,
+  syncProject,
+} from "../../../GraphQL/Mutations";
+import { GetProject, GetUpdatedPlans } from "../../../GraphQL/Queries";
 import decamelizeKeysDeep from "decamelize-keys-deep";
 import Loading from "../../Shared/Loading";
 import Observacion from "./Observacion";
 import ReplayIcon from "@material-ui/icons/Replay";
+import { renderPDF } from "../../Shared/Utils/RenderPDF";
+import PopUp from "../../Shared/PopUp";
+import FadeLoader from "react-spinners/FadeLoader";
+import { procesar_json_recibido } from "../../Shared/API/Interface";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,16 +57,88 @@ const encontrarValorEntreverde = (entreverdes, from, to) => {
   }
 };
 
+const getJunctions = (project) => {
+  return project.otu.junctions.map((junction, index) => {
+    return {
+      junction: junction,
+      initial_junction: junction,
+    };
+  });
+};
+
+const getSecuencias = (project) => {
+  return project.otu.junctions.map((junction, index) => {
+    return {
+      seq: junction.sequence.map((aux) => parseInt(aux.phid)),
+      initial_seq: junction.sequence.map((aux) => parseInt(aux.phid)),
+      openEdit: false,
+      addSeq: false,
+      inputSeq: "",
+      junction: junction,
+      initial_junction: junction,
+    };
+  });
+};
+
 const ResumenButtons = (props) => {
   const history = useHistory();
+  const [openActualizar, setOpenActualizar] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const state_update = () => {
+    GQLclient.request(GetProject, {
+      oid: props.state.oid,
+      status: "PRODUCTION",
+    })
+      .then((response) => {
+        let project = procesar_json_recibido(response.project);
+        props.setSecuencias(getSecuencias(project));
+        props.setJunctions(getJunctions(project));
+        props.dispatch({ type: "levantar_actualizacion", payLoad: project });
+        props.setState(project);
+        alert("Instalación sincronizada con éxito.");
+        history.push(0);
+      })
+      .catch((err) => {
+        alert("Error en la consulta de los datos actualizados.");
+        setLoading(false);
+        setOpenActualizar(false);
+      });
+  };
+  const sincronizar = () => {
+    setLoading(true);
+    GQLclient.request(syncProject, {
+      data: {
+        oid: props.state.oid,
+        status: "PRODUCTION",
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.syncProject.code === 200) {
+          state_update();
+        } else {
+          alert(
+            "Fallo de sincronización+\nMensaje de error: " +
+              response.syncProject.message
+          );
+          setLoading(false);
+          setOpenActualizar(false);
+        }
+      })
+      .catch((err) => {
+        alert("Error en la conexión.");
+        setLoading(false);
+        setOpenActualizar(false);
+      });
+  };
   return (
     <>
-      <div className="botones-resumen">
-        {props.info &&
-          props.status === "PRODUCTION" &&
-          !props.scrolled &&
-          !props.boolIntergreen && (
-            <>
+      {props.info &&
+        !props.scrolled &&
+        props.status === "PRODUCTION" &&
+        !props.boolIntergreen && (
+          <>
+            <div className="botones-resumen">
               <div
                 className="resumen-btn"
                 onClick={() => {
@@ -67,78 +147,157 @@ const ResumenButtons = (props) => {
                 {(props.detalles ? "Ocultar" : "Mostrar") +
                   " información complementaria"}
               </div>
-            </>
-          )}
-        {props.info &&
-          (props.rol === "Personal UOCT" || props.is_admin) &&
-          !props.scrolled &&
-          props.status === "PRODUCTION" &&
-          !props.boolIntergreen && (
-            <>
-              <div
-                className="resumen-btn"
-                onClick={() => {
-                  props.scroll();
-                }}>
-                Generar informe de programaciones
-              </div>
-              <div
-                className="resumen-btn"
-                onClick={() => {
-                  if (!props.programacionesDisponibles) {
-                    alert(
-                      "La instalación no cuenta con programaciones extraidas desde el SC"
-                    );
-                    return;
-                  }
-                  if (props.update) {
-                    alert(
-                      "Se deben procesar las solicitudes de actualización pendientes antes de hacer cambios."
-                    );
-                    return;
-                  }
-                  props.setBoolIntergreen(true);
-                  props.resetProgramsAndSeq();
-                  setTimeout(() => {
-                    props.programacionesRef.current.scrollIntoView({
-                      block: "start",
-                      behavior: "smooth",
-                    });
-                  }, 200);
-                }}>
-                Editar entreverdes vehiculares
-              </div>
 
-              <div
-                className="resumen-btn"
-                onClick={() => {
-                  if (props.update) {
-                    alert(
-                      "Se deben procesar las solicitudes de actualización pendientes antes de hacer cambios."
-                    );
-                    return;
-                  }
-                  history.push("/editar/info-programaciones");
-                }}>
-                Editar información acotada
-              </div>
+              {(props.rol === "Personal UOCT" || props.is_admin) && (
+                <>
+                  <div
+                    className="resumen-btn"
+                    onClick={() => {
+                      props.scroll();
+                    }}>
+                    Generar informe de programaciones
+                  </div>
+                  {props.state.metadata.version === "latest" && (
+                    <>
+                      <div
+                        className="resumen-btn"
+                        onClick={() => {
+                          if (!props.programacionesDisponibles) {
+                            alert(
+                              "La instalación no cuenta con programaciones extraidas desde el SC"
+                            );
+                            return;
+                          }
+                          if (props.update) {
+                            alert(
+                              "Se deben procesar las solicitudes de actualización pendientes antes de hacer cambios."
+                            );
+                            return;
+                          }
+                          props.setBoolIntergreen(true);
+                          props.resetProgramsAndSeq();
+                          setTimeout(() => {
+                            props.programacionesRef.current.scrollIntoView({
+                              block: "start",
+                              behavior: "smooth",
+                            });
+                          }, 200);
+                        }}>
+                        Editar entreverdes vehiculares
+                      </div>
 
-              <div
-                className="resumen-btn"
-                onClick={() => {
-                  if (props.update) {
-                    alert(
-                      "Se deben procesar las solicitudes de actualización pendientes antes de hacer cambios."
-                    );
-                    return;
-                  }
-                  history.push("/editar/instalacion");
-                }}>
-                Editar información completa
+                      <div
+                        className="resumen-btn"
+                        onClick={() => {
+                          if (props.update) {
+                            alert(
+                              "Se deben procesar las solicitudes de actualización pendientes antes de hacer cambios."
+                            );
+                            return;
+                          }
+                          history.push("/editar/info-programaciones");
+                        }}>
+                        Editar información acotada
+                      </div>
+
+                      <div
+                        className="resumen-btn"
+                        onClick={() => {
+                          if (props.update) {
+                            alert(
+                              "Se deben procesar las solicitudes de actualización pendientes antes de hacer cambios."
+                            );
+                            return;
+                          }
+                          history.push("/editar/instalacion");
+                        }}>
+                        Editar información completa
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+            {(props.rol === "Personal UOCT" || props.is_admin) && (
+              <div className="botones-resumen">
+                <div
+                  className="resumen-btn resumen-btn"
+                  onClick={() => {
+                    renderPDF(props.state);
+                  }}>
+                  Descargar DATA de respaldo
+                </div>
+                {props.state.metadata.version === "latest" && (
+                  <div
+                    className="resumen-btn"
+                    onClick={() => {
+                      if (props.update) {
+                        alert(
+                          "Se deben procesar las solicitudes de actualización pendientes antes de hacer cambios."
+                        );
+                        return;
+                      }
+                      setOpenActualizar(true);
+                    }}>
+                    Sincronizar información con el Centro de Control
+                  </div>
+                )}
               </div>
-            </>
-          )}
-      </div>
+            )}
+          </>
+        )}
+      {openActualizar && (
+        <PopUp
+          title={"Sincronización instalación " + props.state.oid}
+          open={openActualizar}
+          setOpen={setOpenActualizar}>
+          <div className="sync-popup">
+            <p>
+              La sincronización de datos con el centro de control permite
+              actualizar los campos de SECUENCIA, ENTREVERDES PEATONALES,
+              PERIODIZACIONES Y TABLAS DE PROGRAMACIONES. La plataforma DACoT
+              sincroniza todos los cruces registrados en el centro de control
+              durante los fines de semana, pero a continuación puede sincronizar
+              los datos de la instalación actual con la información vigente del
+              sistema de control si así lo requiere.
+            </p>
+            <div
+              style={{
+                marginTop: "2rem",
+                paddingLeft: "8%",
+                paddingRight: "8%",
+                textAlign: "center",
+              }}>
+              <p style={{ fontSize: "1.2rem" }}>
+                {"¿Seguro desea continuar con la sincronización de la instalación " +
+                  props.state.oid +
+                  " ?"}
+              </p>
+              <p style={{ fontWeight: "bold" }}>
+                El proceso puede tardar varios minutos y se solicita no salir de
+                la página actual.
+              </p>
+            </div>
+            <div className="sync-popup-buttons">
+              {!loading ? (
+                <>
+                  <Button
+                    onClick={() => {
+                      setOpenActualizar(false);
+                    }}>
+                    Volver
+                  </Button>
+                  <Button color="info" onClick={sincronizar}>
+                    Continuar
+                  </Button>
+                </>
+              ) : (
+                <FadeLoader color="#a547f1"></FadeLoader>
+              )}
+            </div>
+          </div>
+        </PopUp>
+      )}
     </>
   );
 };
@@ -159,37 +318,13 @@ const ResumenBody = forwardRef((props, ref) => {
   const programacionesRef = useRef(null);
   let history = useHistory();
 
-  const getJunctions = () => {
-    return state.otu.junctions.map((junction, index) => {
-      return {
-        junction: junction,
-        initial_junction: junction,
-      };
-    });
-  };
+  const [secuencias, setSecuencias] = useState(getSecuencias(state));
 
-  const getSecuencias = () => {
-    return state.otu.junctions.map((junction, index) => {
-      return {
-        seq: junction.sequence.map((aux) => parseInt(aux.phid)),
-        initial_seq: junction.sequence.map((aux) => parseInt(aux.phid)),
-        openEdit: false,
-        addSeq: false,
-        inputSeq: "",
-        junction: junction,
-        initial_junction: junction,
-      };
-    });
-  };
-
-  const [secuencias, setSecuencias] = useState(getSecuencias());
-
-  const [junctions, setJunctions] = useState(getJunctions());
+  const [junctions, setJunctions] = useState(getJunctions(state));
 
   const resetProgramsAndSeq = () => {
-    setSecuencias(getSecuencias());
-
-    setJunctions(getJunctions());
+    setSecuencias(getSecuencias(state));
+    setJunctions(getJunctions(state));
   };
 
   const programacionesDisponibles =
@@ -227,16 +362,23 @@ const ResumenBody = forwardRef((props, ref) => {
     //new, update, history, production
     const style_ok = { backgroundColor: "#0cbd1b80" };
     const style_warning = { backgroundColor: "#fffb19" };
-    if (state.metadata.version !== "latest")
-      return <td style={style_warning}>{"Registro histórico"}</td>;
     if (state.metadata.status === "NEW")
       return <td style={style_warning}>{"Instalación nueva"}</td>;
-    if (state.metadata.status === "PRODUCTION")
-      return <td style={style_ok}>{"Operativa"}</td>;
+    if (state.metadata.status === "PRODUCTION") {
+      if (global_state.update_pendiente)
+        return (
+          <td style={style_warning}>
+            {"Instalación con revisiones pendientes"}
+          </td>
+        );
+      else return <td style={style_ok}>{"Operativa"}</td>;
+    }
     if (state.metadata.status === "UPDATE")
       return (
         <td style={style_warning}>{"Instalación con revisiones pendientes"}</td>
       );
+    if (state.metadata.version !== "latest")
+      return <td style={style_warning}>{"Registro histórico"}</td>;
   };
 
   const saveVehIntergreenChanges = async () => {
@@ -298,20 +440,11 @@ const ResumenBody = forwardRef((props, ref) => {
           aux.otu.junctions[i].plans = response.project.otu.junctions[i].plans;
         }
 
-        setJunctions(
-          aux.otu.junctions.map((junction, index) => {
-            return {
-              junction: junction,
-              initial_junction: junction,
-            };
-          })
-        );
-
+        setJunctions(getJunctions(aux));
         props.dispatch({ type: "levantar_actualizacion", payLoad: aux });
         setState(aux);
         setBoolIntergreen(false);
         setSavingIntergreens(false);
-
         alert("Programaciones actualizadas con éxito");
       })
       .catch((error) => {
@@ -341,6 +474,11 @@ const ResumenBody = forwardRef((props, ref) => {
           update={global_state.update_pendiente}
           programacionesDisponibles={programacionesDisponibles}
           resetProgramsAndSeq={resetProgramsAndSeq}
+          state={state}
+          setState={setState}
+          setJunctions={setJunctions}
+          setSecuencias={setSecuencias}
+          dispatch={props.dispatch}
         />
         <div className={styles.resume}>
           <h2

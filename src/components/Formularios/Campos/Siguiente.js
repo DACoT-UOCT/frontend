@@ -122,8 +122,6 @@ const Siguiente = (props) => {
         input_regex(otu.metadata.netmask, "OTU - Netmask");
         input_regex(otu.metadata.link_type, "OTU - Tipo de enlace");
         input_regex(otu.metadata.link_owner, "OTU - Tipo de enlace");
-        input_regex(otu.metadata.answer, "OTU - N° palabras de resuesta");
-        input_regex(otu.metadata.control, "OTU - N° palabras de control");
 
         var controller = state.controller;
         input_regex(controller.model.company.name, " Controlador - Marca");
