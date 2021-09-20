@@ -175,7 +175,7 @@ const ResumenButtons = (props) => {
                             return;
                           }
                           props.setBoolIntergreen(true);
-                          props.resetProgramsAndSeq();
+                          //props.resetProgramsAndSeq();
                           setTimeout(() => {
                             props.programacionesRef.current.scrollIntoView({
                               block: "start",
