@@ -153,6 +153,12 @@ const ResumenButtons = (props) => {
                   <div
                     className="resumen-btn"
                     onClick={() => {
+                      if (props.update) {
+                        alert(
+                          "Se deben procesar las solicitudes de actualización pendientes antes de exportar el informe."
+                        );
+                        return;
+                      }
                       props.scroll();
                     }}>
                     Generar informe de programaciones
@@ -175,7 +181,7 @@ const ResumenButtons = (props) => {
                             return;
                           }
                           props.setBoolIntergreen(true);
-                          //props.resetProgramsAndSeq();
+                          props.resetProgramsAndSeq();
                           setTimeout(() => {
                             props.programacionesRef.current.scrollIntoView({
                               block: "start",
@@ -211,11 +217,26 @@ const ResumenButtons = (props) => {
                           }
                           history.push("/editar/instalacion");
                         }}>
-                        Editar información completa
+                        Editar información de la instalación
                       </div>
                     </>
                   )}
                 </>
+              )}
+              {props.rol === "Empresa" && (
+                <div
+                  className="resumen-btn"
+                  onClick={() => {
+                    if (props.update) {
+                      alert(
+                        "La instalación ya cuenta con solicitudes de actualización pendientes."
+                      );
+                      return;
+                    }
+                    history.push("/editar/instalacion");
+                  }}>
+                  Sugerir cambios para la instalación
+                </div>
               )}
             </div>
             {(props.rol === "Personal UOCT" || props.is_admin) && (
@@ -225,7 +246,7 @@ const ResumenButtons = (props) => {
                   onClick={() => {
                     renderPDF(props.state);
                   }}>
-                  Descargar DATA de respaldo
+                  Descargar DATA de la instalación
                 </div>
                 {props.state.metadata.version === "latest" && (
                   <div
@@ -323,7 +344,7 @@ const ResumenBody = forwardRef((props, ref) => {
   const [junctions, setJunctions] = useState(getJunctions(state));
 
   const resetProgramsAndSeq = () => {
-    setSecuencias(getSecuencias(state));
+    // setSecuencias(getSecuencias(state));
     setJunctions(getJunctions(state));
   };
 
@@ -1675,7 +1696,9 @@ const ResumenProyecto = (props) => {
                 </p>
 
                 <ReactToPrint
-                  documentTitle={"UOCT_DACoT_" + state.oid}
+                  documentTitle={
+                    "UOCT_DACoT_" + state.oid + "_" + getFecha(new Date())
+                  }
                   onPrintError={(e) => console.log(e)}
                   trigger={() => (
                     <Button color="info" size="lg" className="descargar-boton2">

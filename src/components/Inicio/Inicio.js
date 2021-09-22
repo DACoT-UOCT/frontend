@@ -76,7 +76,7 @@ const Inicio = (props) => {
               onClick={() => {
                 history.push("/nuevo/digitalizacion");
               }}>
-              Digitalizar información
+              Registrar nueva instalación
               <img
                 alt=""
                 src="/imagenes/digitalizar.svg"

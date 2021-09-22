@@ -65,6 +65,12 @@ export const procesar_json_recibido = (aux) => {
     ? temp.otu.metadata
     : initialState.otu.metadata;
 
+  if (!temp.otu.metadata.control) {
+    temp.otu.metadata.control = 0;
+  }
+  if (!temp.otu.metadata.answer) {
+    temp.otu.metadata.answer = 0;
+  }
   temp.headers = !temp.headers
     ? initialState.headers
     : temp.headers.length === 0

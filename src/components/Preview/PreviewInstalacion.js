@@ -161,10 +161,11 @@ const PreviewInstalacion = (props) => {
         {(state.rol === "Personal UOCT" || state.is_admin) && (
           <Button
             // className="botonDashboard"
+            color="warning"
             onClick={() => {
               renderPDF(instalacion);
             }}>
-            Documentación de Respaldo
+            Consultar DATA de la instalación
           </Button>
         )}
 
