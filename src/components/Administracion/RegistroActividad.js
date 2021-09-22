@@ -7,6 +7,7 @@ import { GetLogs } from "../../GraphQL/Queries";
 import { GQLclient } from "../App";
 import Paginado from "../Shared/Paginado";
 import { date_format } from "../Shared/API/Interface";
+import MotionDiv from "../Shared/MotionDiv";
 
 //PESTAÑA DE REGISTRO DE ACTIVIDAD, PANEL DE ADMINISTRACIÓN
 const RegistroActividad = () => {
@@ -36,7 +37,7 @@ const RegistroActividad = () => {
   };
 
   return (
-    <>
+    <MotionDiv>
       <p>
         Seleccionar fecha de inicio y fin para consultar registro de actividad
         dentro de la plataforma
@@ -117,7 +118,7 @@ const RegistroActividad = () => {
       ) : (
         <Label>No hay registros disponibles</Label>
       )} */}
-    </>
+    </MotionDiv>
   );
 };
 

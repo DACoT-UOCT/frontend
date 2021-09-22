@@ -6,7 +6,9 @@ import ListadoComunas from "./ListadoComunas";
 import ErroresExtraccion from "./ErroresExtraccion";
 import CrudControladores from "./CrudControladores";
 import CrudEmpresas from "./CrudEmpresas";
-import useSessionStorageState from "../Shared/Utils/useSessionStorageState";
+import MotionDiv from "../Shared/MotionDiv";
+import useSessionStorageVanillaState from "../Shared/Utils/useSessionStorageVanillaState";
+import { AnimatePresence } from "framer-motion";
 
 const TABS = {
   USUARIOS: "Usuarios registrados en sistema",
@@ -26,13 +28,13 @@ const reducer = (draft, action) => {
 /*Panel de administracion que permite elegir entre distintas pestañas, solo
 disponible para usuarios con rol de administrador */
 const Administracion = (props) => {
-  const [state, dispatch] = useSessionStorageState(
+  const [state, dispatch] = useSessionStorageVanillaState(
     reducer,
     initialState,
     "admin"
   );
   return (
-    <div className={`grid-item header-admin ${styles.admin}`}>
+    <MotionDiv className={`grid-item header-admin ${styles.admin}`}>
       <div className={styles.selection}>
         <h2 style={{ paddingLeft: "2rem" }}>{state.currentTab}</h2>
         <div className={styles.options}>
@@ -93,15 +95,17 @@ const Administracion = (props) => {
           </button>
         </div>
       </div>
-      <div className={`grid-item ${styles.info} `}>
-        {state.currentTab === TABS.ACTIVIDAD && <RegistroActividad />}
-        {state.currentTab === TABS.USUARIOS && <ListadoUsuarios />}
-        {state.currentTab === TABS.COMUNAS && <ListadoComunas />}
-        {state.currentTab === TABS.ERRORES && <ErroresExtraccion />}
-        {state.currentTab === TABS.CONTROLADORES && <CrudControladores />}
-        {state.currentTab === TABS.EMPRESAS && <CrudEmpresas />}
-      </div>
-    </div>
+      <AnimatePresence exitBeforeEnter={true}>
+        <div className={`grid-item ${styles.info} `}>
+          {state.currentTab === TABS.ACTIVIDAD && <RegistroActividad />}
+          {state.currentTab === TABS.USUARIOS && <ListadoUsuarios />}
+          {state.currentTab === TABS.COMUNAS && <ListadoComunas />}
+          {state.currentTab === TABS.ERRORES && <ErroresExtraccion />}
+          {state.currentTab === TABS.CONTROLADORES && <CrudControladores />}
+          {state.currentTab === TABS.EMPRESAS && <CrudEmpresas />}
+        </div>
+      </AnimatePresence>
+    </MotionDiv>
   );
 };
 

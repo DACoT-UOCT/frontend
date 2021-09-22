@@ -3,6 +3,7 @@ import Loading from "../Shared/Loading";
 import PanelInstalacion from "../Preview/PanelInstalacion";
 import { GetVersions } from "../../GraphQL/Queries";
 import { useQuery } from "../../GraphQL/useQuery";
+import MotionDiv from "../Shared/MotionDiv";
 
 //Componente que muestra el listado de todas las versiones disponibles para una instalacion operativa
 const Historial = (props) => {
@@ -40,45 +41,43 @@ const Historial = (props) => {
   }
 
   return (
-    <>
-      <div
-        style={{ gridGap: "20px" }}
-        className={`grid-item consulta-semaforo`}>
-        {/* <p>{"Historial" + global_state.actualizando.oid}</p> */}
-        <h3 style={{ padding: "1rem" }}>
-          {"Historial de cambios instalacion " + global_state.actualizando.oid}
-        </h3>
-        {/* {state.error !== "" && <p>{state.error}</p>} */}
+    <MotionDiv
+      style={{ gridGap: "20px" }}
+      className={`grid-item consulta-semaforo`}>
+      {/* <p>{"Historial" + global_state.actualizando.oid}</p> */}
+      <h3 style={{ padding: "1rem" }}>
+        {"Historial de cambios instalacion " + global_state.actualizando.oid}
+      </h3>
+      {/* {state.error !== "" && <p>{state.error}</p>} */}
 
-        <div style={{ paddingTop: "1rem" }} className="grid-item">
-          {/* <PanelInstalacion
+      <div style={{ paddingTop: "1rem" }} className="grid-item">
+        {/* <PanelInstalacion
             expanded={state.expanded}
             id={1} //ahi ingresar el X
             type="Versión vigente"
             handleChange={handleChange}
           /> */}
-          {versions.map((version, cambioIndex) => {
-            return (
-              <>
-                <PanelInstalacion
-                  expanded={expanded}
-                  id={
-                    "Versión " +
-                    (versions.length - cambioIndex) +
-                    (version.vid === "latest" ? " (actual)" : "")
-                  }
-                  oid={global_state.actualizando.oid}
-                  type={""}
-                  date={version.date}
-                  handleChange={handleChange}
-                  vid={version.vid}
-                />
-              </>
-            );
-          })}
-        </div>
+        {versions.map((version, cambioIndex) => {
+          return (
+            <>
+              <PanelInstalacion
+                expanded={expanded}
+                id={
+                  "Versión " +
+                  (versions.length - cambioIndex) +
+                  (version.vid === "latest" ? " (actual)" : "")
+                }
+                oid={global_state.actualizando.oid}
+                type={""}
+                date={version.date}
+                handleChange={handleChange}
+                vid={version.vid}
+              />
+            </>
+          );
+        })}
       </div>
-    </>
+    </MotionDiv>
   );
 };
 

@@ -10,6 +10,7 @@ import EditComuna from "./EditComuna";
 import sortTable from "../Shared/Utils/SortTable";
 import { useQuery } from "../../GraphQL/useQuery";
 import { GetCommunes, GetUsers, GetCompanies } from "../../GraphQL/Queries";
+import MotionDiv from "../Shared/MotionDiv";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -50,7 +51,7 @@ const ListadoComunas = (props) => {
     return <p>Error en la consulta</p>;
 
   return (
-    <>
+    <MotionDiv>
       <DispatchContext.Provider value={dispatch}>
         <StateContext.Provider value={state}>
           <p>
@@ -114,7 +115,7 @@ const ListadoComunas = (props) => {
           )}
         </StateContext.Provider>
       </DispatchContext.Provider>
-    </>
+    </MotionDiv>
   );
 };
 

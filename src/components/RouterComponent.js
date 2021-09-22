@@ -15,6 +15,8 @@ import ResumenProyecto from "./Formularios/Campos/ResumenProyecto";
 import Historial from "./Historial/Historial";
 import { Typography } from "@material-ui/core";
 import { BACKEND_URL } from "../API_KEYS";
+import { AnimatePresence } from "framer-motion";
+import MotionDiv from "./Shared/MotionDiv";
 
 /*Componente router que define los componentes a renderizar dependiendo de la url
 y de los permisos del usuario. Tambien se encarga de modificar el document.title */
@@ -97,91 +99,96 @@ const RouterComponent = (props) => {
       ) : (
         <div className="app-container">
           <Header instalacion={state.actualizando} />
+
           <Route
             exact
             path="/logout"
             component={() => <Logout dispatch={dispatch} />}
           />
-          <Route
-            exact
-            path="/"
-            component={() => (
-              <Inicio
-                is_admin={state.is_admin}
-                rol={state.rol}
-                popup_inicial={state.popup_inicial}
-                coordinates={state.coordinates}
-                dispatch={dispatch}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/procesar/solicitud"
-            component={() => <ProcesarSolicitud state={state.actualizando} />}
-          />
-          {state.rol === "Empresa" ? (
-            <>
-              <Route
-                exact
-                path="/nuevo/solicitud-integracion"
-                component={() => <NuevaInstalacion state={state} />}
-              />
-
-              <Route
-                exact
-                path="/nuevo/solicitud-actualizacion"
-                component={() => <NuevaInstalacion state={state} />}
-              />
-            </>
-          ) : (
-            // FUNCIONARIO UOCT
-            <>
-              <Route
-                exact
-                path="/editar/instalacion"
-                component={() =>
-                  state.actualizando.metadata.status === "PRODUCTION" &&
-                  state.actualizando.metadata.version === "latest" && (
-                    <NuevaInstalacion state={state} />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/nuevo/digitalizacion"
-                component={() => <NuevaInstalacion state={state} />}
-              />
-              <Route
-                exact
-                path="/editar/info-programaciones"
-                component={() => <NuevaInstalacion state={state} />}
-              />
-            </>
-          )}
-          {state.is_admin && (
-            <>
-              <Route exact path="/administracion" component={Administracion} />
-            </>
-          )}
-          <Route
-            exact
-            path="/solicitudes"
-            component={() => <Solicitudes dispatch={dispatch} />}
-          />
-
-          <Route
-            exact
-            path="/historial"
-            component={() => <Historial state={state} />}
-          />
-
-          <Route
-            exact
-            path="/info"
-            component={() => (
+          <AnimatePresence exitBeforeEnter={true}>
+            <Route
+              exact
+              path="/"
+              component={() => (
+                <Inicio
+                  is_admin={state.is_admin}
+                  rol={state.rol}
+                  popup_inicial={state.popup_inicial}
+                  coordinates={state.coordinates}
+                  dispatch={dispatch}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/procesar/solicitud"
+              component={() => <ProcesarSolicitud state={state.actualizando} />}
+            />
+            {state.rol === "Empresa" ? (
               <>
-                <div className="grid-item nuevo-semaforo">
+                <Route
+                  exact
+                  path="/nuevo/solicitud-integracion"
+                  component={() => <NuevaInstalacion state={state} />}
+                />
+
+                <Route
+                  exact
+                  path="/nuevo/solicitud-actualizacion"
+                  component={() => <NuevaInstalacion state={state} />}
+                />
+              </>
+            ) : (
+              // FUNCIONARIO UOCT
+              <>
+                <Route
+                  exact
+                  path="/editar/instalacion"
+                  component={() =>
+                    state.actualizando.metadata.status === "PRODUCTION" &&
+                    state.actualizando.metadata.version === "latest" && (
+                      <NuevaInstalacion state={state} />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/nuevo/digitalizacion"
+                  component={() => <NuevaInstalacion state={state} />}
+                />
+                <Route
+                  exact
+                  path="/editar/info-programaciones"
+                  component={() => <NuevaInstalacion state={state} />}
+                />
+              </>
+            )}
+            {state.is_admin && (
+              <>
+                <Route
+                  exact
+                  path="/administracion"
+                  component={Administracion}
+                />
+              </>
+            )}
+            <Route
+              exact
+              path="/solicitudes"
+              component={() => <Solicitudes dispatch={dispatch} />}
+            />
+
+            <Route
+              exact
+              path="/historial"
+              component={() => <Historial state={state} />}
+            />
+
+            <Route
+              exact
+              path="/info"
+              component={() => (
+                <MotionDiv className="grid-item nuevo-semaforo">
                   <div
                     className={classes.root}
                     style={{
@@ -221,18 +228,18 @@ const RouterComponent = (props) => {
                       </div>
                     </div>
                   </div>
-                </div>
-              </>
-            )}
-          />
+                </MotionDiv>
+              )}
+            />
 
-          <Profile
-            user={state.full_name}
-            email={state.email}
-            rol={state.rol}
-            state={state}
-            dispatch={dispatch}
-          />
+            <Profile
+              user={state.full_name}
+              email={state.email}
+              rol={state.rol}
+              state={state}
+              dispatch={dispatch}
+            />
+          </AnimatePresence>
         </div>
       )}
     </>

@@ -223,21 +223,22 @@ const ResumenButtons = (props) => {
                   )}
                 </>
               )}
-              {props.rol === "Empresa" && (
-                <div
-                  className="resumen-btn"
-                  onClick={() => {
-                    if (props.update) {
-                      alert(
-                        "La instalación ya cuenta con solicitudes de actualización pendientes."
-                      );
-                      return;
-                    }
-                    history.push("/editar/instalacion");
-                  }}>
-                  Sugerir cambios para la instalación
-                </div>
-              )}
+              {props.rol === "Empresa" &&
+                props.state.metadata.version === "latest" && (
+                  <div
+                    className="resumen-btn"
+                    onClick={() => {
+                      if (props.update) {
+                        alert(
+                          "La instalación ya cuenta con solicitudes de actualización pendientes."
+                        );
+                        return;
+                      }
+                      history.push("/editar/instalacion");
+                    }}>
+                    Sugerir cambios para la instalación
+                  </div>
+                )}
             </div>
             {(props.rol === "Personal UOCT" || props.is_admin) && (
               <div className="botones-resumen">
@@ -386,7 +387,9 @@ const ResumenBody = forwardRef((props, ref) => {
     if (state.metadata.status === "NEW")
       return <td style={style_warning}>{"Instalación nueva"}</td>;
     if (state.metadata.status === "PRODUCTION") {
-      if (global_state.update_pendiente)
+      if (state.metadata.version !== "latest")
+        return <td style={style_warning}>{"Registro histórico"}</td>;
+      else if (global_state.update_pendiente)
         return (
           <td style={style_warning}>
             {"Instalación con revisiones pendientes"}
@@ -535,7 +538,7 @@ const ResumenBody = forwardRef((props, ref) => {
                     <td className="label">Emisión de documento:</td>
                     <td>{getFecha(new Date())}</td>
                     <td> </td>
-                    <td className="label">Estado a la fecha:</td>
+                    <td className="label">Estado de la instalación:</td>
                     {getStatus()}
                   </tr>
                 </tbody>

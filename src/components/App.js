@@ -10,6 +10,7 @@ import { GetCommunes, GetCoordinates } from "../GraphQL/Queries";
 import { BACKEND_URL } from "../API_KEYS";
 import Session from "react-session-api";
 import store from "local-storage-pro";
+import ScrollToTop from "react-scroll-to-top";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -26,7 +27,7 @@ const App = () => {
   useEffect(() => {
     if (state.isLoggedIn === false) {
       // localStorage.clear();
-      // sessionStorage.clear();
+      sessionStorage.clear();
       store.clear();
       Session.clear();
     }
@@ -71,6 +72,15 @@ const App = () => {
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
         <Router history={history}>
+          <ScrollToTop
+            smooth
+            color="#6f00ff"
+            top={30}
+            style={{
+              boxShadow:
+                "0px 10px 13px -7px #000000, 5px 3px 13px -2px rgba(0,0,0,0.95)",
+            }}
+          />
           <RouterComponent state={state} dispatch={dispatch} />
         </Router>
       </StateContext.Provider>

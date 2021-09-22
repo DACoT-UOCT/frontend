@@ -118,7 +118,9 @@ export const GetFailedPlans = gql`
         node {
           id
           date
-          plans
+          comment {
+            message
+          }
         }
       }
     }

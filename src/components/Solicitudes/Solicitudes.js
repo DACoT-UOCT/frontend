@@ -8,6 +8,7 @@ import { GetRequests } from "../../GraphQL/Queries";
 import Paginado from "../Shared/Paginado";
 import "../../App.css";
 import { useQuery } from "../../GraphQL/useQuery";
+import MotionDiv from "../Shared/MotionDiv";
 
 const estados = {
   NEW: "Solicitud de integración",
@@ -92,7 +93,7 @@ const Solicitudes = () => {
   );
 
   return (
-    <div className={`grid-item consulta-semaforo ${styles.dashboard}`}>
+    <MotionDiv className={`grid-item consulta-semaforo ${styles.dashboard}`}>
       <div className={styles.selection}>
         <h2>{state.titulo}</h2>
         <div className={styles.options}>
@@ -152,7 +153,7 @@ const Solicitudes = () => {
           }
         />
       </div>
-    </div>
+    </MotionDiv>
   );
 };
 

@@ -6,6 +6,7 @@ import BarraBusqueda from "./BarraBusqueda";
 import { GQLclient } from "../App";
 import { GetRequests } from "../../GraphQL/Queries";
 import { useQuery } from "../../GraphQL/useQuery";
+import MotionDiv from "../Shared/MotionDiv";
 
 //PAGINA HOME QUE CONTIENE BARRA DE BUSQUEDA, BOTONES DE NAVEGACION y POPUP INICIAL
 const Inicio = (props) => {
@@ -46,7 +47,7 @@ const Inicio = (props) => {
   );
 
   return (
-    <div className="grid-item consulta-semaforo">
+    <MotionDiv className="grid-item consulta-semaforo">
       <BarraBusqueda
         rol={props.rol}
         is_admin={props.is_admin}
@@ -118,7 +119,6 @@ const Inicio = (props) => {
           </div>
         )}
       </div>
-
       {props.popup_inicial && (
         <PopUp
           title="Bienvenido a DACoT"
@@ -128,7 +128,7 @@ const Inicio = (props) => {
             Este sistema se encuentra en desarrollo y constante mejora. En el
             podrás acceder a los datos semafóricos de la Región Metropolitana e
             ingresar solicitudes de actualización al Centro de Control de la
-            UOCT. Aplicación optimizada para Google Chrome
+            UOCT.
           </p>
           <div
             className={styles.entendido}
@@ -137,7 +137,7 @@ const Inicio = (props) => {
           </div>
         </PopUp>
       )}
-    </div>
+    </MotionDiv>
   );
 };
 

@@ -11,6 +11,7 @@ import { useQuery } from "../../GraphQL/useQuery";
 import Loading from "../Shared/Loading";
 import sortTable from "../Shared/Utils/SortTable";
 import { email_admin } from "../App";
+import MotionDiv from "../Shared/MotionDiv";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -56,7 +57,7 @@ const ListadoUsuarios = (props) => {
   }
 
   return (
-    <>
+    <MotionDiv>
       <div
         style={{
           display: "flex",
@@ -140,7 +141,7 @@ const ListadoUsuarios = (props) => {
           />
         </PopUp>
       )}
-    </>
+    </MotionDiv>
   );
 };
 
