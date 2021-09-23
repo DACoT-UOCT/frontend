@@ -92,16 +92,12 @@ const BarraBusqueda = (props) => {
             payLoad: procesar_json_recibido(response.project),
           });
         } else {
-          //SI NO ESTÁ EN PRODUCTION, Y ES UOCT O ADMIN, CONSULTA EN STATUS NEW
-          if (props.rol === "Personal UOCT" || props.is_admin) {
-            buscarNEW(id_consultado);
-          } else {
-            alert("Instalación no encontrada NO PRODUCTION");
-          }
+          //SI NO ESTÁ EN PRODUCTION, CONSULTA EN STATUS NEW
+          buscarNEW(id_consultado);
         }
       })
       .catch((err) => {
-        alert("Error en la consulta PRODUCTION");
+        alert("Error en la consulta");
         setLoading(false);
       });
   };
@@ -113,7 +109,7 @@ const BarraBusqueda = (props) => {
     })
       .then((response) => {
         if (response.project === null) {
-          alert("Instalación no encontrada, NO NEW NO PRODUCTION");
+          alert("Instalación no encontrada");
         } else {
           dispatch({
             type: STATE_VARS.statusConsultado,

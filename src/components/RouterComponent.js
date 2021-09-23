@@ -105,7 +105,7 @@ const RouterComponent = (props) => {
             path="/logout"
             component={() => <Logout dispatch={dispatch} />}
           />
-          <AnimatePresence exitBeforeEnter={true}>
+          <AnimatePresence>
             <Route
               exact
               path="/"

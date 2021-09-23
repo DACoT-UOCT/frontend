@@ -251,7 +251,7 @@ const Junctions = (props) => {
           //   <TableCell component="th" scope="row">
           <Button
             size="lg"
-            color="success"
+            color="warning"
             onClick={() => {
               dispatch({ type: "agregar_junction" });
             }}>

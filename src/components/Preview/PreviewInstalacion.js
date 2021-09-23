@@ -96,7 +96,12 @@ const PreviewInstalacion = (props) => {
 
           <table>
             <tbody>
-              <tr className="status-row">
+              <tr
+                className="status-row"
+                style={{
+                  backgroundColor:
+                    props.status === "Operativo" ? "#00b8a9" : "#ffee00",
+                }}>
                 <td className="label">Estado: </td>
                 <td>{props.status}</td>
               </tr>
@@ -152,7 +157,7 @@ const PreviewInstalacion = (props) => {
                     payLoad: NEW_bool ? instalacion : update_data,
                   });
                 }}>
-                <Button color="info">Procesar solicitud pendiente</Button>
+                <Button color="warning">Procesar solicitud pendiente</Button>
               </Link>
               <br></br>
             </>
@@ -161,7 +166,7 @@ const PreviewInstalacion = (props) => {
         {(state.rol === "Personal UOCT" || state.is_admin) && (
           <Button
             // className="botonDashboard"
-            color="warning"
+            color="info"
             onClick={() => {
               renderPDF(instalacion);
             }}>

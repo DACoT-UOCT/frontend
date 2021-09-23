@@ -234,7 +234,7 @@ const ResumenButtons = (props) => {
                         );
                         return;
                       }
-                      history.push("/editar/instalacion");
+                      history.push("/nuevo/solicitud-actualizacion");
                     }}>
                     Sugerir cambios para la instalación
                   </div>
