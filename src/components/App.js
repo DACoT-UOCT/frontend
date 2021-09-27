@@ -15,7 +15,7 @@ import ScrollToTop from "react-scroll-to-top";
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 export const GQLclient = new GraphQLClient(BACKEND_URL);
-export const email_admin = "asimov.uoct@mtt.gob.cl";
+export const email_admin = "infoventas.uoct@mtt.gob.cl";
 const history = createBrowserHistory();
 
 //COMPONENTE QUE ALOJA TODA LA APLICACION
