@@ -8,13 +8,11 @@ import styles from "./Profile.module.css";
 import { email_admin } from "../App";
 
 function Profile({ user, email, rol, state, dispatch }) {
+  console.log(state);
   return (
     <div className={styles.profile}>
       <div className={styles.info}>
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-          alt=""
-        />
+        <img src={state.picture} alt="" />
         <span className={styles.username}>{user}</span>
         <span className={styles.email}>
           <MailOutlineIcon fontSize="small" className={styles.icon} />

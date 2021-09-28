@@ -31,7 +31,9 @@ const RouterComponent = (props) => {
     if (!state.debug && state.isLoggedIn) {
       axios
         .get(BACKEND_URL + "me")
-        .then((response) => {})
+        .then((response) => {
+          // console.log(response);
+        })
         .catch((err) => {
           dispatch({ type: "logout" });
         });
