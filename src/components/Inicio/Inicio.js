@@ -47,7 +47,7 @@ const Inicio = (props) => {
   );
 
   return (
-    <MotionDiv className="grid-item consulta-semaforo">
+    <MotionDiv keyProp="inicio" className="grid-item consulta-semaforo">
       <BarraBusqueda
         rol={props.rol}
         is_admin={props.is_admin}

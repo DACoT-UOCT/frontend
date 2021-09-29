@@ -222,7 +222,7 @@ const NuevaInstalacion = (props) => {
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
-        <MotionDiv className="grid-item nuevo-semaforo">
+        <MotionDiv keyProp="formulario" className="grid-item nuevo-semaforo">
           <div
             className={classes.root}
             style={{

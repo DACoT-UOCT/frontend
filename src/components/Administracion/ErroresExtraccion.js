@@ -17,7 +17,6 @@ const ErroresExtraccion = (props) => {
       after: _after,
     })
       .then((data) => {
-        console.log(data);
         return {
           elements: data.failedPlans.edges.map((edge) => edge.node),
           pageInfo: data.failedPlans.pageInfo,
@@ -27,7 +26,7 @@ const ErroresExtraccion = (props) => {
   };
 
   return (
-    <MotionDiv>
+    <MotionDiv keyProp="errores">
       {registros !== [] ? (
         <>
           <p>

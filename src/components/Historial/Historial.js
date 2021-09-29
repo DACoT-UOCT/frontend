@@ -42,6 +42,7 @@ const Historial = (props) => {
 
   return (
     <MotionDiv
+      keyProp="historial"
       style={{ gridGap: "20px" }}
       className={`grid-item consulta-semaforo`}>
       {/* <p>{"Historial" + global_state.actualizando.oid}</p> */}

@@ -57,7 +57,7 @@ const ListadoUsuarios = (props) => {
   }
 
   return (
-    <MotionDiv>
+    <MotionDiv keyProp="usuarios">
       <div
         style={{
           display: "flex",

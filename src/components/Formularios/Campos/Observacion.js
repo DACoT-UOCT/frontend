@@ -12,23 +12,12 @@ const Observacion = (props) => {
           <h2>{"Observaciones"}</h2>
           <TextareaAutosize
             className="observaciones"
-            disabled={
-              !(
-                props.global_state.rol === "Personal UOCT" ||
-                props.global_state.is_admin
-              )
-            }
+            disabled={props.info}
             type="textarea"
             placeholder=""
             value={props.observation}
-            onFocus={(e) => {
-              if (e.currentTarget.value.slice(-6) !== "\n*\n*\n*")
-                props.setObservation(e.currentTarget.value + "\n*\n*\n*");
-            }}
             onChange={(e) => {
-              props.setObservation(
-                e.currentTarget.value.slice(0, -6) + "\n*\n*\n*"
-              );
+              props.setObservation(e.currentTarget.value);
             }}
           />
         </>
@@ -40,17 +29,10 @@ const Observacion = (props) => {
             type="textarea"
             placeholder=""
             value={props.observation}
-            onFocus={(e) => {
-              if (e.currentTarget.value.slice(-6) !== "\n*\n*\n*")
-                props.dispatch({
-                  type: "observation",
-                  payLoad: e.currentTarget.value + "\n*\n*\n*",
-                });
-            }}
             onChange={(e) =>
               props.dispatch({
                 type: "observation",
-                payLoad: e.currentTarget.value.slice(0, -6) + "\n*\n*\n*",
+                payLoad: e.currentTarget.value,
               })
             }
           />

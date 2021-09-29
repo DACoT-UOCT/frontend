@@ -96,7 +96,7 @@ const CrudEmpresas = (props) => {
   }
 
   return (
-    <MotionDiv>
+    <MotionDiv keyProp={empresas}>
       <div
         style={{
           display: "flex",

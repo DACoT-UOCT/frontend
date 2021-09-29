@@ -137,7 +137,9 @@ const BarraBusqueda = (props) => {
 
   const buscarOnClick = (id_consultado) => {
     //checkear input consultado
-    if (!/^(x|X|j|J)\d{6}$/.test(id_consultado)) {
+    if (/^\d{6}$/.test(id_consultado)) {
+      id_consultado = "J" + id_consultado;
+    } else if (!/^(x|X|j|J)\d{6}$/.test(id_consultado)) {
       alert("Formato de búsqueda inválido (J000000)");
       return;
     }

@@ -31,9 +31,7 @@ const RouterComponent = (props) => {
     if (!state.debug && state.isLoggedIn) {
       axios
         .get(BACKEND_URL + "me")
-        .then((response) => {
-          // console.log(response);
-        })
+        .then((response) => {})
         .catch((err) => {
           dispatch({ type: "logout" });
         });
@@ -109,6 +107,7 @@ const RouterComponent = (props) => {
           />
           <AnimatePresence>
             <Route
+              key="inicio"
               exact
               path="/"
               component={() => (
@@ -122,28 +121,32 @@ const RouterComponent = (props) => {
               )}
             />
             <Route
+              key="procesar_solicitud"
               exact
               path="/procesar/solicitud"
               component={() => <ProcesarSolicitud state={state.actualizando} />}
             />
             {state.rol === "Empresa" ? (
-              <>
+              <div key="div">
                 <Route
+                  key="nueva_integracion_solicitud"
                   exact
                   path="/nuevo/solicitud-integracion"
                   component={() => <NuevaInstalacion state={state} />}
                 />
 
                 <Route
+                  key="nueva_actualizacion_solicitud"
                   exact
                   path="/nuevo/solicitud-actualizacion"
                   component={() => <NuevaInstalacion state={state} />}
                 />
-              </>
+              </div>
             ) : (
               // FUNCIONARIO UOCT
-              <>
+              <div key="div2">
                 <Route
+                  key="edit_full"
                   exact
                   path="/editar/instalacion"
                   component={() =>
@@ -154,20 +157,23 @@ const RouterComponent = (props) => {
                   }
                 />
                 <Route
+                  key="digitalizacion"
                   exact
                   path="/nuevo/digitalizacion"
                   component={() => <NuevaInstalacion state={state} />}
                 />
                 <Route
+                  key="edit_short"
                   exact
                   path="/editar/info-programaciones"
                   component={() => <NuevaInstalacion state={state} />}
                 />
-              </>
+              </div>
             )}
             {state.is_admin && (
               <>
                 <Route
+                  key="admin"
                   exact
                   path="/administracion"
                   component={Administracion}
@@ -175,22 +181,25 @@ const RouterComponent = (props) => {
               </>
             )}
             <Route
+              key="solicitudes"
               exact
               path="/solicitudes"
               component={() => <Solicitudes dispatch={dispatch} />}
             />
 
             <Route
+              key="historial"
               exact
               path="/historial"
               component={() => <Historial state={state} />}
             />
 
             <Route
+              key="info"
               exact
               path="/info"
               component={() => (
-                <MotionDiv className="grid-item nuevo-semaforo">
+                <MotionDiv keyProp="info" className="grid-item nuevo-semaforo">
                   <div
                     className={classes.root}
                     style={{
@@ -233,15 +242,14 @@ const RouterComponent = (props) => {
                 </MotionDiv>
               )}
             />
-
-            <Profile
-              user={state.full_name}
-              email={state.email}
-              rol={state.rol}
-              state={state}
-              dispatch={dispatch}
-            />
           </AnimatePresence>
+          <Profile
+            user={state.full_name}
+            email={state.email}
+            rol={state.rol}
+            state={state}
+            dispatch={dispatch}
+          />
         </div>
       )}
     </>

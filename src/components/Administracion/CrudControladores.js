@@ -64,7 +64,7 @@ const CrudControladores = () => {
   }
 
   return (
-    <MotionDiv>
+    <MotionDiv keyProp="controladores">
       <div
         style={{
           display: "flex",

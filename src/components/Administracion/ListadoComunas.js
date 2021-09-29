@@ -51,7 +51,7 @@ const ListadoComunas = (props) => {
     return <p>Error en la consulta</p>;
 
   return (
-    <MotionDiv>
+    <MotionDiv keyProp="comunas">
       <DispatchContext.Provider value={dispatch}>
         <StateContext.Provider value={state}>
           <p>

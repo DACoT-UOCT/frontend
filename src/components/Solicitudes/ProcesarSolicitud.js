@@ -56,7 +56,9 @@ export default function ProcesarSolicitud(props) {
   };
 
   return (
-    <MotionDiv className="grid-item nuevo-semaforo procesar-solicitud">
+    <MotionDiv
+      keyProp="procesar"
+      className="grid-item nuevo-semaforo procesar-solicitud">
       {submit === false ? (
         <>
           {/* <ResumenProyecto state={state.actualizando} procesar={true} /> */}

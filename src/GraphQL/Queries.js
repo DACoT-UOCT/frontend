@@ -295,6 +295,7 @@ export const GetCoordinates = gql`
       jid
       lat
       lon
+      commune
     }
   }
 `;

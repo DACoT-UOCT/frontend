@@ -437,7 +437,7 @@ th {
   font-family: Arial;
   font-size: 24px;
   font-weight: bold;
-  padding: 1rem 0;
+  padding: 2rem 0;
   text-decoration: none;
   text-align: center;
   line-height: 3em;
@@ -1209,11 +1209,12 @@ input:disabled {
 .text-size {
   position: absolute;
   left: 75%;
-  width: 8rem;
+  width: 10rem;
   height: 1.5rem;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  font-size: 0.85rem;
 }
 
 .text-size button {
@@ -1258,4 +1259,24 @@ input:disabled {
   justify-content: space-around;
   margin: 0 23%;
   margin-top: 1rem;
+}
+
+.map-consulta-wrap {
+  height: 70vh;
+  width: 100%;
+}
+.map-consulta-map {
+  height: 70vh;
+  width: 100%;
+}
+
+.map-consulta-control {
+  height: 7vh;
+  /* padding: 3rem; */
+  background-color: red;
+}
+
+.leaflet-control-layers-toggle {
+  background-size: 20px 20px;
+  background-color: red;
 }

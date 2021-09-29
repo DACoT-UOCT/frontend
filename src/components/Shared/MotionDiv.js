@@ -8,6 +8,7 @@ const MotionDiv = (props) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      key={props.keyProp}
       transition={{ duration: 0.25 }}>
       {props.children}
     </motion.div>

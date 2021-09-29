@@ -50,11 +50,14 @@ const Campo = styled(TextField)({
   background: "none",
 });
 
-const encontrarValorEntreverde = (entreverdes, from, to) => {
+const encontrarValorEntreverde = (entreverdes, _from, _to) => {
+  var from = (_from + 9).toString(36).toUpperCase();
+  var to = (_to + 9).toString(36).toUpperCase();
   for (let i = 0; i < entreverdes.length; i++) {
     if (entreverdes[i].phfrom === from && entreverdes[i].phto === to)
       return parseInt(entreverdes[i].value);
   }
+  return "-";
 };
 
 const getJunctions = (project) => {
@@ -113,7 +116,6 @@ const ResumenButtons = (props) => {
       },
     })
       .then((response) => {
-        console.log(response);
         if (response.syncProject.code === 200) {
           state_update();
         } else {
@@ -339,6 +341,7 @@ const ResumenBody = forwardRef((props, ref) => {
   const [savingIntergreens, setSavingIntergreens] = useState(false);
   const programacionesRef = useRef(null);
   let history = useHistory();
+  const [showPeriods, setShowPeriods] = useState(true);
 
   const [secuencias, setSecuencias] = useState(getSecuencias(state));
 
@@ -729,8 +732,6 @@ const ResumenBody = forwardRef((props, ref) => {
           {state.otu.junctions.map((junction, junctionIndex) => {
             if (!junctionsShowList[junctionIndex]) return <></>;
 
-            let fasesSC = junction.sequence.map((aux) => aux.phid);
-            let fasesSYSTEM = junction.sequence.map((aux) => aux.phid_system);
             return (
               <div className="section" key={junctionIndex}>
                 <h2>{junction.jid}</h2>
@@ -957,32 +958,38 @@ const ResumenBody = forwardRef((props, ref) => {
                               <thead>
                                 <tr>
                                   <th>Desde/Hacia</th>
-                                  {fasesSC.map((fase, i) => {
-                                    return <th key={i}>{"F" + fase}</th>;
-                                  })}
+                                  {secuencias[junctionIndex].seq.map(
+                                    (fase, i) => {
+                                      return <th key={i}>{"F" + fase}</th>;
+                                    }
+                                  )}
                                 </tr>
                               </thead>
                               <tbody>
-                                {fasesSC.map((faseFila, indexFila) => {
-                                  return (
-                                    <tr key={indexFila}>
-                                      <td>{"F" + faseFila}</td>
-                                      {fasesSC.map((faseCol, indexCol) => {
-                                        if (indexFila === indexCol)
-                                          return <td key={indexCol}> -</td>;
-                                        return (
-                                          <td key={indexCol}>
-                                            {encontrarValorEntreverde(
-                                              junction.intergreens,
-                                              fasesSYSTEM[indexFila],
-                                              fasesSYSTEM[indexCol]
-                                            )}
-                                          </td>
-                                        );
-                                      })}
-                                    </tr>
-                                  );
-                                })}
+                                {secuencias[junctionIndex].seq.map(
+                                  (faseFila, indexFila) => {
+                                    return (
+                                      <tr key={indexFila}>
+                                        <td>{"F" + faseFila}</td>
+                                        {secuencias[junctionIndex].seq.map(
+                                          (faseCol, indexCol) => {
+                                            if (indexFila === indexCol)
+                                              return <td key={indexCol}> -</td>;
+                                            return (
+                                              <td key={indexCol}>
+                                                {encontrarValorEntreverde(
+                                                  junction.intergreens,
+                                                  indexFila + 1,
+                                                  indexCol + 1
+                                                )}
+                                              </td>
+                                            );
+                                          }
+                                        )}
+                                      </tr>
+                                    );
+                                  }
+                                )}
                               </tbody>
                             </table>
                           )}
@@ -995,10 +1002,28 @@ const ResumenBody = forwardRef((props, ref) => {
             );
           })}
           {/* periodizaciones */}
-          {!new_request && (
+          {!new_request && showPeriods && (
             <>
               <div className="section">
+                {!props.scrolled && (
+                  <div className="text-size" style={{ width: "15rem" }}>
+                    ¿Ocultar periodizaciones?{" "}
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="primary"
+                          checked={!showPeriods}
+                          onChange={() => {
+                            setShowPeriods(!showPeriods);
+                          }}
+                          name="gilad"
+                        />
+                      }
+                    />
+                  </div>
+                )}
                 <h2>Periodizacion</h2>
+
                 {state.otu.programs !== undefined &&
                 state.otu.programs.length > 0 ? (
                   <>
@@ -1606,7 +1631,10 @@ const ResumenBody = forwardRef((props, ref) => {
           <Observacion
             info={info}
             global_state={global_state}
-            observation={info ? props.observation : props.state.observation}
+            observation={
+              (info ? props.observation : props.state.observation) +
+              (props.scrolled ? "\n-\n-\n-\n-" : "")
+            }
             setObservation={props.setObservation}
             dispatch={props.dispatch}
           />

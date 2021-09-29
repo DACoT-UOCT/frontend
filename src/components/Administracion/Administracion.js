@@ -34,7 +34,9 @@ const Administracion = (props) => {
     "admin"
   );
   return (
-    <MotionDiv className={`grid-item header-admin ${styles.admin}`}>
+    <MotionDiv
+      keyProp="admin"
+      className={`grid-item header-admin ${styles.admin}`}>
       <div className={styles.selection}>
         <h2 style={{ paddingLeft: "2rem" }}>{state.currentTab}</h2>
         <div className={styles.options}>

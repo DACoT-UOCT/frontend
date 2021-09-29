@@ -93,7 +93,9 @@ const Solicitudes = () => {
   );
 
   return (
-    <MotionDiv className={`grid-item consulta-semaforo ${styles.dashboard}`}>
+    <MotionDiv
+      keyProp="solicitudes"
+      className={`grid-item consulta-semaforo ${styles.dashboard}`}>
       <div className={styles.selection}>
         <h2>{state.titulo}</h2>
         <div className={styles.options}>

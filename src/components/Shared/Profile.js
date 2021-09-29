@@ -8,7 +8,6 @@ import styles from "./Profile.module.css";
 import { email_admin } from "../App";
 
 function Profile({ user, email, rol, state, dispatch }) {
-  console.log(state);
   return (
     <div className={styles.profile}>
       <div className={styles.info}>

@@ -37,7 +37,7 @@ const RegistroActividad = () => {
   };
 
   return (
-    <MotionDiv>
+    <MotionDiv keyProp="actividad">
       <p>
         Seleccionar fecha de inicio y fin para consultar registro de actividad
         dentro de la plataforma
