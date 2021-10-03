@@ -98,6 +98,8 @@ export default function PanelInstalacion(props) {
         })
         .catch((err) => {
           setError("Error en la consulta");
+          alert("Error en la consulta, intente recargar la página");
+          console.log(err);
         })
     );
 

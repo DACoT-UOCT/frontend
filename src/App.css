@@ -308,7 +308,7 @@ body legend {
   grid-template:
     " header header header header" 8vh
     " . . . ." 2vh
-    " caja . profile ." 90vh
+    " caja . profile ." 88vh
     "caja . . ." auto
     / 80% 2% 16% 2%;
   overflow: auto;
@@ -336,6 +336,10 @@ Label {
   overflow: scroll;
   /* overflow-y: auto; */
   /* overflow-x: auto; */
+}
+
+.margin10 {
+  margin-top: 10vh;
 }
 
 .resumen-container {

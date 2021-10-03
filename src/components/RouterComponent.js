@@ -199,7 +199,9 @@ const RouterComponent = (props) => {
               exact
               path="/info"
               component={() => (
-                <MotionDiv keyProp="info" className="grid-item nuevo-semaforo">
+                <MotionDiv
+                  keyProp="formulario"
+                  className="grid-item nuevo-semaforo">
                   <div
                     className={classes.root}
                     style={{

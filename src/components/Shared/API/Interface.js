@@ -19,7 +19,7 @@ export const date_format = (date) => {
 
 //procesa el json consultado para mostrarlo en el formulario
 export const procesar_json_recibido = (aux) => {
-  let temp = decamelizeKeys(JSON.parse(JSON.stringify(aux)), { deep: true });
+  var temp = decamelizeKeys(JSON.parse(JSON.stringify(aux)), { deep: true });
 
   if (!temp.ups) {
     delete temp.ups;
