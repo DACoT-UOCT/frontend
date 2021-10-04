@@ -53,7 +53,9 @@ const PreviewInstalacion = (props) => {
   const history_panel = location.pathname === "/historial";
   const history = useHistory();
   let update_data = props.update;
-  const NEW_bool = instalacion.metadata.status === "NEW";
+  const NEW_bool = instalacion.metadata
+    ? instalacion.metadata.status === "NEW"
+    : false;
   const UPDATE_bool = update_data && update_data.metadata.status === "UPDATE";
 
   useEffect(() => {

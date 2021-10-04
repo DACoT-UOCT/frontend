@@ -69,16 +69,16 @@ const BarraBusqueda = (props) => {
             payLoad: "Operativo (solicitud de actualización pendiente)",
           });
         }
+        dispatch({
+          type: STATE_VARS.previewOpen,
+          payLoad: true,
+        });
       })
       .catch((err) => {
         alert("Error en la consulta UPDATE");
       })
       .finally(() => {
         setLoading(false);
-        dispatch({
-          type: STATE_VARS.previewOpen,
-          payLoad: true,
-        });
       });
   };
 
@@ -98,6 +98,7 @@ const BarraBusqueda = (props) => {
       })
       .catch((err) => {
         alert("Error en la consulta");
+        console.log(err);
         setLoading(false);
       });
   };
@@ -213,7 +214,7 @@ const BarraBusqueda = (props) => {
         </div>
       </div>
 
-      {state.previewOpen && (
+      {state.previewOpen && state.dataConsultada && (
         <PopUp
           title={"Instalación " + state.busquedaInput}
           open={state.previewOpen}
