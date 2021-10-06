@@ -1113,7 +1113,7 @@ const ResumenBody = forwardRef((props, ref) => {
 
                         return (
                           <div key={junctionIndex}>
-                            <div className="page-break" />
+                            {/* <div className="page-break" /> */}
                             <div
                               className="section"
                               style={{ fontSize: textSize }}>

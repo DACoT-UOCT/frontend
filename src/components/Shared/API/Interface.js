@@ -72,6 +72,10 @@ export const procesar_json_recibido = (aux) => {
   if (!temp.otu.metadata.answer) {
     temp.otu.metadata.answer = 0;
   }
+
+  temp.otu.programs = temp.otu.programs.filter(
+    (program) => !["L", "V", "S", "D"].includes(program.day)
+  );
   temp.headers = !temp.headers
     ? initialState.headers
     : temp.headers.length === 0
