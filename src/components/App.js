@@ -26,7 +26,7 @@ const App = () => {
   //limpiar cache si se cierra la sesión, o se engresa por primera vez
   useEffect(() => {
     if (state.isLoggedIn === false) {
-      // localStorage.clear();
+      localStorage.clear();
       sessionStorage.clear();
       store.clear();
       Session.clear();
