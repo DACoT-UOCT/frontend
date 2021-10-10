@@ -27,7 +27,7 @@
     "google-maps-react": "^2.0.6",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
-    "immer": "^8.0.1",
+    "immer": "^9.0.6",
     "jquery": "^3.6.0",
     "leaflet": "^1.7.1",
     "local-storage-pro": "^1.1.2",
