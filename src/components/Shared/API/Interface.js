@@ -1,10 +1,11 @@
-import { initialState } from "../Reducers/FormularioReducer";
+import { initialState as initial } from "../Reducers/FormularioReducer";
 import decamelizeKeys from "@puuuudding/decamelize-keys";
 // import decamelizeKeysDeep from "decamelize-keys-deep";
 import camelcaseKeysDeep from "camelcase-keys-deep";
 
 //Interfaz de comunicacion entre la api y el frontend para enviar formularios de instalaciones
 //notar que el backend trabaja con variables camelcase y el frontend con snake case
+const initialState = JSON.parse(JSON.stringify(initial));
 
 export const date_format = (date) => {
   let temp_date = new Date(date);
@@ -19,7 +20,7 @@ export const date_format = (date) => {
 
 //procesa el json consultado para mostrarlo en el formulario
 export const procesar_json_recibido = (aux) => {
-  let temp = decamelizeKeys(JSON.parse(JSON.stringify(aux)), { deep: true });
+  var temp = decamelizeKeys(JSON.parse(JSON.stringify(aux)), { deep: true });
 
   if (!temp.ups) {
     delete temp.ups;
@@ -63,8 +64,18 @@ export const procesar_json_recibido = (aux) => {
 
   temp.otu.metadata = temp.otu.metadata
     ? temp.otu.metadata
-    : initialState.otu.metadata;
+    : JSON.parse(JSON.stringify(initialState.otu.metadata));
 
+  if (!temp.otu.metadata.control) {
+    temp.otu.metadata.control = 0;
+  }
+  if (!temp.otu.metadata.answer) {
+    temp.otu.metadata.answer = 0;
+  }
+
+  temp.otu.programs = temp.otu.programs.filter(
+    (program) => !["L", "V", "S", "D"].includes(program.day)
+  );
   temp.headers = !temp.headers
     ? initialState.headers
     : temp.headers.length === 0

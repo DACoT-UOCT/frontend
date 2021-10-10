@@ -8,6 +8,7 @@ const Paginado = (props) => {
   const [elements, setElements] = useState([]);
   const [pageInfo, setPageInfo] = useState(null);
   const [status, setStatus] = useState("idle");
+  const [indexShift, setIndexShift] = useState(-1);
 
   function consultar_elementos(_action = "") {
     setStatus("loading");
@@ -24,6 +25,7 @@ const Paginado = (props) => {
       .then((response) => {
         setElements(response.elements);
         setPageInfo(response.pageInfo);
+        setIndexShift(indexShift + 1);
         setStatus("success");
       })
       .catch((err) => {
@@ -76,21 +78,23 @@ const Paginado = (props) => {
       {elements != null && elements.length > 0 ? (
         <>
           {elements.map((element, index) => {
-            return props.render(element, index);
+            return props.render(element, index + indexShift * 50);
           })}
-          <div className="arrows-pagination">
-            <button onClick={handleNext} disabled={!pageInfo.hasNextPage}>
-              <img
-                src="/arrow.png"
-                alt=""
-                style={{
-                  filter: pageInfo.hasNextPage
-                    ? "opacity(100%)"
-                    : "opacity(50%)",
-                }}
-              />
-            </button>
-          </div>
+          {pageInfo.hasNextPage && (
+            <div className="arrows-pagination">
+              <button onClick={handleNext} disabled={!pageInfo.hasNextPage}>
+                <img
+                  src="/arrow.png"
+                  alt=""
+                  style={{
+                    filter: pageInfo.hasNextPage
+                      ? "opacity(100%)"
+                      : "opacity(50%)",
+                  }}
+                />
+              </button>
+            </div>
+          )}
         </>
       ) : (
         <> Nada por aqui</>

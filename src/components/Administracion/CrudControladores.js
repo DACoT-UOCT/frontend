@@ -14,6 +14,7 @@ import { getFecha } from "../Shared/Utils/general_functions";
 import { GQLclient } from "../App";
 import { deleteController, enableController } from "../../GraphQL/Mutations";
 import { useHistory } from "react-router-dom";
+import MotionDiv from "../Shared/MotionDiv";
 
 /*Componente que lista los controladores registrados, y permite
 registrar o desabilitar */
@@ -63,7 +64,7 @@ const CrudControladores = () => {
   }
 
   return (
-    <>
+    <MotionDiv keyProp="controladores">
       <div
         style={{
           display: "flex",
@@ -196,7 +197,7 @@ const CrudControladores = () => {
           </div>
         </PopUp>
       )}
-    </>
+    </MotionDiv>
   );
 };
 

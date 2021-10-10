@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
 import "../../App.css";
-import { DispatchContext, StateContext } from "../App";
+import { DispatchContext, email_admin, StateContext } from "../App";
 import { GoogleLogin } from "react-google-login";
-import { ipAPI } from "../Shared/ipAPI";
-import { BACKEND_URL } from "../../API_KEYS"
+import { BACKEND_URL } from "../../API_KEYS";
 import axios from "axios";
 import styles from "./Login.module.css";
 import { GoogleLoginAPI_KEY } from "../../API_KEYS";
@@ -22,7 +21,9 @@ const Login = () => {
           payLoad: response.data,
         });
       })
-      .catch((err) => {});
+      .catch((err) => {
+        alert("Usuario no autorizado");
+      });
   };
 
   const try_login = (response) => {
@@ -42,7 +43,7 @@ const Login = () => {
         consultar_datos();
       })
       .catch((err) => {
-        alert("Usuario no autorizado");
+        alert("Error en la consulta");
       });
   };
 
@@ -88,13 +89,18 @@ const Login = () => {
                 onFailure={failResponseGoogle}
                 cookiePolicy={"single_host_origin"}
                 isSignedIn={false}
+                autoLoad={false}
                 buttonText="Ingresar con Google"
+                prompt="consent"
               />
             </div>
             <span style={{ padding: "2rem", fontSize: ".9rem" }}>
               {"Si necesitas acceso contacta al administrador "}
-              <a href="mailto:admin@dacot.com?Subect=Solicitud%20de%20acceso.">
-                admin@dacot.cl{" "}
+              <a
+                href={
+                  "mailto:" + email_admin + "?Subect=Solicitud%20de%20acceso."
+                }>
+                {email_admin}
               </a>
             </span>
             <span className={styles.sub}>@DACoT 2021</span>

@@ -20,16 +20,14 @@ export default function Nav() {
         <Link onClick={() => setShow(false)} className={styles.link} to="/">
           <span>‣ Inicio</span>
         </Link>
-        <Link
-          onClick={() => setShow(false)}
-          className={styles.link}
-          to="/solicitudes">
-          {state.rol === "Empresa" ? (
-            <span>‣ Mis solicitudes</span>
-          ) : (
+        {(state.rol === "Personal UOCT" || state.is_admin) && (
+          <Link
+            onClick={() => setShow(false)}
+            className={styles.link}
+            to="/solicitudes">
             <span>‣ Solicitudes pendientes</span>
-          )}
-        </Link>
+          </Link>
+        )}
         {state.rol === "Empresa" && (
           <Link
             onClick={() => setShow(false)}
@@ -43,7 +41,7 @@ export default function Nav() {
             onClick={() => setShow(false)}
             className={styles.link}
             to="/nuevo/digitalizacion">
-            <span>‣ Digitalizar instalación</span>
+            <span>‣ Registrar nueva instalación</span>
           </Link>
         )}
         {state.is_admin && (

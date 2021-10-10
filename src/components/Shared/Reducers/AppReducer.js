@@ -10,6 +10,8 @@ export const initialState = {
   debug: false,
   comunas: null,
   update_pendiente: false,
+  picture:
+    "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
 };
 
 const funcionario = {
@@ -18,6 +20,8 @@ const funcionario = {
   rol: "Personal UOCT",
   area: "TIC",
   is_admin: true,
+  picture:
+    "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
 };
 
 const funcionario2 = {
@@ -26,6 +30,8 @@ const funcionario2 = {
   rol: "Personal UOCT",
   area: "Ingeniería",
   is_admin: false,
+  picture:
+    "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
 };
 
 const empresa = {
@@ -80,6 +86,7 @@ export function reducer(draft, action) {
       draft.rol = action.payLoad.rol;
       draft.area = action.payLoad.area;
       draft.is_admin = action.payLoad.is_admin;
+      draft.picture = action.payLoad.picture;
       draft.isLoggedIn = true;
       draft.popup_inicial = true;
       return;

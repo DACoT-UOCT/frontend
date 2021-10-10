@@ -23,6 +23,7 @@ import {
   deleteCompany,
   enableCompany,
 } from "../../GraphQL/Mutations";
+import MotionDiv from "../Shared/MotionDiv";
 
 const Campo = styled(TextField)({
   width: "100%",
@@ -95,7 +96,7 @@ const CrudEmpresas = (props) => {
   }
 
   return (
-    <>
+    <MotionDiv keyProp={empresas}>
       <div
         style={{
           display: "flex",
@@ -207,7 +208,7 @@ const CrudEmpresas = (props) => {
           </>
         </PopUp>
       )}
-    </>
+    </MotionDiv>
   );
 };
 

@@ -5,15 +5,13 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import { Button } from "reactstrap";
 
 import styles from "./Profile.module.css";
+import { email_admin } from "../App";
 
 function Profile({ user, email, rol, state, dispatch }) {
   return (
     <div className={styles.profile}>
       <div className={styles.info}>
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-          alt=""
-        />
+        <img src={state.picture} alt="" />
         <span className={styles.username}>{user}</span>
         <span className={styles.email}>
           <MailOutlineIcon fontSize="small" className={styles.icon} />
@@ -29,7 +27,7 @@ function Profile({ user, email, rol, state, dispatch }) {
           <SettingsIcon fontSize="small" className={styles.icon} />
           Contacto Administrador:
         </span>
-        <span className={styles.admin_mail}>admin@uoct.cl</span>
+        <span className={styles.admin_mail}>{email_admin}</span>
       </div>
       {state.debug && (
         <Button onClick={() => dispatch({ type: "switch_profile" })}>

@@ -10,10 +10,12 @@ import { GetCommunes, GetCoordinates } from "../GraphQL/Queries";
 import { BACKEND_URL } from "../API_KEYS";
 import Session from "react-session-api";
 import store from "local-storage-pro";
+import ScrollToTop from "react-scroll-to-top";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 export const GQLclient = new GraphQLClient(BACKEND_URL);
+export const email_admin = "infoventas.uoct@mtt.gob.cl";
 const history = createBrowserHistory();
 
 //COMPONENTE QUE ALOJA TODA LA APLICACION
@@ -21,24 +23,25 @@ const history = createBrowserHistory();
 const App = () => {
   const [state, dispatch] = usePersistentState(reducer, initialState);
 
+  //limpiar cache si se cierra la sesión, o se engresa por primera vez
   useEffect(() => {
-    //limpiar cache si se cierra la sesión, o se engresa por primera vez
     if (state.isLoggedIn === false) {
-      // localStorage.clear();
-      // sessionStorage.clear();
+      localStorage.clear();
+      sessionStorage.clear();
       store.clear();
       Session.clear();
     }
   }, [state.isLoggedIn]);
 
+  //auto log in developer
   useEffect(() => {
     if (state.debug && !state.isLoggedIn) {
       dispatch({ type: "switch_profile" });
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  //guardar comunas en el cache
   useEffect(() => {
-    //guardar comunas en el cache
     if (state.comunas === null) {
       GQLclient.request(GetCommunes)
         .then((data) => {
@@ -57,7 +60,7 @@ const App = () => {
   useEffect(() => {
     //guardar cordenadas del mapa en el cache
     if (state.coordinates === null) {
-      GQLclient.request(GetCoordinates, { status: "NEW" })
+      GQLclient.request(GetCoordinates, { status: "PRODUCTION" })
         .then((data) => {
           dispatch({ type: "save_coordinates", payLoad: data.locations });
         })
@@ -69,6 +72,15 @@ const App = () => {
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
         <Router history={history}>
+          <ScrollToTop
+            smooth
+            color="#6f00ff"
+            top={30}
+            style={{
+              boxShadow:
+                "0px 10px 13px -7px #000000, 5px 3px 13px -2px rgba(0,0,0,0.95)",
+            }}
+          />
           <RouterComponent state={state} dispatch={dispatch} />
         </Router>
       </StateContext.Provider>

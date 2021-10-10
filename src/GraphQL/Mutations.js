@@ -117,3 +117,14 @@ export const computeTables = gql`
     computeTables(data: $data)
   }
 `;
+
+export const syncProject = gql`
+  mutation syncProject($data: GetProjectInput) {
+    syncProject(data: $data) {
+      oid
+      code
+      message
+      date
+    }
+  }
+`;

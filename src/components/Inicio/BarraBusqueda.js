@@ -69,16 +69,16 @@ const BarraBusqueda = (props) => {
             payLoad: "Operativo (solicitud de actualización pendiente)",
           });
         }
+        dispatch({
+          type: STATE_VARS.previewOpen,
+          payLoad: true,
+        });
       })
       .catch((err) => {
         alert("Error en la consulta UPDATE");
       })
       .finally(() => {
         setLoading(false);
-        dispatch({
-          type: STATE_VARS.previewOpen,
-          payLoad: true,
-        });
       });
   };
 
@@ -92,16 +92,13 @@ const BarraBusqueda = (props) => {
             payLoad: procesar_json_recibido(response.project),
           });
         } else {
-          //SI NO ESTÁ EN PRODUCTION, Y ES UOCT O ADMIN, CONSULTA EN STATUS NEW
-          if (props.rol === "Personal UOCT" || props.is_admin) {
-            buscarNEW(id_consultado);
-          } else {
-            alert("Instalación no encontrada NO PRODUCTION");
-          }
+          //SI NO ESTÁ EN PRODUCTION, CONSULTA EN STATUS NEW
+          buscarNEW(id_consultado);
         }
       })
       .catch((err) => {
-        alert("Error en la consulta PRODUCTION");
+        alert("Error en la consulta");
+        console.log(err);
         setLoading(false);
       });
   };
@@ -113,7 +110,7 @@ const BarraBusqueda = (props) => {
     })
       .then((response) => {
         if (response.project === null) {
-          alert("Instalación no encontrada, NO NEW NO PRODUCTION");
+          alert("Instalación no encontrada");
         } else {
           dispatch({
             type: STATE_VARS.statusConsultado,
@@ -141,7 +138,9 @@ const BarraBusqueda = (props) => {
 
   const buscarOnClick = (id_consultado) => {
     //checkear input consultado
-    if (!/^(x|X|j|J)\d{6}$/.test(id_consultado)) {
+    if (/^\d{6}$/.test(id_consultado)) {
+      id_consultado = "J" + id_consultado;
+    } else if (!/^(x|X|j|J)\d{6}$/.test(id_consultado)) {
       alert("Formato de búsqueda inválido (J000000)");
       return;
     }
@@ -215,7 +214,7 @@ const BarraBusqueda = (props) => {
         </div>
       </div>
 
-      {state.previewOpen && (
+      {state.previewOpen && state.dataConsultada && (
         <PopUp
           title={"Instalación " + state.busquedaInput}
           open={state.previewOpen}

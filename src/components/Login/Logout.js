@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import { ipAPI } from "../Shared/ipAPI";
 import { Redirect } from "react-router-dom";
+import { BACKEND_URL } from "../../API_KEYS";
 
 //Componente logout que borra el caché (localstorage y session storage),
 //desloguea al usuario y redirecciona al inicio
@@ -10,7 +10,7 @@ const Logout = (props) => {
     // Cookies.remove("session"); remover cookies
     props.dispatch({ type: "logout" });
     axios
-      .get(ipAPI + "logout")
+      .get(BACKEND_URL + "logout")
       .then((response) => {})
       .catch(() => {});
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

@@ -29,6 +29,7 @@ import {
   updateProject,
 } from "../../GraphQL/Mutations";
 import Success from "../Shared/Success";
+import MotionDiv from "../Shared/MotionDiv";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
@@ -102,7 +103,7 @@ const NuevaInstalacion = (props) => {
   useEffect(() => {
     if (state.submit === true) {
       //procesa los datos antes de enviar
-      // sessionStorage.clear();
+      sessionStorage.clear();
       Session.clear();
       let _data = procesar_json_envio(
         JSON.parse(JSON.stringify(state)),
@@ -221,7 +222,9 @@ const NuevaInstalacion = (props) => {
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>
-        <div className="grid-item nuevo-semaforo">
+        <MotionDiv
+          keyProp="formulario"
+          className="margin10 grid-item nuevo-semaforo">
           <div
             className={classes.root}
             style={{
@@ -283,7 +286,7 @@ const NuevaInstalacion = (props) => {
               </div>
             </div>
           </div>
-        </div>
+        </MotionDiv>
       </StateContext.Provider>
     </DispatchContext.Provider>
   );

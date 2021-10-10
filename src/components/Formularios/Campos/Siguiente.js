@@ -75,27 +75,19 @@ const Siguiente = (props) => {
     //revisar las variables 1 a una dependiendo de la vista
     dispatch({ type: "reset_errores" });
     var metadata = state.metadata;
-    var edit_programaciones = ["/editar/info-programaciones"].includes(
-      location.pathname
-    );
+    var edit_programaciones = [
+      "/editar/info-programaciones",
+      "/nuevo/solicitud-actualizacion",
+      "/editar/instalacion",
+    ].includes(location.pathname);
     var new_instalacion = [
       "/nuevo/digitalizacion",
       "/nuevo/solicitud-integracion",
     ].includes(location.pathname);
 
-    if (state.vista === 1) {
+    if (state.vista === 1 && !edit_programaciones) {
       //VALIDAR FORMULARIO DE TODA LA INFORMACION
-      // validar_entrada(metadata.region, "Región");
       input_regex(metadata.commune.name, "Comuna");
-
-      // if (state.metadata.pdf_data === null) {
-      //   setOpen(true);
-      //   dispatch({
-      //     type: "error",
-      //     payLoad: "Ingrese PDF de respaldo",
-      //   });
-      //   // return;
-      // }
 
       if (
         state.metadata.img === null ||
@@ -115,25 +107,18 @@ const Siguiente = (props) => {
         consultar_oid_existente();
       }
 
-      if (!edit_programaciones) {
-        //Caso de NO editar programaciones acotadas
-        input_regex(otu.metadata.serial, "OTU - N Serie");
-        input_regex(otu.metadata.ip_address, "OTU - Dirección IP");
-        input_regex(otu.metadata.netmask, "OTU - Netmask");
-        input_regex(otu.metadata.link_type, "OTU - Tipo de enlace");
-        input_regex(otu.metadata.link_owner, "OTU - Tipo de enlace");
-        input_regex(otu.metadata.answer, "OTU - N° palabras de resuesta");
-        input_regex(otu.metadata.control, "OTU - N° palabras de control");
+      //Caso de NO editar programaciones acotadas
+      input_regex(otu.metadata.serial, "OTU - N Serie");
+      input_regex(otu.metadata.ip_address, "OTU - Dirección IP");
+      input_regex(otu.metadata.netmask, "OTU - Netmask");
+      input_regex(otu.metadata.link_type, "OTU - Tipo de enlace");
+      input_regex(otu.metadata.link_owner, "OTU - Tipo de enlace");
 
-        var controller = state.controller;
-        input_regex(controller.model.company.name, " Controlador - Marca");
-        input_regex(controller.model.model, " Controlador - Modelo");
-        input_regex(
-          controller.model.firmware_version,
-          " Controlador - Firmware"
-        );
-      }
-    } else if (state.vista === 2) {
+      var controller = state.controller;
+      input_regex(controller.model.company.name, " Controlador - Marca");
+      input_regex(controller.model.model, " Controlador - Modelo");
+      input_regex(controller.model.firmware_version, " Controlador - Firmware");
+    } else if (state.vista === 2 && !edit_programaciones) {
       //validar que se ingresan los junction por el mapa
       for (let i = 0; i < state.otu.junctions.length; i++) {
         let junction = state.otu.junctions[i];
@@ -173,10 +158,7 @@ const Siguiente = (props) => {
       }
     } else if (state.vista === 4) {
       //Si no se ha editado la observacion, preguntar si se envia sin comentario
-      if (
-        location.pathname === "/nuevo/digitalizacion" ||
-        location.pathname === "/nuevo/solicitud-integracion"
-      ) {
+      if (new_instalacion) {
         if (state.observation === initialState.observation) {
           setConsultarComentario(true);
           return;

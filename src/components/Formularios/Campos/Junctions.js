@@ -8,10 +8,8 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  Checkbox,
   TableRow,
   TextField,
-  FormControlLabel,
   styled,
 } from "@material-ui/core";
 import MapaFormulario from "../MapaFormulario";
@@ -34,10 +32,8 @@ const Junctions = (props) => {
       <legend className="seccion">Junctions</legend>
       <h6>
         Identificar y ubicar los junctions presentes en el proyecto usando el
-        mapa para la localizarlos. Especificar si el cruce usará entreverde
-        vehicular por defecto de 4 segundos para sus programaciones. Tambien
-        señalar las fases del cruce con sus respectivas etapas separadas por un
-        guión (Ej. A-B-C-D).
+        mapa para la localizarlos. Señalar las fases del cruce con sus
+        respectivas etapas separadas por un guión (Ej. A-B-C-D).
       </h6>
 
       {junctions.map((junction, junction_index) => {
@@ -116,35 +112,6 @@ const Junctions = (props) => {
                                 </Button>
                               </TableCell> */}
                       </TableRow>
-
-                      <TableRow>
-                        <TableCell align="left">
-                          Entreverde vehicular default (4s)
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          style={{
-                            textAlign: "left",
-                            paddingLeft: "2rem",
-                          }}>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                color="primary"
-                                checked={junction.metadata.use_default_vi4}
-                                onChange={(e) =>
-                                  dispatch({
-                                    type: "entreverde_vehicular_default",
-                                    junction_index: junction_index,
-                                    payLoad: !junction.metadata.use_default_vi4,
-                                  })
-                                }
-                                name="gilad"
-                              />
-                            }
-                          />
-                        </TableCell>
-                      </TableRow>
                     </TableBody>
                   </Table>
                 </TableContainer>
@@ -201,7 +168,11 @@ const Junctions = (props) => {
                             }}>
                             <Campo
                               autoFocus
-                              id={junction_index + phase_index + "fase-input"}
+                              id={
+                                junction_index.toString() +
+                                phase_index.toString() +
+                                "fase-input"
+                              }
                               // defaultValue="No registrado"
                               value={fase}
                               label={"Etapas de la fase " + (phase_index + 1)}
@@ -280,7 +251,7 @@ const Junctions = (props) => {
           //   <TableCell component="th" scope="row">
           <Button
             size="lg"
-            color="success"
+            color="warning"
             onClick={() => {
               dispatch({ type: "agregar_junction" });
             }}>

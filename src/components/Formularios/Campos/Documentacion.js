@@ -27,10 +27,11 @@ const Documentacion = (props) => {
     <div style={{ marginTop: "2rem" }}>
       <legend>Documentación de respaldo</legend>
       <Label>
-        Adjuntar un PDF con toda la informacion de la instalación, este será
-        usado para respaldar y corroborar lo entregado en este formulario.
+        Adjuntar un PDF (DATA) con toda la informacion de la instalación, este
+        será usado para respaldar y corroborar lo entregado en este formulario.
         Asegurarse de incluir tablas de periodizaciones y programaciones en este
-        documento.
+        documento. Este documento estará disponible solo para personal de la
+        UOCT y administradores de la aplicación.
       </Label>
       <br></br>
       <CustomInput
@@ -41,6 +42,10 @@ const Documentacion = (props) => {
         onChange={(e) => {
           const file = e.target.files[0];
           if (file && validar_pdf(file)) {
+            if (file.size > 10e6) {
+              alert("Por favor, ingrese documentos de hasta 10MB.");
+              return;
+            }
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function () {
@@ -69,6 +74,10 @@ const Documentacion = (props) => {
         onChange={(e) => {
           const file = e.target.files[0];
           if (file && validar_imagen(file)) {
+            if (file.size > 10e6 / 2) {
+              alert("Por favor, ingrese imagenes de hasta 5MB.");
+              return;
+            }
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function () {

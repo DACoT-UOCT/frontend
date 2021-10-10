@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "../App.css";
 import axios from "axios";
-import { ipAPI } from "./Shared/ipAPI";
 import Header from "./Shared/Header";
 import NuevaInstalacion, { useStyles } from "./Formularios/NuevaInstalacion";
 import Inicio from "./Inicio/Inicio";
@@ -15,6 +14,9 @@ import Profile from "./Shared/Profile";
 import ResumenProyecto from "./Formularios/Campos/ResumenProyecto";
 import Historial from "./Historial/Historial";
 import { Typography } from "@material-ui/core";
+import { BACKEND_URL } from "../API_KEYS";
+import { AnimatePresence } from "framer-motion";
+import MotionDiv from "./Shared/MotionDiv";
 
 /*Componente router que define los componentes a renderizar dependiendo de la url
 y de los permisos del usuario. Tambien se encarga de modificar el document.title */
@@ -28,7 +30,7 @@ const RouterComponent = (props) => {
   useEffect(() => {
     if (!state.debug && state.isLoggedIn) {
       axios
-        .get(ipAPI + "users/me/")
+        .get(BACKEND_URL + "me")
         .then((response) => {})
         .catch((err) => {
           dispatch({ type: "logout" });
@@ -97,91 +99,109 @@ const RouterComponent = (props) => {
       ) : (
         <div className="app-container">
           <Header instalacion={state.actualizando} />
+
           <Route
             exact
             path="/logout"
             component={() => <Logout dispatch={dispatch} />}
           />
-          <Route
-            exact
-            path="/"
-            component={() => (
-              <Inicio
-                is_admin={state.is_admin}
-                rol={state.rol}
-                popup_inicial={state.popup_inicial}
-                coordinates={state.coordinates}
-                dispatch={dispatch}
-              />
+          <AnimatePresence>
+            <Route
+              key="inicio"
+              exact
+              path="/"
+              component={() => (
+                <Inicio
+                  is_admin={state.is_admin}
+                  rol={state.rol}
+                  popup_inicial={state.popup_inicial}
+                  coordinates={state.coordinates}
+                  dispatch={dispatch}
+                />
+              )}
+            />
+            <Route
+              key="procesar_solicitud"
+              exact
+              path="/procesar/solicitud"
+              component={() => <ProcesarSolicitud state={state.actualizando} />}
+            />
+            {state.rol === "Empresa" ? (
+              <div key="div">
+                <Route
+                  key="nueva_integracion_solicitud"
+                  exact
+                  path="/nuevo/solicitud-integracion"
+                  component={() => <NuevaInstalacion state={state} />}
+                />
+
+                <Route
+                  key="nueva_actualizacion_solicitud"
+                  exact
+                  path="/nuevo/solicitud-actualizacion"
+                  component={() => <NuevaInstalacion state={state} />}
+                />
+              </div>
+            ) : (
+              // FUNCIONARIO UOCT
+              <div key="div2">
+                <Route
+                  key="edit_full"
+                  exact
+                  path="/editar/instalacion"
+                  component={() =>
+                    state.actualizando.metadata.status === "PRODUCTION" &&
+                    state.actualizando.metadata.version === "latest" && (
+                      <NuevaInstalacion state={state} />
+                    )
+                  }
+                />
+                <Route
+                  key="digitalizacion"
+                  exact
+                  path="/nuevo/digitalizacion"
+                  component={() => <NuevaInstalacion state={state} />}
+                />
+                <Route
+                  key="edit_short"
+                  exact
+                  path="/editar/info-programaciones"
+                  component={() => <NuevaInstalacion state={state} />}
+                />
+              </div>
             )}
-          />
-          <Route
-            exact
-            path="/procesar/solicitud"
-            component={() => <ProcesarSolicitud state={state.actualizando} />}
-          />
-          {state.rol === "Empresa" ? (
-            <>
-              <Route
-                exact
-                path="/nuevo/solicitud-integracion"
-                component={() => <NuevaInstalacion state={state} />}
-              />
-
-              <Route
-                exact
-                path="/nuevo/solicitud-actualizacion"
-                component={() => <NuevaInstalacion state={state} />}
-              />
-            </>
-          ) : (
-            // FUNCIONARIO UOCT
-            <>
-              <Route
-                exact
-                path="/editar/instalacion"
-                component={() =>
-                  state.actualizando.metadata.status === "PRODUCTION" &&
-                  state.actualizando.metadata.version === "latest" && (
-                    <NuevaInstalacion state={state} />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/nuevo/digitalizacion"
-                component={() => <NuevaInstalacion state={state} />}
-              />
-              <Route
-                exact
-                path="/editar/info-programaciones"
-                component={() => <NuevaInstalacion state={state} />}
-              />
-            </>
-          )}
-          {state.is_admin && (
-            <>
-              <Route exact path="/administracion" component={Administracion} />
-            </>
-          )}
-          <Route
-            exact
-            path="/solicitudes"
-            component={() => <Solicitudes dispatch={dispatch} />}
-          />
-
-          <Route
-            exact
-            path="/historial"
-            component={() => <Historial state={state} />}
-          />
-
-          <Route
-            exact
-            path="/info"
-            component={() => (
+            {state.is_admin && (
               <>
-                <div className="grid-item nuevo-semaforo">
+                <Route
+                  key="admin"
+                  exact
+                  path="/administracion"
+                  component={Administracion}
+                />
+              </>
+            )}
+            <Route
+              key="solicitudes"
+              exact
+              path="/solicitudes"
+              component={() => <Solicitudes dispatch={dispatch} />}
+            />
+
+            <Route
+              key="historial"
+              exact
+              path="/historial"
+              component={() => <Historial state={state} />}
+            />
+
+            <Route
+              key="info"
+              exact
+              path="/info"
+              component={() => (
+                <MotionDiv
+                  keyProp="formulario"
+                  className="grid-item nuevo-semaforo">
                   <div
                     className={classes.root}
                     style={{
@@ -215,16 +235,16 @@ const RouterComponent = (props) => {
                           <ResumenProyecto
                             state={state.actualizando}
                             procesar={true}
+                            dispatch={dispatch}
                           />
                         </Typography>
                       </div>
                     </div>
                   </div>
-                </div>
-              </>
-            )}
-          />
-
+                </MotionDiv>
+              )}
+            />
+          </AnimatePresence>
           <Profile
             user={state.full_name}
             email={state.email}
