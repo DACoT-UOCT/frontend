@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import PopUp from "../Shared/PopUp";
 import styles from "./Consulta.module.css";
 import BarraBusqueda from "./BarraBusqueda";
 import { GQLclient } from "../App";
@@ -10,13 +9,8 @@ import MotionDiv from "../Shared/MotionDiv";
 
 //PAGINA HOME QUE CONTIENE BARRA DE BUSQUEDA, BOTONES DE NAVEGACION y POPUP INICIAL
 const Inicio = (props) => {
-  const dispatch = props.dispatch;
   const history = useHistory();
   const [solicitudesPendientes, setSolicitudesPendientes] = useState(false);
-
-  const bienvenidaHandler = (_bool) => {
-    dispatch({ type: "cerrar_bienvenida", payload: _bool });
-  };
 
   //REVISA SI HAY SOLICITUDES NEW O UPDATE PENDIENTES
   useQuery(
@@ -119,24 +113,6 @@ const Inicio = (props) => {
           </div>
         )}
       </div>
-      {props.popup_inicial && (
-        <PopUp
-          title="Bienvenido a DACoT"
-          open={props.popup_inicial}
-          setOpen={bienvenidaHandler}>
-          <p>
-            Este sistema se encuentra en desarrollo y constante mejora. En el
-            podrás acceder a los datos semafóricos de la Región Metropolitana e
-            ingresar solicitudes de actualización al Centro de Control de la
-            UOCT.
-          </p>
-          <div
-            className={styles.entendido}
-            onClick={() => bienvenidaHandler(false)}>
-            Entendido
-          </div>
-        </PopUp>
-      )}
     </MotionDiv>
   );
 };

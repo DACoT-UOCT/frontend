@@ -28,11 +28,15 @@
 .entendido {
   background-color: #44c76700;
   border: 1px solid #18ab29;
-  display: inline-block;
+  position: relative;
+  width: auto;
+  bottom: 0;
+  right: 0;
   cursor: pointer;
   color: #000000;
   font-family: Arial;
   font-size: 17px;
+  text-align: center;
   padding: 8px 31px;
   text-decoration: none;
 }

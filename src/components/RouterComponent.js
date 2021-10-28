@@ -3,6 +3,7 @@ import "../App.css";
 import axios from "axios";
 import Header from "./Shared/Header";
 import NuevaInstalacion, { useStyles } from "./Formularios/NuevaInstalacion";
+import styles from "./Inicio/Consulta.module.css";
 import Inicio from "./Inicio/Inicio";
 import Login from "./Login/Login";
 import Logout from "./Login/Logout";
@@ -17,6 +18,9 @@ import { Typography } from "@material-ui/core";
 import { BACKEND_URL } from "../API_KEYS";
 import { AnimatePresence } from "framer-motion";
 import MotionDiv from "./Shared/MotionDiv";
+import YouTube from "react-youtube";
+import { tutorial_URL } from "./App";
+import PopUp from "./Shared/PopUp";
 
 /*Componente router que define los componentes a renderizar dependiendo de la url
 y de los permisos del usuario. Tambien se encarga de modificar el document.title */
@@ -26,6 +30,10 @@ const RouterComponent = (props) => {
   const dispatch = props.dispatch;
   const classes = useStyles();
   let location = useLocation();
+
+  const bienvenidaHandler = (_bool) => {
+    dispatch({ type: "cerrar_bienvenida", payload: _bool });
+  };
 
   useEffect(() => {
     if (!state.debug && state.isLoggedIn) {
@@ -245,6 +253,34 @@ const RouterComponent = (props) => {
               )}
             />
           </AnimatePresence>
+          {state.popup_inicial && (
+            <PopUp
+              title="Bienvenido a DACoT"
+              open={state.popup_inicial}
+              setOpen={bienvenidaHandler}>
+              <p>
+                Este sistema se encuentra en desarrollo y constante mejora. En
+                el podrás acceder a los datos semafóricos de la Región
+                Metropolitana e ingresar solicitudes de actualización al Centro
+                de Control de la UOCT.
+              </p>
+              <div className="tutorial">
+                <YouTube
+                  videoId={tutorial_URL}
+                  opts={{
+                    playerVars: {
+                      autoplay: 0,
+                    },
+                  }}
+                />
+              </div>
+              <div
+                className={styles.entendido}
+                onClick={() => bienvenidaHandler(false)}>
+                Entendido
+              </div>
+            </PopUp>
+          )}
           <Profile
             user={state.full_name}
             email={state.email}
