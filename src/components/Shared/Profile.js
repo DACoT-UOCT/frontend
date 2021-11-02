@@ -29,6 +29,12 @@ function Profile({ user, email, rol, state, dispatch }) {
         </span>
         <span className={styles.admin_mail}>{email_admin}</span>
       </div>
+      <Button
+        color="info"
+        outline
+        onClick={() => dispatch({ type: "cerrar_bienvenida", payLoad: true })}>
+        <span>Ayuda</span>
+      </Button>
       {state.debug && (
         <Button onClick={() => dispatch({ type: "switch_profile" })}>
           <span>Switch profile</span>

@@ -11,11 +11,13 @@ import { BACKEND_URL } from "../API_KEYS";
 import Session from "react-session-api";
 import store from "local-storage-pro";
 import ScrollToTop from "react-scroll-to-top";
+import getYouTubeID from "get-youtube-id";
 
 export const StateContext = React.createContext();
 export const DispatchContext = React.createContext();
 export const GQLclient = new GraphQLClient(BACKEND_URL);
 export const email_admin = "infoventas.uoct@mtt.gob.cl";
+export const tutorial_URL = getYouTubeID("https://youtu.be/_6dnfMiNYXc");
 const history = createBrowserHistory();
 
 //COMPONENTE QUE ALOJA TODA LA APLICACION

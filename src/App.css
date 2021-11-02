@@ -1284,3 +1284,10 @@ input:disabled {
   background-size: 20px 20px;
   background-color: red;
 }
+
+.tutorial {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}

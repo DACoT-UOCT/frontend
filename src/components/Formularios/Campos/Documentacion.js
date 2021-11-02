@@ -42,8 +42,8 @@ const Documentacion = (props) => {
         onChange={(e) => {
           const file = e.target.files[0];
           if (file && validar_pdf(file)) {
-            if (file.size > 10e6) {
-              alert("Por favor, ingrese documentos de hasta 10MB.");
+            if (file.size > 2 * 10e6) {
+              alert("Por favor, ingrese documentos de hasta 20MB.");
               return;
             }
             const reader = new FileReader();
