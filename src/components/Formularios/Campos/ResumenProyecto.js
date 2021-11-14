@@ -1,4 +1,10 @@
-import React, { forwardRef, useRef, useState, useContext } from "react";
+import React, {
+  forwardRef,
+  useRef,
+  useState,
+  useContext,
+  useEffect,
+} from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../App.css";
 import styles from "./Resumen.module.css";
@@ -13,7 +19,10 @@ import {
   TextField,
   styled,
 } from "@material-ui/core";
-import { getFecha } from "../../Shared/Utils/general_functions";
+import {
+  compute_interface,
+  getFecha,
+} from "../../Shared/Utils/general_functions";
 import { makeStyles } from "@material-ui/core/styles";
 import { GQLclient, StateContext } from "../../App";
 import { useHistory } from "react-router-dom";
@@ -94,8 +103,8 @@ const ResumenButtons = (props) => {
     })
       .then((response) => {
         let project = procesar_json_recibido(response.project);
-        props.setSecuencias(getSecuencias(project));
         props.setJunctions(getJunctions(project));
+        props.setSecuencias(getSecuencias(project));
         props.dispatch({ type: "levantar_actualizacion", payLoad: project });
         props.setState(project);
         alert("Instalación sincronizada con éxito.");
@@ -393,6 +402,15 @@ const ResumenBody = forwardRef((props, ref) => {
     temp[junctionIndex].junction = junction;
     setJunctions(temp);
   };
+
+  //update programaciones cada vez que cambian las mismas, o las secuencias
+  useEffect(() => {
+    const new_junctions = compute_interface(
+      JSON.parse(JSON.stringify(junctions)),
+      secuencias
+    );
+    setJunctions(new_junctions);
+  }, [secuencias, savingIntergreens]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getStatus = () => {
     //new, update, history, production
@@ -815,7 +833,7 @@ const ResumenBody = forwardRef((props, ref) => {
                                 </tbody>
                               </table>
                             </div>
-                            {!props.scrolled && (
+                            {info && !props.scrolled && (
                               <div className="secuencia-resumen-edit">
                                 {!secuencias[junctionIndex].openEdit ? (
                                   <>
