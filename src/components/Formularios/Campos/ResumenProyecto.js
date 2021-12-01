@@ -154,7 +154,8 @@ const ResumenButtons = (props) => {
                 className="resumen-btn"
                 onClick={() => {
                   props.setDetalles(!props.detalles);
-                }}>
+                }}
+              >
                 {(props.detalles ? "Ocultar" : "Mostrar") +
                   " información complementaria"}
               </div>
@@ -182,7 +183,8 @@ const ResumenButtons = (props) => {
                         return;
                       }
                       props.scroll();
-                    }}>
+                    }}
+                  >
                     Generar informe de programaciones
                   </div>
                   {props.state.metadata.version === "latest" && (
@@ -210,7 +212,8 @@ const ResumenButtons = (props) => {
                               behavior: "smooth",
                             });
                           }, 200);
-                        }}>
+                        }}
+                      >
                         Editar entreverdes vehiculares
                       </div>
 
@@ -224,7 +227,8 @@ const ResumenButtons = (props) => {
                             return;
                           }
                           history.push("/editar/info-programaciones");
-                        }}>
+                        }}
+                      >
                         Editar información acotada
                       </div>
 
@@ -238,7 +242,8 @@ const ResumenButtons = (props) => {
                             return;
                           }
                           history.push("/editar/instalacion");
-                        }}>
+                        }}
+                      >
                         Editar información de la instalación
                       </div>
                     </>
@@ -257,7 +262,8 @@ const ResumenButtons = (props) => {
                         return;
                       }
                       history.push("/nuevo/solicitud-actualizacion");
-                    }}>
+                    }}
+                  >
                     Sugerir cambios para la instalación
                   </div>
                 )}
@@ -268,7 +274,8 @@ const ResumenButtons = (props) => {
                   className="resumen-btn resumen-btn"
                   onClick={() => {
                     renderPDF(props.state);
-                  }}>
+                  }}
+                >
                   Descargar DATA de la instalación
                 </div>
                 {props.state.metadata.version === "latest" && (
@@ -282,7 +289,8 @@ const ResumenButtons = (props) => {
                         return;
                       }
                       setOpenActualizar(true);
-                    }}>
+                    }}
+                  >
                     Sincronizar información con el Centro de Control
                   </div>
                 )}
@@ -294,7 +302,8 @@ const ResumenButtons = (props) => {
         <PopUp
           title={"Sincronización instalación " + props.state.oid}
           open={openActualizar}
-          setOpen={setOpenActualizar}>
+          setOpen={setOpenActualizar}
+        >
           <div className="sync-popup">
             <p>
               La sincronización de datos con el centro de control permite
@@ -311,7 +320,8 @@ const ResumenButtons = (props) => {
                 paddingLeft: "8%",
                 paddingRight: "8%",
                 textAlign: "center",
-              }}>
+              }}
+            >
               <p style={{ fontSize: "1.2rem" }}>
                 {"¿Seguro desea continuar con la sincronización de la instalación " +
                   props.state.oid +
@@ -328,7 +338,8 @@ const ResumenButtons = (props) => {
                   <Button
                     onClick={() => {
                       setOpenActualizar(false);
-                    }}>
+                    }}
+                  >
                     Volver
                   </Button>
                   <Button color="info" onClick={sincronizar}>
@@ -514,7 +525,8 @@ const ResumenBody = forwardRef((props, ref) => {
       <div
         ref={ref}
         className="resumen-container print-container"
-        id="formulario">
+        id="formulario"
+      >
         <ResumenButtons
           info={info}
           status={state.metadata.status}
@@ -545,7 +557,8 @@ const ResumenBody = forwardRef((props, ref) => {
               marginLeft: "0.5rem",
               textAlign: "center",
               fontWeight: "bold",
-            }}>
+            }}
+          >
             {info
               ? state.metadata.status === "PRODUCTION"
                 ? "Informe de programaciones de tiempos semafóricos " +
@@ -714,7 +727,8 @@ const ResumenBody = forwardRef((props, ref) => {
                           fontWeight: "bold",
                           padding: "0.3rem",
                           fontSize: "12px",
-                        }}>
+                        }}
+                      >
                         {junction.jid}
                       </td>
                       <td
@@ -722,7 +736,8 @@ const ResumenBody = forwardRef((props, ref) => {
                           width: "80%",
                           textAlign: "left",
                           padding: "0",
-                        }}>
+                        }}
+                      >
                         <input
                           type="text"
                           disabled={!info}
@@ -738,7 +753,8 @@ const ResumenBody = forwardRef((props, ref) => {
                           width: "20%",
                           textAlign: "center",
                           padding: "0",
-                        }}>
+                        }}
+                      >
                         {junction.metadata.location.coordinates !== null
                           ? "LAT: " +
                             junction.metadata.location.coordinates[0].toFixed(
@@ -848,7 +864,8 @@ const ResumenBody = forwardRef((props, ref) => {
                                         );
                                         temp[junctionIndex].openEdit = true;
                                         setSecuencias(temp);
-                                      }}>
+                                      }}
+                                    >
                                       <EditSharpIcon />
                                     </Button>
                                   </>
@@ -908,7 +925,8 @@ const ResumenBody = forwardRef((props, ref) => {
                                             .replace(/[^0-9]/g, "")
                                             .slice(0, 2);
                                         setSecuencias(temp);
-                                      }}></Campo>
+                                      }}
+                                    ></Campo>
                                     <Button
                                       color="success"
                                       onClick={() => {
@@ -929,7 +947,8 @@ const ResumenBody = forwardRef((props, ref) => {
                                         );
                                         temp[junctionIndex].inputSeq = "";
                                         setSecuencias(temp);
-                                      }}>
+                                      }}
+                                    >
                                       Agregar fase
                                     </Button>
 
@@ -941,7 +960,8 @@ const ResumenBody = forwardRef((props, ref) => {
                                         );
                                         temp[junctionIndex].seq.pop();
                                         setSecuencias(temp);
-                                      }}>
+                                      }}
+                                    >
                                       Eliminar fase
                                     </Button>
                                     <Button
@@ -953,7 +973,8 @@ const ResumenBody = forwardRef((props, ref) => {
                                         temp[junctionIndex].seq =
                                           temp[junctionIndex].initial_seq;
                                         setSecuencias(temp);
-                                      }}>
+                                      }}
+                                    >
                                       Reset
                                     </Button>
                                     <Button
@@ -964,7 +985,8 @@ const ResumenBody = forwardRef((props, ref) => {
                                         );
                                         temp[junctionIndex].openEdit = false;
                                         setSecuencias(temp);
-                                      }}>
+                                      }}
+                                    >
                                       Terminar edición de secuencia
                                     </Button>
                                   </>
@@ -1134,7 +1156,8 @@ const ResumenBody = forwardRef((props, ref) => {
                             {/* <div className="page-break" /> */}
                             <div
                               className="section"
-                              style={{ fontSize: textSize }}>
+                              style={{ fontSize: textSize }}
+                            >
                               {!props.scrolled && (
                                 <div className="text-size">
                                   <Button
@@ -1146,7 +1169,8 @@ const ResumenBody = forwardRef((props, ref) => {
                                           ? textSize
                                           : textSize - 1
                                       )
-                                    }>
+                                    }
+                                  >
                                     -
                                   </Button>
                                   <p>{textSize}</p>
@@ -1159,7 +1183,8 @@ const ResumenBody = forwardRef((props, ref) => {
                                           ? textSize
                                           : textSize + 1
                                       )
-                                    }>
+                                    }
+                                  >
                                     +
                                   </Button>
                                 </div>
@@ -1197,18 +1222,21 @@ const ResumenBody = forwardRef((props, ref) => {
                                       </tr>
                                     </thead>
                                     <thead
-                                      style={{ backgroundColor: "#3f8605" }}>
+                                      style={{ backgroundColor: "#3f8605" }}
+                                    >
                                       <tr>
                                         <th
                                           style={{
                                             backgroundColor: "#034472",
-                                          }}>
+                                          }}
+                                        >
                                           _
                                         </th>
                                         <th
                                           style={{
                                             backgroundColor: "#034472",
-                                          }}>
+                                          }}
+                                        >
                                           _
                                         </th>
                                         {fasesSC.map((fase, i) => {
@@ -1318,7 +1346,8 @@ const ResumenBody = forwardRef((props, ref) => {
                                                       boolIntergreen
                                                         ? "input-entreverde-vehicular"
                                                         : ""
-                                                    }>
+                                                    }
+                                                  >
                                                     {boolIntergreen ? (
                                                       <>
                                                         <input
@@ -1512,7 +1541,8 @@ const ResumenBody = forwardRef((props, ref) => {
                                     block
                                     disabled={savingIntergreens}
                                     color="danger"
-                                    onClick={() => saveVehIntergreenChanges()}>
+                                    onClick={() => saveVehIntergreenChanges()}
+                                  >
                                     {savingIntergreens ? (
                                       <Loading />
                                     ) : (
