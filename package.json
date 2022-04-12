@@ -23,7 +23,7 @@
     "date-fns": "^2.25.0",
     "decamelize-keys-deep": "^0.1.1",
     "esri-leaflet-geocoder": "^3.1.1",
-    "framer-motion": "^4.1.17",
+    "framer-motion": "^6.2.10",
     "get-youtube-id": "^1.0.1",
     "google-map-react": "^2.1.10",
     "google-maps-react": "^2.0.6",
