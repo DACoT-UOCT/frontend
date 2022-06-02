@@ -11,7 +11,7 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/pickers": "^3.3.10",
     "@puuuudding/decamelize-keys": "^6.2.2",
-    "@react-google-maps/api": "^1.13.0",
+    "@react-google-maps/api": "^2.12.0",
     "@react-pdf/renderer": "^1.6.17",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
