@@ -59,7 +59,7 @@
     "react-to-print": "^2.13.0",
     "react-transition-group": "^4.4.2",
     "react-youtube": "^7.13.1",
-    "reactstrap": "^8.10.0",
+    "reactstrap": "^9.1.4",
     "read-excel-file": "^5.2.20",
     "supercluster": "^7.1.4",
     "use-immer": "^0.4.2",
