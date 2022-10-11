@@ -60,7 +60,7 @@
     "react-transition-group": "^4.4.2",
     "react-youtube": "^7.13.1",
     "reactstrap": "^8.10.0",
-    "read-excel-file": "^5.2.20",
+    "read-excel-file": "^5.5.0",
     "supercluster": "^7.1.4",
     "use-immer": "^0.4.2",
     "use-supercluster": "^0.2.9"
